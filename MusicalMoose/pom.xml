@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.gb4w21</groupId>
+    <artifactId>MusicalMoose</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>MusicalMoose-1.0-SNAPSHOT</name>
+    
+    <!-- Global settings for the project. Settings can be accessed in the pom
+    by placing the tag name in ${...} -->
+    <properties>
+        <skipTests>false</skipTests>
+    </properties>
+
+    <!-- All of the sample code shares the same dependencies and build         -->
+    <!-- The parent project named web_project_dependencies must be loaded into -->
+    <!-- the IDE and you must Run Maven with a goal of install:install         -->
+    <!-- Now it can be the parent pom of all projects                          --> 
+    <!-- https://gitlab.com/omniprof/web_project_dependencies.git              --> 
+    <parent>
+        <groupId>com.kfwebstandard</groupId>
+        <artifactId>web_project_dependencies</artifactId>
+        <version>1.1</version>
+    </parent>
+    
+    <build>
+        <finalName>
+           MusicalMoose 
+        </finalName>
+    </build>
+</project>
+
+
+
