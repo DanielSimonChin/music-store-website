@@ -1,0 +1,18 @@
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<!-- Search for the word UPDATE to find where changes are required -->
+<resources>
+    <jdbc-resource enabled="true" jndi-name="java:app/jdbc/myMusic" object-type="user" pool-name="musicPool">
+        <description/>
+    </jdbc-resource>
+    <jdbc-connection-pool datasource-classname="com.mysql.cj.jdbc.MysqlConnectionPoolDataSource" 
+                          max-pool-size="15"
+                          name="musicPool"
+                          pool-resize-quantity="2"
+                          res-type="javax.sql.ConnectionPoolDataSource"
+                          steady-pool-size="8">
+        <property name="URL" value="jdbc:mysql://localhost:3306/musicstorage?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
+
+        <property name="User" value="music"/>
+        <property name="Password" value="dawson123"/>
+    </jdbc-connection-pool>
+</resources>

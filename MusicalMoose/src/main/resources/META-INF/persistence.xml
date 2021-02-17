@@ -1,7 +1,24 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
-    <!-- Define Persistence Unit -->
-    <persistence-unit name="my_persistence_unit">
-        
-    </persistence-unit>
+<persistence version="2.2" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+  <!-- Define Persistence Unit -->
+  <persistence-unit name="musicPU" transaction-type="JTA">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <jta-data-source>java:app/jdbc/myMusic</jta-data-source>
+    <class>com.gb4w21.musicalmoose.entities.Album</class>
+    <class>com.gb4w21.musicalmoose.entities.Salebrtrack</class>
+    <class>com.gb4w21.musicalmoose.entities.Creditcardinfo</class>
+    <class>com.gb4w21.musicalmoose.entities.Client</class>
+    <class>com.gb4w21.musicalmoose.entities.Surveyrow</class>
+    <class>com.gb4w21.musicalmoose.entities.News</class>
+    <class>com.gb4w21.musicalmoose.entities.MusicTrack</class>
+    <class>com.gb4w21.musicalmoose.entities.Salebralbum</class>
+    <class>com.gb4w21.musicalmoose.entities.Invoice</class>
+    <class>com.gb4w21.musicalmoose.entities.Bannerad</class>
+    <class>com.gb4w21.musicalmoose.entities.Survey</class>
+    <class>com.gb4w21.musicalmoose.entities.Review</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+        </properties>
+  </persistence-unit>
 </persistence>
