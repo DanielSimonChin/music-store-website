@@ -5,6 +5,8 @@
  */
 package com.gb4w21.musicalmoose.entities;
 
+import com.gb4w21.musicalmoose.entities.Invoicedetail;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +44,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Album.findByCostprice", query = "SELECT a FROM Album a WHERE a.costprice = :costprice"),
     @NamedQuery(name = "Album.findByListprice", query = "SELECT a FROM Album a WHERE a.listprice = :listprice"),
     @NamedQuery(name = "Album.findBySaleprice", query = "SELECT a FROM Album a WHERE a.saleprice = :saleprice"),
+    @NamedQuery(name = "Album.findByPst", query = "SELECT a FROM Album a WHERE a.pst = :pst"),
+    @NamedQuery(name = "Album.findByGst", query = "SELECT a FROM Album a WHERE a.gst = :gst"),
+    @NamedQuery(name = "Album.findByHst", query = "SELECT a FROM Album a WHERE a.hst = :hst"),
     @NamedQuery(name = "Album.findByRemovalstatus", query = "SELECT a FROM Album a WHERE a.removalstatus = :removalstatus"),
     @NamedQuery(name = "Album.findByRemovaldate", query = "SELECT a FROM Album a WHERE a.removaldate = :removaldate")})
 public class Album implements Serializable {
@@ -82,13 +87,19 @@ public class Album implements Serializable {
     private Float listprice;
     @Column(name = "SALEPRICE")
     private Float saleprice;
+    @Column(name = "PST")
+    private Float pst;
+    @Column(name = "GST")
+    private Float gst;
+    @Column(name = "HST")
+    private Float hst;
     @Column(name = "REMOVALSTATUS")
     private Boolean removalstatus;
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
     @OneToMany(mappedBy = "albumid")
-    private List<Salebralbum> salebralbumList;
+    private List<Invoicedetail> invoicedetailList;
     @OneToMany(mappedBy = "albumid")
     private List<MusicTrack> musicTrackList;
 
@@ -195,6 +206,30 @@ public class Album implements Serializable {
         this.saleprice = saleprice;
     }
 
+    public Float getPst() {
+        return pst;
+    }
+
+    public void setPst(Float pst) {
+        this.pst = pst;
+    }
+
+    public Float getGst() {
+        return gst;
+    }
+
+    public void setGst(Float gst) {
+        this.gst = gst;
+    }
+
+    public Float getHst() {
+        return hst;
+    }
+
+    public void setHst(Float hst) {
+        this.hst = hst;
+    }
+
     public Boolean getRemovalstatus() {
         return removalstatus;
     }
@@ -211,12 +246,12 @@ public class Album implements Serializable {
         this.removaldate = removaldate;
     }
 
-    public List<Salebralbum> getSalebralbumList() {
-        return salebralbumList;
+    public List<Invoicedetail> getInvoicedetailList() {
+        return invoicedetailList;
     }
 
-    public void setSalebralbumList(List<Salebralbum> salebralbumList) {
-        this.salebralbumList = salebralbumList;
+    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
+        this.invoicedetailList = invoicedetailList;
     }
 
     public List<MusicTrack> getMusicTrackList() {
@@ -249,7 +284,7 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.Album[ albumid=" + albumid + " ]";
+        return "com.gb4w21.musicalmoose.Album[ albumid=" + albumid + " ]";
     }
     
 }

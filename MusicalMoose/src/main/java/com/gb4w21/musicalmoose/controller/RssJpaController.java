@@ -7,7 +7,7 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
-import com.gb4w21.musicalmoose.entities.Bannerad;
+import com.gb4w21.musicalmoose.entities.Rss;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
@@ -31,9 +31,9 @@ import org.slf4j.LoggerFactory;
 
 @Named
 @SessionScoped
-public class BanneradJpaController implements Serializable {
+public class RssJpaController implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(BanneradJpaController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(RssJpaController.class);
 
     @Resource
     private UserTransaction utx;
@@ -41,11 +41,11 @@ public class BanneradJpaController implements Serializable {
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
-    public void create(Bannerad bannerad) throws RollbackFailureException {
+    public void create(Rss rss) throws RollbackFailureException {
         try {
             utx.begin();
             em.getTransaction().begin();
-            em.persist(bannerad);
+            em.persist(rss);
 
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
@@ -60,10 +60,11 @@ public class BanneradJpaController implements Serializable {
         }
     }
 
-    public void edit(Bannerad bannerad) throws NonexistentEntityException, Exception {
+    public void edit(Rss rss) throws NonexistentEntityException, Exception {
+
         try {
             utx.begin();
-            bannerad = em.merge(bannerad);
+            rss = em.merge(rss);
             utx.commit();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
@@ -73,8 +74,8 @@ public class BanneradJpaController implements Serializable {
             }
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = bannerad.getBanneraddid();
-                if (findBannerad(id) == null) {
+                Integer id = rss.getId();
+                if (findRss(id) == null) {
                     throw new NonexistentEntityException("The fish with id " + id + " no longer exists.");
                 }
             }
@@ -85,14 +86,14 @@ public class BanneradJpaController implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         try {
             utx.begin();
-            Bannerad bannerad;
+            Rss rss;
             try {
-                bannerad = em.getReference(Bannerad.class, id);
-                bannerad.getBanneraddid();
+                rss = em.getReference(Rss.class, id);
+                rss.getId();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The bannerad with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The rss with id " + id + " no longer exists.", enfe);
             }
-            em.remove(bannerad);
+            em.remove(rss);
             utx.commit();
         } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
@@ -104,18 +105,18 @@ public class BanneradJpaController implements Serializable {
         }
     }
 
-    public List<Bannerad> findBanneradEntities() {
-        return findBanneradEntities(true, -1, -1);
+    public List<Rss> findRssEntities() {
+        return findRssEntities(true, -1, -1);
     }
 
-    public List<Bannerad> findBanneradEntities(int maxResults, int firstResult) {
-        return findBanneradEntities(false, maxResults, firstResult);
+    public List<Rss> findRssEntities(int maxResults, int firstResult) {
+        return findRssEntities(false, maxResults, firstResult);
     }
 
-    private List<Bannerad> findBanneradEntities(boolean all, int maxResults, int firstResult) {
+    private List<Rss> findRssEntities(boolean all, int maxResults, int firstResult) {
 
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Bannerad.class));
+        cq.select(cq.from(Rss.class));
         Query q = em.createQuery(cq);
         if (!all) {
             q.setMaxResults(maxResults);
@@ -125,16 +126,16 @@ public class BanneradJpaController implements Serializable {
 
     }
 
-    public Bannerad findBannerad(Integer id) {
+    public Rss findRss(Integer id) {
 
-        return em.find(Bannerad.class, id);
+        return em.find(Rss.class, id);
 
     }
 
-    public int getBanneradCount() {
+    public int getRssCount() {
 
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        Root<Bannerad> rt = cq.from(Bannerad.class);
+        Root<Rss> rt = cq.from(Rss.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();

@@ -5,8 +5,8 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class CreditcardinfoJpaController implements Serializable {
 
-     private final static Logger LOG = LoggerFactory.getLogger(CreditcardinfoJpaController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(CreditcardinfoJpaController.class);
 
     @Resource
     private UserTransaction utx;
@@ -45,6 +45,7 @@ public class CreditcardinfoJpaController implements Serializable {
     public void create(Creditcardinfo creditcardinfo) throws RollbackFailureException {
         try {
             utx.begin();
+            em.getTransaction().begin();
             Client clientid = creditcardinfo.getClientid();
             if (clientid != null) {
                 clientid = em.getReference(clientid.getClass(), clientid.getClientid());
@@ -56,7 +57,7 @@ public class CreditcardinfoJpaController implements Serializable {
                 clientid = em.merge(clientid);
             }
             utx.commit();
-       } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             try {
                 utx.rollback();
                 LOG.error("Rollback");
@@ -69,9 +70,8 @@ public class CreditcardinfoJpaController implements Serializable {
     }
 
     public void edit(Creditcardinfo creditcardinfo) throws NonexistentEntityException, Exception {
-      
+
         try {
-       
             utx.begin();
             Creditcardinfo persistentCreditcardinfo = em.find(Creditcardinfo.class, creditcardinfo.getCreditcardid());
             Client clientidOld = persistentCreditcardinfo.getClientid();
@@ -107,8 +107,8 @@ public class CreditcardinfoJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws  NonexistentEntityException, RollbackFailureException, Exception {
-        try{
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+        try {
             utx.begin();
             Creditcardinfo creditcardinfo;
             try {
@@ -124,7 +124,7 @@ public class CreditcardinfoJpaController implements Serializable {
             }
             em.remove(creditcardinfo);
             utx.commit();
-       } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
+        } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
             } catch (IllegalStateException | SecurityException | SystemException re) {
@@ -143,33 +143,32 @@ public class CreditcardinfoJpaController implements Serializable {
     }
 
     private List<Creditcardinfo> findCreditcardinfoEntities(boolean all, int maxResults, int firstResult) {
-        
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Creditcardinfo.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-       
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Creditcardinfo.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
+
     }
 
     public Creditcardinfo findCreditcardinfo(Integer id) {
-        
-            return em.find(Creditcardinfo.class, id);
-        
+
+        return em.find(Creditcardinfo.class, id);
+
     }
 
     public int getCreditcardinfoCount() {
-        
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Creditcardinfo> rt = cq.from(Creditcardinfo.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-       
-    }
-    
-}
 
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Creditcardinfo> rt = cq.from(Creditcardinfo.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
+    }
+
+}

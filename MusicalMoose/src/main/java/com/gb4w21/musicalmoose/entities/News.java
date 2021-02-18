@@ -124,7 +124,7 @@ public class News implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.News[ newsid=" + newsid + " ]";
+        return "com.gb4w21.musicalmoose.News[ newsid=" + newsid + " ]";
     }
     
 }

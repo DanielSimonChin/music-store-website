@@ -5,6 +5,7 @@
  */
 package com.gb4w21.musicalmoose.entities;
 
+import com.gb4w21.musicalmoose.entities.Creditcardinfo;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -94,9 +95,9 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "clientid")
     private List<Creditcardinfo> creditcardinfoList;
     @OneToMany(mappedBy = "clientid")
-    private List<Review> reviewList;
+    private List<Sale> saleList;
     @OneToMany(mappedBy = "clientid")
-    private List<Invoice> invoiceList;
+    private List<Review> reviewList;
 
     public Client() {
     }
@@ -233,20 +234,20 @@ public class Client implements Serializable {
         this.creditcardinfoList = creditcardinfoList;
     }
 
+    public List<Sale> getSaleList() {
+        return saleList;
+    }
+
+    public void setSaleList(List<Sale> saleList) {
+        this.saleList = saleList;
+    }
+
     public List<Review> getReviewList() {
         return reviewList;
     }
 
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
-    }
-
-    public List<Invoice> getInvoiceList() {
-        return invoiceList;
-    }
-
-    public void setInvoiceList(List<Invoice> invoiceList) {
-        this.invoiceList = invoiceList;
     }
 
     @Override
@@ -271,7 +272,7 @@ public class Client implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.Client[ clientid=" + clientid + " ]";
+        return "com.gb4w21.musicalmoose.Client[ clientid=" + clientid + " ]";
     }
     
 }

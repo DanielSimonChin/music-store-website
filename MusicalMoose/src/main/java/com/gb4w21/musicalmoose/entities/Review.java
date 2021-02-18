@@ -5,6 +5,7 @@
  */
 package com.gb4w21.musicalmoose.entities;
 
+import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -147,7 +148,7 @@ public class Review implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.Review[ reviewid=" + reviewid + " ]";
+        return "com.gb4w21.musicalmoose.Review[ reviewid=" + reviewid + " ]";
     }
     
 }

@@ -44,6 +44,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "MusicTrack.findByCostprice", query = "SELECT m FROM MusicTrack m WHERE m.costprice = :costprice"),
     @NamedQuery(name = "MusicTrack.findByListprice", query = "SELECT m FROM MusicTrack m WHERE m.listprice = :listprice"),
     @NamedQuery(name = "MusicTrack.findBySaleprice", query = "SELECT m FROM MusicTrack m WHERE m.saleprice = :saleprice"),
+    @NamedQuery(name = "MusicTrack.findByPst", query = "SELECT m FROM MusicTrack m WHERE m.pst = :pst"),
+    @NamedQuery(name = "MusicTrack.findByGst", query = "SELECT m FROM MusicTrack m WHERE m.gst = :gst"),
+    @NamedQuery(name = "MusicTrack.findByHst", query = "SELECT m FROM MusicTrack m WHERE m.hst = :hst"),
     @NamedQuery(name = "MusicTrack.findByDateentered", query = "SELECT m FROM MusicTrack m WHERE m.dateentered = :dateentered"),
     @NamedQuery(name = "MusicTrack.findByPartofalbum", query = "SELECT m FROM MusicTrack m WHERE m.partofalbum = :partofalbum"),
     @NamedQuery(name = "MusicTrack.findByRemovalstatus", query = "SELECT m FROM MusicTrack m WHERE m.removalstatus = :removalstatus"),
@@ -85,6 +88,12 @@ public class MusicTrack implements Serializable {
     private Float listprice;
     @Column(name = "SALEPRICE")
     private Float saleprice;
+    @Column(name = "PST")
+    private Float pst;
+    @Column(name = "GST")
+    private Float gst;
+    @Column(name = "HST")
+    private Float hst;
     @Column(name = "DATEENTERED")
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateentered;
@@ -95,11 +104,11 @@ public class MusicTrack implements Serializable {
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
+    @OneToMany(mappedBy = "inventoryid")
+    private List<Invoicedetail> invoicedetailList;
     @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
     @ManyToOne
     private Album albumid;
-    @OneToMany(mappedBy = "inventoryid")
-    private List<Salebrtrack> salebrtrackList;
 
     public MusicTrack() {
     }
@@ -204,6 +213,30 @@ public class MusicTrack implements Serializable {
         this.saleprice = saleprice;
     }
 
+    public Float getPst() {
+        return pst;
+    }
+
+    public void setPst(Float pst) {
+        this.pst = pst;
+    }
+
+    public Float getGst() {
+        return gst;
+    }
+
+    public void setGst(Float gst) {
+        this.gst = gst;
+    }
+
+    public Float getHst() {
+        return hst;
+    }
+
+    public void setHst(Float hst) {
+        this.hst = hst;
+    }
+
     public Date getDateentered() {
         return dateentered;
     }
@@ -236,20 +269,20 @@ public class MusicTrack implements Serializable {
         this.removaldate = removaldate;
     }
 
+    public List<Invoicedetail> getInvoicedetailList() {
+        return invoicedetailList;
+    }
+
+    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
+        this.invoicedetailList = invoicedetailList;
+    }
+
     public Album getAlbumid() {
         return albumid;
     }
 
     public void setAlbumid(Album albumid) {
         this.albumid = albumid;
-    }
-
-    public List<Salebrtrack> getSalebrtrackList() {
-        return salebrtrackList;
-    }
-
-    public void setSalebrtrackList(List<Salebrtrack> salebrtrackList) {
-        this.salebrtrackList = salebrtrackList;
     }
 
     @Override
@@ -274,7 +307,7 @@ public class MusicTrack implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.MusicTrack[ inventoryid=" + inventoryid + " ]";
+        return "com.gb4w21.musicalmoose.MusicTrack[ inventoryid=" + inventoryid + " ]";
     }
     
 }

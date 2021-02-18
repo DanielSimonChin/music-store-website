@@ -5,15 +5,15 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Album;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.gb4w21.musicalmoose.entities.Salebralbum;
+import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import java.util.ArrayList;
 import java.util.List;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
@@ -31,6 +31,7 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 @Named
 @SessionScoped
 public class AlbumJpaController implements Serializable {
@@ -44,21 +45,21 @@ public class AlbumJpaController implements Serializable {
     private EntityManager em;
 
     public void create(Album album) throws RollbackFailureException {
-        if (album.getSalebralbumList() == null) {
-            album.setSalebralbumList(new ArrayList<Salebralbum>());
+        if (album.getInvoicedetailList() == null) {
+            album.setInvoicedetailList(new ArrayList<Invoicedetail>());
         }
         if (album.getMusicTrackList() == null) {
             album.setMusicTrackList(new ArrayList<MusicTrack>());
         }
-
         try {
             utx.begin();
-            List<Salebralbum> attachedSalebralbumList = new ArrayList<Salebralbum>();
-            for (Salebralbum salebralbumListSalebralbumToAttach : album.getSalebralbumList()) {
-                salebralbumListSalebralbumToAttach = em.getReference(salebralbumListSalebralbumToAttach.getClass(), salebralbumListSalebralbumToAttach.getSalebralbumid());
-                attachedSalebralbumList.add(salebralbumListSalebralbumToAttach);
+            em.getTransaction().begin();
+            List<Invoicedetail> attachedInvoicedetailList = new ArrayList<Invoicedetail>();
+            for (Invoicedetail invoicedetailListInvoicedetailToAttach : album.getInvoicedetailList()) {
+                invoicedetailListInvoicedetailToAttach = em.getReference(invoicedetailListInvoicedetailToAttach.getClass(), invoicedetailListInvoicedetailToAttach.getInvoiceid());
+                attachedInvoicedetailList.add(invoicedetailListInvoicedetailToAttach);
             }
-            album.setSalebralbumList(attachedSalebralbumList);
+            album.setInvoicedetailList(attachedInvoicedetailList);
             List<MusicTrack> attachedMusicTrackList = new ArrayList<MusicTrack>();
             for (MusicTrack musicTrackListMusicTrackToAttach : album.getMusicTrackList()) {
                 musicTrackListMusicTrackToAttach = em.getReference(musicTrackListMusicTrackToAttach.getClass(), musicTrackListMusicTrackToAttach.getInventoryid());
@@ -66,13 +67,13 @@ public class AlbumJpaController implements Serializable {
             }
             album.setMusicTrackList(attachedMusicTrackList);
             em.persist(album);
-            for (Salebralbum salebralbumListSalebralbum : album.getSalebralbumList()) {
-                Album oldAlbumidOfSalebralbumListSalebralbum = salebralbumListSalebralbum.getAlbumid();
-                salebralbumListSalebralbum.setAlbumid(album);
-                salebralbumListSalebralbum = em.merge(salebralbumListSalebralbum);
-                if (oldAlbumidOfSalebralbumListSalebralbum != null) {
-                    oldAlbumidOfSalebralbumListSalebralbum.getSalebralbumList().remove(salebralbumListSalebralbum);
-                    oldAlbumidOfSalebralbumListSalebralbum = em.merge(oldAlbumidOfSalebralbumListSalebralbum);
+            for (Invoicedetail invoicedetailListInvoicedetail : album.getInvoicedetailList()) {
+                Album oldAlbumidOfInvoicedetailListInvoicedetail = invoicedetailListInvoicedetail.getAlbumid();
+                invoicedetailListInvoicedetail.setAlbumid(album);
+                invoicedetailListInvoicedetail = em.merge(invoicedetailListInvoicedetail);
+                if (oldAlbumidOfInvoicedetailListInvoicedetail != null) {
+                    oldAlbumidOfInvoicedetailListInvoicedetail.getInvoicedetailList().remove(invoicedetailListInvoicedetail);
+                    oldAlbumidOfInvoicedetailListInvoicedetail = em.merge(oldAlbumidOfInvoicedetailListInvoicedetail);
                 }
             }
             for (MusicTrack musicTrackListMusicTrack : album.getMusicTrackList()) {
@@ -98,20 +99,21 @@ public class AlbumJpaController implements Serializable {
     }
 
     public void edit(Album album) throws NonexistentEntityException, Exception {
+
         try {
             utx.begin();
             Album persistentAlbum = em.find(Album.class, album.getAlbumid());
-            List<Salebralbum> salebralbumListOld = persistentAlbum.getSalebralbumList();
-            List<Salebralbum> salebralbumListNew = album.getSalebralbumList();
+            List<Invoicedetail> invoicedetailListOld = persistentAlbum.getInvoicedetailList();
+            List<Invoicedetail> invoicedetailListNew = album.getInvoicedetailList();
             List<MusicTrack> musicTrackListOld = persistentAlbum.getMusicTrackList();
             List<MusicTrack> musicTrackListNew = album.getMusicTrackList();
-            List<Salebralbum> attachedSalebralbumListNew = new ArrayList<Salebralbum>();
-            for (Salebralbum salebralbumListNewSalebralbumToAttach : salebralbumListNew) {
-                salebralbumListNewSalebralbumToAttach = em.getReference(salebralbumListNewSalebralbumToAttach.getClass(), salebralbumListNewSalebralbumToAttach.getSalebralbumid());
-                attachedSalebralbumListNew.add(salebralbumListNewSalebralbumToAttach);
+            List<Invoicedetail> attachedInvoicedetailListNew = new ArrayList<Invoicedetail>();
+            for (Invoicedetail invoicedetailListNewInvoicedetailToAttach : invoicedetailListNew) {
+                invoicedetailListNewInvoicedetailToAttach = em.getReference(invoicedetailListNewInvoicedetailToAttach.getClass(), invoicedetailListNewInvoicedetailToAttach.getInvoiceid());
+                attachedInvoicedetailListNew.add(invoicedetailListNewInvoicedetailToAttach);
             }
-            salebralbumListNew = attachedSalebralbumListNew;
-            album.setSalebralbumList(salebralbumListNew);
+            invoicedetailListNew = attachedInvoicedetailListNew;
+            album.setInvoicedetailList(invoicedetailListNew);
             List<MusicTrack> attachedMusicTrackListNew = new ArrayList<MusicTrack>();
             for (MusicTrack musicTrackListNewMusicTrackToAttach : musicTrackListNew) {
                 musicTrackListNewMusicTrackToAttach = em.getReference(musicTrackListNewMusicTrackToAttach.getClass(), musicTrackListNewMusicTrackToAttach.getInventoryid());
@@ -120,20 +122,20 @@ public class AlbumJpaController implements Serializable {
             musicTrackListNew = attachedMusicTrackListNew;
             album.setMusicTrackList(musicTrackListNew);
             album = em.merge(album);
-            for (Salebralbum salebralbumListOldSalebralbum : salebralbumListOld) {
-                if (!salebralbumListNew.contains(salebralbumListOldSalebralbum)) {
-                    salebralbumListOldSalebralbum.setAlbumid(null);
-                    salebralbumListOldSalebralbum = em.merge(salebralbumListOldSalebralbum);
+            for (Invoicedetail invoicedetailListOldInvoicedetail : invoicedetailListOld) {
+                if (!invoicedetailListNew.contains(invoicedetailListOldInvoicedetail)) {
+                    invoicedetailListOldInvoicedetail.setAlbumid(null);
+                    invoicedetailListOldInvoicedetail = em.merge(invoicedetailListOldInvoicedetail);
                 }
             }
-            for (Salebralbum salebralbumListNewSalebralbum : salebralbumListNew) {
-                if (!salebralbumListOld.contains(salebralbumListNewSalebralbum)) {
-                    Album oldAlbumidOfSalebralbumListNewSalebralbum = salebralbumListNewSalebralbum.getAlbumid();
-                    salebralbumListNewSalebralbum.setAlbumid(album);
-                    salebralbumListNewSalebralbum = em.merge(salebralbumListNewSalebralbum);
-                    if (oldAlbumidOfSalebralbumListNewSalebralbum != null && !oldAlbumidOfSalebralbumListNewSalebralbum.equals(album)) {
-                        oldAlbumidOfSalebralbumListNewSalebralbum.getSalebralbumList().remove(salebralbumListNewSalebralbum);
-                        oldAlbumidOfSalebralbumListNewSalebralbum = em.merge(oldAlbumidOfSalebralbumListNewSalebralbum);
+            for (Invoicedetail invoicedetailListNewInvoicedetail : invoicedetailListNew) {
+                if (!invoicedetailListOld.contains(invoicedetailListNewInvoicedetail)) {
+                    Album oldAlbumidOfInvoicedetailListNewInvoicedetail = invoicedetailListNewInvoicedetail.getAlbumid();
+                    invoicedetailListNewInvoicedetail.setAlbumid(album);
+                    invoicedetailListNewInvoicedetail = em.merge(invoicedetailListNewInvoicedetail);
+                    if (oldAlbumidOfInvoicedetailListNewInvoicedetail != null && !oldAlbumidOfInvoicedetailListNewInvoicedetail.equals(album)) {
+                        oldAlbumidOfInvoicedetailListNewInvoicedetail.getInvoicedetailList().remove(invoicedetailListNewInvoicedetail);
+                        oldAlbumidOfInvoicedetailListNewInvoicedetail = em.merge(oldAlbumidOfInvoicedetailListNewInvoicedetail);
                     }
                 }
             }
@@ -172,7 +174,7 @@ public class AlbumJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws  NonexistentEntityException, RollbackFailureException, Exception{
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         try {
             utx.begin();
             Album album;
@@ -182,10 +184,10 @@ public class AlbumJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The album with id " + id + " no longer exists.", enfe);
             }
-            List<Salebralbum> salebralbumList = album.getSalebralbumList();
-            for (Salebralbum salebralbumListSalebralbum : salebralbumList) {
-                salebralbumListSalebralbum.setAlbumid(null);
-                salebralbumListSalebralbum = em.merge(salebralbumListSalebralbum);
+            List<Invoicedetail> invoicedetailList = album.getInvoicedetailList();
+            for (Invoicedetail invoicedetailListInvoicedetail : invoicedetailList) {
+                invoicedetailListInvoicedetail.setAlbumid(null);
+                invoicedetailListInvoicedetail = em.merge(invoicedetailListInvoicedetail);
             }
             List<MusicTrack> musicTrackList = album.getMusicTrackList();
             for (MusicTrack musicTrackListMusicTrack : musicTrackList) {
@@ -202,7 +204,6 @@ public class AlbumJpaController implements Serializable {
             }
             throw ex;
         }
-
     }
 
     public List<Album> findAlbumEntities() {
@@ -243,4 +244,3 @@ public class AlbumJpaController implements Serializable {
     }
 
 }
-

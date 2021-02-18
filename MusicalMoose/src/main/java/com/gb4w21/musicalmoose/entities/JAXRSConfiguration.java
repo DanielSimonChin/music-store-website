@@ -1,4 +1,4 @@
-package com.gb4w21.musicalmoose;
+package com.gb4w21.musicalmoose.entities;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

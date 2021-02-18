@@ -5,8 +5,8 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class ReviewJpaController implements Serializable {
 
-     private final static Logger LOG = LoggerFactory.getLogger(ReviewJpaController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(ReviewJpaController.class);
 
     @Resource
     private UserTransaction utx;
@@ -43,8 +43,9 @@ public class ReviewJpaController implements Serializable {
     private EntityManager em;
 
     public void create(Review review) throws RollbackFailureException {
-         try{
+        try {
             utx.begin();
+            em.getTransaction().begin();
             Client clientid = review.getClientid();
             if (clientid != null) {
                 clientid = em.getReference(clientid.getClass(), clientid.getClientid());
@@ -56,7 +57,7 @@ public class ReviewJpaController implements Serializable {
                 clientid = em.merge(clientid);
             }
             utx.commit();
-       } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             try {
                 utx.rollback();
                 LOG.error("Rollback");
@@ -69,9 +70,8 @@ public class ReviewJpaController implements Serializable {
     }
 
     public void edit(Review review) throws NonexistentEntityException, Exception {
-   
+
         try {
-      
             utx.begin();
             Review persistentReview = em.find(Review.class, review.getReviewid());
             Client clientidOld = persistentReview.getClientid();
@@ -90,7 +90,7 @@ public class ReviewJpaController implements Serializable {
                 clientidNew = em.merge(clientidNew);
             }
             utx.commit();
-       } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
+        } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
             } catch (IllegalStateException | SecurityException | SystemException re) {
@@ -107,8 +107,8 @@ public class ReviewJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws  NonexistentEntityException, RollbackFailureException, Exception {
-        try{
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+        try {
             utx.begin();
             Review review;
             try {
@@ -143,33 +143,32 @@ public class ReviewJpaController implements Serializable {
     }
 
     private List<Review> findReviewEntities(boolean all, int maxResults, int firstResult) {
-       
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Review.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Review.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
+
     }
 
     public Review findReview(Integer id) {
-       
-            return em.find(Review.class, id);
-      
+
+        return em.find(Review.class, id);
+
     }
 
     public int getReviewCount() {
-        
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Review> rt = cq.from(Review.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-       
-    }
-    
-}
 
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Review> rt = cq.from(Review.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
+    }
+
+}

@@ -5,9 +5,9 @@
  */
 package com.gb4w21.musicalmoose.entities;
 
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +18,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,24 +27,24 @@ import javax.persistence.TemporalType;
  * @author owner
  */
 @Entity
-@Table(name = "invoice", catalog = "MUSICSTORAGE", schema = "")
+@Table(name = "invoicedetail", catalog = "MUSICSTORAGE", schema = "")
 @NamedQueries({
-    @NamedQuery(name = "Invoice.findAll", query = "SELECT i FROM Invoice i"),
-    @NamedQuery(name = "Invoice.findBySaleid", query = "SELECT i FROM Invoice i WHERE i.saleid = :saleid"),
-    @NamedQuery(name = "Invoice.findBySaledate", query = "SELECT i FROM Invoice i WHERE i.saledate = :saledate"),
-    @NamedQuery(name = "Invoice.findByTotalnetvalue", query = "SELECT i FROM Invoice i WHERE i.totalnetvalue = :totalnetvalue"),
-    @NamedQuery(name = "Invoice.findByPst", query = "SELECT i FROM Invoice i WHERE i.pst = :pst"),
-    @NamedQuery(name = "Invoice.findByGst", query = "SELECT i FROM Invoice i WHERE i.gst = :gst"),
-    @NamedQuery(name = "Invoice.findByHst", query = "SELECT i FROM Invoice i WHERE i.hst = :hst"),
-    @NamedQuery(name = "Invoice.findByTotalgrossvalue", query = "SELECT i FROM Invoice i WHERE i.totalgrossvalue = :totalgrossvalue")})
-public class Invoice implements Serializable {
+    @NamedQuery(name = "Invoicedetail.findAll", query = "SELECT i FROM Invoicedetail i"),
+    @NamedQuery(name = "Invoicedetail.findByInvoiceid", query = "SELECT i FROM Invoicedetail i WHERE i.invoiceid = :invoiceid"),
+    @NamedQuery(name = "Invoicedetail.findBySaledate", query = "SELECT i FROM Invoicedetail i WHERE i.saledate = :saledate"),
+    @NamedQuery(name = "Invoicedetail.findByTotalnetvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalnetvalue = :totalnetvalue"),
+    @NamedQuery(name = "Invoicedetail.findByPst", query = "SELECT i FROM Invoicedetail i WHERE i.pst = :pst"),
+    @NamedQuery(name = "Invoicedetail.findByGst", query = "SELECT i FROM Invoicedetail i WHERE i.gst = :gst"),
+    @NamedQuery(name = "Invoicedetail.findByHst", query = "SELECT i FROM Invoicedetail i WHERE i.hst = :hst"),
+    @NamedQuery(name = "Invoicedetail.findByTotalgrossvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalgrossvalue = :totalgrossvalue")})
+public class Invoicedetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "SALEID")
-    private Integer saleid;
+    @Column(name = "INVOICEID")
+    private Integer invoiceid;
     @Column(name = "SALEDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date saledate;
@@ -60,27 +59,29 @@ public class Invoice implements Serializable {
     private Float hst;
     @Column(name = "TOTALGROSSVALUE")
     private Float totalgrossvalue;
-    @OneToMany(mappedBy = "saleid")
-    private List<Salebralbum> salebralbumList;
-    @JoinColumn(name = "CLIENTID", referencedColumnName = "CLIENTID")
+    @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
     @ManyToOne
-    private Client clientid;
-    @OneToMany(mappedBy = "saleid")
-    private List<Salebrtrack> salebrtrackList;
+    private Album albumid;
+    @JoinColumn(name = "INVENTORYID", referencedColumnName = "INVENTORYID")
+    @ManyToOne
+    private MusicTrack inventoryid;
+    @JoinColumn(name = "SALEID", referencedColumnName = "SALEID")
+    @ManyToOne
+    private Sale saleid;
 
-    public Invoice() {
+    public Invoicedetail() {
     }
 
-    public Invoice(Integer saleid) {
-        this.saleid = saleid;
+    public Invoicedetail(Integer invoiceid) {
+        this.invoiceid = invoiceid;
     }
 
-    public Integer getSaleid() {
-        return saleid;
+    public Integer getInvoiceid() {
+        return invoiceid;
     }
 
-    public void setSaleid(Integer saleid) {
-        this.saleid = saleid;
+    public void setInvoiceid(Integer invoiceid) {
+        this.invoiceid = invoiceid;
     }
 
     public Date getSaledate() {
@@ -131,45 +132,45 @@ public class Invoice implements Serializable {
         this.totalgrossvalue = totalgrossvalue;
     }
 
-    public List<Salebralbum> getSalebralbumList() {
-        return salebralbumList;
+    public Album getAlbumid() {
+        return albumid;
     }
 
-    public void setSalebralbumList(List<Salebralbum> salebralbumList) {
-        this.salebralbumList = salebralbumList;
+    public void setAlbumid(Album albumid) {
+        this.albumid = albumid;
     }
 
-    public Client getClientid() {
-        return clientid;
+    public MusicTrack getInventoryid() {
+        return inventoryid;
     }
 
-    public void setClientid(Client clientid) {
-        this.clientid = clientid;
+    public void setInventoryid(MusicTrack inventoryid) {
+        this.inventoryid = inventoryid;
     }
 
-    public List<Salebrtrack> getSalebrtrackList() {
-        return salebrtrackList;
+    public Sale getSaleid() {
+        return saleid;
     }
 
-    public void setSalebrtrackList(List<Salebrtrack> salebrtrackList) {
-        this.salebrtrackList = salebrtrackList;
+    public void setSaleid(Sale saleid) {
+        this.saleid = saleid;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (saleid != null ? saleid.hashCode() : 0);
+        hash += (invoiceid != null ? invoiceid.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Invoice)) {
+        if (!(object instanceof Invoicedetail)) {
             return false;
         }
-        Invoice other = (Invoice) object;
-        if ((this.saleid == null && other.saleid != null) || (this.saleid != null && !this.saleid.equals(other.saleid))) {
+        Invoicedetail other = (Invoicedetail) object;
+        if ((this.invoiceid == null && other.invoiceid != null) || (this.invoiceid != null && !this.invoiceid.equals(other.invoiceid))) {
             return false;
         }
         return true;
@@ -177,7 +178,7 @@ public class Invoice implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.Invoice[ saleid=" + saleid + " ]";
+        return "com.gb4w21.musicalmoose.Invoicedetail[ invoiceid=" + invoiceid + " ]";
     }
     
 }

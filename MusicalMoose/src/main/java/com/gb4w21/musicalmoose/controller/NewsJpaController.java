@@ -5,8 +5,8 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.News;
 import java.io.Serializable;
 import java.util.List;
@@ -42,11 +42,12 @@ public class NewsJpaController implements Serializable {
     private EntityManager em;
 
     public void create(News news) throws RollbackFailureException {
-         try{
+        try {
             utx.begin();
+            em.getTransaction().begin();
             em.persist(news);
             utx.commit();
-         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
+        } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             try {
                 utx.rollback();
                 LOG.error("Rollback");
@@ -59,9 +60,8 @@ public class NewsJpaController implements Serializable {
     }
 
     public void edit(News news) throws NonexistentEntityException, Exception {
-   
+
         try {
-           
             utx.begin();
             news = em.merge(news);
             utx.commit();
@@ -82,8 +82,8 @@ public class NewsJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws  NonexistentEntityException, RollbackFailureException, Exception {
-        try{
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+        try {
             utx.begin();
             News news;
             try {
@@ -94,7 +94,7 @@ public class NewsJpaController implements Serializable {
             }
             em.remove(news);
             utx.commit();
-            } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
+        } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
             } catch (IllegalStateException | SecurityException | SystemException re) {
@@ -102,7 +102,6 @@ public class NewsJpaController implements Serializable {
             }
             throw ex;
         }
-        
     }
 
     public List<News> findNewsEntities() {
@@ -114,32 +113,32 @@ public class NewsJpaController implements Serializable {
     }
 
     private List<News> findNewsEntities(boolean all, int maxResults, int firstResult) {
-        
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(News.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-       
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(News.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
+
     }
 
     public News findNews(Integer id) {
-        
-            return em.find(News.class, id);
-       
+
+        return em.find(News.class, id);
+
     }
 
     public int getNewsCount() {
-       
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<News> rt = cq.from(News.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-       
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<News> rt = cq.from(News.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
     }
-    
+
 }

@@ -130,7 +130,7 @@ public class Creditcardinfo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.Creditcardinfo[ creditcardid=" + creditcardid + " ]";
+        return "com.gb4w21.musicalmoose.Creditcardinfo[ creditcardid=" + creditcardid + " ]";
     }
     
 }

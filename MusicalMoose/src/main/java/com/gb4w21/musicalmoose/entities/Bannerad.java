@@ -6,19 +6,15 @@
 package com.gb4w21.musicalmoose.entities;
 
 import java.io.Serializable;
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 /**
@@ -29,34 +25,23 @@ import javax.validation.constraints.Size;
 @Table(name = "bannerad", catalog = "MUSICSTORAGE", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Bannerad.findAll", query = "SELECT b FROM Bannerad b"),
-    @NamedQuery(name = "Bannerad.findBySponcer", query = "SELECT b FROM Bannerad b WHERE b.sponcer = :sponcer"),
-    @NamedQuery(name = "Bannerad.findByAddrevenue", query = "SELECT b FROM Bannerad b WHERE b.addrevenue = :addrevenue"),
-    @NamedQuery(name = "Bannerad.findByAdimagename", query = "SELECT b FROM Bannerad b WHERE b.adimagename = :adimagename"),
+    @NamedQuery(name = "Bannerad.findByUrl", query = "SELECT b FROM Bannerad b WHERE b.url = :url"),
     @NamedQuery(name = "Bannerad.findByBanneraddid", query = "SELECT b FROM Bannerad b WHERE b.banneraddid = :banneraddid"),
-    @NamedQuery(name = "Bannerad.findByBannertitle", query = "SELECT b FROM Bannerad b WHERE b.bannertitle = :bannertitle")})
+    @NamedQuery(name = "Bannerad.findByFilename", query = "SELECT b FROM Bannerad b WHERE b.filename = :filename")})
 public class Bannerad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Size(max = 255)
-    @Column(name = "SPONCER")
-    private String sponcer;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "ADDREVENUE")
-    private Float addrevenue;
-    @Column(name = "ADIMAGENAME")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date adimagename;
-    @Lob
-    @Column(name = "IMAGE")
-    private byte[] image;
+    @Column(name = "URL")
+    private String url;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "BANNERADDID")
     private Integer banneraddid;
     @Size(max = 255)
-    @Column(name = "BANNERTITLE")
-    private String bannertitle;
+    @Column(name = "FILENAME")
+    private String filename;
 
     public Bannerad() {
     }
@@ -65,36 +50,12 @@ public class Bannerad implements Serializable {
         this.banneraddid = banneraddid;
     }
 
-    public String getSponcer() {
-        return sponcer;
+    public String getUrl() {
+        return url;
     }
 
-    public void setSponcer(String sponcer) {
-        this.sponcer = sponcer;
-    }
-
-    public Float getAddrevenue() {
-        return addrevenue;
-    }
-
-    public void setAddrevenue(Float addrevenue) {
-        this.addrevenue = addrevenue;
-    }
-
-    public Date getAdimagename() {
-        return adimagename;
-    }
-
-    public void setAdimagename(Date adimagename) {
-        this.adimagename = adimagename;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Integer getBanneraddid() {
@@ -105,12 +66,12 @@ public class Bannerad implements Serializable {
         this.banneraddid = banneraddid;
     }
 
-    public String getBannertitle() {
-        return bannertitle;
+    public String getFilename() {
+        return filename;
     }
 
-    public void setBannertitle(String bannertitle) {
-        this.bannertitle = bannertitle;
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     @Override
@@ -135,7 +96,7 @@ public class Bannerad implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.entities.Bannerad[ banneraddid=" + banneraddid + " ]";
+        return "com.gb4w21.musicalmoose.Bannerad[ banneraddid=" + banneraddid + " ]";
     }
     
 }
