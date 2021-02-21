@@ -23,6 +23,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -203,13 +204,33 @@ public class MusicTrackJpaController implements Serializable {
             q.setFirstResult(firstResult);
         }
         return q.getResultList();
+    }
 
+    /**
+     * Returns a list of the three most recently added MusicTrack objects
+     *
+     * @return List of MusicTrack objects
+     */
+    public List<MusicTrack> findMostRecentTracks() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery cq = cb.createQuery();
+        Root e = cq.from(MusicTrack.class);
+        cq.orderBy(cb.asc(e.get("dateentered")));
+        Query q = em.createQuery(cq);
+
+        List<MusicTrack> originalList = q.getResultList();
+
+        List<MusicTrack> threeRecentTracks = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            threeRecentTracks.add(originalList.get(i));
+        }
+
+        return threeRecentTracks;
     }
 
     public MusicTrack findMusicTrack(Integer id) {
-
         return em.find(MusicTrack.class, id);
-
     }
 
     public int getMusicTrackCount() {

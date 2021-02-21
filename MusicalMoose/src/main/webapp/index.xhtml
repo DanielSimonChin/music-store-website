@@ -27,10 +27,15 @@
                     <a href="#home">Home</a>
                     <a href="#genres">Genres</a>
                     <a href="#recent">Recently Added</a>
-                    <a><i class="fas fa-search sub-nav-logo" /> <input type="text" placeholder="Search ..." /> <input type="submit" value="Search" /></a>
+                    <a><i class="fas fa-search sub-nav-logo" /> <input type="text" placeholder="Search ..." /> <select name="criteria" id="criteria">
+                            <option value="track">Track name</option>
+                            <option value="album">Album title</option>
+                            <option value="date">Date</option>
+                            <option value="artist">Artist</option>
+                        </select> <input type="submit" value="Search" /></a>
                 </nav>
                 <nav class="sub-nav">
-                    <a href="#">Account</a>
+                    <a href="#">Log in / Create an account</a>
                 </nav>
             </header>
             <!-- END OF HEADER -->
@@ -91,9 +96,12 @@
                 <h1 id="recent">Recently Added</h1>
 
                 <div class="box">
-                    <a href=""><img src="HipHop_Album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
+                    <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
+                        <a href="trackpage.xhtml"><img src="#{tracks.albumimagefilename}" alt="" />#{tracks.tracktitle}</a>
+                    </ui:repeat>
+<!--                    <a href=""><img src="HipHop_Album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
                     <a href=""><img src="HipHop_Album_covers/damn_big.jpg" alt="" />BLOOD.</a>
-                    <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Survival</a>
+                    <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Survival</a>-->
                 </div>
                 <img class="ad2" src="ads/ad_2.png" alt="" />
                 <!-- END OF MAIN CONTAINER -->
