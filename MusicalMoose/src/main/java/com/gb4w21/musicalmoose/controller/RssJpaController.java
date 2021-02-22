@@ -44,7 +44,7 @@ public class RssJpaController implements Serializable {
     public void create(Rss rss) throws RollbackFailureException {
         try {
             utx.begin();
-            em.getTransaction().begin();
+
             em.persist(rss);
 
             utx.commit();

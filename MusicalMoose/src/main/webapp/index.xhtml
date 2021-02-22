@@ -96,9 +96,12 @@
                 <h1 id="recent">Recently Added</h1>
 
                 <div class="box">
-                    <a href=""><img src="HipHop_Album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
+                    <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
+                        <a href="trackpage.xhtml"><img src="#{tracks.albumimagefilename}" alt="" />#{tracks.tracktitle}</a>
+                    </ui:repeat>
+<!--                    <a href=""><img src="HipHop_Album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
                     <a href=""><img src="HipHop_Album_covers/damn_big.jpg" alt="" />BLOOD.</a>
-                    <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Survival</a>
+                    <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Survival</a>-->
                 </div>
                 <img class="ad2" src="ads/ad_2.png" alt="" />
                 <!-- END OF MAIN CONTAINER -->

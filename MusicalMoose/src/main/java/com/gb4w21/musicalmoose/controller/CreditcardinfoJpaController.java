@@ -45,7 +45,7 @@ public class CreditcardinfoJpaController implements Serializable {
     public void create(Creditcardinfo creditcardinfo) throws RollbackFailureException {
         try {
             utx.begin();
-            em.getTransaction().begin();
+            
             Client clientid = creditcardinfo.getClientid();
             if (clientid != null) {
                 clientid = em.getReference(clientid.getClass(), clientid.getClientid());

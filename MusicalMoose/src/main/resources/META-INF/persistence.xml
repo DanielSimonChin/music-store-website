@@ -6,15 +6,15 @@
     <jta-data-source>java:app/jdbc/myMusic</jta-data-source>
     <class>com.gb4w21.musicalmoose.entities.Creditcardinfo</class>
     <class>com.gb4w21.musicalmoose.entities.Survey</class>
-    <class>com.gb4w21.musicalmoose.entities.MusicTrack</class>
     <class>com.gb4w21.musicalmoose.entities.Client</class>
     <class>com.gb4w21.musicalmoose.entities.Invoicedetail</class>
     <class>com.gb4w21.musicalmoose.entities.News</class>
     <class>com.gb4w21.musicalmoose.entities.Bannerad</class>
     <class>com.gb4w21.musicalmoose.entities.Review</class>
     <class>com.gb4w21.musicalmoose.entities.Rss</class>
-    <class>com.gb4w21.musicalmoose.entities.Album</class>
     <class>com.gb4w21.musicalmoose.entities.Sale</class>
+    <class>com.gb4w21.musicalmoose.entities.MusicTrack</class>
+    <class>com.gb4w21.musicalmoose.entities.Album</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
       <property name="eclipselink.logging.level.sql" value="FINE"/>

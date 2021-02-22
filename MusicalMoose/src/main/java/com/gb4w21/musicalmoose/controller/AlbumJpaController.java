@@ -5,18 +5,17 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
+import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Album;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.gb4w21.musicalmoose.entities.Invoicedetail;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
 import java.util.List;
-import com.gb4w21.musicalmoose.entities.MusicTrack;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -45,21 +44,13 @@ public class AlbumJpaController implements Serializable {
     private EntityManager em;
 
     public void create(Album album) throws RollbackFailureException {
-        if (album.getInvoicedetailList() == null) {
-            album.setInvoicedetailList(new ArrayList<Invoicedetail>());
-        }
         if (album.getMusicTrackList() == null) {
             album.setMusicTrackList(new ArrayList<MusicTrack>());
         }
-        try {
+         try {
             utx.begin();
+         
             em.getTransaction().begin();
-            List<Invoicedetail> attachedInvoicedetailList = new ArrayList<Invoicedetail>();
-            for (Invoicedetail invoicedetailListInvoicedetailToAttach : album.getInvoicedetailList()) {
-                invoicedetailListInvoicedetailToAttach = em.getReference(invoicedetailListInvoicedetailToAttach.getClass(), invoicedetailListInvoicedetailToAttach.getInvoiceid());
-                attachedInvoicedetailList.add(invoicedetailListInvoicedetailToAttach);
-            }
-            album.setInvoicedetailList(attachedInvoicedetailList);
             List<MusicTrack> attachedMusicTrackList = new ArrayList<MusicTrack>();
             for (MusicTrack musicTrackListMusicTrackToAttach : album.getMusicTrackList()) {
                 musicTrackListMusicTrackToAttach = em.getReference(musicTrackListMusicTrackToAttach.getClass(), musicTrackListMusicTrackToAttach.getInventoryid());
@@ -67,15 +58,6 @@ public class AlbumJpaController implements Serializable {
             }
             album.setMusicTrackList(attachedMusicTrackList);
             em.persist(album);
-            for (Invoicedetail invoicedetailListInvoicedetail : album.getInvoicedetailList()) {
-                Album oldAlbumidOfInvoicedetailListInvoicedetail = invoicedetailListInvoicedetail.getAlbumid();
-                invoicedetailListInvoicedetail.setAlbumid(album);
-                invoicedetailListInvoicedetail = em.merge(invoicedetailListInvoicedetail);
-                if (oldAlbumidOfInvoicedetailListInvoicedetail != null) {
-                    oldAlbumidOfInvoicedetailListInvoicedetail.getInvoicedetailList().remove(invoicedetailListInvoicedetail);
-                    oldAlbumidOfInvoicedetailListInvoicedetail = em.merge(oldAlbumidOfInvoicedetailListInvoicedetail);
-                }
-            }
             for (MusicTrack musicTrackListMusicTrack : album.getMusicTrackList()) {
                 Album oldAlbumidOfMusicTrackListMusicTrack = musicTrackListMusicTrack.getAlbumid();
                 musicTrackListMusicTrack.setAlbumid(album);
@@ -99,21 +81,12 @@ public class AlbumJpaController implements Serializable {
     }
 
     public void edit(Album album) throws NonexistentEntityException, Exception {
+          try {
 
-        try {
             utx.begin();
             Album persistentAlbum = em.find(Album.class, album.getAlbumid());
-            List<Invoicedetail> invoicedetailListOld = persistentAlbum.getInvoicedetailList();
-            List<Invoicedetail> invoicedetailListNew = album.getInvoicedetailList();
             List<MusicTrack> musicTrackListOld = persistentAlbum.getMusicTrackList();
             List<MusicTrack> musicTrackListNew = album.getMusicTrackList();
-            List<Invoicedetail> attachedInvoicedetailListNew = new ArrayList<Invoicedetail>();
-            for (Invoicedetail invoicedetailListNewInvoicedetailToAttach : invoicedetailListNew) {
-                invoicedetailListNewInvoicedetailToAttach = em.getReference(invoicedetailListNewInvoicedetailToAttach.getClass(), invoicedetailListNewInvoicedetailToAttach.getInvoiceid());
-                attachedInvoicedetailListNew.add(invoicedetailListNewInvoicedetailToAttach);
-            }
-            invoicedetailListNew = attachedInvoicedetailListNew;
-            album.setInvoicedetailList(invoicedetailListNew);
             List<MusicTrack> attachedMusicTrackListNew = new ArrayList<MusicTrack>();
             for (MusicTrack musicTrackListNewMusicTrackToAttach : musicTrackListNew) {
                 musicTrackListNewMusicTrackToAttach = em.getReference(musicTrackListNewMusicTrackToAttach.getClass(), musicTrackListNewMusicTrackToAttach.getInventoryid());
@@ -122,23 +95,6 @@ public class AlbumJpaController implements Serializable {
             musicTrackListNew = attachedMusicTrackListNew;
             album.setMusicTrackList(musicTrackListNew);
             album = em.merge(album);
-            for (Invoicedetail invoicedetailListOldInvoicedetail : invoicedetailListOld) {
-                if (!invoicedetailListNew.contains(invoicedetailListOldInvoicedetail)) {
-                    invoicedetailListOldInvoicedetail.setAlbumid(null);
-                    invoicedetailListOldInvoicedetail = em.merge(invoicedetailListOldInvoicedetail);
-                }
-            }
-            for (Invoicedetail invoicedetailListNewInvoicedetail : invoicedetailListNew) {
-                if (!invoicedetailListOld.contains(invoicedetailListNewInvoicedetail)) {
-                    Album oldAlbumidOfInvoicedetailListNewInvoicedetail = invoicedetailListNewInvoicedetail.getAlbumid();
-                    invoicedetailListNewInvoicedetail.setAlbumid(album);
-                    invoicedetailListNewInvoicedetail = em.merge(invoicedetailListNewInvoicedetail);
-                    if (oldAlbumidOfInvoicedetailListNewInvoicedetail != null && !oldAlbumidOfInvoicedetailListNewInvoicedetail.equals(album)) {
-                        oldAlbumidOfInvoicedetailListNewInvoicedetail.getInvoicedetailList().remove(invoicedetailListNewInvoicedetail);
-                        oldAlbumidOfInvoicedetailListNewInvoicedetail = em.merge(oldAlbumidOfInvoicedetailListNewInvoicedetail);
-                    }
-                }
-            }
             for (MusicTrack musicTrackListOldMusicTrack : musicTrackListOld) {
                 if (!musicTrackListNew.contains(musicTrackListOldMusicTrack)) {
                     musicTrackListOldMusicTrack.setAlbumid(null);
@@ -156,7 +112,7 @@ public class AlbumJpaController implements Serializable {
                     }
                 }
             }
-            utx.commit();
+             utx.commit();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -175,7 +131,7 @@ public class AlbumJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-        try {
+          try {
             utx.begin();
             Album album;
             try {
@@ -184,18 +140,13 @@ public class AlbumJpaController implements Serializable {
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The album with id " + id + " no longer exists.", enfe);
             }
-            List<Invoicedetail> invoicedetailList = album.getInvoicedetailList();
-            for (Invoicedetail invoicedetailListInvoicedetail : invoicedetailList) {
-                invoicedetailListInvoicedetail.setAlbumid(null);
-                invoicedetailListInvoicedetail = em.merge(invoicedetailListInvoicedetail);
-            }
             List<MusicTrack> musicTrackList = album.getMusicTrackList();
             for (MusicTrack musicTrackListMusicTrack : musicTrackList) {
                 musicTrackListMusicTrack.setAlbumid(null);
                 musicTrackListMusicTrack = em.merge(musicTrackListMusicTrack);
             }
             em.remove(album);
-            utx.commit();
+          utx.commit();
         } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -215,32 +166,32 @@ public class AlbumJpaController implements Serializable {
     }
 
     private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
-
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Album.class));
-        Query q = em.createQuery(cq);
-        if (!all) {
-            q.setMaxResults(maxResults);
-            q.setFirstResult(firstResult);
-        }
-        return q.getResultList();
-
+       
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Album.class));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+       
     }
 
     public Album findAlbum(Integer id) {
-
-        return em.find(Album.class, id);
-
+        
+            return em.find(Album.class, id);
+       
     }
 
     public int getAlbumCount() {
-
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        Root<Album> rt = cq.from(Album.class);
-        cq.select(em.getCriteriaBuilder().count(rt));
-        Query q = em.createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-
+       
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Album> rt = cq.from(Album.class);
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createQuery(cq);
+            return ((Long) q.getSingleResult()).intValue();
+       
     }
-
+    
 }

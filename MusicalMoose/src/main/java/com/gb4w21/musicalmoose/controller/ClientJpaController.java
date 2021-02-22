@@ -57,7 +57,7 @@ public class ClientJpaController implements Serializable {
         }
         try {
             utx.begin();
-            em.getTransaction().begin();
+          
             List<Creditcardinfo> attachedCreditcardinfoList = new ArrayList<Creditcardinfo>();
             for (Creditcardinfo creditcardinfoListCreditcardinfoToAttach : client.getCreditcardinfoList()) {
                 creditcardinfoListCreditcardinfoToAttach = em.getReference(creditcardinfoListCreditcardinfoToAttach.getClass(), creditcardinfoListCreditcardinfoToAttach.getCreditcardid());

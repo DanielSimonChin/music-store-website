@@ -45,7 +45,7 @@ public class ReviewJpaController implements Serializable {
     public void create(Review review) throws RollbackFailureException {
         try {
             utx.begin();
-            em.getTransaction().begin();
+
             Client clientid = review.getClientid();
             if (clientid != null) {
                 clientid = em.getReference(clientid.getClass(), clientid.getClientid());

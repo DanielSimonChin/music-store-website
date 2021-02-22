@@ -44,7 +44,7 @@ public class BanneradJpaController implements Serializable {
     public void create(Bannerad bannerad) throws RollbackFailureException {
         try {
             utx.begin();
-            em.getTransaction().begin();
+        
             em.persist(bannerad);
 
             utx.commit();

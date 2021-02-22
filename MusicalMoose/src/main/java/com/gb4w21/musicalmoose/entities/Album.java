@@ -5,8 +5,6 @@
  */
 package com.gb4w21.musicalmoose.entities;
 
-import com.gb4w21.musicalmoose.entities.Invoicedetail;
-import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +38,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Album.findByRecordlabel", query = "SELECT a FROM Album a WHERE a.recordlabel = :recordlabel"),
     @NamedQuery(name = "Album.findByNumberoftracks", query = "SELECT a FROM Album a WHERE a.numberoftracks = :numberoftracks"),
     @NamedQuery(name = "Album.findByDateentered", query = "SELECT a FROM Album a WHERE a.dateentered = :dateentered"),
-    @NamedQuery(name = "Album.findByAlbumimagefilename", query = "SELECT a FROM Album a WHERE a.albumimagefilename = :albumimagefilename"),
+    @NamedQuery(name = "Album.findByAlbumimagefilenamebig", query = "SELECT a FROM Album a WHERE a.albumimagefilenamebig = :albumimagefilenamebig"),
+    @NamedQuery(name = "Album.findByAlbumimagefilenamesmall", query = "SELECT a FROM Album a WHERE a.albumimagefilenamesmall = :albumimagefilenamesmall"),
     @NamedQuery(name = "Album.findByCostprice", query = "SELECT a FROM Album a WHERE a.costprice = :costprice"),
     @NamedQuery(name = "Album.findByListprice", query = "SELECT a FROM Album a WHERE a.listprice = :listprice"),
     @NamedQuery(name = "Album.findBySaleprice", query = "SELECT a FROM Album a WHERE a.saleprice = :saleprice"),
@@ -75,11 +74,17 @@ public class Album implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date dateentered;
     @Size(max = 255)
-    @Column(name = "ALBUMIMAGEFILENAME")
-    private String albumimagefilename;
+    @Column(name = "ALBUMIMAGEFILENAMEBIG")
+    private String albumimagefilenamebig;
+    @Size(max = 255)
+    @Column(name = "ALBUMIMAGEFILENAMESMALL")
+    private String albumimagefilenamesmall;
     @Lob
-    @Column(name = "IMAGECONTENT")
-    private byte[] imagecontent;
+    @Column(name = "IMAGECONTENTBIG")
+    private byte[] imagecontentbig;
+    @Lob
+    @Column(name = "IMAGECONTENTSMALL")
+    private byte[] imagecontentsmall;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "COSTPRICE")
     private Float costprice;
@@ -98,8 +103,6 @@ public class Album implements Serializable {
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
-    @OneToMany(mappedBy = "albumid")
-    private List<Invoicedetail> invoicedetailList;
     @OneToMany(mappedBy = "albumid")
     private List<MusicTrack> musicTrackList;
 
@@ -166,20 +169,36 @@ public class Album implements Serializable {
         this.dateentered = dateentered;
     }
 
-    public String getAlbumimagefilename() {
-        return albumimagefilename;
+    public String getAlbumimagefilenamebig() {
+        return albumimagefilenamebig;
     }
 
-    public void setAlbumimagefilename(String albumimagefilename) {
-        this.albumimagefilename = albumimagefilename;
+    public void setAlbumimagefilenamebig(String albumimagefilenamebig) {
+        this.albumimagefilenamebig = albumimagefilenamebig;
     }
 
-    public byte[] getImagecontent() {
-        return imagecontent;
+    public String getAlbumimagefilenamesmall() {
+        return albumimagefilenamesmall;
     }
 
-    public void setImagecontent(byte[] imagecontent) {
-        this.imagecontent = imagecontent;
+    public void setAlbumimagefilenamesmall(String albumimagefilenamesmall) {
+        this.albumimagefilenamesmall = albumimagefilenamesmall;
+    }
+
+    public byte[] getImagecontentbig() {
+        return imagecontentbig;
+    }
+
+    public void setImagecontentbig(byte[] imagecontentbig) {
+        this.imagecontentbig = imagecontentbig;
+    }
+
+    public byte[] getImagecontentsmall() {
+        return imagecontentsmall;
+    }
+
+    public void setImagecontentsmall(byte[] imagecontentsmall) {
+        this.imagecontentsmall = imagecontentsmall;
     }
 
     public Float getCostprice() {
@@ -246,14 +265,6 @@ public class Album implements Serializable {
         this.removaldate = removaldate;
     }
 
-    public List<Invoicedetail> getInvoicedetailList() {
-        return invoicedetailList;
-    }
-
-    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
-        this.invoicedetailList = invoicedetailList;
-    }
-
     public List<MusicTrack> getMusicTrackList() {
         return musicTrackList;
     }
@@ -284,7 +295,7 @@ public class Album implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.Album[ albumid=" + albumid + " ]";
+        return "com.gb4w21.musicalmoose.entities.Album[ albumid=" + albumid + " ]";
     }
     
 }

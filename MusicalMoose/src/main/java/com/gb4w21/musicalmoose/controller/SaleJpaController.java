@@ -50,7 +50,7 @@ public class SaleJpaController implements Serializable {
         }
         try {
             utx.begin();
-            em.getTransaction().begin();
+
             Client clientid = sale.getClientid();
             if (clientid != null) {
                 clientid = em.getReference(clientid.getClass(), clientid.getClientid());
