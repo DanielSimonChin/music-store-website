@@ -47,12 +47,12 @@
                     <h1 id="home">Music specials of the day</h1>
 
                     <div class="box">
-                        <a href=""><img src="HipHop_Album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
-                        <a href=""><img src="HipHop_Album_covers/damn_big.jpg" alt="" />BLOOD.</a>
-                        <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Survival</a>
-                        <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Nonstop</a>
-                        <a href=""><img src="HipHop_Album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
-                        <a href=""><img src="HipHop_Album_covers/my_turn_big.jpg" alt="" />How</a>
+                        <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
+                        <a href=""><img src="album_covers/damn_big.jpg" alt="" />BLOOD.</a>
+                        <a href=""><img src="album_covers/scorpion_big.png" alt="" />Survival</a>
+                        <a href=""><img src="album_covers/scorpion_big.png" alt="" />Nonstop</a>
+                        <a href=""><img src="album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
+                        <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />How</a>
                     </div>
                 </div>
 
@@ -97,11 +97,8 @@
 
                 <div class="box">
                     <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
-                        <a href="trackpage.xhtml"><img src="#{tracks.albumimagefilename}" alt="" />#{tracks.tracktitle}</a>
+                        <a href="trackpage.xhtml"><img src="album_covers/#{tracks.albumimagefilenamebig}" alt="" />#{tracks.tracktitle}</a>
                     </ui:repeat>
-<!--                    <a href=""><img src="HipHop_Album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
-                    <a href=""><img src="HipHop_Album_covers/damn_big.jpg" alt="" />BLOOD.</a>
-                    <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Survival</a>-->
                 </div>
                 <img class="ad2" src="ads/ad_2.png" alt="" />
                 <!-- END OF MAIN CONTAINER -->
@@ -112,5 +109,4 @@
                     <p>© 2021 Musical Moose</p>
                 </footer>
             </section></div></body>
-
 </html>
