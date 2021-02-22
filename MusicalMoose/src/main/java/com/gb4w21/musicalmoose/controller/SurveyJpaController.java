@@ -46,7 +46,6 @@ public class SurveyJpaController implements Serializable {
         try {
             utx.begin();
 
-            em.getTransaction().begin();
             em.persist(survey);
 
             utx.commit();

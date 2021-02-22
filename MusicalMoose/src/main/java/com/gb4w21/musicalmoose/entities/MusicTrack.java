@@ -7,7 +7,6 @@ package com.gb4w21.musicalmoose.entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -40,7 +38,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "MusicTrack.findByPlaylength", query = "SELECT m FROM MusicTrack m WHERE m.playlength = :playlength"),
     @NamedQuery(name = "MusicTrack.findBySelectionnumber", query = "SELECT m FROM MusicTrack m WHERE m.selectionnumber = :selectionnumber"),
     @NamedQuery(name = "MusicTrack.findByMusiccategory", query = "SELECT m FROM MusicTrack m WHERE m.musiccategory = :musiccategory"),
-    @NamedQuery(name = "MusicTrack.findByAlbumimagefilename", query = "SELECT m FROM MusicTrack m WHERE m.albumimagefilename = :albumimagefilename"),
+    @NamedQuery(name = "MusicTrack.findByAlbumimagefilenamebig", query = "SELECT m FROM MusicTrack m WHERE m.albumimagefilenamebig = :albumimagefilenamebig"),
+    @NamedQuery(name = "MusicTrack.findByAlbumimagefilenamesmall", query = "SELECT m FROM MusicTrack m WHERE m.albumimagefilenamesmall = :albumimagefilenamesmall"),
     @NamedQuery(name = "MusicTrack.findByCostprice", query = "SELECT m FROM MusicTrack m WHERE m.costprice = :costprice"),
     @NamedQuery(name = "MusicTrack.findByListprice", query = "SELECT m FROM MusicTrack m WHERE m.listprice = :listprice"),
     @NamedQuery(name = "MusicTrack.findBySaleprice", query = "SELECT m FROM MusicTrack m WHERE m.saleprice = :saleprice"),
@@ -77,11 +76,17 @@ public class MusicTrack implements Serializable {
     @Column(name = "MUSICCATEGORY")
     private String musiccategory;
     @Size(max = 255)
-    @Column(name = "ALBUMIMAGEFILENAME")
-    private String albumimagefilename;
+    @Column(name = "ALBUMIMAGEFILENAMEBIG")
+    private String albumimagefilenamebig;
+    @Size(max = 255)
+    @Column(name = "ALBUMIMAGEFILENAMESMALL")
+    private String albumimagefilenamesmall;
     @Lob
-    @Column(name = "IMAGECONTENT")
-    private byte[] imagecontent;
+    @Column(name = "IMAGECONTENTBIG")
+    private byte[] imagecontentbig;
+    @Lob
+    @Column(name = "IMAGECONTENTSMALL")
+    private byte[] imagecontentsmall;
     @Column(name = "COSTPRICE")
     private Float costprice;
     @Column(name = "LISTPRICE")
@@ -104,8 +109,6 @@ public class MusicTrack implements Serializable {
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
-    @OneToMany(mappedBy = "inventoryid")
-    private List<Invoicedetail> invoicedetailList;
     @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
     @ManyToOne
     private Album albumid;
@@ -173,20 +176,36 @@ public class MusicTrack implements Serializable {
         this.musiccategory = musiccategory;
     }
 
-    public String getAlbumimagefilename() {
-        return albumimagefilename;
+    public String getAlbumimagefilenamebig() {
+        return albumimagefilenamebig;
     }
 
-    public void setAlbumimagefilename(String albumimagefilename) {
-        this.albumimagefilename = albumimagefilename;
+    public void setAlbumimagefilenamebig(String albumimagefilenamebig) {
+        this.albumimagefilenamebig = albumimagefilenamebig;
     }
 
-    public byte[] getImagecontent() {
-        return imagecontent;
+    public String getAlbumimagefilenamesmall() {
+        return albumimagefilenamesmall;
     }
 
-    public void setImagecontent(byte[] imagecontent) {
-        this.imagecontent = imagecontent;
+    public void setAlbumimagefilenamesmall(String albumimagefilenamesmall) {
+        this.albumimagefilenamesmall = albumimagefilenamesmall;
+    }
+
+    public byte[] getImagecontentbig() {
+        return imagecontentbig;
+    }
+
+    public void setImagecontentbig(byte[] imagecontentbig) {
+        this.imagecontentbig = imagecontentbig;
+    }
+
+    public byte[] getImagecontentsmall() {
+        return imagecontentsmall;
+    }
+
+    public void setImagecontentsmall(byte[] imagecontentsmall) {
+        this.imagecontentsmall = imagecontentsmall;
     }
 
     public Float getCostprice() {
@@ -269,14 +288,6 @@ public class MusicTrack implements Serializable {
         this.removaldate = removaldate;
     }
 
-    public List<Invoicedetail> getInvoicedetailList() {
-        return invoicedetailList;
-    }
-
-    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
-        this.invoicedetailList = invoicedetailList;
-    }
-
     public Album getAlbumid() {
         return albumid;
     }
@@ -307,7 +318,7 @@ public class MusicTrack implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.MusicTrack[ inventoryid=" + inventoryid + " ]";
+        return "com.gb4w21.musicalmoose.entities.MusicTrack[ inventoryid=" + inventoryid + " ]";
     }
     
 }

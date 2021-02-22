@@ -44,7 +44,7 @@ public class NewsJpaController implements Serializable {
     public void create(News news) throws RollbackFailureException {
         try {
             utx.begin();
-            em.getTransaction().begin();
+
             em.persist(news);
             utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
