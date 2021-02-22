@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
@@ -21,6 +22,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -160,6 +162,30 @@ public class MusicTrackJpaController implements Serializable {
             return em.find(MusicTrack.class, id);
         
     }
+    
+     /**
+     * Returns a list of the three most recently added MusicTrack objects
+     *
+     * @return List of MusicTrack objects
+     */
+    public List<MusicTrack> findMostRecentTracks() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery cq = cb.createQuery();
+        Root e = cq.from(MusicTrack.class);
+        cq.orderBy(cb.asc(e.get("dateentered")));
+        Query q = em.createQuery(cq);
+
+        List<MusicTrack> originalList = q.getResultList();
+
+        List<MusicTrack> threeRecentTracks = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            threeRecentTracks.add(originalList.get(i));
+        }
+
+        return threeRecentTracks;
+    }
+
 
     public int getMusicTrackCount() {
         
