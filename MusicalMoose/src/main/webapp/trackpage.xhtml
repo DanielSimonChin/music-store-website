@@ -40,26 +40,21 @@
 
                 <div class="location" id="home">
 
-                    <h1 id="track">TRACK NAME</h1>
+                    <h1 id="track">#{tracks.tracktitle}</h1>
 
                     <div class="box">
-                        <img id="mainTrack" src="HipHop_Album_covers/my_turn_big.jpg" alt="" />
+                        <img id="mainTrack" src="album_covers/#{tracks.albumimagefilenamebig}" alt="" />
                         <table id="sameAlbum">
                             <tr>
                                 <th>Same album tracks</th>
                             </tr>
-                            <tr>
-                                <td><a href="">Same album track 1</a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="">Same album track 2</a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="">Same album track 3</a></td>
-                            </tr>
-                            <tr>
-                                <td><a href="">Same album track 4</a></td>
-                            </tr>
+
+                            <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(tracks)}" var="relatedTracks">
+                                <tr>
+                                    <th>#{relatedTracks.tracktitle}</th>
+                                </tr>
+                            </ui:repeat>
+
                             <div id="shopCart">
                                 <button>
                                     <img src="icons/shopping-cart.png"/>
@@ -73,22 +68,22 @@
                                 <th>Album Info</th>
                             </tr>
                             <tr>
-                                <td>Inventory Number</td>
+                                <!--                                <td>Inventory Number</td>-->
                             </tr>
                             <tr>
-                                <td>Album Number</td>
+                                <td>Album No. : #{tracks.albumid}</td>
                             </tr>
                             <tr>
-                                <td>Track Title</td>
+                                <td>Track title : #{tracks.tracktitle}</td>
                             </tr>
                             <tr>
-                                <td>Artist</td>
+                                <td>Artist : #{tracks.artist}</td>
                             </tr>
                             <tr>
-                                <td>Songwriter</td>
+                                <td>Songwriter : #{tracks.songwriter}</td>
                             </tr>
                             <tr>
-                                <td>Play Length</td>
+                                <td>Play length : #{tracks.playlength}</td>
                             </tr>
                         </table>
 
@@ -100,13 +95,13 @@
                                 &nbsp;
                             </tr>
                             <tr>
-                                <td>Music Category</td>
+                                <td>Category: #{tracks.musiccategory}</td>
                             </tr>
                             <tr>
-                                <td>Price</td>
+                                <td>Price : $#{tracks.listprice}</td>
                             </tr>
                             <tr>
-                                <td>Date entered into inventory</td>
+                                <td>Date entered into inventory : #{tracks.dateentered}</td>
                             </tr>
                             <tr>
                                 <td>Sold as Individual Track or Part of Album</td>

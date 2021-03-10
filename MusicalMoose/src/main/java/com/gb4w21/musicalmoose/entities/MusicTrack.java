@@ -7,6 +7,7 @@ package com.gb4w21.musicalmoose.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.enterprise.context.SessionScoped;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,6 +28,7 @@ import javax.validation.constraints.Size;
  *
  * @author owner
  */
+//@SessionScoped
 @Entity
 @Table(name = "music_track", catalog = "MUSICSTORAGE", schema = "")
 @NamedQueries({

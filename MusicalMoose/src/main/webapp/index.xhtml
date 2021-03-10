@@ -97,7 +97,12 @@
 
                 <div class="box">
                     <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
-                        <a href="trackpage.xhtml"><img src="album_covers/#{tracks.albumimagefilenamebig}" alt="" />#{tracks.tracktitle}</a>
+                        <h:form id="form">
+<!--                        <a value="tracks" href="trackpage.xhtml"><img src="album_covers/#{tracks.albumimagefilenamebig}" alt="" />#{tracks.tracktitle}</a>-->
+                            <h:commandLink value="#{tracks.tracktitle}" action="trackpage.xhtml">
+                                <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
+                            </h:commandLink>
+                        </h:form>
                     </ui:repeat>
                 </div>
                 <img class="ad2" src="ads/ad_2.png" alt="" />
