@@ -16,12 +16,15 @@ import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -36,7 +39,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class MusicTrackJpaController implements Serializable {
 
-     private final static Logger LOG = LoggerFactory.getLogger(MusicTrackJpaController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(MusicTrackJpaController.class);
 
     @Resource
     private UserTransaction utx;
@@ -47,7 +50,7 @@ public class MusicTrackJpaController implements Serializable {
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
         try {
             utx.begin();
-         
+
             Album albumid = musicTrack.getAlbumid();
             if (albumid != null) {
                 albumid = em.getReference(albumid.getClass(), albumid.getAlbumid());
@@ -58,7 +61,7 @@ public class MusicTrackJpaController implements Serializable {
                 albumid.getMusicTrackList().add(musicTrack);
                 albumid = em.merge(albumid);
             }
-             utx.commit();
+            utx.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             try {
                 utx.rollback();
@@ -74,7 +77,7 @@ public class MusicTrackJpaController implements Serializable {
     public void edit(MusicTrack musicTrack) throws NonexistentEntityException, Exception {
         try {
             utx.begin();
-        
+
             MusicTrack persistentMusicTrack = em.find(MusicTrack.class, musicTrack.getInventoryid());
             Album albumidOld = persistentMusicTrack.getAlbumid();
             Album albumidNew = musicTrack.getAlbumid();
@@ -91,7 +94,7 @@ public class MusicTrackJpaController implements Serializable {
                 albumidNew.getMusicTrackList().add(musicTrack);
                 albumidNew = em.merge(albumidNew);
             }
-             utx.commit();
+            utx.commit();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -109,8 +112,8 @@ public class MusicTrackJpaController implements Serializable {
         }
     }
 
-    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception  {
-         try {
+    public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+        try {
             utx.begin();
             MusicTrack musicTrack;
             try {
@@ -125,7 +128,7 @@ public class MusicTrackJpaController implements Serializable {
                 albumid = em.merge(albumid);
             }
             em.remove(musicTrack);
-             utx.commit();
+            utx.commit();
         } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -145,25 +148,26 @@ public class MusicTrackJpaController implements Serializable {
     }
 
     private List<MusicTrack> findMusicTrackEntities(boolean all, int maxResults, int firstResult) {
-       
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(MusicTrack.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-        
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(MusicTrack.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
+
     }
 
     public MusicTrack findMusicTrack(Integer id) {
-        
-            return em.find(MusicTrack.class, id);
-        
+        MusicTrack mt = em.find(MusicTrack.class, id);
+        LOG.info(mt.getArtist());
+        return em.find(MusicTrack.class, id);
+
     }
-    
-     /**
+
+    /**
      * Returns a list of the three most recently added MusicTrack objects
      *
      * @return List of MusicTrack objects
@@ -186,15 +190,22 @@ public class MusicTrackJpaController implements Serializable {
         return threeRecentTracks;
     }
 
-
     public int getMusicTrackCount() {
-        
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<MusicTrack> rt = cq.from(MusicTrack.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<MusicTrack> rt = cq.from(MusicTrack.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
     }
-    
+
+    public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
+
+        TypedQuery<MusicTrack> query = em.createQuery("SELECT m FROM MusicTrack m INNER JOIN m.albumid a where a.albumid = ?1 AND m.tracktitle != ?2", MusicTrack.class);
+        query.setParameter(1, track.getAlbumid().getAlbumid());
+        query.setParameter(2, track.getTracktitle());
+
+        return query.getResultList();
+    }
 }
