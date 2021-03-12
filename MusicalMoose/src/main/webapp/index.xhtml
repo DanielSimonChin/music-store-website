@@ -98,8 +98,7 @@
                 <div class="box">
                     <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
                         <h:form id="form">
-<!--                        <a value="tracks" href="trackpage.xhtml"><img src="album_covers/#{tracks.albumimagefilenamebig}" alt="" />#{tracks.tracktitle}</a>-->
-                            <h:commandLink value="#{tracks.tracktitle}" action="trackpage.xhtml">
+                            <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
                                 <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
                             </h:commandLink>
                         </h:form>

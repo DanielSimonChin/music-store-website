@@ -1,0 +1,26 @@
+<!-- This file contains items that cannot be identified with an annotation -->
+<!-- Use NetBeans auto-complete feature to see all the possible options -->
+<faces-config version="2.3"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd">
+    <application>
+   
+    </application>
+    
+    <navigation-rule>
+        <from-view-id>index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detailTrack</from-outcome>
+            <to-view-id>trackpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>trackpage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>relatedTrack</from-outcome>
+            <to-view-id>trackpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

@@ -40,18 +40,28 @@
 
                 <div class="location" id="home">
 
-                    <h1 id="track">#{tracks.tracktitle}</h1>
+                    <!-- A global variable representing the MusicTrack object being shown on this page -->
+                    <ui:param name="detailTrack" value="#{musicTrackJpaController.getMusicTrack()}" />
+
+                    <h1 id="track">#{detailTrack.tracktitle}</h1>
 
                     <div class="box">
-                        <img id="mainTrack" src="album_covers/#{tracks.albumimagefilenamebig}" alt="" />
+                        <img id="mainTrack" src="album_covers/#{detailTrack.albumimagefilenamebig}" alt="" />
                         <table id="sameAlbum">
                             <tr>
                                 <th>Same album tracks</th>
                             </tr>
 
-                            <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(tracks)}" var="relatedTracks">
+                            <!-- Find all the tracks that are part of this track's album -->
+                            <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(detailTrack)}" var="relatedTracks">
                                 <tr>
-                                    <th>#{relatedTracks.tracktitle}</th>
+                                    <th>
+                                        <h:form>
+                                            <!-- Create a link that brings the user to the track page of the related track from the same album-->
+                                            <h:commandLink value="#{relatedTracks.tracktitle}" action="#{musicTrackJpaController.searchRelatedTrack(relatedTracks)}">
+                                            </h:commandLink>
+                                        </h:form>
+                                    </th>
                                 </tr>
                             </ui:repeat>
 
@@ -68,22 +78,19 @@
                                 <th>Album Info</th>
                             </tr>
                             <tr>
-                                <!--                                <td>Inventory Number</td>-->
+                                <td>Album No. : #{detailTrack.albumid}</td>
                             </tr>
                             <tr>
-                                <td>Album No. : #{tracks.albumid}</td>
+                                <td>Track title : #{detailTrack.tracktitle}</td>
                             </tr>
                             <tr>
-                                <td>Track title : #{tracks.tracktitle}</td>
+                                <td>Artist : #{detailTrack.artist}</td>
                             </tr>
                             <tr>
-                                <td>Artist : #{tracks.artist}</td>
+                                <td>Songwriter : #{detailTrack.songwriter}</td>
                             </tr>
                             <tr>
-                                <td>Songwriter : #{tracks.songwriter}</td>
-                            </tr>
-                            <tr>
-                                <td>Play length : #{tracks.playlength}</td>
+                                <td>Play length : #{detailTrack.playlength}</td>
                             </tr>
                         </table>
 
@@ -95,13 +102,13 @@
                                 &nbsp;
                             </tr>
                             <tr>
-                                <td>Category: #{tracks.musiccategory}</td>
+                                <td>Category: #{detailTrack.musiccategory}</td>
                             </tr>
                             <tr>
-                                <td>Price : $#{tracks.listprice}</td>
+                                <td>Price : $#{detailTrack.listprice}</td>
                             </tr>
                             <tr>
-                                <td>Date entered into inventory : #{tracks.dateentered}</td>
+                                <td>Date entered into inventory : #{detailTrack.dateentered}</td>
                             </tr>
                             <tr>
                                 <td>Sold as Individual Track or Part of Album</td>
@@ -113,9 +120,16 @@
                             <h1 id="myList">Related Albums</h1>
 
                             <div id="relatedAlbums" class="relBox">
-                                <a href=""><img src="HipHop_Album_covers/the_goat_small.png" alt="" />My Turn</a>
-                                <a href=""><img src="HipHop_Album_covers/damn_big.jpg" alt="" />Damn.</a>
-                                <a href=""><img src="HipHop_Album_covers/scorpion_big.png" alt="" />Scorpion</a>
+                                <!--                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />My Turn</a>
+                                                                <a href=""><img src="album_covers/damn_big.jpg" alt="" />Damn.</a>
+                                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Scorpion</a>-->
+                                <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
+                                    <h:form id="form">
+                                        <h:commandLink value="#{relatedAlbums.albumtitle}" action="#">
+                                            <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
+                                        </h:commandLink>
+                                    </h:form>
+                                </ui:repeat>
                             </div> 
                         </div>
 

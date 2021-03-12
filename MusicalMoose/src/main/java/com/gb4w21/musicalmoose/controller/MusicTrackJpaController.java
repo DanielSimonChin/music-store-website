@@ -47,6 +47,8 @@ public class MusicTrackJpaController implements Serializable {
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
+    private MusicTrack searchedTrack;
+
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
         try {
             utx.begin();
@@ -200,12 +202,51 @@ public class MusicTrackJpaController implements Serializable {
 
     }
 
+    /**
+     * Finds all tracks that belong to a track's album
+     *
+     * @param track
+     * @return tracks from same album
+     */
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
-
         TypedQuery<MusicTrack> query = em.createQuery("SELECT m FROM MusicTrack m INNER JOIN m.albumid a where a.albumid = ?1 AND m.tracktitle != ?2", MusicTrack.class);
         query.setParameter(1, track.getAlbumid().getAlbumid());
         query.setParameter(2, track.getTracktitle());
 
         return query.getResultList();
     }
+
+    /**
+     * Set the selected track and display the trackpage.xhtml
+     *
+     * @param track
+     * @return display the trackpage.xhtml
+     */
+    public String searchTrack(MusicTrack track) {
+        this.searchedTrack = track;
+        return "detailTrack";
+
+    }
+
+    /**
+     * Simple getter so the track page can access the selected track
+     *
+     * @return a track
+     */
+    public MusicTrack getMusicTrack() {
+        return this.searchedTrack;
+    }
+
+    /**
+     * When a user clicks on a related track, set the selected track and show
+     * the track page once again.
+     *
+     * @param track
+     * @return display the trackpage.xhtml
+     */
+    public String searchRelatedTrack(MusicTrack track) {
+        this.searchedTrack = track;
+        return "relatedTrack";
+    }
+
 }
