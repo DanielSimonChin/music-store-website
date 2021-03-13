@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -166,7 +167,10 @@ public class MusicTrackJpaController implements Serializable {
         return em.find(MusicTrack.class, id);
 
     }
-
+    public void searchForTracks (FacesContext context, UIComponent component,
+            Object value) {
+        
+    }
     /**
      * Returns a list of the three most recently added MusicTrack objects
      *
@@ -199,7 +203,7 @@ public class MusicTrackJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
-
+    
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
 
         TypedQuery<MusicTrack> query = em.createQuery("SELECT m FROM MusicTrack m INNER JOIN m.albumid a where a.albumid = ?1 AND m.tracktitle != ?2", MusicTrack.class);

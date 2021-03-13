@@ -15,7 +15,6 @@
     </head>
 
     <body>
-
         <div class="wrapper">
             <!-- HEADER -->
             <header>
@@ -38,28 +37,25 @@
             <!-- END OF HEADER -->
             <!-- MAIN CONTAINER -->
             <section class="main-container">
-                <c:if test="#{ empty tracks and not empty searchResults.musicTrack}">
-                    #{tracks=searchResults.musicTrack}
-                </c:if>
-                #{tracks=searchResults.musicTrack}
+                
                 <div class="location" id="home">
 
-                    <h1 id="track">#{tracks.tracktitle}</h1>
+                    <h1 id="track">#{searchResults.musicTrack.tracktitle}</h1>
 
                     <div class="box">
-                        <img id="mainTrack" src="album_covers/#{tracks.albumimagefilenamebig}" alt="" />
+                        <img id="mainTrack" src="album_covers/#{searchResults.musicTrack.albumimagefilenamebig}" alt="" />
                         <table id="sameAlbum">
                             <tr>
                                 <th>Same album tracks</th>
                             </tr>
-                           
-                    
-                                <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(tracks)}" var="relatedTracks">
+                            
+                                <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(searchResults.musicTrack)}" var="relatedTracks">
                                     <tr>
                                         <th>#{relatedTracks.tracktitle}</th>
                                     </tr>
                                 </ui:repeat>
-                           
+                            
+                            
 
 
 
@@ -79,19 +75,19 @@
                                 <!--                                <td>Inventory Number</td>-->
                             </tr>
                             <tr>
-                                <td>Album No. : #{tracks.albumid}</td>
+                                <td>Album No. : #{searchResults.musicTrack.albumid}</td>
                             </tr>
                             <tr>
-                                <td>Track title : #{tracks.tracktitle}</td>
+                                <td>Track title : #{searchResults.musicTrack.tracktitle}</td>
                             </tr>
                             <tr>
-                                <td>Artist : #{tracks.artist}</td>
+                                <td>Artist : #{searchResults.musicTrack.artist}</td>
                             </tr>
                             <tr>
-                                <td>Songwriter : #{tracks.songwriter}</td>
+                                <td>Songwriter : #{searchResults.musicTrack.songwriter}</td>
                             </tr>
                             <tr>
-                                <td>Play length : #{tracks.playlength}</td>
+                                <td>Play length : #{searchResults.musicTrack.playlength}</td>
                             </tr>
                         </table>
 
@@ -102,17 +98,18 @@
                             <tr>
                                 &nbsp;
                             </tr>
-                           
-                                <tr>
-                                    <td>Category: #{tracks.musiccategory}</td>
-                                </tr>
-                                <tr>
-                                    <td>Price : $#{tracks.listprice}</td>
-                                </tr>
-                                <tr>
-                                    <td>Date entered into inventory : #{tracks.dateentered}</td>
-                                </tr>
-                           
+
+
+                            <tr>
+                                <td>Category: #{searchResults.musicTrack.musiccategory}</td>
+                            </tr>
+                            <tr>
+                                <td>Price : $#{searchResults.musicTrack.listprice}</td>
+                            </tr>
+                            <tr>
+                                <td>Date entered into inventory : #{searchResults.musicTrack.dateentered}</td>
+                            </tr>
+
                             <tr>
                                 <td>Sold as Individual Track or Part of Album</td>
                             </tr>
@@ -134,9 +131,6 @@
 
 
                 </div>
-
-
-
                 <div class="ratings">
                     <h1>Reviews</h1>
                     <div class="rating">

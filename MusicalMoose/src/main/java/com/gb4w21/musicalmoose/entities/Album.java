@@ -61,7 +61,7 @@ public class Album implements Serializable {
     private String albumtitle;
     @Column(name = "RELEASEDATE")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date releasedate;
+    private Date releasedate;  
     @Size(max = 255)
     @Column(name = "ARTIST")
     private String artist;

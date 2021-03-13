@@ -4,7 +4,7 @@
               xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_3.xsd">
     <application>
         <resource-bundle>
-            <base-name>com.musicalmoose.bundles.messages</base-name>
+            <base-name>com.gb4w21.musicalmoose.bundles.messages</base-name>
             <var>msgs</var>
         </resource-bundle>
     </application>

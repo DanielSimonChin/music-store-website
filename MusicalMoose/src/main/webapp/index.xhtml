@@ -27,16 +27,19 @@
                     <a href="#home">Home</a>
                     <a href="#genres">Genres</a>
                     <a href="#recent">Recently Added</a>
+                    <a>
                     <h:form>
                         <span class="fas fa-search sub-nav-logo">#{msgs.search}</span>
-                        <a><i class="fas fa-search sub-nav-logo" /> <input type="text" placeholder="Search ..." /> 
-                            <select name="criteria" id="criteria">
-                                <option value="track">#{msgs.trackName}</option>
-                                <option value="album">#{msgs.albumTitle}</option>
-                                <option value="date">#{msgs.date}</option>
-                                <option value="artist">#{msgs.artist}</option>
-                            </select>  <h:commandButton value="#{msgs.search}" action="searchPage"/>
+                       <i class="fas fa-search sub-nav-logo" />  <h:inputText value="#{searchController.searchText}"/>
+                            <h:selectOneMenu  value="#{searchController.category}" id="criteria">
+                                <f:selectItem itemValue = "TrackName" itemLabel = "#{msgs.trackName}" /> 
+                                <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
+                                <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
+                                <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
+                             
+                            </h:selectOneMenu> <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/>
                     </h:form>
+                    </a>
                 </nav>
                 <nav class="sub-nav">
                     <a href="#">Log in / Create an account</a>
