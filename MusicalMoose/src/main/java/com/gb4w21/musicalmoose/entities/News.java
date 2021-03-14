@@ -35,12 +35,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "News.findByLastdisplayeddtae", query = "SELECT n FROM News n WHERE n.lastdisplayeddtae = :lastdisplayeddtae")})
 public class News implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "NEWSID")
-    private Integer newsid;
     @Size(max = 255)
     @Column(name = "NEWTITLE")
     private String newtitle;
@@ -48,6 +42,13 @@ public class News implements Serializable {
     @Size(max = 16777215)
     @Column(name = "NEWSTEXT")
     private String newstext;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "NEWSID")
+    private Integer newsid;
     @Column(name = "CREATEDDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createddate;
@@ -70,21 +71,6 @@ public class News implements Serializable {
         this.newsid = newsid;
     }
 
-    public String getNewtitle() {
-        return newtitle;
-    }
-
-    public void setNewtitle(String newtitle) {
-        this.newtitle = newtitle;
-    }
-
-    public String getNewstext() {
-        return newstext;
-    }
-
-    public void setNewstext(String newstext) {
-        this.newstext = newstext;
-    }
 
     public Date getCreateddate() {
         return createddate;
@@ -125,6 +111,22 @@ public class News implements Serializable {
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.News[ newsid=" + newsid + " ]";
+    }
+
+    public String getNewtitle() {
+        return newtitle;
+    }
+
+    public void setNewtitle(String newtitle) {
+        this.newtitle = newtitle;
+    }
+
+    public String getNewstext() {
+        return newstext;
+    }
+
+    public void setNewstext(String newstext) {
+        this.newstext = newstext;
     }
     
 }

@@ -29,15 +29,16 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Rss.findByUrl", query = "SELECT r FROM Rss r WHERE r.url = :url")})
 public class Rss implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "URL")
+    private String url;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
-    @Size(max = 255)
-    @Column(name = "URL")
-    private String url;
 
     public Rss() {
     }
@@ -54,13 +55,6 @@ public class Rss implements Serializable {
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     @Override
     public int hashCode() {
@@ -85,6 +79,14 @@ public class Rss implements Serializable {
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.Rss[ id=" + id + " ]";
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
     
 }

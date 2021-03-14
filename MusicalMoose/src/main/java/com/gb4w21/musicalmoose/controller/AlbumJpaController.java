@@ -22,6 +22,9 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -47,9 +50,9 @@ public class AlbumJpaController implements Serializable {
         if (album.getMusicTrackList() == null) {
             album.setMusicTrackList(new ArrayList<MusicTrack>());
         }
-         try {
+        try {
             utx.begin();
-         
+
             em.getTransaction().begin();
             List<MusicTrack> attachedMusicTrackList = new ArrayList<MusicTrack>();
             for (MusicTrack musicTrackListMusicTrackToAttach : album.getMusicTrackList()) {
@@ -81,7 +84,7 @@ public class AlbumJpaController implements Serializable {
     }
 
     public void edit(Album album) throws NonexistentEntityException, Exception {
-          try {
+        try {
 
             utx.begin();
             Album persistentAlbum = em.find(Album.class, album.getAlbumid());
@@ -112,7 +115,7 @@ public class AlbumJpaController implements Serializable {
                     }
                 }
             }
-             utx.commit();
+            utx.commit();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -131,7 +134,7 @@ public class AlbumJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-          try {
+        try {
             utx.begin();
             Album album;
             try {
@@ -146,7 +149,7 @@ public class AlbumJpaController implements Serializable {
                 musicTrackListMusicTrack = em.merge(musicTrackListMusicTrack);
             }
             em.remove(album);
-          utx.commit();
+            utx.commit();
         } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -166,32 +169,55 @@ public class AlbumJpaController implements Serializable {
     }
 
     private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
-       
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Album.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-       
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Album.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
+
     }
 
     public Album findAlbum(Integer id) {
-        
-            return em.find(Album.class, id);
-       
+
+        return em.find(Album.class, id);
+
     }
 
     public int getAlbumCount() {
-       
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Album> rt = cq.from(Album.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-       
+
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Album> rt = cq.from(Album.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
+
     }
-    
+
+    /**
+     * The track page will show 3 albums from other artists that are part of the
+     * same category
+     *
+     * @param track
+     * @return A list of Album objects
+     */
+    public List<Album> findRelatedAlbums(MusicTrack track) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Album> cq = cb.createQuery(Album.class);
+        
+        Root<Album> album = cq.from(Album.class);
+
+        Join albumsTracks = album.join("musicTrackList");
+
+        cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid())).distinct(true);
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList().subList(0, 3);
+    }
+
 }

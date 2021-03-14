@@ -44,12 +44,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Survey.findBySurveryended", query = "SELECT s FROM Survey s WHERE s.surveryended = :surveryended")})
 public class Survey implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "SURVEYID")
-    private Integer surveyid;
     @Size(max = 255)
     @Column(name = "SURVEYTITLE")
     private String surveytitle;
@@ -59,21 +53,28 @@ public class Survey implements Serializable {
     @Size(max = 255)
     @Column(name = "ANSERW1")
     private String anserw1;
-    @Column(name = "ANSERW1VOTES")
-    private Integer anserw1votes;
     @Size(max = 255)
     @Column(name = "ANSERW2")
     private String anserw2;
-    @Column(name = "ANSERW2VOTES")
-    private Integer anserw2votes;
     @Size(max = 255)
     @Column(name = "ANSERW3")
     private String anserw3;
-    @Column(name = "ANSERW3VOTES")
-    private Integer anserw3votes;
     @Size(max = 255)
     @Column(name = "ANSERW4")
     private String anserw4;
+
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "SURVEYID")
+    private Integer surveyid;
+    @Column(name = "ANSERW1VOTES")
+    private Integer anserw1votes;
+    @Column(name = "ANSERW2VOTES")
+    private Integer anserw2votes;
+    @Column(name = "ANSERW3VOTES")
+    private Integer anserw3votes;
     @Column(name = "ANSERW4VOTES")
     private Integer anserw4votes;
     @Column(name = "DATESURVEYRCREATED")
@@ -100,29 +101,6 @@ public class Survey implements Serializable {
         this.surveyid = surveyid;
     }
 
-    public String getSurveytitle() {
-        return surveytitle;
-    }
-
-    public void setSurveytitle(String surveytitle) {
-        this.surveytitle = surveytitle;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public String getAnserw1() {
-        return anserw1;
-    }
-
-    public void setAnserw1(String anserw1) {
-        this.anserw1 = anserw1;
-    }
 
     public Integer getAnserw1votes() {
         return anserw1votes;
@@ -132,13 +110,6 @@ public class Survey implements Serializable {
         this.anserw1votes = anserw1votes;
     }
 
-    public String getAnserw2() {
-        return anserw2;
-    }
-
-    public void setAnserw2(String anserw2) {
-        this.anserw2 = anserw2;
-    }
 
     public Integer getAnserw2votes() {
         return anserw2votes;
@@ -148,13 +119,6 @@ public class Survey implements Serializable {
         this.anserw2votes = anserw2votes;
     }
 
-    public String getAnserw3() {
-        return anserw3;
-    }
-
-    public void setAnserw3(String anserw3) {
-        this.anserw3 = anserw3;
-    }
 
     public Integer getAnserw3votes() {
         return anserw3votes;
@@ -164,13 +128,6 @@ public class Survey implements Serializable {
         this.anserw3votes = anserw3votes;
     }
 
-    public String getAnserw4() {
-        return anserw4;
-    }
-
-    public void setAnserw4(String anserw4) {
-        this.anserw4 = anserw4;
-    }
 
     public Integer getAnserw4votes() {
         return anserw4votes;
@@ -227,6 +184,54 @@ public class Survey implements Serializable {
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.Survey[ surveyid=" + surveyid + " ]";
+    }
+
+    public String getSurveytitle() {
+        return surveytitle;
+    }
+
+    public void setSurveytitle(String surveytitle) {
+        this.surveytitle = surveytitle;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public String getAnserw1() {
+        return anserw1;
+    }
+
+    public void setAnserw1(String anserw1) {
+        this.anserw1 = anserw1;
+    }
+
+    public String getAnserw2() {
+        return anserw2;
+    }
+
+    public void setAnserw2(String anserw2) {
+        this.anserw2 = anserw2;
+    }
+
+    public String getAnserw3() {
+        return anserw3;
+    }
+
+    public void setAnserw3(String anserw3) {
+        this.anserw3 = anserw3;
+    }
+
+    public String getAnserw4() {
+        return anserw4;
+    }
+
+    public void setAnserw4(String anserw4) {
+        this.anserw4 = anserw4;
     }
     
 }
