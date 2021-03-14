@@ -13,6 +13,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Client;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Review;
 import java.util.List;
 import javax.annotation.Resource;
@@ -21,6 +22,8 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -169,6 +172,29 @@ public class ReviewJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
 
+    }
+
+    /**
+     * Returns all reviews related to a track
+     *
+     * @param track
+     * @return List of review objects
+     */
+    public List<Review> getTrackReviews(MusicTrack track) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Review> cq = cb.createQuery(Review.class);
+
+        Root<Review> review = cq.from(Review.class);
+
+        Join trackReview = review.join("inventoryid");
+
+        //We want all review related to this track that has been approved by an admin. All approved reviews have the field set with "1"
+        cq.where(cb.equal(trackReview.get("inventoryid"), track.getInventoryid()), cb.equal(review.get("aprovalstatus"), 1));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
     }
 
 }

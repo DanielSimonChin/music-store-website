@@ -205,25 +205,19 @@ public class AlbumJpaController implements Serializable {
      * @return A list of Album objects
      */
     public List<Album> findRelatedAlbums(MusicTrack track) {
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//
-//        CriteriaQuery<Album> cq = cb.createQuery(Album.class);
-//        Root<Album> album = cq.from(Album.class);
-//
-//        Join albumsTracks = album.join("musicTrackList");
-//
-//        cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()))
-//                .having(cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid())).distinct(true);
-//
-//        Query q = em.createQuery(cq);
-//
-//        return q.getResultList();
-        TypedQuery<Album> query = em.createQuery("SELECT distinct a FROM Album a INNER JOIN a.musicTrackList m where m.musiccategory = ?1 AND a.albumid != ?2", Album.class);
-        query.setParameter(1, track.getMusiccategory());
-        query.setParameter(2, track.getAlbumid().getAlbumid());
+        CriteriaBuilder cb = em.getCriteriaBuilder();
 
-        //only return the 3 results
-        return query.getResultList().subList(0, 3);
+        CriteriaQuery<Album> cq = cb.createQuery(Album.class);
+        
+        Root<Album> album = cq.from(Album.class);
+
+        Join albumsTracks = album.join("musicTrackList");
+
+        cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid())).distinct(true);
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList().subList(0, 3);
     }
 
 }

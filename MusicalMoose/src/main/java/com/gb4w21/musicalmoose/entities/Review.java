@@ -39,6 +39,17 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Review.findByAprovalstatus", query = "SELECT r FROM Review r WHERE r.aprovalstatus = :aprovalstatus")})
 public class Review implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "CLIENTNAME")
+    private String clientname;
+    @Lob
+    @Size(max = 16777215)
+    @Column(name = "REVIEWTEXT")
+    private String reviewtext;
+    @JoinColumn(name = "INVENTORYID", referencedColumnName = "INVENTORYID")
+    @ManyToOne
+    private MusicTrack inventoryid;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,15 +59,8 @@ public class Review implements Serializable {
     @Column(name = "REVIEWDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date reviewdate;
-    @Size(max = 255)
-    @Column(name = "CLIENTNAME")
-    private String clientname;
     @Column(name = "RATING")
     private Integer rating;
-    @Lob
-    @Size(max = 16777215)
-    @Column(name = "REVIEWTEXT")
-    private String reviewtext;
     @Column(name = "APROVALSTATUS")
     private Boolean aprovalstatus;
     @JoinColumn(name = "CLIENTID", referencedColumnName = "CLIENTID")
@@ -86,13 +90,6 @@ public class Review implements Serializable {
         this.reviewdate = reviewdate;
     }
 
-    public String getClientname() {
-        return clientname;
-    }
-
-    public void setClientname(String clientname) {
-        this.clientname = clientname;
-    }
 
     public Integer getRating() {
         return rating;
@@ -102,13 +99,6 @@ public class Review implements Serializable {
         this.rating = rating;
     }
 
-    public String getReviewtext() {
-        return reviewtext;
-    }
-
-    public void setReviewtext(String reviewtext) {
-        this.reviewtext = reviewtext;
-    }
 
     public Boolean getAprovalstatus() {
         return aprovalstatus;
@@ -149,6 +139,31 @@ public class Review implements Serializable {
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.Review[ reviewid=" + reviewid + " ]";
+    }
+
+
+    public MusicTrack getInventoryid() {
+        return inventoryid;
+    }
+
+    public void setInventoryid(MusicTrack inventoryid) {
+        this.inventoryid = inventoryid;
+    }
+
+    public String getClientname() {
+        return clientname;
+    }
+
+    public void setClientname(String clientname) {
+        this.clientname = clientname;
+    }
+
+    public String getReviewtext() {
+        return reviewtext;
+    }
+
+    public void setReviewtext(String reviewtext) {
+        this.reviewtext = reviewtext;
     }
     
 }

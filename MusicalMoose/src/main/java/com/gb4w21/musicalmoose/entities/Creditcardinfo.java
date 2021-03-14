@@ -6,6 +6,7 @@
 package com.gb4w21.musicalmoose.entities;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,17 +35,18 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Creditcardinfo.findByExpirationyear", query = "SELECT c FROM Creditcardinfo c WHERE c.expirationyear = :expirationyear")})
 public class Creditcardinfo implements Serializable {
 
+    @Size(max = 255)
+    @Column(name = "CREDITCARDBRAND")
+    private String creditcardbrand;
+    @Column(name = "CREDITCARDNUMBER")
+    private BigInteger creditcardnumber;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "CREDITCARDID")
     private Integer creditcardid;
-    @Size(max = 255)
-    @Column(name = "CREDITCARDBRAND")
-    private String creditcardbrand;
-    @Column(name = "CREDITCARDNUMBER")
-    private Integer creditcardnumber;
     @Column(name = "EXPIRATIONMONTH")
     private Short expirationmonth;
     @Column(name = "EXPIRATIONYEAR")
@@ -68,21 +70,6 @@ public class Creditcardinfo implements Serializable {
         this.creditcardid = creditcardid;
     }
 
-    public String getCreditcardbrand() {
-        return creditcardbrand;
-    }
-
-    public void setCreditcardbrand(String creditcardbrand) {
-        this.creditcardbrand = creditcardbrand;
-    }
-
-    public Integer getCreditcardnumber() {
-        return creditcardnumber;
-    }
-
-    public void setCreditcardnumber(Integer creditcardnumber) {
-        this.creditcardnumber = creditcardnumber;
-    }
 
     public Short getExpirationmonth() {
         return expirationmonth;
@@ -131,6 +118,22 @@ public class Creditcardinfo implements Serializable {
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.Creditcardinfo[ creditcardid=" + creditcardid + " ]";
+    }
+
+    public String getCreditcardbrand() {
+        return creditcardbrand;
+    }
+
+    public void setCreditcardbrand(String creditcardbrand) {
+        this.creditcardbrand = creditcardbrand;
+    }
+
+    public BigInteger getCreditcardnumber() {
+        return creditcardnumber;
+    }
+
+    public void setCreditcardnumber(BigInteger creditcardnumber) {
+        this.creditcardnumber = creditcardnumber;
     }
     
 }

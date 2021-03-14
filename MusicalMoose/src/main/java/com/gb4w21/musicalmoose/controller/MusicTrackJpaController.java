@@ -26,6 +26,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -209,11 +210,22 @@ public class MusicTrackJpaController implements Serializable {
      * @return tracks from same album
      */
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
-        TypedQuery<MusicTrack> query = em.createQuery("SELECT m FROM MusicTrack m INNER JOIN m.albumid a where a.albumid = ?1 AND m.tracktitle != ?2", MusicTrack.class);
-        query.setParameter(1, track.getAlbumid().getAlbumid());
-        query.setParameter(2, track.getTracktitle());
+        CriteriaBuilder cb = em.getCriteriaBuilder();
 
-        return query.getResultList();
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+
+        //Joining the MusicTrack table to the Album table
+        Join albumsTracks = musicTrack.join("albumid");
+
+        //We want all the tracks from this album that isn't the selected track
+        cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
+
     }
 
     /**

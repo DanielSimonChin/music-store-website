@@ -78,9 +78,6 @@
                                 <th>Album Info</th>
                             </tr>
                             <tr>
-                                <td>Album No. : #{detailTrack.albumid}</td>
-                            </tr>
-                            <tr>
                                 <td>Track title : #{detailTrack.tracktitle}</td>
                             </tr>
                             <tr>
@@ -111,7 +108,7 @@
                                 <td>Date entered into inventory : #{detailTrack.dateentered}</td>
                             </tr>
                             <tr>
-                                <td>Sold as Individual Track or Part of Album</td>
+                                <td>Sold as Individual Track or Part of Album: #{detailTrack.getPartOfAlbumStringFormat()}</td>
                             </tr>
                         </table>
 
@@ -143,22 +140,18 @@
 
                 <div class="ratings">
                     <h1>Reviews</h1>
-                    <div class="rating">
-                        <hr/>
-                        <h3>Unoriginal and dull! made me sleep !!1!</h3>
-                        <p>this was complete trash,boo!</p>
 
-                        <small>from <u>JoeMikey54</u></small>
-                        <h3>3/10 rating</h3>
-                    </div>
-                    <div class="rating">                    
-                        <hr/>
-                        <h3>yummy song, very gud</h3>
-                        <p>this was complete goodness,yay!</p>
+                    <ui:repeat value="#{reviewJpaController.getTrackReviews(detailTrack)}" var="trackReviews">
+                        <div class="rating">
+                            <hr/>
+                            <h3>#{trackReviews.reviewtext}</h3>
 
-                        <small>from <u>MikeyEater12</u></small>
-                        <h3>8.5/10 rating</h3>
-                    </div>
+                            <small>from <u>#{trackReviews.clientname}</u></small>
+                            <h3>#{trackReviews.rating}/10 rating</h3>
+                            
+                            <small>Written on: #{trackReviews.reviewdate}</small>
+                        </div>
+                    </ui:repeat>
                 </div>
 
                 <!-- END OF MAIN CONTAINER -->

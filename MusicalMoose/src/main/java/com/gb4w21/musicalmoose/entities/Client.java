@@ -7,6 +7,7 @@ package com.gb4w21.musicalmoose.entities;
 
 import com.gb4w21.musicalmoose.entities.Creditcardinfo;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -45,12 +46,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Client.findByGenreoflastsearch", query = "SELECT c FROM Client c WHERE c.genreoflastsearch = :genreoflastsearch")})
 public class Client implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "CLIENTID")
-    private Integer clientid;
     @Size(max = 255)
     @Column(name = "TITLE")
     private String title;
@@ -81,10 +76,6 @@ public class Client implements Serializable {
     @Size(max = 255)
     @Column(name = "POSTALCODE")
     private String postalcode;
-    @Column(name = "HOMETELEPHONE")
-    private Integer hometelephone;
-    @Column(name = "CELLTELEPHONE")
-    private Integer celltelephone;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 255)
     @Column(name = "EMAIL")
@@ -92,6 +83,16 @@ public class Client implements Serializable {
     @Size(max = 255)
     @Column(name = "GENREOFLASTSEARCH")
     private String genreoflastsearch;
+    @Column(name = "HOMETELEPHONE")
+    private BigInteger hometelephone;
+    @Column(name = "CELLTELEPHONE")
+    private BigInteger celltelephone;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "CLIENTID")
+    private Integer clientid;
     @OneToMany(mappedBy = "clientid")
     private List<Creditcardinfo> creditcardinfoList;
     @OneToMany(mappedBy = "clientid")
@@ -112,6 +113,58 @@ public class Client implements Serializable {
 
     public void setClientid(Integer clientid) {
         this.clientid = clientid;
+    }
+    public List<Creditcardinfo> getCreditcardinfoList() {
+        return creditcardinfoList;
+    }
+    public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
+        this.creditcardinfoList = creditcardinfoList;
+    }
+    public List<Sale> getSaleList() {
+        return saleList;
+    }
+    public void setSaleList(List<Sale> saleList) {
+        this.saleList = saleList;
+    }
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (clientid != null ? clientid.hashCode() : 0);
+        return hash;
+    }
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Client)) {
+            return false;
+        }
+        Client other = (Client) object;
+        if ((this.clientid == null && other.clientid != null) || (this.clientid != null && !this.clientid.equals(other.clientid))) {
+            return false;
+        }
+        return true;
+    }
+    @Override
+    public String toString() {
+        return "com.gb4w21.musicalmoose.Client[ clientid=" + clientid + " ]";
+    }
+    public BigInteger getHometelephone() {
+        return hometelephone;
+    }
+    public void setHometelephone(BigInteger hometelephone) {
+        this.hometelephone = hometelephone;
+    }
+    public BigInteger getCelltelephone() {
+        return celltelephone;
+    }
+    public void setCelltelephone(BigInteger celltelephone) {
+        this.celltelephone = celltelephone;
     }
 
     public String getTitle() {
@@ -194,22 +247,6 @@ public class Client implements Serializable {
         this.postalcode = postalcode;
     }
 
-    public Integer getHometelephone() {
-        return hometelephone;
-    }
-
-    public void setHometelephone(Integer hometelephone) {
-        this.hometelephone = hometelephone;
-    }
-
-    public Integer getCelltelephone() {
-        return celltelephone;
-    }
-
-    public void setCelltelephone(Integer celltelephone) {
-        this.celltelephone = celltelephone;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -224,55 +261,6 @@ public class Client implements Serializable {
 
     public void setGenreoflastsearch(String genreoflastsearch) {
         this.genreoflastsearch = genreoflastsearch;
-    }
-
-    public List<Creditcardinfo> getCreditcardinfoList() {
-        return creditcardinfoList;
-    }
-
-    public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
-        this.creditcardinfoList = creditcardinfoList;
-    }
-
-    public List<Sale> getSaleList() {
-        return saleList;
-    }
-
-    public void setSaleList(List<Sale> saleList) {
-        this.saleList = saleList;
-    }
-
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (clientid != null ? clientid.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Client)) {
-            return false;
-        }
-        Client other = (Client) object;
-        if ((this.clientid == null && other.clientid != null) || (this.clientid != null && !this.clientid.equals(other.clientid))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.gb4w21.musicalmoose.Client[ clientid=" + clientid + " ]";
     }
     
 }
