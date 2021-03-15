@@ -58,7 +58,9 @@ public class SearchController implements Serializable {
     public MusicTrack getMusicTrack() {
         return musicTrack;
     }
-    
+     public void setMusicTrack(MusicTrack musicTrack) {
+         this.musicTrack=musicTrack;
+    }
     public String getCategory() {
         return category;
     }
@@ -126,6 +128,9 @@ public class SearchController implements Serializable {
             }
             else{
                 setSingleTrack();
+               // if(this.musicTrack.getTracktitle()==null ||this.musicTrack.getTracktitle().equals("")){
+              //      throw new IllegalArgumentException();
+              //  }
                 return "trackpageSearch";
             }
         }

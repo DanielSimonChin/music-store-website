@@ -40,16 +40,16 @@
                 
                 <div class="location" id="home">
 
-                    <h1 id="track">#{searchResults.musicTrack.tracktitle}</h1>
+                    <h1 id="track">#{searchController.musicTrack.tracktitle}</h1>
 
                     <div class="box">
-                        <img id="mainTrack" src="album_covers/#{searchResults.musicTrack.albumimagefilenamebig}" alt="" />
+                        <img id="mainTrack" src="album_covers/#{searchController.musicTrack.albumimagefilenamebig}" alt="" />
                         <table id="sameAlbum">
                             <tr>
                                 <th>Same album tracks</th>
                             </tr>
                             
-                                <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(searchResults.musicTrack)}" var="relatedTracks">
+                                <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(searchController.musicTrack)}" var="relatedTracks">
                                     <tr>
                                         <th>#{relatedTracks.tracktitle}</th>
                                     </tr>
@@ -75,19 +75,19 @@
                                 <!--                                <td>Inventory Number</td>-->
                             </tr>
                             <tr>
-                                <td>Album No. : #{searchResults.musicTrack.albumid}</td>
+                                <td>Album No. : #{searchController.musicTrack.albumid}</td>
                             </tr>
                             <tr>
-                                <td>Track title : #{searchResults.musicTrack.tracktitle}</td>
+                                <td>Track title : #{searchController.musicTrack.tracktitle}</td>
                             </tr>
                             <tr>
-                                <td>Artist : #{searchResults.musicTrack.artist}</td>
+                                <td>Artist : #{searchController.musicTrack.artist}</td>
                             </tr>
                             <tr>
-                                <td>Songwriter : #{searchResults.musicTrack.songwriter}</td>
+                                <td>Songwriter : #{searchController.musicTrack.songwriter}</td>
                             </tr>
                             <tr>
-                                <td>Play length : #{searchResults.musicTrack.playlength}</td>
+                                <td>Play length : #{searchController.musicTrack.playlength}</td>
                             </tr>
                         </table>
 
@@ -101,13 +101,13 @@
 
 
                             <tr>
-                                <td>Category: #{searchResults.musicTrack.musiccategory}</td>
+                                <td>Category: #{searchController.musicTrack.musiccategory}</td>
                             </tr>
                             <tr>
-                                <td>Price : $#{searchResults.musicTrack.listprice}</td>
+                                <td>Price : $#{searchController.musicTrack.listprice}</td>
                             </tr>
                             <tr>
-                                <td>Date entered into inventory : #{searchResults.musicTrack.dateentered}</td>
+                                <td>Date entered into inventory : #{searchController.musicTrack.dateentered}</td>
                             </tr>
 
                             <tr>

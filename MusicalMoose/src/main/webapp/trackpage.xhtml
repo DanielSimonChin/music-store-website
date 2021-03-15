@@ -38,10 +38,7 @@
             <!-- END OF HEADER -->
             <!-- MAIN CONTAINER -->
             <section class="main-container">
-                <c:if test="#{ empty tracks and not empty searchResults.musicTrack}">
-                    #{tracks=searchResults.musicTrack}
-                </c:if>
-                #{tracks=searchResults.musicTrack}
+               
                 <div class="location" id="home">
 
                     <h1 id="track">#{tracks.tracktitle}</h1>
@@ -53,14 +50,14 @@
                                 <th>Same album tracks</th>
                             </tr>
                            
-                    
+                      
                                 <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(tracks)}" var="relatedTracks">
                                     <tr>
                                         <th>#{relatedTracks.tracktitle}</th>
                                     </tr>
                                 </ui:repeat>
                            
-
+                                
 
 
                             <div id="shopCart">
