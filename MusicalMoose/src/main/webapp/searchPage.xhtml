@@ -17,22 +17,14 @@
         <div class="wrapper">
             <section class="main-container">
                 <div class="box">
-                   
+
                     <ui:repeat value="#{searchController.searchResults}" var="searchResults">
                         <h:form id="form">
-<!--                        <a value="tracks" href="trackpage.xhtml"><img src="album_covers/#{tracks.albumimagefilenamesmall}" alt="" />#{tracks.tracktitle}</a>-->
-                           <!--  <h:commandLink value="#{searchResults.tracktitle}" action="trackpage.xhtml">
+            <!--                     <a value="tracks" href="trackpage.xhtml"><img src="album_covers/#{searchResults.albumimagefilenamebig}" alt="" />#{searchResults.tracktitle}</a>-->
+                            <h:commandLink value="#{searchResults.tracktitle}" action="trackpage.xhtml">
+
                                 <h:graphicImage value="album_covers/#{searchResults.albumimagefilenamesmall}" />
-                            </h:commandLink>-->
-                             <c:if test="#{not empty searchResults.tracktitle}">
-                                <h:outputText value="#{searchResults.tracktitle}" />
-                            </c:if>
-                            <c:if test="#{not empty searchResults.albumtitle}">
-                                <h:outputText value="#{searchResults.albumtitle}" />
-                            </c:if>
-                            <h:outputText value="#{searchResults.artist}" /> <h:outputText value="#{searchResults.musiccategory}" />
-                            <h:outputText value="#{searchResults.releasedate}" />
-                            <h:graphicImage value="album_covers/#{searchResults.albumimagefilenamesmall}" />
+                            </h:commandLink>
                         </h:form>
                     </ui:repeat>
                 </div>

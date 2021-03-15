@@ -92,78 +92,56 @@
                 <h:form>
                     <h:panelGrid columns="1">
                         <h3 id="myList">#{surveyJpaController.getRunningSurvey().question}</h3>
-                        <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw1}">
-                            
-                            <h:panelGroup>
-                                <c:if test="#{( not surveyJpaController.checkSurveyUsed())or (surveyJpaController.checkSurveyUsed() and not surveyJpaController.checkRowUsed1())}">
-                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw1}" action="#{surveyJpaController.incearseVote1()}" />
-                                  
-                                </c:if> 
-                                
-                                <c:if test="#{surveyJpaController.checkSurveyUsed() and  surveyJpaController.checkRowUsed1()}">
-                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw1}" action="#{surveyJpaController.incearseVote1()}" />
-                                       
-                                </c:if> 
-                                
-                                <c:if test="#{surveyJpaController.checkSurveyUsed()}">
-                                    <h:outputText id="voteOutput1" value="#{surveyJpaController.getRunningSurvey().anserw1votes}"/>
-                                </c:if> 
-                            </h:panelGroup>
-                            
-                        </c:if>
-                        <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw2}">
-                            <h:panelGroup>
-                                <c:if test="#{( not surveyJpaController.checkSurveyUsed())or (surveyJpaController.checkSurveyUsed() and not surveyJpaController.checkRowUsed2())}">
-                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                   
-                                </c:if> 
-                                <c:if test="#{surveyJpaController.checkSurveyUsed() and  surveyJpaController.checkRowUsed2()}">
-                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                    
-                                </c:if> 
-                                <c:if test="#{surveyJpaController.checkSurveyUsed()}">
-                                    <h:outputText id="voteOutput2" value="#{surveyJpaController.getRunningSurvey().anserw2votes}"/>
-                                </c:if> 
-                            </h:panelGroup>
-                        </c:if>
-                        <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw3}">
-                            <h:panelGroup>
-                                <c:if test="#{( not surveyJpaController.checkSurveyUsed())or (surveyJpaController.checkSurveyUsed() and not surveyJpaController.checkRowUsed3())}">
-                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                       
-                                    
-                                </c:if> 
-                                <c:if test="#{surveyJpaController.checkSurveyUsed() and  surveyJpaController.checkRowUsed3()}">
-                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                      
-                                    
-                                </c:if> 
-                                <c:if test="#{surveyJpaController.checkSurveyUsed()}">
-                                    <h:outputText id="voteOutput3" value="#{surveyJpaController.getRunningSurvey().anserw3votes}"/>
-                                </c:if> 
-                            </h:panelGroup>
-                        </c:if> 
-                      
-                        <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw4}">
+                        <c:if test="#{not  surveyJpaController.checkSurveyUsed()}"> 
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw1}">
 
-                            <h:panelGroup>
-                                <c:if test="#{( not surveyJpaController.checkSurveyUsed())or  (surveyJpaController.checkSurveyUsed() and not surveyJpaController.checkRowUsed4())}">
+                                <h:panelGroup>
+                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw1}" action="#{surveyJpaController.incearseVote1()}" />
+                                </h:panelGroup>
+
+                            </c:if>
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw2}">
+                                <h:panelGroup>
+                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                </h:panelGroup>
+                            </c:if>
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw3}">
+                                <h:panelGroup>
+                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                </h:panelGroup>
+                            </c:if> 
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw4}">
+                                <h:panelGroup>
                                     <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                      
-                                    
-                                </c:if> 
-                                
-                                <c:if test="#{ surveyJpaController.checkSurveyUsed() and  surveyJpaController.checkRowUsed4()}">
+                                </h:panelGroup>
+                            </c:if> 
+                        </c:if>
+                        <c:if test="#{  surveyJpaController.checkSurveyUsed()}"> 
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw1}">
+                                <h:panelGroup>
+                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
+                                    <h:outputText id="voteOutput1" value="#{surveyJpaController.getRunningSurvey().anserw1votes}"/>
+                                </h:panelGroup>
+                            </c:if>
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw2}">
+                                <h:panelGroup>
+                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                    <h:outputText id="voteOutput2" value="#{surveyJpaController.getRunningSurvey().anserw2votes}"/>
+                                </h:panelGroup>
+                            </c:if>
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw3}">
+                                <h:panelGroup>
+                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                    <h:outputText id="voteOutput3" value="#{surveyJpaController.getRunningSurvey().anserw3votes}"/>
+                                </h:panelGroup>
+                            </c:if> 
+                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw4}">
+                                <h:panelGroup>
                                     <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                       
-                                   
-                                </c:if> 
-                                <c:if test="#{surveyJpaController.checkSurveyUsed()}">
                                     <h:outputText id="voteOutput4" value="#{surveyJpaController.getRunningSurvey().anserw4votes}"/>
-                                </c:if> 
-                            </h:panelGroup>
-                        </c:if> 
-                      
+                                </h:panelGroup>
+                            </c:if>
+                        </c:if>
                     </h:panelGrid>
                 </h:form>
                 <img class="ad" src="ads/ad_1.png" alt="" />

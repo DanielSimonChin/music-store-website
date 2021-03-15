@@ -149,7 +149,8 @@ public class SurveyJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
-    public Survey getRunningSurvey(){
+
+    public Survey getRunningSurvey() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<Survey> survey = cq.from(Survey.class);
@@ -157,130 +158,121 @@ public class SurveyJpaController implements Serializable {
         cq.where(cb.equal(survey.get("surveryended"), 0));
         TypedQuery<Survey> query = em.createQuery(cq);
         return query.getSingleResult();
-        
+
     }
-    public String incearseVote1() throws Exception{
+
+    public String incearseVote1() throws Exception {
         incearseVote(1);
         return null;
     }
-    public String incearseVote2() throws Exception{
+
+    public String incearseVote2() throws Exception {
         incearseVote(2);
         return null;
     }
-    public String incearseVote3() throws Exception{
+
+    public String incearseVote3() throws Exception {
         incearseVote(3);
         return null;
     }
-    public String incearseVote4() throws Exception{
+
+    public String incearseVote4() throws Exception {
         incearseVote(4);
         return null;
     }
-    private void lowerRow(int rowNumber, Survey survey) throws Exception{
-        if(rowNumber==1){
-            survey.setAnserw1votes(survey.getAnserw1votes()-1);
-        }
-        else if(rowNumber==2){
-            survey.setAnserw2votes(survey.getAnserw2votes()-1);
-        }
-        else if(rowNumber==3){
-            survey.setAnserw3votes(survey.getAnserw3votes()-1);
-        }
-        else if(rowNumber==4){
-            survey.setAnserw4votes(survey.getAnserw4votes()-1);
+
+    private void lowerRow(int rowNumber, Survey survey) throws Exception {
+        if (rowNumber == 1) {
+            survey.setAnserw1votes(survey.getAnserw1votes() - 1);
+        } else if (rowNumber == 2) {
+            survey.setAnserw2votes(survey.getAnserw2votes() - 1);
+        } else if (rowNumber == 3) {
+            survey.setAnserw3votes(survey.getAnserw3votes() - 1);
+        } else if (rowNumber == 4) {
+            survey.setAnserw4votes(survey.getAnserw4votes() - 1);
         }
         edit(survey);
-        
+
     }
-    
-    private void incearseVote(int voteNumber) throws Exception{
+
+    private void incearseVote(int voteNumber) throws Exception {
         Survey survey = getRunningSurvey();
-        if(checkSurveyUsed()){
-            
-            int rowNumber = getRowNumber();
-           
-           
-            lowerRow(rowNumber,  survey);
-            increaseRow(voteNumber, survey);
-        }
-        else{
-            increaseRow(voteNumber,  survey);
-            edit(survey);
-            writeCookieSurvey();
-           
-        }
+        increaseRow(voteNumber, survey);
+        writeCookieSurvey();
         writeCookieRow(voteNumber);
-      
+
     }
-    private void increaseRow(int rowNumber, Survey survey) throws Exception{
-        if(rowNumber==1){
-            survey.setAnserw1votes(survey.getAnserw1votes()+1);
-        }
-        else if(rowNumber==2){
-            survey.setAnserw2votes(survey.getAnserw2votes()+1);
-        }
-        else if(rowNumber==3){
-            survey.setAnserw3votes(survey.getAnserw3votes()+1);
-        }
-        else if(rowNumber==4){
-            survey.setAnserw4votes(survey.getAnserw4votes()+1);
+
+    private void increaseRow(int rowNumber, Survey survey) throws Exception {
+        if (rowNumber == 1) {
+            survey.setAnserw1votes(survey.getAnserw1votes() + 1);
+        } else if (rowNumber == 2) {
+            survey.setAnserw2votes(survey.getAnserw2votes() + 1);
+        } else if (rowNumber == 3) {
+            survey.setAnserw3votes(survey.getAnserw3votes() + 1);
+        } else if (rowNumber == 4) {
+            survey.setAnserw4votes(survey.getAnserw4votes() + 1);
         }
         edit(survey);
     }
-    
-    public boolean checkSurveyUsed(){
+
+    public boolean checkSurveyUsed() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> cookieMap = context.getExternalContext().getRequestCookieMap();
         // Retrieve a specific cookie
         Object survey_cookie = context.getExternalContext().getRequestCookieMap().get("SurveyCookie");
         if (survey_cookie != null) {
             Survey survey = getRunningSurvey();
-            String surveyId = ""+survey.getSurveyid();
-            if(((Cookie) survey_cookie).getValue().equals(surveyId)){
+            String surveyId = "" + survey.getSurveyid();
+            if (((Cookie) survey_cookie).getValue().equals(surveyId)) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
         }
         return false;
     }
-    private int getRowNumber(){
+
+    private int getRowNumber() {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> cookieMap = context.getExternalContext().getRequestCookieMap();
         // Retrieve a specific cookie
         Object survey_cookie = context.getExternalContext().getRequestCookieMap().get("SurveyRowCookie");
         return Integer.parseInt(((Cookie) survey_cookie).getValue());
     }
-  
-    public boolean checkRowUsed1(){
+
+    public boolean checkRowUsed1() {
         return checkRowUsed(1);
     }
-    public boolean checkRowUsed2(){
+
+    public boolean checkRowUsed2() {
         return checkRowUsed(2);
     }
-    public boolean checkRowUsed3(){
+
+    public boolean checkRowUsed3() {
         return checkRowUsed(3);
     }
-    public boolean checkRowUsed4(){
+
+    public boolean checkRowUsed4() {
         return checkRowUsed(4);
     }
-    private boolean checkRowUsed(int rowNumber){
+
+    private boolean checkRowUsed(int rowNumber) {
         FacesContext context = FacesContext.getCurrentInstance();
         Map<String, Object> cookieMap = context.getExternalContext().getRequestCookieMap();
         // Retrieve a specific cookie
         Object survey_cookie = context.getExternalContext().getRequestCookieMap().get("SurveyRowCookie");
         if (survey_cookie != null) {
-        
-           
-            if(((Cookie) survey_cookie).getValue().equals((""+rowNumber))){
+
+            if (((Cookie) survey_cookie).getValue().equals(("" + rowNumber))) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
         }
         return false;
     }
+
     /**
      * Look for a cookie
      */
@@ -312,15 +304,15 @@ public class SurveyJpaController implements Serializable {
         writeCookieSurvey();
     }
 
-    
     public void writeCookieSurvey() {
         FacesContext context = FacesContext.getCurrentInstance();
         Survey survey = getRunningSurvey();
-        context.getExternalContext().addResponseCookie("SurveyCookie", (""+survey.getSurveyid()), null);
+        context.getExternalContext().addResponseCookie("SurveyCookie", ("" + survey.getSurveyid()), null);
     }
+
     public void writeCookieRow(int rowNumber) {
         FacesContext context = FacesContext.getCurrentInstance();
-         context.getExternalContext().addResponseCookie("SurveyRowCookie", (""+rowNumber), null);
-        
+        context.getExternalContext().addResponseCookie("SurveyRowCookie", ("" + rowNumber), null);
+
     }
 }
