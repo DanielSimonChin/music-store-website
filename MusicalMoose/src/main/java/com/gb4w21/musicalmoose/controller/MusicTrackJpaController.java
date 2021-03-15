@@ -27,6 +27,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -47,6 +48,8 @@ public class MusicTrackJpaController implements Serializable {
 
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
+
+    private MusicTrack searchedTrack;
 
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
         try {
@@ -203,13 +206,64 @@ public class MusicTrackJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
-    
+
+    /**
+     * Finds all tracks that belong to a track's album
+     *
+     * @param track
+     * @return tracks from same album
+     */
+
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
 
-        TypedQuery<MusicTrack> query = em.createQuery("SELECT m FROM MusicTrack m INNER JOIN m.albumid a where a.albumid = ?1 AND m.tracktitle != ?2", MusicTrack.class);
-        query.setParameter(1, track.getAlbumid().getAlbumid());
-        query.setParameter(2, track.getTracktitle());
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
 
-        return query.getResultList();
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+
+        //Joining the MusicTrack table to the Album table
+        Join albumsTracks = musicTrack.join("albumid");
+
+        //We want all the tracks from this album that isn't the selected track
+        cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
+
     }
+
+    /**
+     * Set the selected track and display the trackpage.xhtml
+     *
+     * @param track
+     * @return display the trackpage.xhtml
+     */
+    public String searchTrack(MusicTrack track) {
+        this.searchedTrack = track;
+        return "detailTrack";
+
+    }
+
+    /**
+     * Simple getter so the track page can access the selected track
+     *
+     * @return a track
+     */
+    public MusicTrack getMusicTrack() {
+        return this.searchedTrack;
+    }
+
+    /**
+     * When a user clicks on a related track, set the selected track and show
+     * the track page once again.
+     *
+     * @param track
+     * @return display the trackpage.xhtml
+     */
+    public String searchRelatedTrack(MusicTrack track) {
+        this.searchedTrack = track;
+        return "relatedTrack";
+    }
+
 }

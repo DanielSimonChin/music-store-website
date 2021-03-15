@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,18 +31,20 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Bannerad.findByFilename", query = "SELECT b FROM Bannerad b WHERE b.filename = :filename")})
 public class Bannerad implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Size(max = 255)
+    @Lob
+    @Size(max = 16777215)
     @Column(name = "URL")
     private String url;
+    @Size(max = 255)
+    @Column(name = "FILENAME")
+    private String filename;
+
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "BANNERADDID")
     private Integer banneraddid;
-    @Size(max = 255)
-    @Column(name = "FILENAME")
-    private String filename;
 
     public Bannerad() {
     }
@@ -50,13 +53,6 @@ public class Bannerad implements Serializable {
         this.banneraddid = banneraddid;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public Integer getBanneraddid() {
         return banneraddid;
@@ -66,13 +62,6 @@ public class Bannerad implements Serializable {
         this.banneraddid = banneraddid;
     }
 
-    public String getFilename() {
-        return filename;
-    }
-
-    public void setFilename(String filename) {
-        this.filename = filename;
-    }
 
     @Override
     public int hashCode() {
@@ -97,6 +86,22 @@ public class Bannerad implements Serializable {
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.Bannerad[ banneraddid=" + banneraddid + " ]";
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
     
 }

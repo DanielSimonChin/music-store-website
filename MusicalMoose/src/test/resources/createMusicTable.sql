@@ -94,8 +94,10 @@ RATING INT,
 REVIEWTEXT MEDIUMTEXT,
 APROVALSTATUS BIT(1),
 CLIENTID INT,
+INVENTORYID INT,
 CONSTRAINT fkclientid FOREIGN KEY (CLIENTID) REFERENCES CLIENT (CLIENTID),
-PRIMARY KEY (REVIEWID )
+CONSTRAINT fkinventoryid FOREIGN KEY (INVENTORYID) REFERENCES MUSIC_TRACK(INVENTORYID),
+PRIMARY KEY (REVIEWID)
 );
 
 CREATE TABLE CREDITCARDINFO(
@@ -343,23 +345,23 @@ INSERT INTO CLIENT (CLIENTID, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1,
 (19,"Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", 3147308600, 3817116947, "bsackeri@europa.eu", "R&B"),
 (20,"Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", 2519196520, 1782694487, "gcanbyj@creativecommons.org", "R&B");
 
-INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID) 
+INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
 VALUE 
-(1, TIMESTAMP("2020-01-01", "11:03:11"), "Alli", 9, "Great product! This Music works extremely well. It wetly improves my tennis by a lot.", 0, 1),
-(2, TIMESTAMP("2020-03-05", "08:16:34"), "Alli", 6, "Song isn’t that good to be honest", 1, 1),
-(3, TIMESTAMP("2020-11-13", "04:13:55"), "Quincey", 4, "Definitely not a great song", 1, 2),
-(4, TIMESTAMP("2021-01-09", "10:30:31"), "Alli", 5, "Heard better music in my day but its alright", 1, 1),
-(5, TIMESTAMP("2017-02-18", "04:20:00"), "Amara", 9, "one of my hobbies is programming. and when i'm programming this music works great", 1, 3),
-(6, TIMESTAMP("2019-04-16", "11:03:11"), "Lucien", 8, "Song isn’t that good to be honest", 0, 4),
-(7, TIMESTAMP("2018-06-22", "10:30:31"), "Andy", 7, "This Music works excessively well. It speedily improves my baseball by a lot. talk about surprise!!!", 1, 5),
-(8, TIMESTAMP("2018-04-14", "04:20:00"), "Andy", 9, "This Music works so well. It delightedly improves my football by a lot.", 0, 5),
-(9, TIMESTAMP("2020-08-22", "08:16:34"), "Andy", 9, "Song isn’t that good to be honest", 1, 5),
-(10, TIMESTAMP("2016-12-07", "10:30:31"), "Quincey", 8, "Song is so good. You must take a listen, you will not regret it I am sure", 1, 2),
-(11, TIMESTAMP("2020-03-08", "11:03:11"), "Alli", 9, "this Music is hyper.", 0, 1),
-(12, TIMESTAMP("2019-05-01", "04:13:55"), "Quincey",7 , "My coworker told me about this song. It is pretty good", 1, 2),
-(13, TIMESTAMP("2020-06-03", "08:16:34"), "Amara", 9, "Solid song. I put this on replay", 0, 3),
-(14, TIMESTAMP("2020-03-05", "11:03:11"), "Amara", 8, "A replay type of song wow", 1, 3),
-(15, TIMESTAMP("2020-03-05", "04:13:55"), "Quincey", 9, "AMAZING! Highly recommend taking a listen", 1, 2);
+(1, TIMESTAMP("2020-01-01", "11:03:11"), "Alli", 9, "Great product! This Music works extremely well. It wetly improves my tennis by a lot.", 0, 1, 1),
+(2, TIMESTAMP("2020-03-05", "08:16:34"), "Alli", 6, "Song isn’t that good to be honest", 1, 1, 1),
+(3, TIMESTAMP("2020-11-13", "04:13:55"), "Quincey", 4, "Definitely not a great song", 1, 2, 2),
+(4, TIMESTAMP("2021-01-09", "10:30:31"), "Alli", 5, "Heard better music in my day but its alright", 1, 1, 2),
+(5, TIMESTAMP("2017-02-18", "04:20:00"), "Amara", 9, "one of my hobbies is programming. and when i'm programming this music works great", 1, 3, 3),
+(6, TIMESTAMP("2019-04-16", "11:03:11"), "Lucien", 8, "Song isn’t that good to be honest", 0, 4, 4),
+(7, TIMESTAMP("2018-06-22", "10:30:31"), "Andy", 7, "This Music works excessively well. It speedily improves my baseball by a lot. talk about surprise!!!", 1, 5, 5),
+(8, TIMESTAMP("2018-04-14", "04:20:00"), "Andy", 9, "This Music works so well. It delightedly improves my football by a lot.", 0, 5, 6),
+(9, TIMESTAMP("2020-08-22", "08:16:34"), "Andy", 9, "Song isn’t that good to be honest", 1, 5, 7),
+(10, TIMESTAMP("2016-12-07", "10:30:31"), "Quincey", 8, "Song is so good. You must take a listen, you will not regret it I am sure", 1, 2, 8),
+(11, TIMESTAMP("2020-03-08", "11:03:11"), "Alli", 9, "this Music is hyper.", 0, 1, 9),
+(12, TIMESTAMP("2019-05-01", "04:13:55"), "Quincey",7 , "My coworker told me about this song. It is pretty good", 1, 2, 10),
+(13, TIMESTAMP("2020-06-03", "08:16:34"), "Amara", 9, "Solid song. I put this on replay", 0, 3, 11),
+(14, TIMESTAMP("2020-03-05", "11:03:11"), "Amara", 8, "A replay type of song wow", 1, 3, 12),
+(15, TIMESTAMP("2020-03-05", "04:13:55"), "Quincey", 9, "AMAZING! Highly recommend taking a listen", 1, 2, 13);
 
 INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL) VALUES
 (1, "walmartbanner.png”", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4"),
