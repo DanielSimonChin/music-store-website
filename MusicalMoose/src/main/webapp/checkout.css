@@ -1,3 +1,28 @@
+.container-info{
+    display:inline-block;
+
+    padding:10px;
+    margin:center;
+}
+
+#scrollcart{
+    overflow-y:scroll;
+    height:70%;
+}
+
+#info1{
+    margin-top:70px;
+    margin-left:40px;
+    width:30%;
+}
+
+#info2{
+    width: 45%;
+    margin-right: 10%;
+    margin-left:40px;
+    height:380px;
+}
+
 .card{
     display:inline-block;
     width:55px;
