@@ -31,7 +31,7 @@
                                 <img id="mainTrack" src="album_covers/#{detailTrack.albumimagefilenamebig}" alt="" />
                                 <table id="sameAlbum">
                                     <tr>
-                                        <th>Same album tracks</th>
+                                        <th>Album tracks</th>
                                     </tr>
 
                                     <!-- Find all the tracks that are part of this track's album -->
@@ -57,19 +57,16 @@
 
                                 <table id="albumInfo">
                                     <tr>
-                                        <th>Track Info</th>
+                                        <th>Album Info</th>
                                     </tr>
                                     <tr>
-                                        <td><u>Track title:</u> #{detailTrack.tracktitle}</td>
+                                        <td><u>Album title:</u> #{detailTrack.tracktitle}</td>
                                     </tr>
                                     <tr>
                                         <td><u>Artist:</u> #{detailTrack.artist}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>Songwriter:</u> #{detailTrack.songwriter}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><u>Play length:</u> #{detailTrack.playlength}</td>
+                                        <td><u>Release Date:</u> #{detailTrack.songwriter}</td>
                                     </tr>
                                 </table>
 
@@ -79,7 +76,7 @@
                                     <tr>
                                     </tr>
                                     <tr>
-                                        <td><u>Category:</u> #{detailTrack.musiccategory}</td>
+                                        <td><u>Recording label:</u> #{detailTrack.musiccategory}</td>
                                     </tr>
                                     <tr>
                                         <td><u>Price:</u> $#{detailTrack.listprice}</td>
@@ -88,7 +85,7 @@
                                         <td><u>Date entered into inventory:</u> #{detailTrack.dateentered}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>Sold as Individual Track or Part of Album:</u> #{detailTrack.getPartOfAlbumStringFormat()}</td>
+                                        <td><u>Number of tracks:</u> #{detailTrack.getPartOfAlbumStringFormat()}</td>
                                     </tr>
                                 </table>
 
@@ -98,9 +95,6 @@
                                     <h1 id="myList">Related Albums</h1>
 
                                     <div id="relatedAlbums" class="relBox">
-                                        <!--                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />My Turn</a>
-                                                                        <a href=""><img src="album_covers/damn_big.jpg" alt="" />Damn.</a>
-                                                                        <a href=""><img src="album_covers/scorpion_big.png" alt="" />Scorpion</a>-->
                                         <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
                                             <h:form id="form">
                                                 <h:commandLink value="#{relatedAlbums.albumtitle}" action="#">
