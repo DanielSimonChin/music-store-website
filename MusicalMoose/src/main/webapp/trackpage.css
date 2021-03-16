@@ -25,7 +25,7 @@
   }
   
   #albumInfo{
-      margin-left: 80px;
+      /*margin-left: 80px;*/
       font-size:10px;
   }
   
@@ -34,7 +34,7 @@
   }
   
   #albumInfoExtra{
-      margin-left: 70px;
+      /*margin-left: 70px;*/
       font-size:10px;
   }
   
@@ -86,7 +86,6 @@
   }
   
   table{
-    width:100%;
     text-align: left;
   }
   

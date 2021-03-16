@@ -9,157 +9,135 @@
     <head>
 
         <title>Musical Moose</title>
-        <link rel="stylesheet" href="trackpage.css"/>
 
     </head>
 
-    <body>
+    <h:body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="trackpage.css"/>
 
-        <div class="wrapper">
-            <!-- HEADER -->
-            <header>
+                <div class="wrapper">
+                    <section class="main-container">
 
-                <div class="weblogo">
-                    <a id="logo" href="/MusicalMoose/"><b class="left-logo">Musical Moose</b></a>
-                </div>
-                <nav class="main-nav">
-                    <a><i class="fas fa-search sub-nav-logo" /> <input type="text" placeholder="Search ..." /> <select name="criteria" id="criteria">
-                            <option value="track">Track name</option>
-                            <option value="album">Album title</option>
-                            <option value="date">Date</option>
-                            <option value="artist">Artist</option>
-                        </select> <input type="submit" value="Search" /></a>
-                </nav>
-                <nav class="sub-nav">
-                    <a href="#">Log in / Create an account</a>
-                </nav>
-            </header>
-            <!-- END OF HEADER -->
-            <!-- MAIN CONTAINER -->
-            <section class="main-container">
+                        <div class="location" id="home">
 
-                <div class="location" id="home">
+                            <!-- A global variable representing the MusicTrack object being shown on this page -->
+                            <ui:param name="detailTrack" value="#{musicTrackJpaController.getMusicTrack()}" />
 
-                    <!-- A global variable representing the MusicTrack object being shown on this page -->
-                    <ui:param name="detailTrack" value="#{musicTrackJpaController.getMusicTrack()}" />
+                            <h1 id="track">#{detailTrack.tracktitle}</h1>
 
-                    <h1 id="track">#{detailTrack.tracktitle}</h1>
+                            <div class="box">
+                                <img id="mainTrack" src="album_covers/#{detailTrack.albumimagefilenamebig}" alt="" />
+                                <table id="sameAlbum">
+                                    <tr>
+                                        <th>Same album tracks</th>
+                                    </tr>
 
-                    <div class="box">
-                        <img id="mainTrack" src="album_covers/#{detailTrack.albumimagefilenamebig}" alt="" />
-                        <table id="sameAlbum">
-                            <tr>
-                                <th>Same album tracks</th>
-                            </tr>
+                                    <!-- Find all the tracks that are part of this track's album -->
+                                    <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(detailTrack)}" var="relatedTracks">
+                                        <tr>
+                                            <th>
+                                                <h:form>
+                                                    <!-- Create a link that brings the user to the track page of the related track from the same album-->
+                                                    <h:commandLink value="#{relatedTracks.tracktitle}" action="#{musicTrackJpaController.searchRelatedTrack(relatedTracks)}">
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </th>
+                                        </tr>
+                                    </ui:repeat>
 
-                            <!-- Find all the tracks that are part of this track's album -->
-                            <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(detailTrack)}" var="relatedTracks">
-                                <tr>
-                                    <th>
-                                        <h:form>
-                                            <!-- Create a link that brings the user to the track page of the related track from the same album-->
-                                            <h:commandLink value="#{relatedTracks.tracktitle}" action="#{musicTrackJpaController.searchRelatedTrack(relatedTracks)}">
-                                            </h:commandLink>
-                                        </h:form>
-                                    </th>
-                                </tr>
-                            </ui:repeat>
+                                    <div id="shopCart">
+                                        <button>
+                                            <img src="icons/shopping-cart.png"/>
+                                            <p>Add to cart</p>  
+                                        </button>
+                                    </div>
+                                </table>
 
-                            <div id="shopCart">
-                                <button>
-                                    <img src="icons/shopping-cart.png"/>
-                                    <p>Add to cart</p>  
-                                </button>
+                                <table id="albumInfo">
+                                    <tr>
+                                        <th>Album Info</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Track title : #{detailTrack.tracktitle}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Artist : #{detailTrack.artist}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Songwriter : #{detailTrack.songwriter}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Play length : #{detailTrack.playlength}</td>
+                                    </tr>
+                                </table>
+
+                                <table id="albumInfoExtra">
+                                    <tr>
+                                    </tr>
+                                    <tr>
+                                    </tr>
+                                    <tr>
+                                        <td>Category: #{detailTrack.musiccategory}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Price : $#{detailTrack.listprice}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date entered into inventory : #{detailTrack.dateentered}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sold as Individual Track or Part of Album: #{detailTrack.getPartOfAlbumStringFormat()}</td>
+                                    </tr>
+                                </table>
+
+                                <br></br>
+
+                                <div id="relAlb">
+                                    <h1 id="myList">Related Albums</h1>
+
+                                    <div id="relatedAlbums" class="relBox">
+                                        <!--                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />My Turn</a>
+                                                                        <a href=""><img src="album_covers/damn_big.jpg" alt="" />Damn.</a>
+                                                                        <a href=""><img src="album_covers/scorpion_big.png" alt="" />Scorpion</a>-->
+                                        <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
+                                            <h:form id="form">
+                                                <h:commandLink value="#{relatedAlbums.albumtitle}" action="#">
+                                                    <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
+                                                </h:commandLink>
+                                            </h:form>
+                                        </ui:repeat>
+                                    </div> 
+                                </div>
+
+
                             </div>
-                        </table>
 
-                        <table id="albumInfo">
-                            <tr>
-                                <th>Album Info</th>
-                            </tr>
-                            <tr>
-                                <td>Track title : #{detailTrack.tracktitle}</td>
-                            </tr>
-                            <tr>
-                                <td>Artist : #{detailTrack.artist}</td>
-                            </tr>
-                            <tr>
-                                <td>Songwriter : #{detailTrack.songwriter}</td>
-                            </tr>
-                            <tr>
-                                <td>Play length : #{detailTrack.playlength}</td>
-                            </tr>
-                        </table>
 
-                        <table id="albumInfoExtra">
-                            <tr>
-                            </tr>
-                            <tr>
-                            </tr>
-                            <tr>
-                                <td>Category: #{detailTrack.musiccategory}</td>
-                            </tr>
-                            <tr>
-                                <td>Price : $#{detailTrack.listprice}</td>
-                            </tr>
-                            <tr>
-                                <td>Date entered into inventory : #{detailTrack.dateentered}</td>
-                            </tr>
-                            <tr>
-                                <td>Sold as Individual Track or Part of Album: #{detailTrack.getPartOfAlbumStringFormat()}</td>
-                            </tr>
-                        </table>
-
-                        <br></br>
-                        
-                        <div id="relAlb">
-                            <h1 id="myList">Related Albums</h1>
-
-                            <div id="relatedAlbums" class="relBox">
-                                <!--                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />My Turn</a>
-                                                                <a href=""><img src="album_covers/damn_big.jpg" alt="" />Damn.</a>
-                                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Scorpion</a>-->
-                                <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
-                                    <h:form id="form">
-                                        <h:commandLink value="#{relatedAlbums.albumtitle}" action="#">
-                                            <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
-                                        </h:commandLink>
-                                    </h:form>
-                                </ui:repeat>
-                            </div> 
                         </div>
 
 
-                    </div>
 
+                        <div class="ratings">
+                            <h1>Reviews</h1>
 
-                </div>
+                            <ui:repeat value="#{reviewJpaController.getTrackReviews(detailTrack)}" var="trackReviews">
+                                <div class="rating">
+                                    <hr/>
+                                    <h3>#{trackReviews.reviewtext}</h3>
 
+                                    <small>from <u>#{trackReviews.clientname}</u></small>
+                                    <h3>#{trackReviews.rating}/10 rating</h3>
 
-
-                <div class="ratings">
-                    <h1>Reviews</h1>
-
-                    <ui:repeat value="#{reviewJpaController.getTrackReviews(detailTrack)}" var="trackReviews">
-                        <div class="rating">
-                            <hr/>
-                            <h3>#{trackReviews.reviewtext}</h3>
-
-                            <small>from <u>#{trackReviews.clientname}</u></small>
-                            <h3>#{trackReviews.rating}/10 rating</h3>
-                            
-                            <small>Written on: #{trackReviews.reviewdate}</small>
+                                    <small>Written on: #{trackReviews.reviewdate}</small>
+                                </div>
+                            </ui:repeat>
                         </div>
-                    </ui:repeat>
+                    </section>
                 </div>
-
-                <!-- END OF MAIN CONTAINER -->
-                <!-- END OF LINKS -->
-                <!-- FOOTER -->
-                <footer>
-
-                    <p>© 2021 Musical Moose</p>
-                </footer>
-            </section></div></body>
+            </ui:define>
+        </ui:composition>
+    </h:body>
 
 </html>
