@@ -89,6 +89,20 @@
     text-align: left;
   }
   
+    input[type=text]{
+      background-color:#161616;
+      border:transparent;
+      color:white;
+      border-bottom: solid;
+      border-bottom-color: #575757;
+  }
+
+  input[type=submit]{
+    background-color:#575757;
+    border:transparent;
+    color:white;
+  }
+  
       table a{
         text-decoration: underline !important;
         color:blue;
