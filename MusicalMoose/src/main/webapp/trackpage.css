@@ -25,7 +25,7 @@
   }
   
   #albumInfo{
-      margin-left: 80px;
+      /*margin-left: 80px;*/
       font-size:10px;
   }
   
@@ -34,7 +34,7 @@
   }
   
   #albumInfoExtra{
-      margin-left: 30px;
+      /*margin-left: 70px;*/
       font-size:10px;
   }
   
@@ -45,6 +45,7 @@
   #relatedAlbums{
       width:100%;
       margin:auto;
+      margin-left:60px;
   }
   
   #shopCart p{
@@ -54,7 +55,12 @@
   }
   
   #shopCart{
-      margin-top:20px;
+      margin-left: 60px;
+      margin-top:10px;
+  }
+  
+  #relAlb{
+      margin-left:-60px;
   }
   
   button{
@@ -80,7 +86,6 @@
   }
   
   table{
-    width:100%;
     text-align: left;
   }
   
@@ -435,6 +440,18 @@
       -webkit-transform: scale(1);  
       transform: scale(1.2);
     }
+    
+      
+  .box form{
+      transition: transform .3s;
+  }
+  
+  .box form:hover{
+    transition: transform .3s;
+    -ms-transform: scale(1.4);
+    -webkit-transform: scale(1.4);  
+    transform: scale(1.4);
+  }
   
     .logos {
       display: grid;
