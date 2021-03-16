@@ -54,7 +54,7 @@
                             </tr>
                            
                       
-                                <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(tracks)}" var="relatedTracks">
+                                <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(detailTrack)}" var="relatedTracks">
                                     <tr>
                                         <th>#{relatedTracks.tracktitle}</th>
                                     </tr>

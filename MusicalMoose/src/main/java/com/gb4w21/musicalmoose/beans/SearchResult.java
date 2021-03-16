@@ -29,22 +29,40 @@ public class SearchResult {
    private Date releasedate;
    private String artist;
    private String musiccategory;
+   private int inventoryid;
+   private int albumid;
+   
     public SearchResult() {
     }
-    
-    public SearchResult(String tracktitle, String musiccategory, String artist, Date releasedate,String albumimagefilenamesmall ) {
+  
+    public SearchResult(String tracktitle, String musiccategory, String artist, Date releasedate,String albumimagefilenamesmall,  int inventoryid) {
         this.tracktitle=tracktitle;
         this.musiccategory=musiccategory;
         this.artist=artist;
         this.releasedate=releasedate;
         this.albumimagefilenamesmall=albumimagefilenamesmall;
+        this.inventoryid = inventoryid;
     }
-    public SearchResult(String albumtitle, Date releasedate, String artist, String musiccategory,String albumimagefilenamesmall ) {
+    public SearchResult(String albumtitle, Date releasedate, String artist, String musiccategory,String albumimagefilenamesmall, int albumid) {
         this.albumtitle=albumtitle;
         this.musiccategory=musiccategory;
         this.artist=artist;
         this.releasedate=releasedate;
         this.albumimagefilenamesmall=albumimagefilenamesmall;
+        this.albumid = albumid;
+    }
+
+    public int getInventoryid(){
+        return inventoryid;
+    }
+    public int getAlbumid(){
+        return albumid;
+    }
+    public void setInventoryid(int inventoryid){
+        this.inventoryid=inventoryid;
+    }
+    public void setAlbumid(int albumid){
+        this.albumid=albumid;
     }
    public String getAlbumimagefilenamesmall(){
        return albumimagefilenamesmall;
@@ -82,5 +100,14 @@ public class SearchResult {
    public void setMusiccategory(String musiccategory){
        this.musiccategory=musiccategory;
    }
-   
+   public String getTitle(){
+       if (tracktitle!=null&& !tracktitle.equals("")){
+           return tracktitle;
+       }
+       if (albumtitle!=null&& !albumtitle.equals("")){
+           return albumtitle;
+       }
+       return "";
+   }
+  
 }

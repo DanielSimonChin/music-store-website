@@ -21,7 +21,20 @@
             <to-view-id>trackpage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
+    <navigation-rule>
+        <from-view-id>searchPage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>searchTrack</from-outcome>
+            <to-view-id>trackpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>searchPage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>searchAlbum</from-outcome>
+            <to-view-id>albumpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     <navigation-rule>
         <from-view-id>trackpage.xhtml</from-view-id>
         <navigation-case>
@@ -29,5 +42,11 @@
             <to-view-id>trackpage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-
+    <navigation-rule>
+        <from-view-id>index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reloadindex</from-outcome>
+            <to-view-id>index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

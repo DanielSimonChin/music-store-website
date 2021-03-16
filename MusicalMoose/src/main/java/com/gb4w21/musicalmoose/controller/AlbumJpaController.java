@@ -45,7 +45,7 @@ public class AlbumJpaController implements Serializable {
 
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
-
+    private Album searchedAlbum;
     public void create(Album album) throws RollbackFailureException {
         if (album.getMusicTrackList() == null) {
             album.setMusicTrackList(new ArrayList<MusicTrack>());
@@ -198,7 +198,22 @@ public class AlbumJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
+    public String searchAlbum(Album album){
+        this.searchedAlbum = album;
+        return "detailAblum";
 
+    }
+    public String searchSingleAlbum(int id){
+        this.searchedAlbum = findAlbum(id);
+        return "searchAblum";
+
+    }
+    public Album getAlbum() {
+        return this.searchedAlbum;
+    }
+    public void setAlbum(Album album) {
+        this.searchedAlbum=album;
+    }
     /**
      * The track page will show 3 albums from other artists that are part of the
      * same category

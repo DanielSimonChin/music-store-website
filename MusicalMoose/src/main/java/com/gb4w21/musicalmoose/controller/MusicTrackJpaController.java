@@ -216,7 +216,7 @@ public class MusicTrackJpaController implements Serializable {
 
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-
+        
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
 
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
@@ -244,7 +244,14 @@ public class MusicTrackJpaController implements Serializable {
         return "detailTrack";
 
     }
-
+    
+    public String searchSingleTrack(int id){
+        
+        this.searchedTrack = findMusicTrack(id);
+        
+     
+        return "searchTrack";
+    }
     /**
      * Simple getter so the track page can access the selected track
      *
@@ -253,7 +260,9 @@ public class MusicTrackJpaController implements Serializable {
     public MusicTrack getMusicTrack() {
         return this.searchedTrack;
     }
-
+    public void setMusicTrack(MusicTrack musicTrack) {
+        this.searchedTrack = musicTrack; 
+    }
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.

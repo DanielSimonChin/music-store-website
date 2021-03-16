@@ -18,15 +18,34 @@
             <section class="main-container">
                 <div class="box">
 
-                    <ui:repeat value="#{searchController.searchResults}" var="searchResults">
-                        <h:form id="form">
-            <!--                     <a value="tracks" href="trackpage.xhtml"><img src="album_covers/#{searchResults.albumimagefilenamebig}" alt="" />#{searchResults.tracktitle}</a>-->
-                            <h:commandLink value="#{searchResults.tracktitle}" action="trackpage.xhtml">
 
-                                <h:graphicImage value="album_covers/#{searchResults.albumimagefilenamesmall}" />
+                    <ui:repeat value="#{searchController.searchResultsTrack}" var="searchResultsTrack">
+
+                        <h:form id="formtrack">
+
+                            <h:commandLink value="#{searchResultsTrack.title }" action="#{musicTrackJpaController.searchSingleTrack(searchResultsTrack.inventoryid)}">
+                                <h:outputText value="#{searchResultsTrack.artist}"/>
+                                <h:outputText value="#{searchResultsTrack.musiccategory}"/>
+                                <h:outputText value="#{searchResultsTrack.releasedate}"/>
+                                <h:graphicImage value="album_covers/#{searchResultsTrack.albumimagefilenamesmall}" />
                             </h:commandLink>
+
                         </h:form>
                     </ui:repeat>
+                    <ui:repeat value="#{searchController.searchResultsAlbum}" var="searchResultsAlbum">
+                        <h:form id="formalbum">
+
+                            <h:commandLink value="#{searchResultsAlbum.title }" action="#{albumJpaController.searchSingleAlbum(searchResultsAlbum.albumid)}">
+                                <h:outputText value="#{searchResultsAlbum.artist}"/>
+                                <h:outputText value="#{searchResultsAlbum.musiccategory}"/>
+                                <h:outputText value="#{searchResultsAlbum.releasedate}"/>
+                                <h:graphicImage value="album_covers/#{searchResultsAlbum.albumimagefilenamesmall}" />
+                            </h:commandLink>
+
+                        </h:form>
+
+                    </ui:repeat>
+
                 </div>
             </section>
         </div>

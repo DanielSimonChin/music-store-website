@@ -163,22 +163,22 @@ public class SurveyJpaController implements Serializable {
 
     public String incearseVote1() throws Exception {
         incearseVote(1);
-        return null;
+        return "reloadindex";
     }
 
     public String incearseVote2() throws Exception {
         incearseVote(2);
-        return null;
+        return "reloadindex";
     }
 
     public String incearseVote3() throws Exception {
         incearseVote(3);
-        return null;
+        return "reloadindex";
     }
 
     public String incearseVote4() throws Exception {
         incearseVote(4);
-        return null;
+        return "reloadindex";
     }
 
     private void lowerRow(int rowNumber, Survey survey) throws Exception {

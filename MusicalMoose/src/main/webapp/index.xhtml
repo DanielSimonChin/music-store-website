@@ -37,9 +37,11 @@
                                 <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
                                 <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
                                 <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
-
-                            </h:selectOneMenu> <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/>
+                               
+                            </h:selectOneMenu> <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> <h:outputText value="#{searchController.errorMessage}"/>
+                            
                         </h:form>
+                        
                     </a>
                 </nav>
                 <nav class="sub-nav">
@@ -51,7 +53,7 @@
             <section class="main-container">
 
                 <div class="location" id="home">
-
+                    <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
                     <h1 id="home">Music specials of the day</h1>
 
                     <div class="box">
@@ -91,54 +93,54 @@
                 </div>
                 <h:form>
                     <h:panelGrid columns="1">
-                        <h3 id="myList">#{surveyJpaController.getRunningSurvey().question}</h3>
+                        <h3 id="myList">#{survey.question}</h3>
                         <c:if test="#{not  surveyJpaController.checkSurveyUsed()}"> 
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw1}">
+                            <c:if test="#{not empty survey.anserw1}">
 
                                 <h:panelGroup>
-                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw1}" action="#{surveyJpaController.incearseVote1()}" />
+                                    <h:commandButton value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
                                 </h:panelGroup>
 
                             </c:if>
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw2}">
+                            <c:if test="#{not empty survey.anserw2}">
                                 <h:panelGroup>
-                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                    <h:commandButton value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
                                 </h:panelGroup>
                             </c:if>
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw3}">
+                            <c:if test="#{not empty survey.anserw3}">
                                 <h:panelGroup>
-                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                    <h:commandButton value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
                                 </h:panelGroup>
                             </c:if> 
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw4}">
+                            <c:if test="#{not empty survey.anserw4}">
                                 <h:panelGroup>
-                                    <h:commandButton value="#{surveyJpaController.getRunningSurvey().anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                    <h:commandButton value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
                                 </h:panelGroup>
                             </c:if> 
                         </c:if>
                         <c:if test="#{  surveyJpaController.checkSurveyUsed()}"> 
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw1}">
+                            <c:if test="#{not empty survey.anserw1}">
                                 <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
-                                    <h:outputText id="voteOutput1" value="#{surveyJpaController.getRunningSurvey().anserw1votes}"/>
+                                    <h:commandButton disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
+                                    <h:outputText id="voteOutput1" value="#{survey.anserw1votes}"/>
                                 </h:panelGroup>
                             </c:if>
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw2}">
+                            <c:if test="#{not empty survey.anserw2}">
                                 <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                    <h:outputText id="voteOutput2" value="#{surveyJpaController.getRunningSurvey().anserw2votes}"/>
+                                    <h:commandButton disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                    <h:outputText id="voteOutput2" value="#{survey.anserw2votes}"/>
                                 </h:panelGroup>
                             </c:if>
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw3}">
+                            <c:if test="#{not empty survey.anserw3}">
                                 <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                    <h:outputText id="voteOutput3" value="#{surveyJpaController.getRunningSurvey().anserw3votes}"/>
+                                    <h:commandButton disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                    <h:outputText id="voteOutput3" value="#{survey.anserw3votes}"/>
                                 </h:panelGroup>
                             </c:if> 
-                            <c:if test="#{not empty surveyJpaController.getRunningSurvey().anserw4}">
+                            <c:if test="#{not empty survey.anserw4}">
                                 <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{surveyJpaController.getRunningSurvey().anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                    <h:outputText id="voteOutput4" value="#{surveyJpaController.getRunningSurvey().anserw4votes}"/>
+                                    <h:commandButton disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                    <h:outputText id="voteOutput4" value="#{survey.anserw4votes}"/>
                                 </h:panelGroup>
                             </c:if>
                         </c:if>
