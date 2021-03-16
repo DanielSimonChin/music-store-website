@@ -1,3 +1,26 @@
+.card{
+    display:inline-block;
+    width:55px;
+    filter: invert(85%) sepia(38%) saturate(253%) hue-rotate(27deg) brightness(107%) contrast(94%);
+    cursor:pointer;
+    margin-right:5px;
+    margin-top:10px;
+}
+
+.card:hover{
+    width:60px;
+    margin-right:0px;
+    margin-top:5px;
+}
+
+.card:active{
+    filter: invert(34%) sepia(34%) saturate(4233%) hue-rotate(212deg) brightness(89%) contrast(86%);
+}
+
+input[type=radio]{
+    visibility: hidden;
+}
+
 /* CSS VARIABLES */
 :root {
     --primary: #161616;
