@@ -17,6 +17,10 @@
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="frontdoor.css"/>
+                
+<!--                <f:metadata>
+                    <<f:event type="preRenderView" listener="#{preRenderViewBean.checkCookies}" />
+                </f:metadata>-->
 
                 <div class="wrapper">
                     <!-- MAIN CONTAINER -->
@@ -25,6 +29,21 @@
                         <div class="location" id="home">
 
                             <h1 id="home">Music specials of the day</h1>
+
+                            <div class="box">
+                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
+                                <a href=""><img src="album_covers/damn_big.jpg" alt="" />BLOOD.</a>
+                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Survival</a>
+                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Nonstop</a>
+                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
+                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />How</a>
+                            </div>
+                        </div>
+                        
+                        <!--Only if has cookie-->
+                        <div class="location" id="home">
+
+                            <h1 id="home">Just for you</h1>
 
                             <div class="box">
                                 <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
