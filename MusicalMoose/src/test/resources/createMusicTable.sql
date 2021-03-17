@@ -198,7 +198,7 @@ VALUES
 
 INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,REMOVALSTATUS, REMOVALDATE ) values
 (1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 19.99, 17.99, 15.99, 0.42, 0.45,0.49, 1, null),
-(2, "DAMN”", TIMESTAMP("2017-04-14",  "00:00:00"), "Kendrick Lamar", "Top Dawg Entertainment", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "damn_big.jpg","damn_small.png",21.99, 22.99, 17.99, 0.42, 0.45,0.49, 1, null),
+(2, "DAMN", TIMESTAMP("2017-04-14",  "00:00:00"), "Kendrick Lamar", "Top Dawg Entertainment", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "damn_big.jpg","damn_small.png",21.99, 22.99, 17.99, 0.42, 0.45,0.49, 1, null),
 (3, "THE GOAT", TIMESTAMP("2020-05-15",  "00:00:00"), "Polo G", "Columbia Records", 16, TIMESTAMP("2021-02-13",  "00:00:00"), "the_goat_big.png","the_goat_small.png",15.23, 17.99, 11.01, 0.42, 0.45,0.49, 1, null),
 (4, "Scorpion", TIMESTAMP("2018-06-29",  "00:00:00"), "Drake", "Cash Money", 25, TIMESTAMP("2021-02-13",  "00:00:00"), "scorpion_big.png","scorpion_small.jpg",25.12, 25.00, 18.75, 0.42, 0.45,0.49, 1, null),
 (5, "CASE STUDY 01", TIMESTAMP("2019-06-28",  "00:00:00"), "Daniel Caesar", "Golden Child", 10, TIMESTAMP("2021-02-13",  "00:00:00"), "CaseStudy01-Big.jpg","CaseStudy01-Small.jpg",22.45, 20.00, 16.78, 0.5, 0.35,0.25, 1, null),
