@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <head>
+        <title>Musical Moose - Invoice</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="invoice.css"/>
+                <h1 id="title"> Invoice</h1>                
+                <button id="printBtn">
+                    Print
+                </button>
+                <br/>
+                <div id="invoiceContainer">
+                    <h1 id="title"><u>Musical Moose</u></h1>
+                    <p><b>Sale number: 123</b></p>
+                    <p><b>Client number: 123</b></p>
+                    <p><b>Date of sale: 2021-03-16</b></p>
+                    <p>---</p>
+                    <p><b>Total net value of the sale: $123.00</b></p>
+                    <p><b>PST: $123.00</b></p>
+                    <p><b>GST: $123.00</b></p>
+                    <p><b>HST: $123.00</b></p>
+                    <p><b>Total gross value of the sale: $123.00</b></p>
+                    <br/>
+                    <br/>
+                </div>
+                <script src="./invoice.js"></script>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
