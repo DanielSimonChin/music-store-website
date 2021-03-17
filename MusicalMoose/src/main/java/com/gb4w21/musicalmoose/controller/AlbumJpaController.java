@@ -46,6 +46,8 @@ public class AlbumJpaController implements Serializable {
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
+    private Album selectedAlbum;
+
     public void create(Album album) throws RollbackFailureException {
         if (album.getMusicTrackList() == null) {
             album.setMusicTrackList(new ArrayList<MusicTrack>());
@@ -208,7 +210,7 @@ public class AlbumJpaController implements Serializable {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
-        
+
         Root<Album> album = cq.from(Album.class);
 
         Join albumsTracks = album.join("musicTrackList");
@@ -218,6 +220,78 @@ public class AlbumJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList().subList(0, 3);
+    }
+
+    /**
+     * Overloaded method that finds all related albums given an input album
+     *
+     * @param album
+     * @return all related albums in that music category
+     */
+    public List<Album> findRelatedAlbums(Album album) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Album> cq = cb.createQuery(Album.class);
+
+        Root<Album> albums = cq.from(Album.class);
+
+        Join albumsTracks = albums.join("musicTrackList");
+
+        cq.where(cb.equal(albumsTracks.get("musiccategory"), album.getMusicTrackList().get(0).getMusiccategory()), cb.notEqual(albums.get("albumid"), album.getAlbumid()),
+                cb.notEqual(albums.get("artist"), album.getArtist())).distinct(true);
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList().subList(0, 3);
+    }
+
+    /**
+     * Set the selected album into the private variable and return the
+     * navigation rule to display the album page.
+     *
+     * @param album
+     * @return the view for the album page.
+     */
+    public String selectAlbum(Album album) {
+        this.selectedAlbum = album;
+        return "detailAlbum";
+    }
+    
+
+    /**
+     * @return The selected album to be displayed in the album page.
+     */
+    public Album getSelectedAlbum() {
+        return this.selectedAlbum;
+    }
+    
+    public String showRelatedAlbum(Album album){
+        this.selectedAlbum = album;
+        return "relatedAlbumFromAlbum";        
+    }
+
+    /**
+     * Retrieves an album's tracks in a list of MusicTrack objects
+     *
+     * @param albumId
+     * @return all the tracks in the album
+     */
+    public List<MusicTrack> getAlbumTracks(int albumId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+
+        Root<MusicTrack> track = cq.from(MusicTrack.class);
+
+        //Joining the Album table to the MusicTrack table
+        Join albumTracks = track.join("albumid");
+
+        //We want all the tracks from this album that isn't the selected track
+        cq.where(cb.equal(albumTracks.get("albumid"), albumId));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
     }
 
 }

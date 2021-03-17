@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <head>
 
@@ -98,12 +99,9 @@
                                     <h1 id="myList">Related Albums</h1>
 
                                     <div id="relatedAlbums" class="relBox">
-                                        <!--                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />My Turn</a>
-                                                                        <a href=""><img src="album_covers/damn_big.jpg" alt="" />Damn.</a>
-                                                                        <a href=""><img src="album_covers/scorpion_big.png" alt="" />Scorpion</a>-->
                                         <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
                                             <h:form id="form">
-                                                <h:commandLink value="#{relatedAlbums.albumtitle}" action="#">
+                                                <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.selectAlbum(relatedAlbums)}">
                                                     <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
                                                 </h:commandLink>
                                             </h:form>
@@ -122,15 +120,23 @@
                         <div class="ratings">
                             <h1>Reviews</h1>
 
+
+
                             <ui:repeat value="#{reviewJpaController.getTrackReviews(detailTrack)}" var="trackReviews">
+
+
                                 <div class="rating">
+
                                     <hr/>
-                                    <h3>#{trackReviews.reviewtext}</h3>
+                                    <h3>"#{trackReviews.reviewtext}"</h3>
 
                                     <small>from <u>#{trackReviews.clientname}</u></small>
                                     <h3>#{trackReviews.rating}/10 rating</h3>
 
                                     <small>Written on: #{trackReviews.reviewdate}</small>
+
+
+
                                 </div>
                             </ui:repeat>
                         </div>
