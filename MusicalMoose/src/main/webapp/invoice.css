@@ -1,56 +1,3 @@
-.container-info{
-    display:inline-block;
-
-    padding:10px;
-    margin:center;
-}
-
-#title{
-    text-align: center;
-    margin-bottom:-30px;
-}
-
-#scrollcart{
-    overflow-y:scroll;
-    height:70%;
-}
-
-#info1{
-    margin-top:70px;
-    margin-left:40px;
-    width:30%;
-}
-
-#info2{
-    width: 45%;
-    margin-right: 10%;
-    margin-left:40px;
-    height:380px;
-}
-
-.card{
-    display:inline-block;
-    width:55px;
-    filter: invert(85%) sepia(38%) saturate(253%) hue-rotate(27deg) brightness(107%) contrast(94%);
-    cursor:pointer;
-    margin-right:5px;
-    margin-top:10px;
-}
-
-.card:hover{
-    width:60px;
-    margin-right:0px;
-    margin-top:5px;
-}
-
-.card:active{
-    filter: invert(34%) sepia(34%) saturate(4233%) hue-rotate(212deg) brightness(89%) contrast(86%);
-}
-
-input[type=radio]{
-    margin-right:35px;
-}
-
 /* CSS VARIABLES */
 :root {
     --primary: #161616;
@@ -58,7 +5,24 @@ input[type=radio]{
     --dark: 	#575757;
   }
 
-    
+  #title{
+      text-align: center;
+  }  
+  
+  button{
+      display:block;
+      width:40px;
+      margin:auto;
+  }
+  
+  #invoiceContainer{
+      border:solid;
+      border-color:white;
+      margin:auto;
+      width:90%;
+      text-align: center;
+  }
+  
   .box form{
       transition: transform .3s;
   }
