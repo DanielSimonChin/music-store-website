@@ -7,6 +7,7 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
+import com.gb4w21.musicalmoose.entities.Album;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -22,6 +23,7 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
 import javax.transaction.HeuristicMixedException;
@@ -195,6 +197,30 @@ public class ReviewJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList();
+    }
+
+    /**
+     * Returns all the review objects for an album's tracks
+     *
+     * @param album
+     * @return A list if Review objects
+     */
+    public List<Review> getAlbumTrackReviews(Album album) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Review> cq = cb.createQuery(Review.class);
+
+        Root<Review> review = cq.from(Review.class);
+
+        Join reviewTrack = review.join("inventoryid");
+
+        //We only want the reviews whose tracks are part of the given album. Only want reviews approved by admin
+        cq.where(cb.equal(reviewTrack.get("albumid").get("albumid"), album.getAlbumid()), cb.equal(review.get("aprovalstatus"), 1));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
+
     }
 
 }

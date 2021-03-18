@@ -12,22 +12,77 @@
         <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
 
     </head>
-    
-     <h:body>
+
+    <h:body>
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
-                <!--<link rel="stylesheet" href="frontdoor.css"/>-->
-                
-<!--                <div>
-                    <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
-                        <h:form>
-                            <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
-                                <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
-                            </h:commandLink>
-                        </h:form>
-                    </ui:repeat>
-                </div>-->
->
+                <link rel="stylesheet" href="checkout.css"/>
+                <h1 id="title">Shopping Cart</h1>
+
+                <!--                <div>
+                                    <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
+                                        <h:form>
+                                            <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
+                                                <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
+                                            </h:commandLink>
+                                        </h:form>
+                                    </ui:repeat>
+                                </div>-->
+                <div id="info1" class="container-info">
+                    <form>
+
+                        <div class="row">
+                            <h3>Payment</h3>
+                            <label for="fname">Select Card</label>
+                            <div class="icon-container">
+                                <label for="mastercardcheck">
+                                    <img class="card" src="./icons/cc-mastercard-brands.svg"/>
+                                </label>
+                                <label for="visacheck">
+                                    <img class="card" src="./icons/cc-visa-brands.svg"/>
+                                </label>
+                                <br></br>
+                                <input type="radio" id="mastercardcheck" name="cardcheck" value="mastercard"/>
+                                <input type="radio" id="visacheck" name="cardcheck" value="visa"/>
+                            </div>
+                            <label for="cname">Name On Card</label>
+                            <input type="text" id="cname" name="cardname" placeholder="Mike Smith"/>
+                            <br></br>
+                            <br></br>
+                            <label for="ccnum">Credit Card Number</label>
+                            <input type="text" id="ccnum" name="cardnumber" placeholder="XXXX-XXXX-XXXX-XXXX"/>
+                            <br></br>
+                            <br></br>
+                            <label for="expmonth">Expiration Month</label>
+                            <input type="text" id="expmonth" name="expmonth" placeholder="November"/>
+                            <br></br>
+                            <br></br>
+                            <label for="expyear">Expiration Year</label>
+                            <input type="text" id="expyear" name="expyear" placeholder="2021"/>
+
+                        </div>
+                        <br></br>
+                        <input type="submit" value="Purchase" class="btn-sub"/>
+                    </form>
+                </div>
+
+                <div id="info2" class="container-info">
+                    <h4>Cart</h4>
+                    <div id="scrollcart">
+                        <p><a href="#">Product 1</a> <span class="price">$15</span></p>
+                        <p><a href="#">Product 2</a> <span class="price">$5</span></p>
+                        <p><a href="#">Product 3</a> <span class="price">$8</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                    </div>
+
+                    <p>Total <span class="price"><b>$30</b></span></p>
+                </div>
             </ui:define>
         </ui:composition>
     </h:body>
