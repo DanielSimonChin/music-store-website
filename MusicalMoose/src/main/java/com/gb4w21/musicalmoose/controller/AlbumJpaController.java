@@ -204,7 +204,9 @@ public class AlbumJpaController implements Serializable {
     
     public String searchSingleAlbum(int id){
         this.selectedAlbum = findAlbum(id);
-        return "searchAblum";
+  
+        
+        return "albumpage";
 
     }
    
@@ -273,7 +275,12 @@ public class AlbumJpaController implements Serializable {
     public Album getSelectedAlbum() {
         return this.selectedAlbum;
     }
-    
+    /**
+     * @param album The selected album to be displayed in the album page.
+     */
+    public void setSelectedAlbum(Album album) {
+        this.selectedAlbum=album;
+    }
     public String showRelatedAlbum(Album album){
         this.selectedAlbum = album;
         return "relatedAlbumFromAlbum";        

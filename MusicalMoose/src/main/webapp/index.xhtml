@@ -1,13 +1,11 @@
-
-
-
-                <?xml version="1.0" encoding="UTF-8"?>
-                <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-                    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-                <html xmlns="http://www.w3.org/1999/xhtml"
-                      xmlns:f="http://xmlns.jcp.org/jsf/core"
-                      xmlns:h="http://xmlns.jcp.org/jsf/html"
-                      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
                     <head>
 
@@ -83,56 +81,35 @@
                                         <h:form>
                                             <h:panelGrid columns="1">
                                                 <h3 id="myList">#{survey.question}</h3>
-                                                <c:if test="#{not  surveyJpaController.isSurveyUsed()}"> 
-                                                    <c:if test="#{not empty survey.anserw1}">
+                                                
 
                                                         <h:panelGroup>
-                                                            <h:commandButton value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
+                                                            <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
+                                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" id="voteOutput1" value="#{survey.anserw1votes}"/>
+                                                            <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
                                                         </h:panelGroup>
 
-                                                    </c:if>
-                                                    <c:if test="#{not empty survey.anserw2}">
+                                                    
                                                         <h:panelGroup>
-                                                            <h:commandButton value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                                            <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" id="voteOutput2" value="#{survey.anserw2votes}"/>
+                                                            <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
                                                         </h:panelGroup>
-                                                    </c:if>
-                                                    <c:if test="#{not empty survey.anserw3}">
+                                                  
                                                         <h:panelGroup>
-                                                            <h:commandButton value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                                            <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" id="voteOutput3" value="#{survey.anserw3votes}"/>
+                                                            <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
                                                         </h:panelGroup>
-                                                    </c:if> 
-                                                    <c:if test="#{not empty survey.anserw4}">
+                                                   
                                                         <h:panelGroup>
-                                                            <h:commandButton value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                                            <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                                             <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" id="voteOutput4" value="#{survey.anserw4votes}"/>
                                                         </h:panelGroup>
-                                                    </c:if> 
-                                                </c:if>
-                                                <c:if test="#{  surveyJpaController.isSurveyUsed()}"> 
-                                                    <c:if test="#{not empty survey.anserw1}">
-                                                        <h:panelGroup>
-                                                            <h:commandButton disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
-                                                            <h:outputText id="voteOutput1" value="#{survey.anserw1votes}"/>
-                                                        </h:panelGroup>
-                                                    </c:if>
-                                                    <c:if test="#{not empty survey.anserw2}">
-                                                        <h:panelGroup>
-                                                            <h:commandButton disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                                            <h:outputText id="voteOutput2" value="#{survey.anserw2votes}"/>
-                                                        </h:panelGroup>
-                                                    </c:if>
-                                                    <c:if test="#{not empty survey.anserw3}">
-                                                        <h:panelGroup>
-                                                            <h:commandButton disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                                            <h:outputText id="voteOutput3" value="#{survey.anserw3votes}"/>
-                                                        </h:panelGroup>
-                                                    </c:if> 
-                                                    <c:if test="#{not empty survey.anserw4}">
-                                                        <h:panelGroup>
-                                                            <h:commandButton disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                                            <h:outputText id="voteOutput4" value="#{survey.anserw4votes}"/>
-                                                        </h:panelGroup>
-                                                    </c:if>
-                                                </c:if>
+                                                  
+                                                       
+                                                    
                                             </h:panelGrid>
                                         </h:form>
                                         <img class="ad" src="ads/ad_1.png" alt="" />

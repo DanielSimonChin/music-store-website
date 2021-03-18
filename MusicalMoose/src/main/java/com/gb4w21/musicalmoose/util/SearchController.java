@@ -161,16 +161,7 @@ public class SearchController implements Serializable {
 
     }
 
-    private boolean valdiate() {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            Date date = formatter.parse(searchText);
-            return true;
-        } catch (ParseException ex) {
-            errorMessage = "worng fromat date format must be in:\"dd-MM-yyyy\" ";
-            return false;
-        }
-    }
+    
 
     private void setSingleTrack() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -199,7 +190,7 @@ public class SearchController implements Serializable {
                 cb.equal(album.get("releasedate"), searchResultsAlbum.get(0).getReleasedate()));
 
         TypedQuery<Album> query = entityManager.createQuery(cq);
-        albumJpaController.setAlbum(query.getSingleResult());
+        albumJpaController.setSelectedAlbum(query.getSingleResult());
 
     }
 
