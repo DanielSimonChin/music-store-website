@@ -39,19 +39,20 @@
                                         </div>
 
                                         <!--Only if has cookie-->
-                                        <div class="location" id="home">
-
-                                            <h1 id="home">Just for you</h1>
+                                        <<h:form rendered="#{albumJpaController.hasGenreCookie()}">
+                                            <h1 id="home">Last Searched Genre</h1>
 
                                             <div class="box">
-                                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
-                                                <a href=""><img src="album_covers/damn_big.jpg" alt="" />BLOOD.</a>
-                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Survival</a>
-                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Nonstop</a>
-                                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
-                                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />How</a>
+
+                                                <ui:repeat value="#{albumJpaController.findRecentGenreAlbums()}" var="relatedAlbums">
+                                                    <h:form id="form">
+                                                        <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.selectAlbum(relatedAlbums)}">
+                                                            <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
+                                                        </h:commandLink>
+                                                    </h:form>
+                                                </ui:repeat>
                                             </div>
-                                        </div>
+                                        </h:form>
 
                                         <h1 id="myList">News Highlights</h1>
 
