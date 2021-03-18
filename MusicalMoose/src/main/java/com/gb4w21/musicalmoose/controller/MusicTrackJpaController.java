@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -169,7 +170,10 @@ public class MusicTrackJpaController implements Serializable {
         return em.find(MusicTrack.class, id);
 
     }
-
+    public void searchForTracks (FacesContext context, UIComponent component,
+            Object value) {
+        
+    }
     /**
      * Returns a list of the three most recently added MusicTrack objects
      *
@@ -209,9 +213,10 @@ public class MusicTrackJpaController implements Serializable {
      * @param track
      * @return tracks from same album
      */
+
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-
+        
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
 
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
@@ -243,7 +248,14 @@ public class MusicTrackJpaController implements Serializable {
         this.searchedTrack = track;
         return "detailTrackFromAlbum";
     }
-
+    
+    public String searchSingleTrack(int id){
+        
+        this.searchedTrack = findMusicTrack(id);
+        
+     
+        return "searchTrack";
+    }
     /**
      * Simple getter so the track page can access the selected track
      *
@@ -252,7 +264,9 @@ public class MusicTrackJpaController implements Serializable {
     public MusicTrack getMusicTrack() {
         return this.searchedTrack;
     }
-
+    public void setMusicTrack(MusicTrack musicTrack) {
+        this.searchedTrack = musicTrack; 
+    }
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.

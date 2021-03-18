@@ -7,19 +7,26 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Survey;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.Cookie;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -40,7 +47,7 @@ public class SurveyJpaController implements Serializable {
 
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
-
+    private boolean isSurveyUsed = false;
     public void create(Survey survey) throws RollbackFailureException {
 
         try {
@@ -143,4 +150,61 @@ public class SurveyJpaController implements Serializable {
 
     }
 
+    public Survey getRunningSurvey() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Survey> survey = cq.from(Survey.class);
+        cq.select(survey);
+        cq.where(cb.equal(survey.get("surveryended"), 0));
+        TypedQuery<Survey> query = em.createQuery(cq);
+        return query.getSingleResult();
+
+    }
+    public boolean isSurveyUsed(){
+        return this.isSurveyUsed;
+    }
+  
+    public String incearseVote1() throws Exception {
+        incearseVote(1);
+        return "reloadindex";
+    }
+
+    public String incearseVote2() throws Exception {
+        incearseVote(2);
+        return "reloadindex";
+    }
+
+    public String incearseVote3() throws Exception {
+        incearseVote(3);
+        return "reloadindex";
+    }
+
+    public String incearseVote4() throws Exception {
+        incearseVote(4);
+        return "reloadindex";
+    }
+
+    
+
+    private void incearseVote(int voteNumber) throws Exception {
+        Survey survey = getRunningSurvey();
+        increaseRow(voteNumber, survey);
+        this.isSurveyUsed=true;
+
+    }
+
+    private void increaseRow(int rowNumber, Survey survey) throws Exception {
+        if (rowNumber == 1) {
+            survey.setAnserw1votes(survey.getAnserw1votes() + 1);
+        } else if (rowNumber == 2) {
+            survey.setAnserw2votes(survey.getAnserw2votes() + 1);
+        } else if (rowNumber == 3) {
+            survey.setAnserw3votes(survey.getAnserw3votes() + 1);
+        } else if (rowNumber == 4) {
+            survey.setAnserw4votes(survey.getAnserw4votes() + 1);
+        }
+        edit(survey);
+    }
+
+   
 }

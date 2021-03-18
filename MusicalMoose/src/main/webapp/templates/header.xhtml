@@ -19,12 +19,32 @@
                     <a href="/MusicalMoose/#genres">Genres</a>
                     <a href="/MusicalMoose/#recent">Recently Added</a>
                     <a href="/MusicalMoose/checkout.xhtml">Check Out</a>
-                    <a><i class="fas fa-search sub-nav-logo" /> <input type="text" placeholder="Search ..." /> <select name="criteria" id="criteria">
-                            <option value="track">Track name</option>
-                            <option value="album">Album title</option>
-                            <option value="date">Date</option>
-                            <option value="artist">Artist</option>
-                        </select> <input type="submit" value="Search" /></a>
+                    <a><i class="fas fa-search sub-nav-logo" /> <h:form>
+                            <span class="fas fa-search sub-nav-logo">#{msgs.search}</span>
+                            <i class="fas fa-search sub-nav-logo" />  
+                            <h:inputText rendered="#{ 'Date' ne searchController.category}"  value="#{searchController.searchText}"/>
+
+
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="To"/>
+                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:inputText>
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="From"/>
+                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:inputText>
+                            <h:selectOneMenu  value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> >
+                                <f:selectItem itemValue = "TrackName" itemLabel = "#{msgs.trackName}" /> 
+                                <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
+                                <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
+                                <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
+
+                            </h:selectOneMenu> 
+                            <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
+                            <h:outputText value="#{searchController.errorMessage}"/>
+                            <h:messages styleClass="errorMessage" showSummary="false"
+                                        showDetail="true" />
+                        </h:form></a>
                 </nav>
                 <nav class="sub-nav">
                     <a href="#">Log in / Register</a>
