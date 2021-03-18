@@ -31,17 +31,31 @@
                     <a>
                         <h:form>
                             <span class="fas fa-search sub-nav-logo">#{msgs.search}</span>
-                            <i class="fas fa-search sub-nav-logo" />  <h:inputText value="#{searchController.searchText}"/>
-                            <h:selectOneMenu  value="#{searchController.category}" id="criteria">
+                            <i class="fas fa-search sub-nav-logo" />  
+                            <h:inputText rendered="#{ 'Date' ne searchController.category}"  value="#{searchController.searchText}"/>
+
+
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="To"/>
+                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:inputText>
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="From"/>
+                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}">
+                                <f:convertDateTime pattern="dd-MM-yyyy" />
+                            </h:inputText>
+                            <h:selectOneMenu  value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> >
                                 <f:selectItem itemValue = "TrackName" itemLabel = "#{msgs.trackName}" /> 
                                 <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
                                 <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
                                 <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
-                               
-                            </h:selectOneMenu> <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> <h:outputText value="#{searchController.errorMessage}"/>
-                            
+
+                            </h:selectOneMenu> 
+                            <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
+                            <h:outputText value="#{searchController.errorMessage}"/>
+                             <h:messages styleClass="errorMessage" showSummary="false"
+                        showDetail="true" />
                         </h:form>
-                        
+
                     </a>
                 </nav>
                 <nav class="sub-nav">
@@ -54,6 +68,7 @@
 
                 <div class="location" id="home">
                     <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
+
                     <h1 id="home">Music specials of the day</h1>
 
                     <div class="box">
@@ -94,7 +109,7 @@
                 <h:form>
                     <h:panelGrid columns="1">
                         <h3 id="myList">#{survey.question}</h3>
-                        <c:if test="#{not  surveyJpaController.checkSurveyUsed()}"> 
+                        <c:if test="#{not  surveyJpaController.isSurveyUsed()}"> 
                             <c:if test="#{not empty survey.anserw1}">
 
                                 <h:panelGroup>
@@ -118,7 +133,7 @@
                                 </h:panelGroup>
                             </c:if> 
                         </c:if>
-                        <c:if test="#{  surveyJpaController.checkSurveyUsed()}"> 
+                        <c:if test="#{  surveyJpaController.isSurveyUsed()}"> 
                             <c:if test="#{not empty survey.anserw1}">
                                 <h:panelGroup>
                                     <h:commandButton disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
@@ -151,11 +166,31 @@
                 <h1 id="genres">Browse Genres</h1>
 
                 <div class="box">
-                    <a href=""><img src="genre_covers/pop_cover.jpg" alt="" />Pop</a>
-                    <a href=""><img src="genre_covers/rock_cover.jpg" alt="" />Rock</a>
-                    <a href=""><img src="genre_covers/anime_cover.jpg" alt="" />Anime</a>
-                    <a href=""><img src="genre_covers/hip_hop_cover.jpg" alt="" />Hip Hop</a>
-                    <a href=""><img src="genre_covers/r&amp;b_cover.jpg" alt="" />R&amp;B</a>
+                    <h:form class="form">
+                        <h:commandLink value="Pop" action="#{genreController.searchPop()}"> 
+                            <h:graphicImage value="genre_covers/pop_cover.jpg" />  
+                        </h:commandLink>
+                    </h:form>
+                    <h:form class="form">
+                        <h:commandLink value="Rock" action="#{genreController.searchRock()}"> 
+                            <h:graphicImage value="genre_covers/rock_cover.jpg" />  
+                        </h:commandLink>
+                    </h:form>
+                    <h:form class="form">
+                        <h:commandLink value="Anime" action="#{genreController.searchAnime()}"> 
+                            <h:graphicImage value="genre_covers/anime_cover.jpg" />  
+                        </h:commandLink>
+                    </h:form>
+                    <h:form class="form">
+                        <h:commandLink value="Hip Hop" action="#{genreController.searchHipHop()}"> 
+                            <h:graphicImage value="genre_covers/hip_hop_cover.jpg" />  
+                        </h:commandLink>
+                    </h:form>
+                    <h:form class="form">
+                        <h:commandLink value="R and B" action="#{genreController.searchRB()}"> 
+                            <h:graphicImage value="genre_covers/r&amp;b_cover.jpg" />  
+                        </h:commandLink>
+                    </h:form>
                 </div>
 
                 <h1 id="recent">Recently Added</h1>

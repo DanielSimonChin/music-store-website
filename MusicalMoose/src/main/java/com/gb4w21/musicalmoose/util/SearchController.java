@@ -51,6 +51,8 @@ public class SearchController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(BanneradJpaController.class);
     private String searchText;
+    private Date toDate;
+    private Date fromDate;
     private List<SearchResult> searchResultsTrack = new ArrayList<SearchResult>();
     private List<SearchResult> searchResultsAlbum = new ArrayList<SearchResult>();
     @Inject
@@ -65,7 +67,18 @@ public class SearchController implements Serializable {
     public SearchController() {
 
     }
-
+    public Date getToDate(){
+        return toDate;
+    }
+    public void setToDate(Date toDate){
+        this.toDate= toDate;
+    }
+    public Date getFromDate(){
+        return fromDate;
+    }
+    public void setFromDate(Date fromDate){
+        this.fromDate= fromDate;
+    }
     public String getErrorMessage() {
         return errorMessage;
     }
@@ -109,26 +122,28 @@ public class SearchController implements Serializable {
         this.searchResultsAlbum = searchResultsAlbum;
 
     }
-
-    public String searchForPage() throws Exception {
+    
+    private void clearSearchResult(){
         searchResultsTrack = new ArrayList<SearchResult>();
         searchResultsAlbum = new ArrayList<SearchResult>();
+    }
+    public String searchForPage() throws Exception {
+        clearSearchResult();
         if (category.equals(SearchCategory.AlbumTitle.toString())) {
             searchResultsAlbums();
         } else if (category.equals(SearchCategory.Artist.toString())) {
             searchResultsArtist();
         } else if (category.equals(SearchCategory.Date.toString())) {
-            if (valdiate()) {
+        
                 searchResultsDate();
-            }
-            else{
-                return "index";
-            }
+        
         } else if (category.equals(SearchCategory.TrackName.toString())) {
             searchResultsMusicTrack();
         }
         searchText = "";
         
+        fromDate=null;
+        toDate=null;
         if (searchResultsAlbum.size() + searchResultsTrack.size() == 0) {
             errorMessage = "your search had no results";
             return "index";
@@ -216,21 +231,20 @@ public class SearchController implements Serializable {
     }
 
     private void searchResultsDate() throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = formatter.parse(searchText);
+       
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<SearchResult> cq = cb.createQuery(SearchResult.class);
 
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.greaterThan(album.get("dateentered"), date));
+        cq.where(cb.between(album.get("dateentered"), fromDate, toDate));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsAlbum = query.getResultList();
 
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
-        cq.where(cb.greaterThan(musicTrack.get("dateentered"), date));
+        cq.where(cb.between(album.get("dateentered"), fromDate, toDate));
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchResultsTrack.addAll(query.getResultList());
@@ -257,4 +271,5 @@ public class SearchController implements Serializable {
         searchResultsTrack.addAll(query.getResultList());
 
     }
+    
 }
