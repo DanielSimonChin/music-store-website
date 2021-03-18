@@ -48,6 +48,7 @@ public class AlbumJpaController implements Serializable {
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
+
     private Album selectedAlbum;
 //    private String recentGenre;
 
@@ -191,7 +192,9 @@ public class AlbumJpaController implements Serializable {
         return em.find(Album.class, id);
 
     }
-
+    
+        
+    
     public int getAlbumCount() {
 
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -201,7 +204,15 @@ public class AlbumJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
+    
+    public String searchSingleAlbum(int id){
+        this.selectedAlbum = findAlbum(id);
+  
+        
+        return "albumpage";
 
+    }
+   
     /**
      * The track page will show 3 albums from other artists that are part of the
      * same category
@@ -309,7 +320,12 @@ public class AlbumJpaController implements Serializable {
     public Album getSelectedAlbum() {
         return this.selectedAlbum;
     }
-    
+    /**
+     * @param album The selected album to be displayed in the album page.
+     */
+    public void setSelectedAlbum(Album album) {
+        this.selectedAlbum=album;
+    }
     public String showRelatedAlbum(Album album){
         this.selectedAlbum = album;
         return "relatedAlbumFromAlbum";        
