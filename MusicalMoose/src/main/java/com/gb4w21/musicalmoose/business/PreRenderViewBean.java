@@ -33,7 +33,6 @@ public class PreRenderViewBean {
      */
     public void checkCookies() {
         FacesContext context = FacesContext.getCurrentInstance();
-        Map<String, Object> cookieMap = context.getExternalContext().getRequestCookieMap();
 
         // Retrieve a specific cookie
         Object my_cookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");

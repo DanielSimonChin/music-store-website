@@ -190,7 +190,7 @@ VALUES
 
 INSERT INTO SURVEY (SURVEYID, SURVEYTITLE, QUESTION, ANSERW1, ANSERW1VOTES, ANSERW2, ANSERW2VOTES, ANSERW3, ANSERW3VOTES, ANSERW4, ANSERW4VOTES, DATESURVEYRCREATED, DATELASTUSED, SURVERYENDED)
 VALUES 
-(1, "Teens and music in todays generation", "Which genre of music do you listen to most?", "HIP HOP", 43, "R&B", 23, "Rock", 13, "Indie Music", 28, TIMESTAMP("2020-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"), 1),
+(1, "Teens and music in todays generation", "Which genre of music do you listen to most?", "HIP HOP", 43, "R&B", 23, "Rock", 13, "Indie Music", 28, TIMESTAMP("2020-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"), 0),
 (2, "Most popular artist for elders", "Which artist are you most familiar with?", "Drake", 43, "Ariana Grande", 81, "Justin Bieber", 61, "Beyonce", 88, TIMESTAMP("2021-01-03", "11:03:11"), TIMESTAMP("2021-02-20", "11:03:11"), 1),
 (3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 1),
 (4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 1);

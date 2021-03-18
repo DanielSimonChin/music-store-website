@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -27,6 +28,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
+import javax.servlet.http.Cookie;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -49,6 +51,7 @@ public class MusicTrackJpaController implements Serializable {
     private EntityManager em;
 
     private MusicTrack searchedTrack;
+//    private String recentGenre;
 
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
         try {
@@ -169,7 +172,10 @@ public class MusicTrackJpaController implements Serializable {
         return em.find(MusicTrack.class, id);
 
     }
-
+    public void searchForTracks (FacesContext context, UIComponent component,
+            Object value) {
+        
+    }
     /**
      * Returns a list of the three most recently added MusicTrack objects
      *
@@ -209,9 +215,10 @@ public class MusicTrackJpaController implements Serializable {
      * @param track
      * @return tracks from same album
      */
+
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-
+        
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
 
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
@@ -225,8 +232,39 @@ public class MusicTrackJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList();
-
     }
+    
+//    public List<MusicTrack> findRecentGenreTracks() {
+//        findRecentGenreCookie();
+//        if (recentGenre == null || recentGenre.isEmpty()) {
+//            return null;
+//        }
+//        
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//
+//        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+//
+//        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+//
+////        cq.select(musicTrack).where(cb.equal(musicTrack.get("musiccategory"), recentGenre));
+//        
+//        Join albumsTracks = musicTrack.join("albumid");
+//        cq.where(cb.equal(musicTrack.get("musiccategory"), recentGenre));
+//
+//        Query q = em.createQuery(cq);
+//
+//        return q.getResultList().subList(0, 5);
+//    }
+//    
+//    private void findRecentGenreCookie() {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//
+//        // Retrieve a GenreTracking cookie
+//        Object genreTrackingCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
+//        if (genreTrackingCookie != null && ((Cookie) genreTrackingCookie).getValue().isEmpty()) {
+//            recentGenre = ((Cookie) genreTrackingCookie).getValue();
+//        }
+//    }
 
     /**
      * Set the selected track and display the trackpage.xhtml
@@ -236,14 +274,28 @@ public class MusicTrackJpaController implements Serializable {
      */
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
+        writeCookie();
         return "detailTrack";
+    }
+    
+    private void writeCookie() {
+//        recentGenre = searchedTrack.getMusiccategory();
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
     }
     
     public String showTrackFromAlbum(MusicTrack track){
         this.searchedTrack = track;
         return "detailTrackFromAlbum";
     }
-
+    
+    public String searchSingleTrack(int id){
+        
+        this.searchedTrack = findMusicTrack(id);
+        
+     
+        return "searchTrack";
+    }
     /**
      * Simple getter so the track page can access the selected track
      *
@@ -252,7 +304,9 @@ public class MusicTrackJpaController implements Serializable {
     public MusicTrack getMusicTrack() {
         return this.searchedTrack;
     }
-
+    public void setMusicTrack(MusicTrack musicTrack) {
+        this.searchedTrack = musicTrack; 
+    }
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.

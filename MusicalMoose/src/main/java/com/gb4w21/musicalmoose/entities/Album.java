@@ -80,9 +80,11 @@ public class Album implements Serializable {
     @Basic(optional = false)
     @Column(name = "ALBUMID")
     private Integer albumid;
+    
     @Column(name = "RELEASEDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date releasedate;
+    
     @Column(name = "NUMBEROFTRACKS")
     private Integer numberoftracks;
     @Column(name = "DATEENTERED")

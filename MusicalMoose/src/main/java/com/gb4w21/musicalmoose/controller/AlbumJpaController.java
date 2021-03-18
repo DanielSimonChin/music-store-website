@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -25,6 +26,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
+import javax.servlet.http.Cookie;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -46,7 +48,9 @@ public class AlbumJpaController implements Serializable {
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
+
     private Album selectedAlbum;
+//    private String recentGenre;
 
     public void create(Album album) throws RollbackFailureException {
         if (album.getMusicTrackList() == null) {
@@ -188,7 +192,9 @@ public class AlbumJpaController implements Serializable {
         return em.find(Album.class, id);
 
     }
-
+    
+        
+    
     public int getAlbumCount() {
 
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -198,7 +204,15 @@ public class AlbumJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
+    
+    public String searchSingleAlbum(int id){
+        this.selectedAlbum = findAlbum(id);
+  
+        
+        return "albumpage";
 
+    }
+   
     /**
      * The track page will show 3 albums from other artists that are part of the
      * same category
@@ -244,6 +258,39 @@ public class AlbumJpaController implements Serializable {
 
         return q.getResultList().subList(0, 3);
     }
+    
+    public List<Album> findRecentGenreAlbums() {
+//        findRecentGenreCookie();
+//        if (recentGenre == null || recentGenre.isEmpty()) {
+//            return null;
+//        }
+        String recentGenre = findRecentGenreCookie();
+        
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Album> cq = cb.createQuery(Album.class);
+
+        Root<Album> albums = cq.from(Album.class);
+        
+        Join albumsTracks = albums.join("musicTrackList");
+        
+        cq.where(cb.equal(albumsTracks.get("musiccategory"), recentGenre)).distinct(true);
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
+    }
+    
+    private String findRecentGenreCookie() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        // Retrieve a GenreTracking cookie
+        Object genreTrackingCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
+        if (genreTrackingCookie == null || ((Cookie) genreTrackingCookie).getValue().isEmpty()) {
+            return null;
+        }
+        return ((Cookie) genreTrackingCookie).getValue();
+    }
 
     /**
      * Set the selected album into the private variable and return the
@@ -254,9 +301,18 @@ public class AlbumJpaController implements Serializable {
      */
     public String selectAlbum(Album album) {
         this.selectedAlbum = album;
+        writeCookie();
         return "detailAlbum";
     }
     
+    private void writeCookie() {
+        List<MusicTrack> musicTracks = selectedAlbum.getMusicTrackList();
+        if (musicTracks.size() > 0) {
+//            recentGenre = musicTracks.get(0).getMusiccategory();
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().addResponseCookie("GenreTracking", musicTracks.get(0).getMusiccategory(), null);
+        }
+    }
 
     /**
      * @return The selected album to be displayed in the album page.
@@ -264,7 +320,12 @@ public class AlbumJpaController implements Serializable {
     public Album getSelectedAlbum() {
         return this.selectedAlbum;
     }
-    
+    /**
+     * @param album The selected album to be displayed in the album page.
+     */
+    public void setSelectedAlbum(Album album) {
+        this.selectedAlbum=album;
+    }
     public String showRelatedAlbum(Album album){
         this.selectedAlbum = album;
         return "relatedAlbumFromAlbum";        
@@ -293,5 +354,16 @@ public class AlbumJpaController implements Serializable {
 
         return q.getResultList();
     }
-
+    
+    public boolean hasGenreCookie() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object genreCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
+        
+        if (genreCookie == null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 }

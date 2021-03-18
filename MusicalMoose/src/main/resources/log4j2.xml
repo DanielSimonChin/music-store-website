@@ -1,0 +1,35 @@
+
+<!-- 
+     Configuration: Parent element of a log4j2.xml file for Web applications
+     status= refers to the level of messages emitted by log4j2 about itself
+-->
+<Configuration status="WARN">
+    <!-- Appenders: Defines the destination of log data
+    and the format it will appear as -->
+    <Appenders>
+        <!-- 
+            You cannot use a File appender to write to a custom file such as 
+            with desktop apps. Instead we use the Servlet appender that writes 
+            to the Server's log file. You also do not require a Console appender
+            as the Servlet appender writes to the console and the server log.
+            See https://logging.apache.org/log4j/2.x/manual/webapp.html
+        -->
+        <Servlet name="Servlet">
+            <PatternLayout>
+                <pattern>[[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %c %m%n%ex{none}</pattern>
+            </PatternLayout>
+        </Servlet>
+        
+    </Appenders>
+
+    <!-- Loggers use the appenders to write logs. Root is
+    the pre-defined logger. Here is where you can define
+    the level of message you wish to log -->
+    <Loggers>
+        <Root level="trace">
+            <appender-ref ref="Servlet" />
+        </Root>
+    </Loggers>
+
+</Configuration>
+
