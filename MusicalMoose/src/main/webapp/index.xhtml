@@ -1,216 +1,195 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
-
-    <head>
-
-        <title>Musical Moose</title>
-        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-        <link rel="stylesheet" href="frontdoor.css"/>
-
-    </head>
-
-    <body>
-
-        <div class="wrapper">
-            <!-- HEADER -->
-            <header>
-
-                <div class="weblogo">
-                    <a id="logo" href="#home"><b class="left-logo">Musical Moose</b></a>
-                </div>
-                <nav class="main-nav">
-                    <a href="#home">Home</a>
-                    <a href="#genres">Genres</a>
-                    <a href="#recent">Recently Added</a>
-                    <a>
-                        <h:form>
-                            <span class="fas fa-search sub-nav-logo">#{msgs.search}</span>
-                            <i class="fas fa-search sub-nav-logo" />  
-                            <h:inputText rendered="#{ 'Date' ne searchController.category}"  value="#{searchController.searchText}"/>
 
 
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="To"/>
-                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
-                                <f:convertDateTime pattern="dd-MM-yyyy" />
-                            </h:inputText>
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="From"/>
-                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}">
-                                <f:convertDateTime pattern="dd-MM-yyyy" />
-                            </h:inputText>
-                            <h:selectOneMenu  value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> >
-                                <f:selectItem itemValue = "TrackName" itemLabel = "#{msgs.trackName}" /> 
-                                <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
-                                <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
-                                <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
 
-                            </h:selectOneMenu> 
-                            <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
-                            <h:outputText value="#{searchController.errorMessage}"/>
-                             <h:messages styleClass="errorMessage" showSummary="false"
-                        showDetail="true" />
-                        </h:form>
+                <?xml version="1.0" encoding="UTF-8"?>
+                <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+                <html xmlns="http://www.w3.org/1999/xhtml"
+                      xmlns:f="http://xmlns.jcp.org/jsf/core"
+                      xmlns:h="http://xmlns.jcp.org/jsf/html"
+                      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
-                    </a>
-                </nav>
-                <nav class="sub-nav">
-                    <a href="#">Log in / Create an account</a>
-                </nav>
-            </header>
-            <!-- END OF HEADER -->
-            <!-- MAIN CONTAINER -->
-            <section class="main-container">
+                    <head>
 
-                <div class="location" id="home">
-                    <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
+                        <title>Musical Moose</title>
+                        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
 
-                    <h1 id="home">Music specials of the day</h1>
+                    </head>
 
-                    <div class="box">
-                        <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
-                        <a href=""><img src="album_covers/damn_big.jpg" alt="" />BLOOD.</a>
-                        <a href=""><img src="album_covers/scorpion_big.png" alt="" />Survival</a>
-                        <a href=""><img src="album_covers/scorpion_big.png" alt="" />Nonstop</a>
-                        <a href=""><img src="album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
-                        <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />How</a>
-                    </div>
-                </div>
+                    <h:body>
+                        <ui:composition template="/templates/common.xhtml">
+                            <ui:define name="content">
+                                <link rel="stylesheet" href="frontdoor.css"/>
 
-                <h1 id="myList">News Highlights</h1>
 
-                <div class="box news">
-                    <a href="">
+                                <div class="wrapper">
+                                    <!-- MAIN CONTAINER -->
+                                    <section class="main-container">
+                                        <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
+                                        <div class="location" id="home">
 
-                        <h1>The Weeknd Gives a Dizzying Tour of His Career During the Super Bowl Halftime Show</h1>
+                                            <h1 id="home">Music specials of the day</h1>
 
-                        <p>The Weeknd headlined the Super Bowl LV halftime show with a career-spanning, sequin-bombed medley
-                            of his biggest hits</p>
-                    </a>
-                    <a href="">
+                                            <div class="box">
+                                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
+                                                <a href=""><img src="album_covers/damn_big.jpg" alt="" />BLOOD.</a>
+                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Survival</a>
+                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Nonstop</a>
+                                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
+                                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />How</a>
+                                            </div>
+                                        </div>
 
-                        <h1>Watch Eric Church, Jazmine Sullivan Perform ‘Star-Spangled Banner’ at Super Bowl LV</h1>
+                                        <!--Only if has cookie-->
+                                        <div class="location" id="home">
 
-                        <p>The Super Bowl LV kicked off Sunday with a performance of “America the Beautiful” by H.E.R., who
-                            accompanied the patriotic song on electric guitar.</p>
-                    </a>
-                    <a href="">
+                                            <h1 id="home">Just for you</h1>
 
-                        <h1>Watch Miley Cyrus Headline Super Bowl LV Tailgate, Bring Out Billy Idol</h1>
+                                            <div class="box">
+                                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
+                                                <a href=""><img src="album_covers/damn_big.jpg" alt="" />BLOOD.</a>
+                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Survival</a>
+                                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Nonstop</a>
+                                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
+                                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />How</a>
+                                            </div>
+                                        </div>
 
-                        <p>Miley Cyrus tore through a set of her hits and covers and welcomed guests Billy Idol and Joan
-                            Jett while headlining the Super Bowl LV pregame on Sunday.</p>
-                    </a>
-                </div>
-                <h:form>
-                    <h:panelGrid columns="1">
-                        <h3 id="myList">#{survey.question}</h3>
-                        <c:if test="#{not  surveyJpaController.isSurveyUsed()}"> 
-                            <c:if test="#{not empty survey.anserw1}">
+                                        <h1 id="myList">News Highlights</h1>
 
-                                <h:panelGroup>
-                                    <h:commandButton value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
-                                </h:panelGroup>
+                                        <div class="box news">
+                                            <a href="">
 
-                            </c:if>
-                            <c:if test="#{not empty survey.anserw2}">
-                                <h:panelGroup>
-                                    <h:commandButton value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                </h:panelGroup>
-                            </c:if>
-                            <c:if test="#{not empty survey.anserw3}">
-                                <h:panelGroup>
-                                    <h:commandButton value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                </h:panelGroup>
-                            </c:if> 
-                            <c:if test="#{not empty survey.anserw4}">
-                                <h:panelGroup>
-                                    <h:commandButton value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                </h:panelGroup>
-                            </c:if> 
-                        </c:if>
-                        <c:if test="#{  surveyJpaController.isSurveyUsed()}"> 
-                            <c:if test="#{not empty survey.anserw1}">
-                                <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
-                                    <h:outputText id="voteOutput1" value="#{survey.anserw1votes}"/>
-                                </h:panelGroup>
-                            </c:if>
-                            <c:if test="#{not empty survey.anserw2}">
-                                <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                    <h:outputText id="voteOutput2" value="#{survey.anserw2votes}"/>
-                                </h:panelGroup>
-                            </c:if>
-                            <c:if test="#{not empty survey.anserw3}">
-                                <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                    <h:outputText id="voteOutput3" value="#{survey.anserw3votes}"/>
-                                </h:panelGroup>
-                            </c:if> 
-                            <c:if test="#{not empty survey.anserw4}">
-                                <h:panelGroup>
-                                    <h:commandButton disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                    <h:outputText id="voteOutput4" value="#{survey.anserw4votes}"/>
-                                </h:panelGroup>
-                            </c:if>
-                        </c:if>
-                    </h:panelGrid>
-                </h:form>
-                <img class="ad" src="ads/ad_1.png" alt="" />
+                                                <h1>The Weeknd Gives a Dizzying Tour of His Career During the Super Bowl Halftime Show</h1>
 
-                <h1 id="genres">Browse Genres</h1>
+                                                <p>The Weeknd headlined the Super Bowl LV halftime show with a career-spanning, sequin-bombed medley
+                                                    of his biggest hits</p>
+                                            </a>
+                                            <a href="">
 
-                <div class="box">
-                    <h:form class="form">
-                        <h:commandLink value="Pop" action="#{genreController.searchPop()}"> 
-                            <h:graphicImage value="genre_covers/pop_cover.jpg" />  
-                        </h:commandLink>
-                    </h:form>
-                    <h:form class="form">
-                        <h:commandLink value="Rock" action="#{genreController.searchRock()}"> 
-                            <h:graphicImage value="genre_covers/rock_cover.jpg" />  
-                        </h:commandLink>
-                    </h:form>
-                    <h:form class="form">
-                        <h:commandLink value="Anime" action="#{genreController.searchAnime()}"> 
-                            <h:graphicImage value="genre_covers/anime_cover.jpg" />  
-                        </h:commandLink>
-                    </h:form>
-                    <h:form class="form">
-                        <h:commandLink value="Hip Hop" action="#{genreController.searchHipHop()}"> 
-                            <h:graphicImage value="genre_covers/hip_hop_cover.jpg" />  
-                        </h:commandLink>
-                    </h:form>
-                    <h:form class="form">
-                        <h:commandLink value="R and B" action="#{genreController.searchRB()}"> 
-                            <h:graphicImage value="genre_covers/r&amp;b_cover.jpg" />  
-                        </h:commandLink>
-                    </h:form>
-                </div>
+                                                <h1>Watch Eric Church, Jazmine Sullivan Perform ‘Star-Spangled Banner’ at Super Bowl LV</h1>
 
-                <h1 id="recent">Recently Added</h1>
+                                                <p>The Super Bowl LV kicked off Sunday with a performance of “America the Beautiful” by H.E.R., who
+                                                    accompanied the patriotic song on electric guitar.</p>
+                                            </a>
+                                            <a href="">
 
-                <div class="box">
-                    <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
-                        <h:form id="form">
-                            <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
-                                <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
-                            </h:commandLink>
-                        </h:form>
-                    </ui:repeat>
-                </div>
-                <img class="ad2" src="ads/ad_2.png" alt="" />
-                <!-- END OF MAIN CONTAINER -->
-                <!-- END OF LINKS -->
-                <!-- FOOTER -->
-                <footer>
+                                                <h1>Watch Miley Cyrus Headline Super Bowl LV Tailgate, Bring Out Billy Idol</h1>
 
-                    <p>© 2021 Musical Moose</p>
-                </footer>
-            </section></div></body>
-</html>
+                                                <p>Miley Cyrus tore through a set of her hits and covers and welcomed guests Billy Idol and Joan
+                                                    Jett while headlining the Super Bowl LV pregame on Sunday.</p>
+                                            </a>
+                                        </div>
+                                        <h:form>
+                                            <h:panelGrid columns="1">
+                                                <h3 id="myList">#{survey.question}</h3>
+                                                <c:if test="#{not  surveyJpaController.isSurveyUsed()}"> 
+                                                    <c:if test="#{not empty survey.anserw1}">
+
+                                                        <h:panelGroup>
+                                                            <h:commandButton value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
+                                                        </h:panelGroup>
+
+                                                    </c:if>
+                                                    <c:if test="#{not empty survey.anserw2}">
+                                                        <h:panelGroup>
+                                                            <h:commandButton value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                                        </h:panelGroup>
+                                                    </c:if>
+                                                    <c:if test="#{not empty survey.anserw3}">
+                                                        <h:panelGroup>
+                                                            <h:commandButton value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                                        </h:panelGroup>
+                                                    </c:if> 
+                                                    <c:if test="#{not empty survey.anserw4}">
+                                                        <h:panelGroup>
+                                                            <h:commandButton value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                                        </h:panelGroup>
+                                                    </c:if> 
+                                                </c:if>
+                                                <c:if test="#{  surveyJpaController.isSurveyUsed()}"> 
+                                                    <c:if test="#{not empty survey.anserw1}">
+                                                        <h:panelGroup>
+                                                            <h:commandButton disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
+                                                            <h:outputText id="voteOutput1" value="#{survey.anserw1votes}"/>
+                                                        </h:panelGroup>
+                                                    </c:if>
+                                                    <c:if test="#{not empty survey.anserw2}">
+                                                        <h:panelGroup>
+                                                            <h:commandButton disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                                            <h:outputText id="voteOutput2" value="#{survey.anserw2votes}"/>
+                                                        </h:panelGroup>
+                                                    </c:if>
+                                                    <c:if test="#{not empty survey.anserw3}">
+                                                        <h:panelGroup>
+                                                            <h:commandButton disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                                            <h:outputText id="voteOutput3" value="#{survey.anserw3votes}"/>
+                                                        </h:panelGroup>
+                                                    </c:if> 
+                                                    <c:if test="#{not empty survey.anserw4}">
+                                                        <h:panelGroup>
+                                                            <h:commandButton disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                                            <h:outputText id="voteOutput4" value="#{survey.anserw4votes}"/>
+                                                        </h:panelGroup>
+                                                    </c:if>
+                                                </c:if>
+                                            </h:panelGrid>
+                                        </h:form>
+                                        <img class="ad" src="ads/ad_1.png" alt="" />
+
+                                        <h1 id="genres">Browse Genres</h1>
+
+                                        <div class="box">
+                                            <h:form class="form">
+                                                <h:commandLink value="Pop" action="#{genreController.searchPop()}"> 
+                                                    <h:graphicImage value="genre_covers/pop_cover.jpg" />  
+                                                </h:commandLink>
+                                            </h:form>
+                                            <h:form class="form">
+                                                <h:commandLink value="Rock" action="#{genreController.searchRock()}"> 
+                                                    <h:graphicImage value="genre_covers/rock_cover.jpg" />  
+                                                </h:commandLink>
+                                            </h:form>
+                                            <h:form class="form">
+                                                <h:commandLink value="Anime" action="#{genreController.searchAnime()}"> 
+                                                    <h:graphicImage value="genre_covers/anime_cover.jpg" />  
+                                                </h:commandLink>
+                                            </h:form>
+                                            <h:form class="form">
+                                                <h:commandLink value="Hip Hop" action="#{genreController.searchHipHop()}"> 
+                                                    <h:graphicImage value="genre_covers/hip_hop_cover.jpg" />  
+                                                </h:commandLink>
+                                            </h:form>
+                                            <h:form class="form">
+                                                <h:commandLink value="R and B" action="#{genreController.searchRB()}"> 
+                                                    <h:graphicImage value="genre_covers/r&amp;b_cover.jpg" />  
+                                                </h:commandLink>
+                                            </h:form>
+                                        </div>
+
+                                        <h1 id="recent">Recently Added</h1>
+
+                                        <div class="box">
+                                            <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
+                                                <h:form id="form">
+                                                    <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
+                                                        <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
+                                                    </h:commandLink>
+                                                </h:form>
+                                            </ui:repeat>
+                                        </div>
+                                        <img class="ad2" src="ads/ad_2.png" alt="" />
+                                        <!-- END OF MAIN CONTAINER -->
+                                        <!-- END OF LINKS -->
+                                        <!-- FOOTER -->
+                                        <!--<footer>
+                        
+                                            <p>© 2021 Musical Moose</p>
+                                        </footer>-->
+                                    </section>
+                                </div>
+                            </ui:define>
+                        </ui:composition>
+
+                    </h:body>
+                </html>

@@ -4,92 +4,37 @@
     --light: rgb(170, 160, 71);
     --dark: 	#575757;
   }
-  
-  .relBox {
-      display: grid;
-      grid-gap: 20px;
-      grid-template-columns: repeat(3, minmax(100px, 1fr));
-    }
-    
-    .relBox{
-        width: 100px !important;
-    }
-  
-  #track{
-    margin-top: 50px;
-  }
-  
-  #myList{
-      margin-left:60px;
-      width:185px;
-  }
-  
-  #albumInfo{
-      /*margin-left: 80px;*/
-      font-size:10px;
-  }
-  
-  #albumInfo tr{
-      font-size:10px;
-  }
-  
-  #albumInfoExtra{
-      /*margin-left: 70px;*/
-      font-size:10px;
-  }
-  
-  .ratings{
-    width:100%;
-  }
-  
-  #relatedAlbums{
-      width:100%;
-      margin:auto;
-      margin-left:60px;
-  }
-  
-  #shopCart p{
-      margin-top: 15px !important;
-      display: inline-block;
-      position: absolute;
-  }
-  
-  #shopCart{
-      margin-left: 60px;
-      margin-top:10px;
-  }
-  
-  #relAlb{
-      margin-left:-60px;
-  }
+
+  #title{
+      text-align: center;
+  }  
   
   button{
-      width:180px;
-      background-color:#575757;
-    border:transparent;
-    color:white;
+      display:block;
+      width:40px;
+      margin:auto;
   }
   
-  #shopCart img{
-      
-    margin-left: -70px;
-      width: 50px;
-      display: inline-block;
+  #invoiceContainer{
+      border:solid;
+      border-color:white;
+      margin:auto;
+      width:90%;
+      text-align: center;
   }
   
-  #albumInfoExtra tr{
-      font-size:10px;
+  .box form{
+      transition: transform .3s;
   }
   
-  th{
-      font-size:20px;
+  .box form:hover{
+    transition: transform .3s;
+    -ms-transform: scale(1.4);
+    -webkit-transform: scale(1.4);  
+    transform: scale(1.4);
   }
   
-  table{
-    text-align: left;
-  }
-  
-    input[type=text]{
+  input[type=text]{
       background-color:#161616;
       border:transparent;
       color:white;
@@ -103,30 +48,7 @@
     color:white;
   }
   
-      table a{
-        text-decoration: underline !important;
-        color:blue;
-    }
-    
-      td{
-      font-size: 20px;
-  }
-  
-  p{
-      font-size:15px;
-      margin:0px !important;
-  }
-  
-  #sameAlbum{
-    margin-left: 80px;
-  }
-
-  #mainTrack{
-      height:270px;
-      max-width: unset;
-  }
-
-  input[type=submit]{
+  select option{
     background-color:#575757;
     border:transparent;
     color:white;
@@ -144,7 +66,7 @@
         color:#EDF7B5;
         text-decoration: none;
     }
-
+    
     .left-logo{
         color: #EDF7B5; 
         font-family: 'Raleway',sans-serif; 
@@ -175,6 +97,10 @@
   
   img {
     max-width: 100%;
+  }
+  
+  h1 {
+    padding-top: 60px;  
   }
   
   .wrapper {
@@ -359,8 +285,6 @@
       grid-gap: 20px;
       grid-template-columns: repeat(4, minmax(100px, 1fr));
     }
-    
-    
   
   }
   
@@ -454,18 +378,6 @@
       -webkit-transform: scale(1);  
       transform: scale(1.2);
     }
-    
-      
-  .box form{
-      transition: transform .3s;
-  }
-  
-  .box form:hover{
-    transition: transform .3s;
-    -ms-transform: scale(1.4);
-    -webkit-transform: scale(1.4);  
-    transform: scale(1.4);
-  }
   
     .logos {
       display: grid;
@@ -480,6 +392,9 @@
       grid-template-columns: repeat(1, 1fr);
       text-align: center;
       font-size: 15px;
+    }
+    #form{
+        float:left;
     }
   
     

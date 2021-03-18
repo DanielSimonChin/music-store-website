@@ -242,7 +242,11 @@ public class MusicTrackJpaController implements Serializable {
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
         return "detailTrack";
-
+    }
+    
+    public String showTrackFromAlbum(MusicTrack track){
+        this.searchedTrack = track;
+        return "detailTrackFromAlbum";
     }
     
     public String searchSingleTrack(int id){

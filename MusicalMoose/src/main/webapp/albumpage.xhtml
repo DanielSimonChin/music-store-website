@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
     <head>
 
@@ -23,25 +22,25 @@
 
                         <div class="location" id="home">
 
-                            <!-- A global variable representing the MusicTrack object being shown on this page -->
-                            <ui:param name="detailTrack" value="#{musicTrackJpaController.getMusicTrack()}" />
+                            <!-- A global variable representing the Album object being shown on this page -->
+                            <ui:param name="detailAlbum" value="#{albumJpaController.getSelectedAlbum()}" />
 
-                            <h1 id="track">#{detailTrack.tracktitle}</h1>
+                            <h1 id="track">#{detailAlbum.albumtitle}</h1>
 
                             <div class="box">
-                                <img id="mainTrack" src="album_covers/#{detailTrack.albumimagefilenamebig}" alt="" />
+                                <img id="mainTrack" src="album_covers/#{detailAlbum.albumimagefilenamebig}" alt="" />
                                 <table id="sameAlbum">
                                     <tr>
-                                        <th>Same album tracks</th>
+                                        <th>Album tracks</th>
                                     </tr>
 
                                     <!-- Find all the tracks that are part of this track's album -->
-                                    <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(detailTrack)}" var="relatedTracks">
+                                    <ui:repeat value="#{albumJpaController.getAlbumTracks(detailAlbum.albumid)}" var="albumTracks">
                                         <tr>
                                             <th>
                                                 <h:form>
                                                     <!-- Create a link that brings the user to the track page of the related track from the same album-->
-                                                    <h:commandLink value="#{relatedTracks.tracktitle}" action="#{musicTrackJpaController.searchRelatedTrack(relatedTracks)}">
+                                                    <h:commandLink value="#{albumTracks.tracktitle}" action="#{musicTrackJpaController.showTrackFromAlbum(albumTracks)}">
                                                     </h:commandLink>
                                                 </h:form>
                                             </th>
@@ -58,19 +57,16 @@
 
                                 <table id="albumInfo">
                                     <tr>
-                                        <th>Track Info</th>
+                                        <th>Album Info</th>
                                     </tr>
                                     <tr>
-                                        <td><u>Track title:</u> #{detailTrack.tracktitle}</td>
+                                        <td><u>Album title:</u> #{detailAlbum.albumtitle}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>Artist:</u> #{detailTrack.artist}</td>
+                                        <td><u>Artist:</u> #{detailAlbum.artist}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>Songwriter:</u> #{detailTrack.songwriter}</td>
-                                    </tr>
-                                    <tr>
-                                        <td><u>Play length:</u> #{detailTrack.playlength}</td>
+                                        <td><u>Release Date:</u> #{detailAlbum.releasedate}</td>
                                     </tr>
                                 </table>
 
@@ -80,16 +76,16 @@
                                     <tr>
                                     </tr>
                                     <tr>
-                                        <td><u>Category:</u> #{detailTrack.musiccategory}</td>
+                                        <td><u>Recording label:</u> #{detailAlbum.recordlabel}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>Price:</u> $#{detailTrack.listprice}</td>
+                                        <td><u>Price:</u> $#{detailAlbum.listprice}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>Date entered into inventory:</u> #{detailTrack.dateentered}</td>
+                                        <td><u>Date entered into inventory:</u> #{detailAlbum.dateentered}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>Sold as Individual Track or Part of Album:</u> #{detailTrack.getPartOfAlbumStringFormat()}</td>
+                                        <td><u>Number of tracks:</u> #{detailAlbum.numberoftracks} </td>
                                     </tr>
                                 </table>
 
@@ -99,9 +95,12 @@
                                     <h1 id="myList">Related Albums</h1>
 
                                     <div id="relatedAlbums" class="relBox">
-                                        <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
+
+                                        <!-- Show 3 other albums from the same genre -->
+                                        <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailAlbum)}" var="relatedAlbums">
                                             <h:form id="form">
-                                                <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.selectAlbum(relatedAlbums)}">
+                                                <!-- Link each album to its album page -->
+                                                <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.showRelatedAlbum(relatedAlbums)}">
                                                     <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
                                                 </h:commandLink>
                                             </h:form>
@@ -115,28 +114,22 @@
 
                         </div>
 
-
-
                         <div class="ratings">
                             <h1>Reviews</h1>
 
-
-
-                            <ui:repeat value="#{reviewJpaController.getTrackReviews(detailTrack)}" var="trackReviews">
-
-
+                            <!-- Display all the reviews for an album's tracks -->
+                            <ui:repeat value="#{reviewJpaController.getAlbumTrackReviews(detailAlbum)}" var="albumTrackReviews">
                                 <div class="rating">
-
                                     <hr/>
-                                    <h3>"#{trackReviews.reviewtext}"</h3>
 
-                                    <small>from <u>#{trackReviews.clientname}</u></small>
-                                    <h3>#{trackReviews.rating}/10 rating</h3>
+                                    <ui:param name="track" value="#{musicTrackJpaController.findMusicTrack(albumTrackReviews.inventoryid.inventoryid)}" />
+                                    <h4>#{track.tracktitle}</h4>
 
-                                    <small>Written on: #{trackReviews.reviewdate}</small>
+                                    <h4>"#{albumTrackReviews.reviewtext}"</h4>
 
-
-
+                                    <h3>#{albumTrackReviews.rating}/10 rating</h3>
+                                    <small>from <u>#{albumTrackReviews.clientname}</u></small><br></br>
+                                    <small>Written on: #{albumTrackReviews.reviewdate}</small>
                                 </div>
                             </ui:repeat>
                         </div>
@@ -147,8 +140,3 @@
     </h:body>
 
 </html>
-
-
-
-
-

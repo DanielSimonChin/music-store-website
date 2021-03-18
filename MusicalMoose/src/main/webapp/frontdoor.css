@@ -5,6 +5,18 @@
     --dark: 	#575757;
   }
 
+    
+  .box form{
+      transition: transform .3s;
+  }
+  
+  .box form:hover{
+    transition: transform .3s;
+    -ms-transform: scale(1.4);
+    -webkit-transform: scale(1.4);  
+    transform: scale(1.4);
+  }
+  
   input[type=text]{
       background-color:#161616;
       border:transparent;
