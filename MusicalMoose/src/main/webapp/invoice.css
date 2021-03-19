@@ -99,6 +99,10 @@
     max-width: 100%;
   }
   
+    #navsearch{
+      display:inline-block;
+  }
+  
   h1 {
     padding-top: 60px;  
   }
