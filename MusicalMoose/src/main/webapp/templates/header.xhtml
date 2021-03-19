@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
     <head>
         <title>Musical Moose</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -19,12 +20,8 @@
                     <a href="/MusicalMoose/#genres">Genres</a>
                     <a href="/MusicalMoose/#recent">Recently Added</a>
                     <a href="/MusicalMoose/checkout.xhtml">Check Out</a>
-                    <a><i class="fas fa-search sub-nav-logo" /> <h:form>
-                            <span class="fas fa-search sub-nav-logo">#{msgs.search}</span>
-                            <i class="fas fa-search sub-nav-logo" />  
-                            <h:inputText rendered="#{ 'Date' ne searchController.category}"  value="#{searchController.searchText}"/>
-
-
+                    <div><h:form>
+                            <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}"  value="#{searchController.searchText}"/>
                             <h:outputLabel rendered="#{'Date' eq searchController.category}" value="To"/>
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
@@ -33,7 +30,7 @@
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:inputText>
-                            <h:selectOneMenu  value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> >
+                            <h:selectOneMenu  value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> 
                                 <f:selectItem itemValue = "TrackName" itemLabel = "#{msgs.trackName}" /> 
                                 <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
                                 <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
@@ -44,7 +41,7 @@
                             <h:outputText value="#{searchController.errorMessage}"/>
                             <h:messages styleClass="errorMessage" showSummary="false"
                                         showDetail="true" />
-                        </h:form></a>
+                        </h:form></div>
                 </nav>
                 <nav class="sub-nav">
                     <a href="#">Log in / Register</a>
