@@ -16,10 +16,10 @@
                     <a id="logo" href="/MusicalMoose/"><b class="left-logo">Musical Moose</b></a>
                 </div>
                 <nav class="main-nav">
-                    <a href="/MusicalMoose/#home">Home</a>
-                    <a href="/MusicalMoose/#genres">Genres</a>
-                    <a href="/MusicalMoose/#recent">Recently Added</a>
-                    <a href="/MusicalMoose/checkout.xhtml">Check Out</a>
+                    <a href="/MusicalMoose/#home">#{msgs.headerHome}</a>
+                    <a href="/MusicalMoose/#genres">#{msgs.headerGenres}</a>
+                    <a href="/MusicalMoose/#recent">#{msgs.headerRecentlyAdded}</a>
+                    <a href="/MusicalMoose/checkout.xhtml">#{msgs.headerCheckout}</a>
                     <div><h:form>
                             <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}"  value="#{searchController.searchText}"/>
                             <h:outputLabel rendered="#{'Date' eq searchController.category}" value="To"/>
@@ -44,7 +44,7 @@
                         </h:form></div>
                 </nav>
                 <nav class="sub-nav">
-                    <a href="#">Log in / Register</a>
+                    <a href="#">#{msgs.loginAndRegister}</a>
                 </nav>
             </header>
         </ui:composition>

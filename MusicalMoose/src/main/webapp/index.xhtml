@@ -26,7 +26,7 @@
                                         <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
                                         <div class="location" id="home">
 
-                                            <h1 id="home">Music specials of the day</h1>
+                                            <h1 id="home">#{msgs.musicSpecials}</h1>
 
                                             <div class="box">
                                                 <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
@@ -40,8 +40,7 @@
 
                                         <!--Only if has cookie-->
                                         <h:form rendered="#{albumJpaController.hasGenreCookie()}">
-                                            <h1 id="home">Last Searched Genre</h1>
-
+                                            <h1 id="home">#{msgs.lastSearchedGenre}</h1>
                                             <div class="box">
 
                                                 <ui:repeat value="#{albumJpaController.findRecentGenreAlbums()}" var="relatedAlbums">
@@ -54,7 +53,7 @@
                                             </div>
                                         </h:form>
 
-                                        <h1 id="myList">News Highlights</h1>
+                                        <h1 id="myList">#{msgs.newsHighlights}</h1>
 
                                         <div class="box news">
                                             <a href="">
@@ -115,7 +114,7 @@
                                         </h:form>
                                         <img class="ad" src="ads/ad_1.png" alt="" />
 
-                                        <h1 id="genres">Browse Genres</h1>
+                                        <h1 id="genres">#{msgs.browseGenres}</h1>
 
                                         <div class="box">
                                             <h:form class="form">
@@ -145,7 +144,7 @@
                                             </h:form>
                                         </div>
 
-                                        <h1 id="recent">Recently Added</h1>
+                                        <h1 id="recent">#{msgs.recentlyAdded}</h1>
 
                                         <div class="box">
                                             <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
