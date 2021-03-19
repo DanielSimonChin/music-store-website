@@ -219,6 +219,7 @@
   
   
   .main-nav {
+    display: flex;
     grid-area: mn;
     padding: 0 30px 0 20px;
   }
