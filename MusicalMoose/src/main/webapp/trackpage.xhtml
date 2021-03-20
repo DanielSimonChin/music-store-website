@@ -118,10 +118,10 @@
 
 
                         <div class="ratings">
+                            <h:form >
+                                <h:commandButton value="Write Review" action="#{reviewJpaController.writeReview(detailTrack, false)}"/>
+                            </h:form >
                             <h1>Reviews</h1>
-
-
-
                             <ui:repeat value="#{reviewJpaController.getTrackReviews(detailTrack)}" var="trackReviews">
 
 

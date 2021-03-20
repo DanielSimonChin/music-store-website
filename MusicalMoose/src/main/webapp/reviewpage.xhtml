@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <head>
+        <title>Review Page</title>
+        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
+    </head>
+    <h:body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <div class="wrapper">
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+                        <!-- A global variable representing the MusicTrack object being shown on this page -->
+                        <ui:param name="trackReview" value="#{reviewJpaController.review}" />
+                        <h3>Writing review for:${trackReview.inventoryid.tracktitle} </h3>
+                        <h5>Genre:${trackReview.inventoryid.musiccategory} </h5> <h5>Artist:${trackReview.inventoryid.artist} </h5>
+                        <h:form rendered="#{not reviewJpaController.trackCreated}">  
+                            <h:panelGrid columns="1">
+                                <h:panelGroup> 
+                                    <h:outputLabel value="Rate out of 5 stars"/>
+                                    <h:selectOneMenu  value="#{reviewJpaController.starRating}" id="starRating"   immediate="true"> >
+                                        <f:selectItem itemValue = "1" itemLabel = "1" /> 
+                                        <f:selectItem itemValue = "2" itemLabel = "2" /> 
+                                        <f:selectItem itemValue = "3" itemLabel = "3" /> 
+                                        <f:selectItem itemValue = "4" itemLabel = "4" /> 
+                                        <f:selectItem itemValue = "5" itemLabel = "5" /> 
+                                    </h:selectOneMenu> 
+                                </h:panelGroup>
+                                <h:panelGroup> 
+                                    <h:outputLabel value="Write your description"/>
+                                    <h:inputTextarea  rows = "10"  cols = "10" value = "#{trackReview.reviewtext}"   />
+                                </h:panelGroup>
+                                <h:panelGroup> 
+                                    <h:commandButton value="Create Review" action="#{reviewJpaController.postReview()}"/> 
+                                </h:panelGroup>
+                            </h:panelGrid>
+                        </h:form>
+                        <h:form >  
+                            <h:outputLabel rendered="#{ reviewJpaController.trackCreated}" value="Your review has been created"/>
+                            <h:commandButton value="Back to page" action="#{reviewJpaController.backToPage()}"/> 
+                        </h:form>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

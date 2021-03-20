@@ -157,7 +157,12 @@ public class SurveyJpaController implements Serializable {
         cq.select(survey);
         cq.where(cb.equal(survey.get("surveryended"), 0));
         TypedQuery<Survey> query = em.createQuery(cq);
-        return query.getSingleResult();
+        try{
+            return query.getSingleResult();
+        }
+        catch(javax.persistence.NoResultException NoResultException){
+            return null;
+        }
 
     }
     public boolean isSurveyUsed(){
