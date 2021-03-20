@@ -215,10 +215,13 @@ header {
 #logo {
     margin: 0; 
     padding: 0; 
-}
 
+  }
+  
+  
+  .main-nav {
+    display: flex;
 
-.main-nav {
     grid-area: mn;
     padding: 0 30px 0 20px;
 }

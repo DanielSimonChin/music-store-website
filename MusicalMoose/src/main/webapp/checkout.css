@@ -183,9 +183,12 @@ header {
 .main-nav {
     grid-area: mn;
     padding: 0 30px 0 20px;
-}
 
-.main-nav a {
+    display: flex;
+  }
+  
+  .main-nav a {
+
     color: var(--light);
     text-decoration: none;
     margin: 5px;  

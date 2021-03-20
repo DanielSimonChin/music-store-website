@@ -17,22 +17,22 @@ and open the template in the editor.
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="invoice.css"/>
-                <h1 id="title"> Invoice</h1>                
+                <h1 id="title"> #{msgs.invoice} <br></br><small>(A copy was emailed to you)</small></h1> 
                 <button id="printBtn">
                     Print
                 </button>
                 <br/>
-                <div id="invoiceContainer">
+                <div class="section-to-print" id="invoiceContainer">
                     <h1 id="title"><u>Musical Moose</u></h1>
-                    <p><b>Sale number: 123</b></p>
-                    <p><b>Client number: 123</b></p>
-                    <p><b>Date of sale: 2021-03-16</b></p>
+                    <p><b>#{msgs.saleNumber} 123</b></p>
+                    <p><b>#{msgs.clientNumber} 123</b></p>
+                    <p><b>#{msgs.dateOfSale} 2021-03-16</b></p>
                     <p>---</p>
-                    <p><b>Total net value of the sale: $123.00</b></p>
-                    <p><b>PST: $123.00</b></p>
-                    <p><b>GST: $123.00</b></p>
-                    <p><b>HST: $123.00</b></p>
-                    <p><b>Total gross value of the sale: $123.00</b></p>
+                    <p><b>#{msgs.totalNetValueOfTheSale} $123.00</b></p>
+                    <p><b>#{msgs.PST} $123.00</b></p>
+                    <p><b>#{msgs.GST} $123.00</b></p>
+                    <p><b>#{msgs.HST} $123.00</b></p>
+                    <p><b>#{msgs.totalGrossValueOfTheSale} $123.00</b></p>
                     <br/>
                     <br/>
                 </div>

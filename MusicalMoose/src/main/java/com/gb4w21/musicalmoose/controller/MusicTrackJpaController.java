@@ -289,8 +289,10 @@ public class MusicTrackJpaController implements Serializable {
 
     private void writeCookie() {
 //        recentGenre = searchedTrack.getMusiccategory();
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
+        if (searchedTrack != null && searchedTrack.getMusiccategory() != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
+        }
     }
 
     public String showTrackFromAlbum(MusicTrack track) {
