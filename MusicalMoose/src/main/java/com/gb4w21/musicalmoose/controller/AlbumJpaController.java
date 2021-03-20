@@ -307,7 +307,7 @@ public class AlbumJpaController implements Serializable {
     
     private void writeCookie() {
         List<MusicTrack> musicTracks = selectedAlbum.getMusicTrackList();
-        if (musicTracks.size() > 0) {
+        if (musicTracks.size() > 0 && musicTracks.get(0).getMusiccategory() != null) {
 //            recentGenre = musicTracks.get(0).getMusiccategory();
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().addResponseCookie("GenreTracking", musicTracks.get(0).getMusiccategory(), null);
