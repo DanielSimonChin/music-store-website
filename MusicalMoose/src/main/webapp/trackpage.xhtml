@@ -18,6 +18,10 @@
             <ui:define name="content">
                 <link rel="stylesheet" href="trackpage.css"/>
 
+                <f:metadata>
+                    <f:event type="preRenderView"
+                             listener="#{preRenderViewBean.checkLocaleCookie()}" />
+                </f:metadata>
                 <div class="wrapper">
                     <section class="main-container">
 

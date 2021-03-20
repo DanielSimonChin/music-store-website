@@ -44,6 +44,20 @@
                         </h:form></div>
                 </nav>
                 <nav class="sub-nav">
+                    <h:form>
+                        <h:commandLink immediate="true"
+                                       actionListener="#{localeChanger.changeLocale()}">
+                            <f:param name="languageCode" value="fr_CA" />
+                            <h:graphicImage value="icons/ca_flag.gif" />
+                        </h:commandLink>
+
+                        <h:commandLink immediate="true"
+                                       actionListener="#{localeChanger.changeLocale()}">
+                            <f:param name="languageCode" value="en_CA" />
+                            <h:graphicImage value="icons/en_flag.gif" />
+                        </h:commandLink>
+                    </h:form>
+
                     <a href="#">#{msgs.loginAndRegister}</a>
                 </nav>
             </header>

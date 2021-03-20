@@ -26,14 +26,28 @@
     
     <build>
         <finalName>
-           MusicalMoose 
+            MusicalMoose 
         </finalName>
     </build>
+    
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
+    </repositories>
+    
     <dependencies>
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.23</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.apptastic</groupId>
+            <artifactId>rssreader</artifactId>
+            <version>2.4.1</version>
         </dependency>
     </dependencies>
 </project>
