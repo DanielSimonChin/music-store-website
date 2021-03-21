@@ -15,8 +15,10 @@ import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -171,10 +173,12 @@ public class MusicTrackJpaController implements Serializable {
         LOG.info(mt.getArtist());
         return em.find(MusicTrack.class, id);
     }
-    public void searchForTracks (FacesContext context, UIComponent component,
+
+    public void searchForTracks(FacesContext context, UIComponent component,
             Object value) {
-        
+
     }
+
     /**
      * Returns a list of the three most recently added MusicTrack objects
      *
@@ -191,10 +195,11 @@ public class MusicTrackJpaController implements Serializable {
         List<MusicTrack> originalList = q.getResultList();
 
         List<MusicTrack> threeRecentTracks = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            threeRecentTracks.add(originalList.get(i));
+        if (originalList.size() > 0) {
+            for (int i = 0; i < 3; i++) {
+                threeRecentTracks.add(originalList.get(i));
+            }
         }
-
         return threeRecentTracks;
     }
 
@@ -214,7 +219,6 @@ public class MusicTrackJpaController implements Serializable {
      * @param track
      * @return tracks from same album
      */
-
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -237,7 +241,7 @@ public class MusicTrackJpaController implements Serializable {
             return new ArrayList<MusicTrack>();
         }
     }
-    
+
 //    public List<MusicTrack> findRecentGenreTracks() {
 //        findRecentGenreCookie();
 //        if (recentGenre == null || recentGenre.isEmpty()) {
@@ -269,7 +273,6 @@ public class MusicTrackJpaController implements Serializable {
 //            recentGenre = ((Cookie) genreTrackingCookie).getValue();
 //        }
 //    }
-
     /**
      * Set the selected track and display the trackpage.xhtml
      *
@@ -278,10 +281,15 @@ public class MusicTrackJpaController implements Serializable {
      */
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
         writeCookie();
         return "detailTrack";
     }
-    
+
     private void writeCookie() {
 //        recentGenre = searchedTrack.getMusiccategory();
         if (searchedTrack != null && searchedTrack.getMusiccategory() != null) {
@@ -289,8 +297,8 @@ public class MusicTrackJpaController implements Serializable {
             context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
         }
     }
-    
-    public String showTrackFromAlbum(MusicTrack track){
+
+    public String showTrackFromAlbum(MusicTrack track) {
         this.searchedTrack = track;
         return "detailTrackFromAlbum";
     }
@@ -330,7 +338,35 @@ public class MusicTrackJpaController implements Serializable {
 
         return (MusicTrack) q.getResultList().get(0);
     }
-    
+
+    public String backToTrack(MusicTrack musicTrack) {
+        this.searchedTrack = musicTrack;
+        return "reviewTrack";
+    }
+
+    public List<MusicTrack> getSpecialTracks() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+        cq.select(musicTrack);
+
+        cq.where(cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")));
+        cq.orderBy(cb.desc(musicTrack.get("saleprice")));
+        TypedQuery<MusicTrack> query = em.createQuery(cq);
+        List<MusicTrack> tracks = query.getResultList();
+        final int specialsLimt = 3;
+        List<MusicTrack> specialList = new ArrayList<>();
+        if (tracks.size()>specialsLimt) {
+            for (int i = 0; i < specialsLimt; i++) {
+                specialList.add(tracks.get(i));
+            }
+
+            return specialList;
+        } else {
+            return tracks;
+        }
+    }
+
     /**
      * Simple getter so the track page can access the selected track
      *
@@ -339,8 +375,9 @@ public class MusicTrackJpaController implements Serializable {
     public MusicTrack getMusicTrack() {
         return this.searchedTrack;
     }
+
     public void setMusicTrack(MusicTrack musicTrack) {
-        this.searchedTrack = musicTrack; 
+        this.searchedTrack = musicTrack;
     }
     
     /**
