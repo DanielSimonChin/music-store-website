@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <head>
 
@@ -18,16 +19,6 @@
             <ui:define name="content">
                 <link rel="stylesheet" href="checkout.css"/>
                 <h1 id="title">Shopping Cart</h1>
-
-                <!--                <div>
-                                    <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
-                                        <h:form>
-                                            <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
-                                                <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
-                                            </h:commandLink>
-                                        </h:form>
-                                    </ui:repeat>
-                                </div>-->
                 <div id="info1" class="container-info">
                     <form>
 
@@ -69,19 +60,59 @@
                 <div id="info2" class="container-info">
                     <h4>Cart</h4>
                     <div id="scrollcart">
-                        <p><a href="#">Product 1</a> <span class="price">$15</span></p>
-                        <p><a href="#">Product 2</a> <span class="price">$5</span></p>
-                        <p><a href="#">Product 3</a> <span class="price">$8</span></p>
-                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
-                        <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                        <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">
+                            <h:form>
+<!--                                <c:choose>
+                                    <c:when test="$ {cartItems.isAlbum}">
+                                        <h:commandLink value="# {cartItems.title}" action="# {albumJpaController.searchSingleAlbum(cartItems.id)}" />
+                                            <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
+                                        </h:commandLink>
+                                        album
+                                    </c:when>
+                                    <c:otherwise>
+                                        <h:commandLink value="$ {cartItems.title}" action="# {musicTrackJpaController.selectSingleTrack(cartItems.id)}" />
+                                            <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
+                                            <h:button value="hi"></h:button>
+                                        </h:commandLink>
+                                        track
+                                    </c:otherwise>
+                                </c:choose>-->
+
+<!--                            <c:if test="$ {cartItems.isAlbum}">
+                                    <h:commandLink value="# {cartItems.title}" action="# {albumJpaController.searchSingleAlbum(cartItems.id)}" />
+                                        <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
+                                    </h:commandLink>
+                                    album
+                                </c:if>
+                                <c:if test="$ {cartItems.isAlbum}">
+                                    <h:commandLink value="$ {cartItems.title}" action="# {musicTrackJpaController.selectSingleTrack(cartItems.id)}" />
+                                        <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
+                                        <h:button value="hi"></h:button>
+                                    </h:commandLink>
+                                    track
+                                </c:if>-->
+                                <ui:fragment rendered="#{cartItems.isAlbum}">
+                                    <h:commandLink value="#{cartItems.title} - Album: $#{cartItems.price}" action="#{albumJpaController.searchSingleAlbum(cartItems.id)}">
+                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
+                                    </h:commandLink>
+                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
+                                        <h:graphicImage value="icons/delete-cart.png" />
+                                    </h:commandLink>
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{not cartItems.isAlbum}">
+                                    <h:commandLink value="#{cartItems.title} - Track: $#{cartItems.price}" action="#{musicTrackJpaController.selectSingleTrack(cartItems.id)}">
+                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
+                                    </h:commandLink>
+                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
+                                        <h:graphicImage value="icons/delete-cart.png" />
+                                    </h:commandLink>
+                                </ui:fragment>
+                            </h:form>
+                        </ui:repeat>
                     </div>
 
-                    <p>Total <span class="price"><b>$30</b></span></p>
+                    <p>Total: <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
                 </div>
             </ui:define>
         </ui:composition>

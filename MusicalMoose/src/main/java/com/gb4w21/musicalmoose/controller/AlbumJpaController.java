@@ -205,7 +205,43 @@ public class AlbumJpaController implements Serializable {
 
     public String searchSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
-        return "albumpage";
+        writeCookie();
+        LOG.info("album id:"+id);
+        LOG.info("album id:"+id);
+        LOG.info("album id:"+id);
+        LOG.info("album id:"+id);
+        LOG.info("album id:"+id);
+        return "detailAlbum";
+    }
+    
+    public String selectSingleTrack(int id) {
+        try {
+            this.selectedAlbum = findAlbumById(id);
+        }
+        catch (NonexistentEntityException e) {
+            return null;
+        }
+        writeCookie();
+        return "detailAlbum";
+    }
+    
+    private Album findAlbumById(int id) throws NonexistentEntityException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Album> cq = cb.createQuery(Album.class);
+
+        Root<Album> album = cq.from(Album.class);
+
+        cq.select(album);
+        
+        cq.where(cb.equal(album.get("albumid"), id));
+
+        Query q = em.createQuery(cq);
+        if (q.getResultList().size() != 1) {
+            throw new NonexistentEntityException("Cannot find Album with id");
+        }
+
+        return (Album) q.getResultList().get(0);
     }
 
     public String backToAlbum(Album album) {
@@ -259,11 +295,7 @@ public class AlbumJpaController implements Serializable {
         return q.getResultList().subList(0, 3);
     }
 
-    public List<Album> findRecentGenreAlbums() {
-//        findRecentGenreCookie();
-//        if (recentGenre == null || recentGenre.isEmpty()) {
-//            return null;
-//        }
+    public List<Album> getRecentGenreAlbums() {
         String recentGenre = findRecentGenreCookie();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
