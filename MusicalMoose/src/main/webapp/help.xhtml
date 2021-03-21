@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <head>
+        <title>Musical Moose - Help</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="help.css"/>
+                <h1 id="title"> #{msgs.help}</h1> 
+                <br/>
+                <table>
+                    <tr>
+                        <td>Mobile compatibility</td>
+                        <td>The website's css is designed to adjust to a user's mobile device size and orientation, allowing access to all features.</td>
+                    </tr>
+                    <tr>
+                        <td>Welcome Page</td>
+                        <td>If you've has never been to the site, then the welcome page will display the music specials of the day. If we identify you as a returning visitor, the welcome page will display both the specials of the day and selections of music based on your previous visit. There is also news highlights, an optional survey, ads and a large selection of music.</td>
+                    </tr>
+                    <tr>
+                        <td>Track Page</td>
+                        <td>This page displays the information about a single track and allows the visitor to add the track to their shopping cart. All other tracks from the same album are also displayed on this page. The page also displays any reviews and if they are a registered visitor they may enter a review. In addition, three albums from other artists in the same genre are displayed.</td>
+                    </tr>
+                    <tr>
+                        <td>Album Page</td>
+                        <td>This page displays the information about a single album and allows the visitor to add the album to their shopping cart. The page also displays any reviews for any tracks on the album and if they are a registered visitor they may enter a review for any track on the album.In addition, three albums from other artists in the same genre are displayed.</td>
+                    </tr>
+                    <tr>
+                        <td>Check Out Page</td>
+                        <td>This page displays all the items in the shopping cart as well as their prices. If shopping is complete the client can choose to finalize the transaction.</td>
+                    </tr>
+                    <tr>
+                        <td>Invoice Page</td>
+                        <td>Once the transaction is complete the final invoice is displayed for the client to print out and a copy of the invoice is emailed to the visitor.</td>
+                    </tr>
+                    <tr>
+                        <td>Download Page</td>
+                        <td>This page has a list of all music purchased by a user with an option to play the song in the browser or download it as an mp3 file.</td>
+                    </tr>
+                    <tr>
+                        <td>Registration/Login Page</td>
+                        <td>This page allows you to login to your account or register a new one if you have no account.</td>
+                    </tr>
+                </table>
+                <script src="./invoice.js"></script>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
