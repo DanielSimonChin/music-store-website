@@ -211,7 +211,7 @@ public class AlbumJpaController implements Serializable {
         LOG.info("album id:"+id);
         LOG.info("album id:"+id);
         LOG.info("album id:"+id);
-        return "detailAlbum";
+        return "searchAlbum";
     }
     
     public String selectSingleTrack(int id) {

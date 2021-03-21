@@ -25,11 +25,11 @@
                     <div><h:form>
                             <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}"  value="#{searchController.searchText}"/>
                             
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value=#{msgs.to}/>
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:inputText>
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value=#{msgs.from}/>
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:inputText>
