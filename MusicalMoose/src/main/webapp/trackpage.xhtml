@@ -103,7 +103,8 @@
                                     <div id="relatedAlbums" class="relBox">
                                         <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
                                             <h:form id="form">
-                                                <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.selectAlbum(relatedAlbums)}">
+                                                <h:commandLink action="#{albumJpaController.selectAlbum(relatedAlbums)}">
+                                                    <b class="adjustEllipse">#{relatedAlbums.albumtitle}</b>
                                                     <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
                                                 </h:commandLink>
                                             </h:form>
