@@ -60,7 +60,7 @@ public class SearchController implements Serializable {
     @Inject
     private MusicTrackJpaController musicTrackJpaController;
     private String category;
-    private String errorMessage;
+    private boolean searchError;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -79,12 +79,12 @@ public class SearchController implements Serializable {
     public void setFromDate(Date fromDate){
         this.fromDate= fromDate;
     }
-    public String getErrorMessage() {
-        return errorMessage;
+    public boolean getSearchError() {
+        return searchError;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
+    public void setSearchError(boolean searchError) {
+        this.searchError = searchError;
     }
 
     public String getCategory() {
@@ -145,10 +145,10 @@ public class SearchController implements Serializable {
         fromDate=null;
         toDate=null;
         if (searchResultsAlbum.size() + searchResultsTrack.size() == 0) {
-            errorMessage = "your search had no results";
+            searchError = true;
             return "index";
         }
-        errorMessage ="";
+        searchError =false;
         if (searchResultsTrack.size() == 0 && searchResultsAlbum.size() == 1) {
             setSingleAlbum();
             return "albumpage";

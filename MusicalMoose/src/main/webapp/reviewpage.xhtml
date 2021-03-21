@@ -19,12 +19,12 @@
                     <section class="main-container">
                         <!-- A global variable representing the MusicTrack object being shown on this page -->
                         <ui:param name="trackReview" value="#{reviewJpaController.review}" />
-                        <h3>Writing review for:${trackReview.inventoryid.tracktitle} </h3>
-                        <h5>Genre:${trackReview.inventoryid.musiccategory} </h5> <h5>Artist:${trackReview.inventoryid.artist} </h5>
+                        <h3>${msgs.writeReviewFor} ${trackReview.inventoryid.tracktitle} </h3>
+                        <h5>${msgs.genre}  ${trackReview.inventoryid.musiccategory} </h5> <h5>${msgs.artis2} ${trackReview.inventoryid.artist} </h5>
                         <h:form rendered="#{not reviewJpaController.trackCreated}">  
                             <h:panelGrid columns="1">
                                 <h:panelGroup> 
-                                    <h:outputLabel value="Rate out of 5 stars"/>
+                                    <h:outputLabel value="#{msgs.rateOutOf}"/>
                                     <h:selectOneMenu  value="#{reviewJpaController.starRating}" id="starRating"   immediate="true"> >
                                         <f:selectItem itemValue = "1" itemLabel = "1" /> 
                                         <f:selectItem itemValue = "2" itemLabel = "2" /> 
@@ -34,17 +34,17 @@
                                     </h:selectOneMenu> 
                                 </h:panelGroup>
                                 <h:panelGroup> 
-                                    <h:outputLabel value="Write your description"/>
+                                    <h:outputLabel value="#{msgs.writeYourDescription}"/>
                                     <h:inputTextarea  rows = "10"  cols = "10" value = "#{trackReview.reviewtext}"   />
                                 </h:panelGroup>
                                 <h:panelGroup> 
-                                    <h:commandButton value="Create Review" action="#{reviewJpaController.postReview()}"/> 
+                                    <h:commandButton value="#{msgs.createReview}" action="#{reviewJpaController.postReview()}"/> 
                                 </h:panelGroup>
                             </h:panelGrid>
                         </h:form>
                         <h:form >  
-                            <h:outputLabel rendered="#{ reviewJpaController.trackCreated}" value="Your review has been created"/>
-                            <h:commandButton value="Back to page" action="#{reviewJpaController.backToPage()}"/> 
+                            <h:outputLabel rendered="#{ reviewJpaController.trackCreated}" value="#{msgs.yourReviewHasBeenCreated}"/>
+                            <h:commandButton value="#{msgs.backToPage}" action="#{reviewJpaController.backToPage()}"/> 
                         </h:form>
                     </section>
                 </div>
