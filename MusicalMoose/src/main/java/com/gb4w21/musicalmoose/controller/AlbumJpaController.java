@@ -290,11 +290,7 @@ public class AlbumJpaController implements Serializable {
         return q.getResultList().subList(0, 3);
     }
 
-    public List<Album> findRecentGenreAlbums() {
-//        findRecentGenreCookie();
-//        if (recentGenre == null || recentGenre.isEmpty()) {
-//            return null;
-//        }
+    public List<Album> getRecentGenreAlbums() {
         String recentGenre = findRecentGenreCookie();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
