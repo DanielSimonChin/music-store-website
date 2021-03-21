@@ -48,10 +48,16 @@
                                     </ui:repeat>
 
                                     <div id="shopCart">
-                                        <button>
+                                        <h:form>
+                                            <h:commandLink action="#{shoppingCartController.addShoppingCartAlbum(detailAlbum)}">
+                                                <h:graphicImage value="icons/shopping-cart.png" />
+                                                <p>#{msgs.addToCart}</p> 
+                                            </h:commandLink>
+                                        </h:form>
+<!--                                        <button>
                                             <img src="icons/shopping-cart.png"/>
-                                            <p>#{msgs.addToCart}</p>  
-                                        </button>
+                                            <p>{msgs.addToCart}</p>  
+                                        </button>-->
                                     </div>
                                 </table>
 
