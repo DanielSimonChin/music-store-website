@@ -26,7 +26,7 @@
     
     <build>
         <finalName>
-           MusicalMoose 
+            MusicalMoose 
         </finalName>
     </build>
     <dependencies>

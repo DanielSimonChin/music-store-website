@@ -177,9 +177,6 @@ CREATE TABLE RSS(
     URL VARCHAR(255),
     PRIMARY KEY (ID)
 );
-
-
-
 INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE)
 VALUES 
 (1, "DRAKE COMES OUT WITH ANOTHER BANGER", "Drake lives in symbiosis with Kardashian-style celebrity culture, using veiled lyrics and social media posts to carefully extend or withdraw access to his narrative. Incidentally, one of the most evocative things he has written recently is the caption to an Instagram post he made celebrating his son’s birthday and sharing photos of him with the public for the first time. “It doesn’t matter what has happened in the past or what is happening around us now, you can always make the choice to break free of the wheel of suffering and panic and open up to your own light,” he wrote. The venue was appropriate for an artist whose success was formed in part on his ability to fill songs with pithy captions. But the message was a rarer thing: earnest, tenderhearted, with the focused sobriety of someone who has been meditating or studying Eckhart Tolle. Unfortunately, very little of that sentiment has made its way into his music, which remains guarded and skin-deep, even as it grows, like his houses, bigger and more expensive. (Pitchfork, Rawiya Kameir)", TIMESTAMP("2020-03-08", "11:03:11"), TIMESTAMP("2020-03-10", "11:03:11")), 
@@ -194,7 +191,6 @@ VALUES
 (2, "Most popular artist for elders", "Which artist are you most familiar with?", "Drake", 43, "Ariana Grande", 81, "Justin Bieber", 61, "Beyonce", 88, TIMESTAMP("2021-01-03", "11:03:11"), TIMESTAMP("2021-02-20", "11:03:11"), 1),
 (3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 1),
 (4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 1);
-
 
 INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,REMOVALSTATUS, REMOVALDATE ) values
 (1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 19.99, 17.99, 15.99, 0.42, 0.45,0.49, 1, null),
@@ -345,6 +341,7 @@ INSERT INTO CLIENT (CLIENTID, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1,
 (18,"Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", 4471914490, 1529172744, "dpouletth@businesswire.com", "R&B"),
 (19,"Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", 3147308600, 3817116947, "bsackeri@europa.eu", "R&B"),
 (20,"Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", 2519196520, 1782694487, "gcanbyj@creativecommons.org", "R&B");
+
 
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
 VALUE 

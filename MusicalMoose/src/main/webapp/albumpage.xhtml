@@ -115,7 +115,19 @@
                         </div>
 
                         <div class="ratings">
+
                             <h1>#{msgs.reviews}</h1>
+                            <div  class="relBox">
+                                <h4>"Write review for tracks:"</h4>
+                                <ui:repeat value="#{detailAlbum.musicTrackList}" var="relatedTracks">
+                                    <h:form id="form">
+
+                                        <h:commandLink value="#{relatedTracks.tracktitle}" action="#{reviewJpaController.writeReview(relatedTracks, true)}">
+                                            <h:graphicImage value="album_covers/#{relatedTracks.albumimagefilenamesmall}" />
+                                        </h:commandLink>
+                                    </h:form>
+                                </ui:repeat>
+                            </div> 
 
                             <!-- Display all the reviews for an album's tracks -->
                             <ui:repeat value="#{reviewJpaController.getAlbumTrackReviews(detailAlbum)}" var="albumTrackReviews">
