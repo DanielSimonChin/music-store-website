@@ -18,6 +18,10 @@
   .downloadButton{
     display:inline-block;
     margin-left: 10px;
+    padding:20px;
+    background-color:grey;
+    border-radius:10px;
+    vertical-align:70%;
   }
   
   .box{
@@ -86,6 +90,10 @@
   .albumInfo{
       display:inline-block;
       margin-top:-20px;
+      width: 47%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+  overflow: hidden;
   }
 
   html, body {
@@ -95,7 +103,8 @@
 
   
   img {
-    max-width: 15em;
+    max-width: 10em;
+    vertical-align:190%;
   }
   
   h1 {
