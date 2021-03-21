@@ -30,13 +30,10 @@
 
                             <div class="box">
 
-
-
-
-                                <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specailtTracks">
+                                <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
                                     <h:form >
-                                        <h:commandLink value="#{specailtTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specailtTracks)}">
-                                            <h:graphicImage value="album_covers/#{specailtTracks.albumimagefilenamebig}" />
+                                        <h:commandLink value="#{specialTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specialTracks)}">
+                                            <h:graphicImage value="album_covers/#{specialTracks.albumimagefilenamebig}" />
                                         </h:commandLink>
                                     </h:form>
                                 </ui:repeat>
@@ -52,21 +49,20 @@
                             </div>
                         </div>
 
-
-
-
                         <!--Only if has cookie-->
                         <h:form rendered="#{albumJpaController.hasGenreCookie()}">
                             <h1 id="home">#{msgs.lastSearchedGenre}</h1>
                             <div class="box">
 
-                                <ui:repeat value="#{albumJpaController.findRecentGenreAlbums()}" var="relatedAlbums">
-                                    <h:form id="form">
-                                        <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.selectAlbum(relatedAlbums)}">
-                                            <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
+                                <ui:repeat value="#{albumJpaController.recentGenreAlbums}" var="recentGenreAlbums">
+                                    <h:form>
+                                        <!--<h:commandLink value="# {recentGenreAlbums.albumtitle}" action="# {albumJpaController.searchSingleAlbum(recentGenreAlbums.albumid)}">-->
+                                        <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums.albumid)}">
+                                            <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
                                         </h:commandLink>
                                     </h:form>
                                 </ui:repeat>
+                                
                             </div>
                         </h:form>
 

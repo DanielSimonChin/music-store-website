@@ -14,7 +14,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
-import com.gb4w21.musicalmoose.entities.MusicTrack_;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -173,7 +172,6 @@ public class MusicTrackJpaController implements Serializable {
         MusicTrack mt = em.find(MusicTrack.class, id);
         LOG.info(mt.getArtist());
         return em.find(MusicTrack.class, id);
-
     }
 
     public void searchForTracks(FacesContext context, UIComponent component,
@@ -222,21 +220,26 @@ public class MusicTrackJpaController implements Serializable {
      * @return tracks from same album
      */
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
 
-        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+            CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
 
-        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+            Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
 
-        //Joining the MusicTrack table to the Album table
-        Join albumsTracks = musicTrack.join("albumid");
+            //Joining the MusicTrack table to the Album table
+            Join albumsTracks = musicTrack.join("albumid");
 
-        //We want all the tracks from this album that isn't the selected track
-        cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()));
+            //We want all the tracks from this album that isn't the selected track
+            cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()));
 
-        Query q = em.createQuery(cq);
+            Query q = em.createQuery(cq);
 
-        return q.getResultList();
+            return q.getResultList();
+        }
+        catch (NullPointerException ex) {
+            return new ArrayList<MusicTrack>();
+        }
     }
 
 //    public List<MusicTrack> findRecentGenreTracks() {
@@ -299,10 +302,41 @@ public class MusicTrackJpaController implements Serializable {
         this.searchedTrack = track;
         return "detailTrackFromAlbum";
     }
-
-    public String searchSingleTrack(int id) {
+    
+    public String searchSingleTrack(int id){
         this.searchedTrack = findMusicTrack(id);
+        writeCookie();
         return "searchTrack";
+    }
+    
+    public String selectSingleTrack(int id) {
+        try {
+            this.searchedTrack = findTrackById(id);
+        }
+        catch (NonexistentEntityException e) {
+            return null;
+        }
+        writeCookie();
+        return "detailTrack";
+    }
+    
+    private MusicTrack findTrackById(int id) throws NonexistentEntityException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+
+        cq.select(musicTrack);
+        
+        cq.where(cb.equal(musicTrack.get("inventoryid"), id));
+
+        Query q = em.createQuery(cq);
+        if (q.getResultList().size() != 1) {
+            throw new NonexistentEntityException("Cannot find MusicTrack with id");
+        }
+
+        return (MusicTrack) q.getResultList().get(0);
     }
 
     public String backToTrack(MusicTrack musicTrack) {
@@ -345,7 +379,7 @@ public class MusicTrackJpaController implements Serializable {
     public void setMusicTrack(MusicTrack musicTrack) {
         this.searchedTrack = musicTrack;
     }
-
+    
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.

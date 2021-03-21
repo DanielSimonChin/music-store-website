@@ -49,10 +49,12 @@
                                     </ui:repeat>
 
                                     <div id="shopCart">
-                                        <button>
-                                            <img src="icons/shopping-cart.png"/>
-                                            <p>#{msgs.addToCart}</p>  
-                                        </button>
+                                        <h:form>
+                                            <h:commandLink action="#{shoppingCartController.addShoppingCartTrack(musicTrackJpaController.getMusicTrack())}">
+                                                <h:graphicImage value="icons/shopping-cart.png" />
+                                                <p>#{msgs.addToCart}</p> 
+                                            </h:commandLink>
+                                        </h:form>
                                     </div>
                                 </table>
 
