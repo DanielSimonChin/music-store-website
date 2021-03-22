@@ -18,95 +18,95 @@ and open the template in the editor.
             <ui:define name="content">
                 <link rel="stylesheet" href="login.css"/>
 
-                <h1 id="title">Account Management</h1>
+                <h1 id="title">#{msgs.accountManagement}</h1>
 
                 <div class="container-info">
                     <form>
 
                         <div class="row">
                             <br/>
-                            <h3>Register</h3>
-                            <label for="cname">Username</label>
+                            <h3>#{msgs.register}</h3>
+                            <label for="cname">#{msgs.username}</label>
                             <input type="text" id="cname" placeholder="DawsonConsumer"/>
                             <br></br>
                             <br></br>
-                            <label for="title">Title</label>
+                            <label for="title">#{msgs.title}</label>
                             <div>
                                 <input type="radio" id="mr" name="title" value="mr"
                                        checked=""/>
-                                    <label for="mr">Mr.</label>
+                                <label for="mr">#{msgs.mr}</label>
                             </div>
 
                             <div>
                                 <input type="radio" id="ms" name="title" value="ms"/>
-                                    <label for="ms">Ms.</label>
+                                <label for="ms">#{msgs.ms}</label>
                             </div>
 
                             <div>
                                 <input type="radio" id="other" name="title" value="other"/>
-                                    <label for="other">Other</label>
+                                <label for="other">#{msgs.other}</label>
                             </div>
                             <br></br>
-                            <label for="password">Password</label>
+                            <label for="password">#{msgs.password}</label>
                             <input type="password" id="password" placeholder=""/>
                             <br></br>
                             <br></br>
-                            <label for="password">Confirm Password</label>
+                            <label for="password">#{msgs.confirmPassword}</label>
                             <input type="password" id="password" placeholder=""/>
                             <br></br>
                             <br></br>
-                            <label for="fname">First Name</label>
+                            <label for="fname">#{msgs.firstName}</label>
                             <input type="text" id="fname" placeholder="Mike"/>
                             <br></br>
                             <br></br>
-                            <label for="lname">Last Name</label>
+                            <label for="lname">#{msgs.lastName}</label>
                             <input type="text" id="lname" placeholder="Smith"/>
                             <br></br>
                             <br></br>
-                            <label for="compname">Company name</label>
+                            <label for="compname">#{msgs.companyName}</label>
                             <input type="text" id="compname" placeholder="Dawson College"/>
                             <br></br>
                             <br></br>
-                            <label for="addr1">Address 1</label>
+                            <label for="addr1">#{msgs.address1}</label>
                             <input type="text" id="addr1" placeholder="24 Ave. 9876"/>
                             <br></br>
                             <br></br>
-                            <label for="addr1">Address 2</label>
+                            <label for="addr1">#{msgs.address2}</label>
                             <input type="text" id="addr2" placeholder="24 Ave. 9876"/>
                             <br></br>
                             <br></br>
-                            <label for="city">City</label>
+                            <label for="city">#{msgs.city}</label>
                             <input type="text" id="city" placeholder="Montreal"/>
                             <br></br>
                             <br></br>
-                            <label for="province">Province</label>
+                            <label for="province">#{msgs.province}</label>
                             <input type="text" id="province" placeholder="Quebec"/>
                             <br></br>
                             <br></br>
-                            <label for="country">Country</label>
+                            <label for="country">#{msgs.country}</label>
                             <input type="text" id="crountry" placeholder="Canada"/>
                             <br></br>
                             <br></br>
-                            <label for="pcode">Postal Code</label>
+                            <label for="pcode">#{msgs.postalCode}</label>
                             <input type="text" id="pcode" placeholder="H9U 6T0"/>
                             <br></br>
                             <br></br>
-                            <label for="hphone">Home Telephone</label>
+                            <label for="hphone">#{msgs.homeTelephone}</label>
                             <input type="text" id="hphone" placeholder="514-987-9876"/>
                             <br></br>
                             <br></br>
-                            <label for="cphone">Cellphone</label>
+                            <label for="cphone">#{msgs.cellphone}</label>
                             <input type="text" id="cphone" placeholder="514-987-9876"/>
                             <br></br>
                             <br></br>
-                            <label for="email">Email</label>
+                            <label for="email">#{msgs.email}</label>
                             <input type="text" id="email" placeholder="example@hotmail.com"/>
                             <br></br>
                             <br></br>
                         </div>
                         <br></br>
                         <input type="submit" value="Create Account" class="btn-sub"/>
-                        <a href="/MusicalMoose/login.xhtml">Already have an account? Login here...</a>
+                        <a href="/MusicalMoose/login.xhtml">#{msgs.alreadyAccount}</a>
                     </form>
                 </div>
             </ui:define>

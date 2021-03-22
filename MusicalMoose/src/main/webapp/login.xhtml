@@ -18,24 +18,24 @@ and open the template in the editor.
             <ui:define name="content">
                 <link rel="stylesheet" href="login.css"/>
                 
-                <h1 id="title">Account Management</h1>
+                <h1 id="title">#{msgs.accountManagement}</h1>
                 
                 <div class="container-info">
                     <form>
 
                         <div class="row">
                             <br/>
-                            <h3>Login</h3>
-                            <label for="cname">Username</label>
+                            <h3>#{msgs.login}</h3>
+                            <label for="cname">#{msgs.username}</label>
                             <input type="text" id="cname" placeholder=""/>
                             <br></br>
                             <br></br>
-                            <label for="password">Password</label>
+                            <label for="password">#{msgs.password}</label>
                             <input type="password" id="password" placeholder=""/>
                         </div>
                         <br></br>
-                        <input type="submit" value="Login" class="btn-sub"/>
-                        <a href="/MusicalMoose/register.xhtml">No account? Register here...</a>
+                        <input type="submit" value="#{msgs.login}" class="btn-sub"/>
+                        <a href="/MusicalMoose/register.xhtml">#{msgs.noAccount}</a>
                     </form>
                 </div>
             </ui:define>
