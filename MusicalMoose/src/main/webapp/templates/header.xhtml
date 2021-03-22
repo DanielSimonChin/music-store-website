@@ -24,7 +24,7 @@
                     <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
                     <div><h:form>
                             <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}"  value="#{searchController.searchText}"/>
-                            
+
                             <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />

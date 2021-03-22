@@ -56,7 +56,7 @@ public class PreRenderViewBean {
      * Checks for an existing cookie which contains the last selected locale
      * from the last session and calls a helper method to set the locale.
      */
-    public void checkLocaleCookie() {
+    public String checkLocaleCookie() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         // Retrieve a specific cookie
@@ -67,6 +67,8 @@ public class PreRenderViewBean {
 
             setLocale((Cookie) localeCookie);
         }
+        
+        return null;
     }
 
     /**
