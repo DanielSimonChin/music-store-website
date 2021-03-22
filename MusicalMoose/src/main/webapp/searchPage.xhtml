@@ -12,6 +12,7 @@
         <title>Search Results</title>
     </head>
 
+
     <h:body>
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
@@ -30,9 +31,7 @@
 
                                     <h:commandLink action="#{musicTrackJpaController.searchSingleTrack(searchResultsTrack.inventoryid)}">
                                         <b class="adjustEllipse">#{searchResultsTrack.title}</b>
-                                    <!--<h:outputText value="#{searchResultsTrack.artist}"/>
-                                        <h:outputText value="#{searchResultsTrack.musiccategory}"/>
-                                        <h:outputText value="#{searchResultsTrack.releasedate}"/>-->
+                                    
                                         <h:graphicImage value="album_covers/#{searchResultsTrack.albumimagefilenamesmall}" />
                                     </h:commandLink>
 
@@ -43,9 +42,7 @@
 
                                     <h:commandLink action="#{albumJpaController.searchSingleAlbum(searchResultsAlbum.albumid)}">
                                         <b class="adjustEllipse">#{searchResultsAlbum.title}</b>    
-                                    <!--<h:outputText value="#{searchResultsAlbum.artist}"/>
-                                        <h:outputText value="#{searchResultsAlbum.musiccategory}"/>
-                                        <h:outputText value="#{searchResultsAlbum.releasedate}"/>-->
+                                    
                                         <h:graphicImage value="album_covers/#{searchResultsAlbum.albumimagefilenamesmall}" />
                                     </h:commandLink>
 
@@ -55,6 +52,7 @@
 
                         </div>
                     </section>
+
                 </div>
             </ui:define>
         </ui:composition>
