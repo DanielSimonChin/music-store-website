@@ -55,12 +55,9 @@
                             <div class="box">
 
                                 <ui:repeat value="#{albumJpaController.recentGenreAlbums}" var="recentGenreAlbums">
-                                    <h:form>
-                                        <!--<h:commandLink value="# {recentGenreAlbums.albumtitle}" action="# {albumJpaController.searchSingleAlbum(recentGenreAlbums.albumid)}">-->
-                                        <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums.albumid)}">
-                                            <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
-                                        </h:commandLink>
-                                    </h:form>
+                                    <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums)}">
+                                        <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
+                                    </h:commandLink>
                                 </ui:repeat>
                                 
                             </div>
