@@ -16,9 +16,14 @@ import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Review;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -26,6 +31,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
+import javax.servlet.http.Cookie;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -40,9 +46,14 @@ import org.slf4j.LoggerFactory;
 public class ReviewJpaController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(ReviewJpaController.class);
-
+    private Review review;
+    private boolean fromAlbum;
+    private boolean trackCreated = false;
+    private String starRating;
     @Resource
     private UserTransaction utx;
+    @Inject
+    ClientJpaController clientJpaController;
 
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
@@ -166,6 +177,14 @@ public class ReviewJpaController implements Serializable {
 
     }
 
+    public String getStarRating() {
+        return starRating;
+    }
+
+    public void setStarRating(String starRating) {
+        this.starRating = starRating;
+    }
+
     public int getReviewCount() {
 
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -220,6 +239,68 @@ public class ReviewJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList();
+
+    }
+
+    public String writeReview(MusicTrack track, boolean fromAlbum) {
+        review = new Review();
+        review.setInventoryid(track);
+        trackCreated = false;
+        this.fromAlbum = fromAlbum;
+        return "reviewpage";
+    }
+
+    public String postReview() throws RollbackFailureException {
+        review.setReviewdate(new Date());
+        review.setRating(Integer.parseInt(this.starRating));
+        LOG.info("Rating:" + review.getRating());
+        LOG.info("Review:" + review.getReviewtext());
+        review.setAprovalstatus(false);
+        Client client = clientJpaController.findClient(getClientId());
+        review.setClientid(client);
+        review.setClientname(client.getFirstname());
+        create(review);
+        trackCreated = true;
+        return "reviewpage";
+    }
+
+    public String backToPage() {
+        review = null;
+        if (fromAlbum) {
+            return "reviewAlbum";
+
+        } else {
+            return "reviewTrack";
+        }
+    }
+
+    public Review getReview() {
+        return review;
+    }
+
+    public void setReview(Review review) {
+        this.review = review;
+    }
+
+    public boolean getTrackCreated() {
+        return trackCreated;
+    }
+
+    public int getClientId() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object loggedCookie = context.getExternalContext().getRequestCookieMap().get("LogCookie");
+        //return Integer.parseInt(((Cookie) loggedCookie).getValue());
+        return 3;
+    }
+
+    public boolean checkUserLoged() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object loggedCookie = context.getExternalContext().getRequestCookieMap().get("LogCookie");
+        if (loggedCookie != null && !(((Cookie) loggedCookie).getValue()).equals("none")) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 

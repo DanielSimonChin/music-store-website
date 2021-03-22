@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <head>
+        <title>Musical Moose - Help</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="help.css"/>
+                <h1 id="title"> #{msgs.help}</h1> 
+                <br/>
+                <table>
+                    <tr>
+                        <td>#{msgs.mobileCompatibility}</td>
+                        <td>#{msgs.mobiCompText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.welcomePage}</td>
+                        <td>#{msgs.welcText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.trackPage}</td>
+                        <td>#{msgs.trackText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.albumPage}</td>
+                        <td>#{msgs.albText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.checkOutPage}</td>
+                        <td>#{msgs.checkText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.invoicePage}</td>
+                        <td>#{msgs.invoiceText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.downloadPage}</td>
+                        <td>#{msgs.downloadText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.loginAndRegister}</td>
+                        <td>#{msgs.registrationLoginText}</td>
+                    </tr>
+                    <tr>
+                        <td>#{msgs.reviewPage}</td>
+                        <td>#{msgs.customerReviews}</td>
+                    </tr>
+                </table>
+                <script src="./invoice.js"></script>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

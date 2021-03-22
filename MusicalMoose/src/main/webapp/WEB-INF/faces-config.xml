@@ -10,10 +10,21 @@
             <var>msgs</var>
         </resource-bundle>
     </application>
-
-   
     
-    
+ <navigation-rule>
+        <from-view-id>reviewpage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reviewTrack</from-outcome>
+            <to-view-id>trackpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+   <navigation-rule>
+        <from-view-id>reviewpage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>reviewAlbum</from-outcome>
+            <to-view-id>albumpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule> 
     <navigation-rule>
         <from-view-id>index.xhtml</from-view-id>
         <navigation-case>
@@ -21,6 +32,7 @@
             <to-view-id>trackpage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>searchPage.xhtml</from-view-id>
         <navigation-case>
@@ -28,6 +40,7 @@
             <to-view-id>trackpage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>searchPage.xhtml</from-view-id>
         <navigation-case>
@@ -35,11 +48,26 @@
             <to-view-id>albumpage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
     <navigation-rule>
         <from-view-id>trackpage.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>relatedTrack</from-outcome>
             <to-view-id>trackpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>checkout.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detailTrack</from-outcome>
+            <to-view-id>trackpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>checkout.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detailAlbum</from-outcome>
+            <to-view-id>albumpage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 
@@ -51,6 +79,13 @@
               </navigation-case>
     </navigation-rule>
 
+    <navigation-rule>
+        <from-view-id>index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detailAlbum</from-outcome>
+            <to-view-id>albumpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     
     <navigation-rule>
         <from-view-id>trackpage.xhtml</from-view-id>

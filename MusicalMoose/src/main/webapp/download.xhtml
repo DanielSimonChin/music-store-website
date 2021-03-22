@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+    <head>
+        <title>Musical moose</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="download.css"/>
+                <h1 id="title"> #{msgs.downloadSongs}</h1> 
+                <div class="downloadableSong">
+                    <br>
+                    </br>
+                    <a class="cover" href="">
+                        <img src="album_covers/my_turn_big.jpg" alt="" />
+                    </a>
+                    <table class="albumInfo">
+                        <tr>
+                            <th>#{msgs.trackInfo}</th>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackTitle}</u> #{detailTrack.tracktitle}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackArtist}</u> #{detailTrack.artist}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackSongwriter}</u> #{detailTrack.songwriter}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackPlayLength}</u> #{detailTrack.playlength}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackCategory}</u> #{detailTrack.musiccategory}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackPrice}</u> $#{detailTrack.listprice}</td>
+                        </tr>
+                        <tr>
+                            <td><h:outputText value="&#160;" /></td>
+                        </tr>
+                        <tr>
+                            <td><h:outputText value="&#160;" /></td>
+                        </tr>
+                    </table>
+                    <audio controls="">
+                        <source src="./audio/goat.mp3" type="audio/mp3"/>
+                    </audio>
+                    <a class="downloadButton" href="./audio/goat.mp3" download="./audio/goat.mp3">#{msgs.download}</a> 
+                    <hr/>
+                </div>
+                <div class="downloadableSong">
+                    <br>
+                    </br>
+                    <a class="cover" href="">
+                        <img src="album_covers/my_turn_big.jpg" alt="" />
+                    </a>
+                    <table class="albumInfo">
+                        <tr>
+                            <th>#{msgs.trackInfo}</th>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackTitle}</u> #{detailTrack.tracktitle}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackArtist}</u> #{detailTrack.artist}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackSongwriter}</u> #{detailTrack.songwriter}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackPlayLength}</u> #{detailTrack.playlength}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackCategory}</u> #{detailTrack.musiccategory}</td>
+                        </tr>
+                        <tr>
+                            <td><u>#{msgs.trackPrice}</u> $#{detailTrack.listprice}</td>
+                        </tr>
+                        <tr>
+                            <td><h:outputText value="&#160;" /></td>
+                        </tr>
+                        <tr>
+                            <td><h:outputText value="&#160;" /></td>
+                        </tr>
+                    </table>
+                    <audio controls="">
+                        <source src="./audio/goat.mp3" type="audio/mp3"/>
+                    </audio>
+                    <a class="downloadButton" href="./audio/goat.mp3" download="./audio/goat.mp3">#{msgs.download}</a> 
+                    <hr/>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

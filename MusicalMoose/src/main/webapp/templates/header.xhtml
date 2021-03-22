@@ -20,13 +20,16 @@
                     <a href="/MusicalMoose/#genres">#{msgs.headerGenres}</a>
                     <a href="/MusicalMoose/#recent">#{msgs.headerRecentlyAdded}</a>
                     <a href="/MusicalMoose/checkout.xhtml">#{msgs.headerCheckout}</a>
+                    <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
+                    <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
                     <div><h:form>
                             <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}"  value="#{searchController.searchText}"/>
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="To"/>
+                            
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:inputText>
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="From"/>
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
                             </h:inputText>
@@ -38,12 +41,13 @@
 
                             </h:selectOneMenu> 
                             <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
-                            <h:outputText value="#{searchController.errorMessage}"/>
+                            <h:outputText rendered="#{searchController.searchError}" value="#{msgs.noResults}"/>
                             <h:messages styleClass="errorMessage" showSummary="false"
                                         showDetail="true" />
                         </h:form></div>
                 </nav>
                 <nav class="sub-nav">
+
                     <h:form>
                         <h:commandLink immediate="true"
                                        actionListener="#{localeChanger.changeLocale()}">
@@ -58,7 +62,7 @@
                         </h:commandLink>
                     </h:form>
 
-                    <a href="#">#{msgs.loginAndRegister}</a>
+                    <a href="/MusicalMoose/login.xhtml">#{msgs.loginAndRegister}</a>
                 </nav>
             </header>
         </ui:composition>

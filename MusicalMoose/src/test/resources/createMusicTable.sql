@@ -178,10 +178,14 @@ CREATE TABLE RSS(
     URL VARCHAR(255),
     PRIMARY KEY (ID)
 );
+<<<<<<< HEAD
 
 
 
 INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE, DISPLAYED)
+=======
+INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE)
+>>>>>>> 54f0f820823417e75dbdeaffc7dceec396e706b8
 VALUES 
 (1, "DRAKE COMES OUT WITH ANOTHER BANGER", "Drake lives in symbiosis with Kardashian-style celebrity culture, using veiled lyrics and social media posts to carefully extend or withdraw access to his narrative. Incidentally, one of the most evocative things he has written recently is the caption to an Instagram post he made celebrating his son’s birthday and sharing photos of him with the public for the first time. “It doesn’t matter what has happened in the past or what is happening around us now, you can always make the choice to break free of the wheel of suffering and panic and open up to your own light,” he wrote. The venue was appropriate for an artist whose success was formed in part on his ability to fill songs with pithy captions. But the message was a rarer thing: earnest, tenderhearted, with the focused sobriety of someone who has been meditating or studying Eckhart Tolle. Unfortunately, very little of that sentiment has made its way into his music, which remains guarded and skin-deep, even as it grows, like his houses, bigger and more expensive. (Pitchfork, Rawiya Kameir)", TIMESTAMP("2020-03-08", "11:03:11"), TIMESTAMP("2020-03-10", "11:03:11"),1), 
 (2, "DA BABY COLLABS WITH OTHER ARTISTS TO MAKE A HIT ALBUM", "Ever the savvy marketer, DaBaby does manage a few highlights that seem packaged to go viral. “Nasty” pairs a gleaming lilt from Ashanti with a fun, dynamic Megan Thee Stallion verse. It doesn’t have the explosive power of “Cash Shit,” Megan and DaBaby’s last collaboration, but the song is still mesmerizing, with DaBaby’s absurd, precise eroticism in full force. The album’s payoff arrives on the title track, a two-minute opus that stitches together four beat switches and contorts DaBaby’s flow over and over. It builds, it thrills, it makes you feel like you can run through a wall—everything a DaBaby song can and should do, when he asks it of himself. (Pitchfork, Dani Blum)", TIMESTAMP("2019-06-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),1), 
@@ -195,7 +199,6 @@ VALUES
 (2, "Most popular artist for elders", "Which artist are you most familiar with?", "Drake", 43, "Ariana Grande", 81, "Justin Bieber", 61, "Beyonce", 88, TIMESTAMP("2021-01-03", "11:03:11"), TIMESTAMP("2021-02-20", "11:03:11"), 1),
 (3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 1),
 (4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 1);
-
 
 INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,REMOVALSTATUS, REMOVALDATE ) values
 (1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 19.99, 17.99, 15.99, 0.42, 0.45,0.49, 1, null),
@@ -212,7 +215,7 @@ INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBER
 (12, "Native", TIMESTAMP("2013-03-25",  "00:00:00"), "One Republic", "Mosley", 19, TIMESTAMP("2021-02-13",  "00:00:00"), "nativeBig.jpg","nativeSmall.png",21.33, 22.23, 14.61, 0.54, 0.24,0.17, 1, null),
 (13, "Endgame", TIMESTAMP("2011-03-25",  "00:00:00"), "Rise Against", "DGC", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "endGame-Big.jpg","endGame-small.jpg",19.11, 20.21, 15.95, 0.54, 0.24,0.17, 1, null),
 (14, "Artpop", TIMESTAMP("2013-11-06",  "00:00:00"), "Lady Gaga", "Streamline", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "artPop-Big.jpg","artPop-Small.jpg",16.93, 13.12, 10.13, 0.66, 0.12,0.27, 1, null),
-(15, "Teenage Dream", TIMESTAMP("2010-08-24",  "00:00:00"), "Katy Perry" ,"Capitol", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "TeenageDream-Big.jpg","TeenageDream-Small.jpg",19.00, 17.00, 15.99, 0.66, 0.12,0.27, 1, null),
+(15, "Teenage Dream", TIMESTAMP("2010-08-24",  "00:00:00"), "Katy Perry" ,"Capitol", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg",19.00, 17.00, 15.99, 0.66, 0.12,0.27, 1, null),
 (16, "Pink Friday: Roman Reloaded", TIMESTAMP("2012-04-02",  "00:00:00"), "Nicki Minaj", "Young Money", 23, TIMESTAMP("2021-02-13",  "00:00:00"), "Pink Friday Roman Reloaded Big.jpg","Pink Friday Roman Reloaded Small.jpg",23.31, 20.00, 19.35, 0.66, 0.12,0.27, 1, null),
 (17, "Laundry Service", TIMESTAMP("2001-11-13",  "00:00:00"), "Shakira", "Epic", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "landryService-Big.jpg","landryService-Small.jpg",18.99, 17.99, 13.99, 0.66, 0.12,0.27, 1, null),
 (18, "All That We Have Now", TIMESTAMP("2012-08-08",  "00:00:00"),"Fear, and Loathing in Las Vegas", "VAP", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "all-we-have-now-Big.jpg","all-we-have-now-Small.jpg",19.05, 17.95, 15.21, 0.66, 0.12,0.27, 1, null),
@@ -286,13 +289,13 @@ INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, P
 (61, 14, "Applause", "Lady Gaga", "Stefani Germanotta“, Paul “DJ White Shadow“ Blair, Dino Zisis, Nick Monson, Martin Bresso, Nicolas Mercier, Julien Arias, William Grigahcine", 3.32,15, "Pop", 6.66, 6.50, 3.13, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"artPop-Big.jpg","artPop-Small.jpg", 0, 1, null ),
 (62, 14, "Do What U Want", "Lady Gaga", "Stefani Germanotta, Paul Blair, Robert Kelly, Martin Bresso, William Grigahcine", 3.47,7, "Pop", 10.33, 10.22, 9.11, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"artPop-Big.jpg","artPop-Small.jpg", 0, 1, null ),
 (63, 14, "G.U.Y.", "Lady Gaga", "Stefani Germanotta, Anton Zaslavski", 3.52,3, "Pop", 10.22, 10.11, 9.01, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"artPop-Big.jpg","artPop-Small.jpg", 0, 1, null ),
-(64, 15, "California Gurls", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Benjamin Levin, Bonnie McKee, Calvin Broadus, Brian Wilson, Mike Love", 3.56,3, "Pop", 7.25, 7.50, 4.43, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"), "TeenageDream-Big.jpg","TeenageDream-Small.jpg",0, 1, null ),
-(65, 15, "Teenage Dream", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Benjamin Levin, Bonnie McKee", 3.47,1, "Pop", 7.75, 7.80, 4.32, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"), "TeenageDream-Big.jpg","TeenageDream-Small.jpg",0, 1, null ),
-(66, 15, "Firework", "Katy Perry", "Katy Perry, Mikkel S. Eriksen, Tor Erik Hermansen, Sandy Wilhelm, Ester Dean", 3.48,4, "Pop", 7.40, 7.50, 4.23, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"TeenageDream-Big.jpg","TeenageDream-Small.jpg", 0, 1, null ),
-(67, 15, "E.T.", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Joshua Coleman, Kanye West", 3.51,8, "Pop", 7.30, 7.35, 4.11, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"), "TeenageDream-Big.jpg","TeenageDream-Small.jpg",0, 1, null ),
-(68, 15, "Last Friday Night (T.G.I.F.)", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Bonnie McKee", 3.50,2, "Pop", 7.60, 7.65, 4.37, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"TeenageDream-Big.jpg","TeenageDream-Small.jpg", 0, 1, null ),
-(69, 15, "The One That Got Away", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin", 3.47,7, "Pop", 7.55, 7.75, 4.69, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"TeenageDream-Big.jpg","TeenageDream-Small.jpg", 0, 1, null ),
-(70, 15, "Hummingbird Heartbeat", "Katy Perry", "Katy Perry, Christopher “Tricky“ Stewart, Stacy Barthe, Monte Neuble", 3.32,11, "Pop", 7.45, 7.55, 4.57, 0.06, 0.32, 0.37, TIMESTAMP("2021-02-13",  "00:00:00"), "TeenageDream-Big.jpg","TeenageDream-Small.jpg",0, 1, null ),
+(64, 15, "California Gurls", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Benjamin Levin, Bonnie McKee, Calvin Broadus, Brian Wilson, Mike Love", 3.56,3, "Pop", 7.25, 7.50, 4.43, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"), "Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg",0, 1, null ),
+(65, 15, "Teenage Dream", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Benjamin Levin, Bonnie McKee", 3.47,1, "Pop", 7.75, 7.80, 4.32, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"), "Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg",0, 1, null ),
+(66, 15, "Firework", "Katy Perry", "Katy Perry, Mikkel S. Eriksen, Tor Erik Hermansen, Sandy Wilhelm, Ester Dean", 3.48,4, "Pop", 7.40, 7.50, 4.23, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg", 0, 1, null ),
+(67, 15, "E.T.", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Joshua Coleman, Kanye West", 3.51,8, "Pop", 7.30, 7.35, 4.11, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"), "Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg",0, 1, null ),
+(68, 15, "Last Friday Night (T.G.I.F.)", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin, Bonnie McKee", 3.50,2, "Pop", 7.60, 7.65, 4.37, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg", 0, 1, null ),
+(69, 15, "The One That Got Away", "Katy Perry", "Katy Perry, Lukasz Gottwald, Max Martin", 3.47,7, "Pop", 7.55, 7.75, 4.69, 0.08, 0.18,0.03, TIMESTAMP("2021-02-13",  "00:00:00"),"Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg", 0, 1, null ),
+(70, 15, "Hummingbird Heartbeat", "Katy Perry", "Katy Perry, Christopher “Tricky“ Stewart, Stacy Barthe, Monte Neuble", 3.32,11, "Pop", 7.45, 7.55, 4.57, 0.06, 0.32, 0.37, TIMESTAMP("2021-02-13",  "00:00:00"), "Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg",0, 1, null ),
 (71, 16, "Starships", "Nicki Minaj", "Onika Maraj, Nadir Khayat, Carl Falk, Rami Yacoub, Wayne Hector, Bilal Hajji", 3.30,10, "Pop", 6.45, 6.55, 3.57, 0.06, 0.32, 0.37, TIMESTAMP("2021-02-13",  "00:00:00"),"Pink Friday Roman Reloaded Big.jpg","Pink Friday Roman Reloaded Small.jpg", 0, 1, null ),
 (72, 16, "Right by My Side", "Nicki Minaj", "Onika Maraj, Warren “Oak“ Felder, Andrew “Pop“ Wansel, Ester Dean, Jameel Roberts, Ronald “Flippa“ Colson",   4.25,8, "Pop", 6.75, 6.95, 3.09, 0.06, 0.32, 0.37, TIMESTAMP("2021-02-13",  "00:00:00"),"Pink Friday Roman Reloaded Big.jpg","Pink Friday Roman Reloaded Small.jpg", 0, 1, null ),
 (73, 16, "Beez in the Trap", "Nicki Minaj", "Onika Maraj, Maurice Jordan, Tauheed Epps", 4.28,4, "Pop", 6.99, 7.00, 3.97, 0.06, 0.32, 0.37, TIMESTAMP("2021-02-13",  "00:00:00"), "Pink Friday Roman Reloaded Big.jpg","Pink Friday Roman Reloaded Small.jpg",0, 1, null ),
@@ -346,6 +349,7 @@ INSERT INTO CLIENT (CLIENTID, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1,
 (18,"Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", 4471914490, 1529172744, "dpouletth@businesswire.com", "R&B"),
 (19,"Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", 3147308600, 3817116947, "bsackeri@europa.eu", "R&B"),
 (20,"Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", 2519196520, 1782694487, "gcanbyj@creativecommons.org", "R&B");
+
 
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
 VALUE 

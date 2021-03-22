@@ -24,6 +24,7 @@
                              listener="#{preRenderViewBean.checkLocaleCookie()}" />
                 </f:metadata>
 
+
                 <div class="wrapper">
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
@@ -33,12 +34,23 @@
                             <h1 id="home">#{msgs.musicSpecials}</h1>
 
                             <div class="box">
-                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />Get Ugly</a>
-                                <a href=""><img src="album_covers/damn_big.jpg" alt="" />BLOOD.</a>
-                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Survival</a>
-                                <a href=""><img src="album_covers/scorpion_big.png" alt="" />Nonstop</a>
-                                <a href=""><img src="album_covers/the_goat_small.png" alt="" />Don't Believe The Hype</a>
-                                <a href=""><img src="album_covers/my_turn_big.jpg" alt="" />How</a>
+
+
+                                <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
+                                    <h:form >
+                                        <h:commandLink value="#{specialTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specialTracks)}">
+                                            <h:graphicImage value="album_covers/#{specialTracks.albumimagefilenamebig}" />
+                                        </h:commandLink>
+                                    </h:form>
+                                </ui:repeat>
+
+                                <ui:repeat value="#{albumJpaController.specialAlbums}" var="specialAlbums">
+                                    <h:form >
+                                        <h:commandLink value="#{specialAlbums.albumtitle}" action="#{albumJpaController.toAlbum(specialAlbums)}">
+                                            <h:graphicImage value="album_covers/#{specialAlbums.albumimagefilenamebig}" />
+                                        </h:commandLink>
+                                    </h:form>
+                                </ui:repeat>
                             </div>
                         </div>
 
@@ -47,19 +59,22 @@
                             <h1 id="home">#{msgs.lastSearchedGenre}</h1>
                             <div class="box">
 
-                                <ui:repeat value="#{albumJpaController.findRecentGenreAlbums()}" var="relatedAlbums">
-                                    <h:form id="form">
-                                        <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.selectAlbum(relatedAlbums)}">
-                                            <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
+                                <ui:repeat value="#{albumJpaController.recentGenreAlbums}" var="recentGenreAlbums">
+                                    <h:form>
+                                        <!--<h:commandLink value="# {recentGenreAlbums.albumtitle}" action="# {albumJpaController.searchSingleAlbum(recentGenreAlbums.albumid)}">-->
+                                        <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums.albumid)}">
+                                            <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
                                         </h:commandLink>
                                     </h:form>
                                 </ui:repeat>
+                                
                             </div>
                         </h:form>
 
                         <h1 id="myList">#{msgs.newsHighlights}</h1>
 
                         <div class="box news">
+
                             <ui:repeat value="#{newsJpaController.getDisplayedNews()}" var="news">
                                 <a>
                                     <h1>#{news.newtitle}</h1>
@@ -88,6 +103,7 @@
                                                             <p>Miley Cyrus tore through a set of her hits and covers and welcomed guests Billy Idol and Joan
                                                                 Jett while headlining the Super Bowl LV pregame on Sunday.</p>
                                                         </a>-->
+
                         </div>
                         <h:form>
                             <h:panelGrid columns="1">
@@ -174,3 +190,4 @@
 
     </h:body>
 </html>
+

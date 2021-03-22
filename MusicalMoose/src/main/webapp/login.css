@@ -1,8 +1,8 @@
 .container-info{
-    display:inline-block;
-
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
     padding:10px;
-    margin:center;
 }
 
 #title{
@@ -71,6 +71,14 @@ input[type=radio]{
 }
 
 input[type=text]{
+    background-color:#161616;
+    border:transparent;
+    color:white;
+    border-bottom: solid;
+    border-bottom-color: #575757;
+}
+
+input[type=password]{
     background-color:#161616;
     border:transparent;
     color:white;

@@ -53,10 +53,16 @@
                                     </ui:repeat>
 
                                     <div id="shopCart">
-                                        <button>
+                                        <h:form>
+                                            <h:commandLink action="#{shoppingCartController.addShoppingCartAlbum(detailAlbum)}">
+                                                <h:graphicImage value="icons/shopping-cart.png" />
+                                                <p>#{msgs.addToCart}</p> 
+                                            </h:commandLink>
+                                        </h:form>
+<!--                                        <button>
                                             <img src="icons/shopping-cart.png"/>
-                                            <p>#{msgs.addToCart}</p>  
-                                        </button>
+                                            <p>{msgs.addToCart}</p>  
+                                        </button>-->
                                     </div>
                                 </table>
 
@@ -105,7 +111,8 @@
                                         <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailAlbum)}" var="relatedAlbums">
                                             <h:form id="form">
                                                 <!-- Link each album to its album page -->
-                                                <h:commandLink value="#{relatedAlbums.albumtitle}" action="#{albumJpaController.showRelatedAlbum(relatedAlbums)}">
+                                                <h:commandLink action="#{albumJpaController.showRelatedAlbum(relatedAlbums)}">
+                                                    <b class="adjustEllipse">#{relatedAlbums.albumtitle}</b>
                                                     <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
                                                 </h:commandLink>
                                             </h:form>
@@ -120,7 +127,20 @@
                         </div>
 
                         <div class="ratings">
+
                             <h1>#{msgs.reviews}</h1>
+                            <div  class="relBox">
+                                <h4>#{msgs.writeReviews}</h4>
+                                <ui:repeat value="#{detailAlbum.musicTrackList}" var="relatedTracks">
+                                    <h:form id="form">
+
+                                        <h:commandLink action="#{reviewJpaController.writeReview(relatedTracks, true)}">
+                                            <b class="adjustEllipse">#{relatedTracks.tracktitle}</b>
+                                            <h:graphicImage value="album_covers/#{relatedTracks.albumimagefilenamesmall}" />
+                                        </h:commandLink>
+                                    </h:form>
+                                </ui:repeat>
+                            </div> 
 
                             <!-- Display all the reviews for an album's tracks -->
                             <ui:repeat value="#{reviewJpaController.getAlbumTrackReviews(detailAlbum)}" var="albumTrackReviews">

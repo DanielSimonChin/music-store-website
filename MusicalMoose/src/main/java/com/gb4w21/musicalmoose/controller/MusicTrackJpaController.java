@@ -15,8 +15,10 @@ import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -170,12 +172,13 @@ public class MusicTrackJpaController implements Serializable {
         MusicTrack mt = em.find(MusicTrack.class, id);
         LOG.info(mt.getArtist());
         return em.find(MusicTrack.class, id);
+    }
+
+    public void searchForTracks(FacesContext context, UIComponent component,
+            Object value) {
 
     }
-    public void searchForTracks (FacesContext context, UIComponent component,
-            Object value) {
-        
-    }
+
     /**
      * Returns a list of the three most recently added MusicTrack objects
      *
@@ -192,10 +195,11 @@ public class MusicTrackJpaController implements Serializable {
         List<MusicTrack> originalList = q.getResultList();
 
         List<MusicTrack> threeRecentTracks = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            threeRecentTracks.add(originalList.get(i));
+        if (originalList.size() > 0) {
+            for (int i = 0; i < 3; i++) {
+                threeRecentTracks.add(originalList.get(i));
+            }
         }
-
         return threeRecentTracks;
     }
 
@@ -215,25 +219,29 @@ public class MusicTrackJpaController implements Serializable {
      * @param track
      * @return tracks from same album
      */
-
     public List<MusicTrack> findAllRelatedTracks(MusicTrack track) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        
-        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+        try {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
 
-        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+            CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
 
-        //Joining the MusicTrack table to the Album table
-        Join albumsTracks = musicTrack.join("albumid");
+            Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
 
-        //We want all the tracks from this album that isn't the selected track
-        cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()));
+            //Joining the MusicTrack table to the Album table
+            Join albumsTracks = musicTrack.join("albumid");
 
-        Query q = em.createQuery(cq);
+            //We want all the tracks from this album that isn't the selected track
+            cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()));
 
-        return q.getResultList();
+            Query q = em.createQuery(cq);
+
+            return q.getResultList();
+        }
+        catch (NullPointerException ex) {
+            return new ArrayList<MusicTrack>();
+        }
     }
-    
+
 //    public List<MusicTrack> findRecentGenreTracks() {
 //        findRecentGenreCookie();
 //        if (recentGenre == null || recentGenre.isEmpty()) {
@@ -265,7 +273,6 @@ public class MusicTrackJpaController implements Serializable {
 //            recentGenre = ((Cookie) genreTrackingCookie).getValue();
 //        }
 //    }
-
     /**
      * Set the selected track and display the trackpage.xhtml
      *
@@ -274,28 +281,92 @@ public class MusicTrackJpaController implements Serializable {
      */
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
+        LOG.info("" + track.getTracktitle());
         writeCookie();
         return "detailTrack";
     }
-    
+
     private void writeCookie() {
 //        recentGenre = searchedTrack.getMusiccategory();
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
+        if (searchedTrack != null && searchedTrack.getMusiccategory() != null) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
+        }
     }
-    
-    public String showTrackFromAlbum(MusicTrack track){
+
+    public String showTrackFromAlbum(MusicTrack track) {
         this.searchedTrack = track;
         return "detailTrackFromAlbum";
     }
     
     public String searchSingleTrack(int id){
-        
         this.searchedTrack = findMusicTrack(id);
-        
-     
+        writeCookie();
         return "searchTrack";
     }
+    
+    public String selectSingleTrack(int id) {
+        try {
+            this.searchedTrack = findTrackById(id);
+        }
+        catch (NonexistentEntityException e) {
+            return null;
+        }
+        writeCookie();
+        return "detailTrack";
+    }
+    
+    private MusicTrack findTrackById(int id) throws NonexistentEntityException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+
+        cq.select(musicTrack);
+        
+        cq.where(cb.equal(musicTrack.get("inventoryid"), id));
+
+        Query q = em.createQuery(cq);
+        if (q.getResultList().size() != 1) {
+            throw new NonexistentEntityException("Cannot find MusicTrack with id");
+        }
+
+        return (MusicTrack) q.getResultList().get(0);
+    }
+
+    public String backToTrack(MusicTrack musicTrack) {
+        this.searchedTrack = musicTrack;
+        return "reviewTrack";
+    }
+
+    public List<MusicTrack> getSpecialTracks() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+        cq.select(musicTrack);
+
+        cq.where(cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")));
+        cq.orderBy(cb.desc(musicTrack.get("saleprice")));
+        TypedQuery<MusicTrack> query = em.createQuery(cq);
+        List<MusicTrack> tracks = query.getResultList();
+        final int specialsLimt = 3;
+        List<MusicTrack> specialList = new ArrayList<>();
+        if (tracks.size()>specialsLimt) {
+            for (int i = 0; i < specialsLimt; i++) {
+                specialList.add(tracks.get(i));
+            }
+
+            return specialList;
+        } else {
+            return tracks;
+        }
+    }
+
     /**
      * Simple getter so the track page can access the selected track
      *
@@ -304,9 +375,11 @@ public class MusicTrackJpaController implements Serializable {
     public MusicTrack getMusicTrack() {
         return this.searchedTrack;
     }
+
     public void setMusicTrack(MusicTrack musicTrack) {
-        this.searchedTrack = musicTrack; 
+        this.searchedTrack = musicTrack;
     }
+    
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.
