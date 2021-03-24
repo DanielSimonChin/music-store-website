@@ -210,7 +210,6 @@ public class MusicTrackJpaController implements Serializable {
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-
     }
 
     /**
