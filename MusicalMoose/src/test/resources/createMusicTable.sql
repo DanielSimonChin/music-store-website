@@ -178,14 +178,8 @@ CREATE TABLE RSS(
     URL VARCHAR(255),
     PRIMARY KEY (ID)
 );
-<<<<<<< HEAD
-
-
 
 INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE, DISPLAYED)
-=======
-INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE)
->>>>>>> 54f0f820823417e75dbdeaffc7dceec396e706b8
 VALUES 
 (1, "DRAKE COMES OUT WITH ANOTHER BANGER", "Drake lives in symbiosis with Kardashian-style celebrity culture, using veiled lyrics and social media posts to carefully extend or withdraw access to his narrative. Incidentally, one of the most evocative things he has written recently is the caption to an Instagram post he made celebrating his son’s birthday and sharing photos of him with the public for the first time. “It doesn’t matter what has happened in the past or what is happening around us now, you can always make the choice to break free of the wheel of suffering and panic and open up to your own light,” he wrote. The venue was appropriate for an artist whose success was formed in part on his ability to fill songs with pithy captions. But the message was a rarer thing: earnest, tenderhearted, with the focused sobriety of someone who has been meditating or studying Eckhart Tolle. Unfortunately, very little of that sentiment has made its way into his music, which remains guarded and skin-deep, even as it grows, like his houses, bigger and more expensive. (Pitchfork, Rawiya Kameir)", TIMESTAMP("2020-03-08", "11:03:11"), TIMESTAMP("2020-03-10", "11:03:11"),1), 
 (2, "DA BABY COLLABS WITH OTHER ARTISTS TO MAKE A HIT ALBUM", "Ever the savvy marketer, DaBaby does manage a few highlights that seem packaged to go viral. “Nasty” pairs a gleaming lilt from Ashanti with a fun, dynamic Megan Thee Stallion verse. It doesn’t have the explosive power of “Cash Shit,” Megan and DaBaby’s last collaboration, but the song is still mesmerizing, with DaBaby’s absurd, precise eroticism in full force. The album’s payoff arrives on the title track, a two-minute opus that stitches together four beat switches and contorts DaBaby’s flow over and over. It builds, it thrills, it makes you feel like you can run through a wall—everything a DaBaby song can and should do, when he asks it of himself. (Pitchfork, Dani Blum)", TIMESTAMP("2019-06-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),1), 

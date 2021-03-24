@@ -11,9 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is used to switch the locale which changes the language
+ * Class that allows us the change locale whenever the language graphic images
+ * are clicked
  *
- * @author Ken
+ * @author Daniel
  */
 @Named
 @RequestScoped
@@ -21,8 +22,13 @@ public class LocaleChanger {
 
     private final static Logger LOG = LoggerFactory.getLogger(LocaleChanger.class);
 
+    /**
+     * Retrieve the language code from the params and change the local
+     * accordingly
+     *
+     * @return null to stay on the current page
+     */
     public String changeLocale() {
-        LOG.info("IN LOCALE CHANGER");
         FacesContext context = FacesContext.getCurrentInstance();
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();

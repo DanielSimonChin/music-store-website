@@ -65,9 +65,9 @@ public class PreRenderViewBean {
             LOG.info(((Cookie) localeCookie).getName());
             LOG.info(((Cookie) localeCookie).getValue());
 
+            //Set the locale using the retrieved cookie
             setLocale((Cookie) localeCookie);
         }
-        
         return null;
     }
 
@@ -79,12 +79,6 @@ public class PreRenderViewBean {
      */
     public void writeLocaleCookie(String languageCode) {
         FacesContext context = FacesContext.getCurrentInstance();
-
-        //First delete the original cookie
-//        Cookie localeCookie = (Cookie) context.getExternalContext().getRequestCookieMap().get("LocaleCookie");
-//        if (localeCookie != null) {
-//            localeCookie.setMaxAge(0);
-//        }
 
         Map<String, Object> properties = new HashMap();
         properties.put("maxAge", 60 * 60 * 24 * 365 * 10);
@@ -117,5 +111,4 @@ public class PreRenderViewBean {
         }
         context.getViewRoot().setLocale(aLocale);
     }
-
 }
