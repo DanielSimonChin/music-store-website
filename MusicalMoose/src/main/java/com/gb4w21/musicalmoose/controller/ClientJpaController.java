@@ -5,6 +5,7 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
+import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Client;
@@ -18,12 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 import com.gb4w21.musicalmoose.entities.Sale;
 import com.gb4w21.musicalmoose.entities.Review;
+import com.gb4w21.musicalmoose.entities.Survey;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -41,7 +45,7 @@ public class ClientJpaController implements Serializable {
 
     @Resource
     private UserTransaction utx;
-
+    
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
@@ -256,11 +260,11 @@ public class ClientJpaController implements Serializable {
             throw ex;
         }
     }
-
+    
     public List<Client> findClientEntities() {
         return findClientEntities(true, -1, -1);
     }
-
+    
     public List<Client> findClientEntities(int maxResults, int firstResult) {
         return findClientEntities(false, maxResults, firstResult);
     }
@@ -277,7 +281,7 @@ public class ClientJpaController implements Serializable {
         return q.getResultList();
 
     }
-
+    
     public Client findClient(Integer id) {
 
         return em.find(Client.class, id);

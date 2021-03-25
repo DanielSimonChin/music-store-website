@@ -47,7 +47,12 @@
                         </h:form></div>
                 </nav>
                 <nav class="sub-nav">
-                    <a href="/MusicalMoose/login.xhtml">#{msgs.loginAndRegister}</a>
+                    <h:form rendered="#{not loginController.loginBean.loggedIn}">
+                        <h:commandButton value="#{msgs.loginAndRegister}" action="#{registrationController.registerUser()}"/>
+                    </h:form>
+                    <h:form rendered="#{loginController.loginBean.loggedIn}">
+                       <h:commandButton value="#{msgs.singOut}" action="#{loginController.signOut()}"/>
+                    </h:form>
                 </nav>
             </header>
         </ui:composition>
