@@ -129,7 +129,7 @@
                                 <ui:repeat value="#{detailAlbum.musicTrackList}" var="relatedTracks">
                                     <h:form id="form">
 
-                                        <h:commandLink action="#{reviewJpaController.writeReview(relatedTracks, true)}">
+                                        <h:commandLink disabled="#{not loginController.loginBean.loggedIn}" action="#{reviewJpaController.writeReview(relatedTracks, true)}">
                                             <b class="adjustEllipse">#{relatedTracks.tracktitle}</b>
                                             <h:graphicImage value="album_covers/#{relatedTracks.albumimagefilenamesmall}" />
                                         </h:commandLink>

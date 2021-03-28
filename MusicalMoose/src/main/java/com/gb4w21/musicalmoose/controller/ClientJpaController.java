@@ -5,6 +5,7 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
+
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Client;
@@ -24,6 +25,8 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -293,5 +296,19 @@ public class ClientJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
-
+     public Client findUser(String userName, String password){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Client> client = cq.from(Client.class);
+        cq.select(client);
+        cq.where(cb.equal(client.get("username"), userName), cb.equal(client.get("password"), password));
+        TypedQuery<Client> query = em.createQuery(cq);
+        try{
+            return query.getSingleResult();
+        }
+        catch(javax.persistence.NoResultException NoResultException){
+            return null;
+        }
+    }
 }
+
