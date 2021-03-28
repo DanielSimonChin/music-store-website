@@ -22,9 +22,10 @@
                     <a href="/MusicalMoose/checkout.xhtml">#{msgs.headerCheckout}</a>
                     <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
                     <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
+
                     <div><h:form >
                             <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}"/>
-                            
+
                             <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
                             <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy" />
@@ -47,12 +48,30 @@
                         </h:form></div>
                 </nav>
                 <nav class="sub-nav">
+
                     <h:form rendered="#{not loginController.loginBean.loggedIn}">
                         <h:commandButton value="#{msgs.loginAndRegister}" action="#{registrationController.registerUser()}"/>
                     </h:form>
                     <h:form rendered="#{loginController.loginBean.loggedIn}">
                        <h:commandButton value="#{msgs.singOut}" action="#{loginController.signOut()}"/>
                     </h:form>
+
+
+                    <h:form>
+                        <h:commandLink immediate="true"
+                                       action="#{localeChanger.changeLocale()}">
+                            <f:param name="languageCode" value="fr_CA" />
+                            <h:graphicImage value="icons/ca_flag.gif" />
+                        </h:commandLink>
+
+                        <h:commandLink immediate="true"
+                        action="#{localeChanger.changeLocale()}">
+                        <f:param name="languageCode" value="en_CA" />
+                        <h:graphicImage value="icons/en_flag.gif" />
+                        </h:commandLink>
+                    </h:form>
+
+
                 </nav>
             </header>
         </ui:composition>

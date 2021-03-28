@@ -18,6 +18,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.HeuristicMixedException;
@@ -139,6 +140,25 @@ public class NewsJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
 
+    }
+
+    /**
+     * Retrieves all the News objects that have been selected to be displayed on
+     * the front page. The displayed field will be set to 1 = true
+     *
+     * @return All News objects that have been set to be displayed
+     */
+    public List<News> getDisplayedNews() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<News> cq = cb.createQuery(News.class);
+        Root<News> news = cq.from(News.class);
+
+        //we only want the news highlights that have been set to be displayed by a manager with the value of "1"
+        cq.where(cb.equal(news.get("displayed"), 1));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
     }
 
 }

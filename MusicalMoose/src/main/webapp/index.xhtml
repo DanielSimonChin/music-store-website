@@ -19,6 +19,8 @@
             <ui:define name="content">
                 <link rel="stylesheet" href="frontdoor.css"/>
 
+                
+
 
                 <div class="wrapper">
                     <!-- MAIN CONTAINER -->
@@ -29,6 +31,7 @@
                             <h1 id="home">#{msgs.musicSpecials}</h1>
 
                             <div class="box">
+
 
                                 <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
                                     <h:form >
@@ -45,7 +48,6 @@
                                         </h:commandLink>
                                     </h:form>
                                 </ui:repeat>
-
                             </div>
                         </div>
 
@@ -55,12 +57,9 @@
                             <div class="box">
 
                                 <ui:repeat value="#{albumJpaController.recentGenreAlbums}" var="recentGenreAlbums">
-                                    <h:form>
-                                        <!--<h:commandLink value="# {recentGenreAlbums.albumtitle}" action="# {albumJpaController.searchSingleAlbum(recentGenreAlbums.albumid)}">-->
-                                        <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums.albumid)}">
-                                            <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
-                                        </h:commandLink>
-                                    </h:form>
+                                    <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums)}">
+                                        <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
+                                    </h:commandLink>
                                 </ui:repeat>
                                 
                             </div>
@@ -69,27 +68,36 @@
                         <h1 id="myList">#{msgs.newsHighlights}</h1>
 
                         <div class="box news">
-                            <a href="">
 
-                                <h1>The Weeknd Gives a Dizzying Tour of His Career During the Super Bowl Halftime Show</h1>
+                            <ui:repeat value="#{newsJpaController.getDisplayedNews()}" var="news">
+                                <a>
+                                    <h1>#{news.newtitle}</h1>
+                                    <p>#{news.getTruncatedNewsText()}</p>
+                                </a>
+                            </ui:repeat>
 
-                                <p>The Weeknd headlined the Super Bowl LV halftime show with a career-spanning, sequin-bombed medley
-                                    of his biggest hits</p>
-                            </a>
-                            <a href="">
+                            <!--                            <a href="">
+                            
+                                                            <h1>The Weeknd Gives a Dizzying Tour of His Career During the Super Bowl Halftime Show</h1>
+                            
+                                                            <p>The Weeknd headlined the Super Bowl LV halftime show with a career-spanning, sequin-bombed medley
+                                                                of his biggest hits</p>
+                                                        </a>
+                                                        <a href="">
+                            
+                                                            <h1>Watch Eric Church, Jazmine Sullivan Perform ‘Star-Spangled Banner’ at Super Bowl LV</h1>
+                            
+                                                            <p>The Super Bowl LV kicked off Sunday with a performance of “America the Beautiful” by H.E.R., who
+                                                                accompanied the patriotic song on electric guitar.</p>
+                                                        </a>
+                                                        <a href="">
+                            
+                                                            <h1>Watch Miley Cyrus Headline Super Bowl LV Tailgate, Bring Out Billy Idol</h1>
+                            
+                                                            <p>Miley Cyrus tore through a set of her hits and covers and welcomed guests Billy Idol and Joan
+                                                                Jett while headlining the Super Bowl LV pregame on Sunday.</p>
+                                                        </a>-->
 
-                                <h1>Watch Eric Church, Jazmine Sullivan Perform ‘Star-Spangled Banner’ at Super Bowl LV</h1>
-
-                                <p>The Super Bowl LV kicked off Sunday with a performance of “America the Beautiful” by H.E.R., who
-                                    accompanied the patriotic song on electric guitar.</p>
-                            </a>
-                            <a href="">
-
-                                <h1>Watch Miley Cyrus Headline Super Bowl LV Tailgate, Bring Out Billy Idol</h1>
-
-                                <p>Miley Cyrus tore through a set of her hits and covers and welcomed guests Billy Idol and Joan
-                                    Jett while headlining the Super Bowl LV pregame on Sunday.</p>
-                            </a>
                         </div>
                         <h:form>
                             <h:panelGrid columns="1">

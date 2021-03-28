@@ -42,6 +42,8 @@ public class News implements Serializable {
     @Size(max = 16777215)
     @Column(name = "NEWSTEXT")
     private String newstext;
+    @Column(name = "DISPLAYED")
+    private Boolean displayed;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -127,6 +129,21 @@ public class News implements Serializable {
 
     public void setNewstext(String newstext) {
         this.newstext = newstext;
+    }
+    
+    /**
+     * @return the shortened version of the news text for the front page.
+     */
+    public String getTruncatedNewsText(){
+        return newstext.substring(0,180) + "...";
+    }
+
+    public Boolean getDisplayed() {
+        return displayed;
+    }
+
+    public void setDisplayed(Boolean displayed) {
+        this.displayed = displayed;
     }
     
 }
