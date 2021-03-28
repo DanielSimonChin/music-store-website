@@ -11,11 +11,11 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
       >
-    <head>
+    <h:head>
         <title>Musical Moose - Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    </head>
-    <body>
+    </h:head>
+    <h:body>
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="login.css"/>
@@ -23,15 +23,15 @@ and open the template in the editor.
                 <h1 id="title">#{msgs.accountManagement}</h1>
 
                 <div class="container-info">
-                    <h:form rendered="#{not registrationController.isUserRegistered}">
+                    <h:form >
 
                         <div class="row">
                             <br/>
                             <h3>#{msgs.register}</h3>
                             <h:outputLabel for="cname" value="#{msgs.username}"/>
-                            <h:inputText id="cname" label="#{msgs.username}"  value="#{registrationBean.username}" required="true" requiredMessage="#{msgs.required}" a:placeholder="DawsonConsumer">
+                            <h:inputText id="cname" label="#{msgs.username}"  value="#{registrationBean.username}" required="true" requiredMessage="#{msgs.required}" a:placeholder="DawsonConsumer" validator="#{registrationController.validateUserNameError}">
                                 <f:validateLength minimum="8" maximum="27" />
-                                
+
                                 <f:ajax event="blur" render="userNameError" />
                             </h:inputText>
                             <h:message id="userNameError" for="cname" style="color:red" />
@@ -47,85 +47,84 @@ and open the template in the editor.
                             <h:message id="titleError" for="title" style="color:red" />
                             <br></br>
                             <h:outputLabel for="password" value="#{msgs.password}"/>
-                            <h:inputSecret id="password1" label="#{msgs.password}" value="#{registrationController.fristPassword}"requiredMessage="#{msgs.required}"  a:placeholder="" required="true">
+                            <h:inputSecret id="password1" label="#{msgs.password}" value="#{registrationController.fristPassword}" requiredMessage="#{msgs.required}"  a:placeholder="" required="true">
                                 <f:validateLength minimum="6" maximum="27" />
                                 <f:ajax event="blur" render="password1Error" />
                             </h:inputSecret>
-                             <h:message id="password1Error" for="password1" style="color:red" />
+                            <h:message id="password1Error" for="password1" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="password2" value="#{msgs.confirmPassword}"/>
-                            <h:inputSecret id="password2" label="#{msgs.confirmPassword}" value="#{registrationController.confrimPassword}" requiredMessage="#{msgs.required}" a:placeholder="" required="true" validator="#{passwordBacking.validatePasswordError}">
+                            <h:inputSecret id="password2" label="#{msgs.confirmPassword}" value="#{registrationController.confrimPassword}" requiredMessage="#{msgs.required}" a:placeholder="" required="true" validator="#{registrationController.validatePasswordError}">
                                 <f:validateLength minimum="6" maximum="27" />
                                 <f:ajax event="blur" render="password2Error" />
                             </h:inputSecret>
-                             <h:message id="password2Error" for="password2" style="color:red" />
+                            <h:message id="password2Error" for="password2" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="fname" value="#{msgs.firstName}"/>
                             <label for="fname">#{msgs.firstName}</label>
                             <h:inputText id="fname" label="#{msgs.firstName}" value="#{registrationBean.firstname}" required="true"  requiredMessage="#{msgs.required}" a:placeholder="Mike">
-                                <f:validateLength minimum="1" maximum="50" />
+                                <f:validateLength  maximum="50" />
                                 <f:ajax event="blur" render="fristNameError" />
                             </h:inputText>
-                             <h:message id="fristNameError" for="fname" style="color:red" />
+                            <h:message id="fristNameError" for="fname" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="lname" value="#{msgs.lastName}"/>
-                            <label for="lname">#{msgs.lastName}</label>
                             <h:inputText id="lname" label="#{msgs.lastName}" value="#{registrationBean.lastname}" required="true" requiredMessage="#{msgs.required}" a:placeholder="Smith">
-                                <f:validateLength minimum="1" maximum="50" />
+                                <f:validateLength  maximum="50" />
                                 <f:ajax event="blur" render="lastNameError" />
                             </h:inputText>
-                             <h:message id="lastNameError" for="lname" style="color:red" />
+                            <h:message id="lastNameError" for="lname" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="compname" value="#{msgs.companyName}"/>
                             <h:inputText id="compname" label="#{msgs.companyName}" value="#{registrationBean.companyname}" a:placeholder="Dawson College">
-                                <f:validateLength minimum="1" maximum="50" />
+                                <f:validateLength maximum="50" />
                                 <f:ajax event="blur" render="companyNameError" />
                             </h:inputText>
-                             <h:message id="companyNameError" for="compname" style="color:red" />
+                            <h:message id="companyNameError" for="compname" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="addr1" value="#{msgs.address1}"/>
                             <h:inputText id="addr1" label="#{msgs.address1}" value="#{registrationBean.address1}" required="true" requiredMessage="#{msgs.required}" a:placeholder="24 Ave. 9876">
-                                <f:validateLength minimum="1" maximum="50" />
+                                <f:validateLength maximum="50" />
                                 <f:ajax event="blur" render="addr1Error" />
                             </h:inputText>
-                             <h:message id="addr1Error" for="addr1" style="color:red" />
+                            <h:message id="addr1Error" for="addr1" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="addr2" value="#{msgs.address2}"/>
-                            <h:inputText id="addr2" label="#{msgs.address2}" value="#{registrationBean.address2}" a:placeholder="24 Ave. 9876">
-                                <f:validateLength minimum="1" maximum="50" />
+                            <h:inputText id="addr2" label="#{msgs.address2}" value="#{registrationBean.address2}" a:placeholder="24 Ave. 9876" validator="#{registrationController.validateAddress}">
+                                <f:validateLength  maximum="50" />
                                 <f:ajax event="blur" render="addr2Error" />
                             </h:inputText>
-                             <h:message id="addr2Error" for="addr2" style="color:red" />
+                            <h:message id="addr2Error" for="addr2" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="city" value="#{msgs.city}"/>
                             <h:inputText id="city" label="#{msgs.city}" value="#{registrationBean.city}" required="true" requiredMessage="#{msgs.required}" a:placeholder="Montreal">
-                                <f:validateLength minimum="1" maximum="50" />
+                                <f:validateLength  maximum="50" />
                                 <f:ajax event="blur" render="cityError" />
                             </h:inputText>
-                             <h:message id="cityError" for="city" style="color:red" />
+                            <h:message id="cityError" for="city" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="province" value="#{msgs.province}"/>
                             <h:inputText id="province" label="#{msgs.province}" value="#{registrationBean.province}" required="true" requiredMessage="#{msgs.required}" a:placeholder="Quebec">
-                                <f:validateLength minimum="1" maximum="50" />
+                                <f:validateLength maximum="50" />
                                 <f:ajax event="blur" render="provinceError" />
                             </h:inputText>
-                             <h:message id="provinceError" for="province" style="color:red" />
+                            <h:message id="provinceError" for="province" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="crountry" value="#{msgs.country}"/>
                             <h:inputText id="crountry" label="#{msgs.country}" value="#{registrationBean.country}" required="true" requiredMessage="#{msgs.required}" a:placeholder="Canada">                           
-                                <f:validateLength minimum="1" maximum="50" />
+                                <f:validateLength  maximum="50" />
                                 <f:ajax event="blur" render="countryError" />
                             </h:inputText>
-                             <h:message id="countryError" for="country" style="color:red" />
+                            <h:message id="countryError" for="country" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="pcode" value="#{msgs.postalCode}"/>
@@ -133,49 +132,48 @@ and open the template in the editor.
                                 <f:validateLength minimum="5" maximum="9" />
                                 <f:ajax event="blur" render="pcodeError" />
                             </h:inputText>
-                             <h:message id="pcodeError" for="pcode" style="color:red" />
+                            <h:message id="pcodeError" for="pcode" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="hphone" value="#{msgs.homeTelephone}"/>
-                            <h:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{registrationBean.hometelephone}" a:placeholder="514-987-9876">
-                                <f:convertNumber />
-                                <f:validateLongRange minimum="1000000000" maximum="19999999999" />
+                            <h:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{registrationBean.hometelephone}" required="true"  requiredMessage="#{msgs.required}" a:placeholder="514-987-9876" validator="#{registrationController.validateHomePhoneNumber}">
+                                <f:validateLength  minimum="10" maximum="25" />
                                 <f:ajax event="blur" render="hphoneError" />
-                  
                             </h:inputText>
-                             <h:message id="hphoneError" for="hphone" style="color:red" />
+                            <h:message id="hphoneError" for="hphone" style="color:red" />
+
                             <br></br>
                             <br></br>
                             <h:outputLabel for="cphone" value="#{msgs.cellphone}"/>
-                            <h:inputText id="cphone" label="#{msgs.cellphone}" value="#{registrationBean.celltelephone}"  a:placeholder="514-987-9876">
-                                <f:convertNumber />
-                                <f:validateLongRange minimum="1000000000" maximum="19999999999" />
+                            <h:inputText id="cphone" label="#{msgs.cellphone}" value="#{registrationBean.celltelephone}"  a:placeholder="514-987-9876" validator="#{registrationController.validateCellPhoneNumber}">
+                                <f:validateLength minimum="10" maximum="25" />
                                 <f:ajax event="blur" render="cphoneError" />
                             </h:inputText>
-                             <h:message id="cphoneError" for="cphone" style="color:red" />
+                            <h:message id="cphoneError" for="cphone" style="color:red" />
                             <br></br>
                             <br></br>
                             <h:outputLabel for="email" value="#{msgs.email}"/>
-                            <h:inputText id="email" label="#{msgs.email}" value="#{registrationBean.email}" required="true" requiredMessage="#{msgs.required}" a:placeholder="example@hotmail.com">
+                            <h:inputText id="email" label="#{msgs.email}" value="#{registrationBean.email}" required="true" requiredMessage="#{msgs.required}" a:placeholder="example@hotmail.com" validator="#{registrationController.validateEmailError}">
                                 <f:validateLength minimum="10" maximum="50" />
                                 <f:ajax event="blur" render="emailError" />
                             </h:inputText>
-                             <h:message id="emailError" for="email" style="color:red" />
+                            <h:message id="emailError" for="email" style="color:red" />
                             <br></br>
                             <br></br>
+
+
                         </div>
                         <br></br>
                         <h:commandButton value="#{msgs.createAccount}" action="#{registrationController.addNewUser()}" />
+
+
+                    </h:form>
+                    <h:form >
+
                         <h:commandButton value="#{msgs.alreadyAccount}" action="#{loginController.toLoginPage()}" />
-                     
-                    </h:form>
-                    
-                    <h:form rendered="#{ registrationController.isUserRegistered}">
-                        <h:outputLabel  value="#{msgs.registrationSuccessful}"/>
-                        <h:commandButton value="#{msgs.back}" action="#{loginController.toLoginPage()}"/>
-                    </h:form>
+                    </h:form>   
                 </div>
             </ui:define>
         </ui:composition>
-    </body>
+    </h:body>
 </html>

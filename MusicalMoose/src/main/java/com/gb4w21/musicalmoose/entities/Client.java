@@ -6,7 +6,6 @@
 package com.gb4w21.musicalmoose.entities;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -89,10 +88,12 @@ public class Client implements Serializable {
     @Size(max = 255)
     @Column(name = "POSTALCODE")
     private String postalcode;
+    @Size(max = 25)
     @Column(name = "HOMETELEPHONE")
-    private BigInteger hometelephone;
+    private String hometelephone;
+    @Size(max = 25)
     @Column(name = "CELLTELEPHONE")
-    private BigInteger celltelephone;
+    private String celltelephone;
     // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Size(max = 255)
     @Column(name = "EMAIL")
@@ -106,8 +107,6 @@ public class Client implements Serializable {
     private List<Sale> saleList;
     @OneToMany(mappedBy = "clientid")
     private List<Review> reviewList;
-    
- 
 
     public Client() {
     }
@@ -115,22 +114,13 @@ public class Client implements Serializable {
     public Client(Integer clientid) {
         this.clientid = clientid;
     }
-
-    public Integer getClientid() {
-        return clientid;
-    }
-
-    public void setClientid(Integer clientid) {
-        this.clientid = clientid;
-    }
-     public List<Creditcardinfo> getCreditcardinfoList() {
+    public List<Creditcardinfo> getCreditcardinfoList() {
         return creditcardinfoList;
     }
-     public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
+    public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
         this.creditcardinfoList = creditcardinfoList;
     }
-
-     public List<Sale> getSaleList() {
+    public List<Sale> getSaleList() {
         return saleList;
     }
     public void setSaleList(List<Sale> saleList) {
@@ -143,6 +133,13 @@ public class Client implements Serializable {
         this.reviewList = reviewList;
     }
 
+    public Integer getClientid() {
+        return clientid;
+    }
+
+    public void setClientid(Integer clientid) {
+        this.clientid = clientid;
+    }
 
     public String getUsername() {
         return username;
@@ -240,19 +237,19 @@ public class Client implements Serializable {
         this.postalcode = postalcode;
     }
 
-    public BigInteger getHometelephone() {
+    public String getHometelephone() {
         return hometelephone;
     }
 
-    public void setHometelephone(BigInteger hometelephone) {
+    public void setHometelephone(String hometelephone) {
         this.hometelephone = hometelephone;
     }
 
-    public BigInteger getCelltelephone() {
+    public String getCelltelephone() {
         return celltelephone;
     }
 
-    public void setCelltelephone(BigInteger celltelephone) {
+    public void setCelltelephone(String celltelephone) {
         this.celltelephone = celltelephone;
     }
 

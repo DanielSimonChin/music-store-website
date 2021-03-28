@@ -28,7 +28,7 @@ and open the template in the editor.
                         <div class="row">
                             <br/>
                             <h3>#{msgs.login}</h3>
-                          <!-- <h:outputLabel rendered="#{loginController.islogginError}" value="#{msgs.loginError}"/>-->
+                          
                             <label for="cname">#{msgs.username}</label>
                             <h:inputText required="true" id="cname" a:placeholder=""  value="#{loginBean.username}"/>
                             <br></br>
@@ -38,11 +38,15 @@ and open the template in the editor.
                            
                         </div>
                         <br></br>
-                        <h:commandButton value="#{msgs.login}" class="btn-sub" action="index"/>
-                        <h:messages styleClass="errorMessage" showSummary="false"
-                                    showDetail="true" />
-                        <h:commandButton value="#{msgs.noAccount}" class="btn-sub" action="#{registrationController.registerUser()}"/>
+                        
+                        <h:messages styleClass="errorMessage" showSummary="false" showDetail="true" />
+                        <h:commandButton value="#{msgs.login}" class="btn-sub" action="#{loginController.loggIn()}"/>
+                        
                        
+                    </h:form>
+                    <br></br>
+                    <h:form>
+                        <h:commandButton value="#{msgs.noAccount}" class="btn-sub" action="#{registrationController.registerUser()}"/>
                     </h:form>
                 </div>
             </ui:define>

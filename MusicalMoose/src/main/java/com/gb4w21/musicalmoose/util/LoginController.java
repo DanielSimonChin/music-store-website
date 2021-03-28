@@ -6,6 +6,7 @@
 package com.gb4w21.musicalmoose.util;
 
 import com.gb4w21.musicalmoose.beans.LoginBean;
+import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +16,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,14 +33,21 @@ import org.slf4j.LoggerFactory;
 public class LoginController  implements Serializable{
     private final static Logger LOG = LoggerFactory.getLogger(LoginController.class);
     private LoginBean loginBean;
-   
+    private String loginLastPage;
     @PersistenceContext
     private EntityManager entityManager;
+    @Inject
+    private ClientJpaController clientJpaController;
+    @Inject
+    RegistrationController registrationController;
     public LoginController(){
         
     }
-    
+   
     public LoginBean getLoginBean(){
+        if(loginBean==null){
+            loginBean=new LoginBean();
+        }
         return loginBean;
     }
     public void setLoginBean(LoginBean loginBean){
@@ -46,7 +55,16 @@ public class LoginController  implements Serializable{
     }
     public String toLoginPage(){
         loginBean=new  LoginBean();
+        FacesContext context=FacesContext.getCurrentInstance();
+        loginLastPage=context.getViewRoot().getViewId();
+        loginLastPage=loginLastPage.substring(1, loginLastPage.length() - 6);
+        if(loginLastPage.equals("register")||loginLastPage.equals("login")){
+            loginLastPage=registrationController.getLastPageRegister();
+        }
         return "login";
+    }
+    public String getLoginLastPage(){
+        return loginLastPage;
     }
     public String signOut(){
         loginBean=new  LoginBean();
@@ -55,16 +73,12 @@ public class LoginController  implements Serializable{
     }
     public void validateUser(FacesContext context, UIComponent component,
             Object value) {
-
         // These values have not yet been added to the bean
         // so they must be read from the user interface
         UIInput nameInput = (UIInput) component.findComponent("cname");
-        UIInput passwordInput = (UIInput) component.findComponent("password");
-
         String userName = ((String) nameInput.getLocalValue());
-        String password = ((String) passwordInput.getLocalValue());
-       
-        Client registeredClient= findUser(userName, password);
+        String password = value.toString();
+        Client registeredClient= clientJpaController.findUser(userName, password);
         if (registeredClient==null) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "loginError", null);
@@ -73,23 +87,15 @@ public class LoginController  implements Serializable{
             throw new ValidatorException(message);
             
         }
+        
+        
+    }
+    public String loggIn(){
+        Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
         loginBean.setId(registeredClient.getClientid());
         loginBean.setLoggedIn(true);
         
+        return loginLastPage;
     }
-    
-    private Client findUser(String userName, String password){
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery();
-        Root<Client> client = cq.from(Client.class);
-        cq.select(client);
-        cq.where(cb.equal(client.get("userName"), userName), cb.equal(client.get("password"), password));
-        TypedQuery<Client> query = entityManager.createQuery(cq);
-        try{
-            return query.getSingleResult();
-        }
-        catch(javax.persistence.NoResultException NoResultException){
-            return null;
-        }
-    }
+   
 }

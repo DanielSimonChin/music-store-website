@@ -5,7 +5,7 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.beans.LoginBean;
+
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Client;
@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import com.gb4w21.musicalmoose.entities.Sale;
 import com.gb4w21.musicalmoose.entities.Review;
-import com.gb4w21.musicalmoose.entities.Survey;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -45,7 +44,7 @@ public class ClientJpaController implements Serializable {
 
     @Resource
     private UserTransaction utx;
-    
+
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
@@ -260,11 +259,11 @@ public class ClientJpaController implements Serializable {
             throw ex;
         }
     }
-    
+
     public List<Client> findClientEntities() {
         return findClientEntities(true, -1, -1);
     }
-    
+
     public List<Client> findClientEntities(int maxResults, int firstResult) {
         return findClientEntities(false, maxResults, firstResult);
     }
@@ -281,7 +280,7 @@ public class ClientJpaController implements Serializable {
         return q.getResultList();
 
     }
-    
+
     public Client findClient(Integer id) {
 
         return em.find(Client.class, id);
@@ -297,5 +296,19 @@ public class ClientJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
-
+     public Client findUser(String userName, String password){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Client> client = cq.from(Client.class);
+        cq.select(client);
+        cq.where(cb.equal(client.get("username"), userName), cb.equal(client.get("password"), password));
+        TypedQuery<Client> query = em.createQuery(cq);
+        try{
+            return query.getSingleResult();
+        }
+        catch(javax.persistence.NoResultException NoResultException){
+            return null;
+        }
+    }
 }
+
