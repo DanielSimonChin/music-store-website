@@ -19,6 +19,11 @@
   }
 }
 
+#download{
+    text-align: center;
+    display: block;
+}
+
   #title{
       text-align: center;
   }  
