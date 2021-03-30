@@ -19,10 +19,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -148,6 +151,7 @@ public class SearchController implements Serializable {
         fromDate=null;
         toDate=null;
         if (searchResultsAlbum.size() + searchResultsTrack.size() == 0) {
+            searchText = "";
             searchError = true;
             return "index";
         }
@@ -210,7 +214,25 @@ public class SearchController implements Serializable {
         searchResultsTrack = query.getResultList();
 
     }
+     public void validateDate(FacesContext context, UIComponent component,
+            Object value) {
+         
+         if(value!=null){
+             Date chosenDate = (Date)value;
+             Date currentDate =new Date();
+             LOG.info("Date:"+value.toString());
+         
+          if(chosenDate.compareTo(currentDate) > 0) {
+              FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "dateError", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
+            throw new ValidatorException(message);
+          }
+         
+         }
+       
+    }
     private void searchResultsAlbums() {
         searchText = "%" + searchText + "%";
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
