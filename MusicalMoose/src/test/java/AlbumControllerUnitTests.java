@@ -1,6 +1,13 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
+import com.gb4w21.musicalmoose.controller.AlbumJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,7 +23,6 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -34,18 +40,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Arquillian unit tests for the MusicTrackController's methods that involve
- * CrtieriaBuilder queries.
+ * Arquillian unit tests for the methods in the AlbumJpaController that involves
+ * CriteriaBuilder queries.
  *
  * @author Daniel
  */
 @RunWith(Arquillian.class)
-public class MusicTrackUnitTests {
+public class AlbumControllerUnitTests {
 
-    private final static Logger LOG = LoggerFactory.getLogger(MusicTrackUnitTests.class);
+    private final static Logger LOG = LoggerFactory.getLogger(AlbumControllerUnitTests.class);
 
     @Inject
-    private MusicTrackJpaController controller;
+    private AlbumJpaController albumController;
+    @Inject
+    private MusicTrackJpaController trackController;
 
     @Resource(lookup = "java:app/jdbc/myMusic")
     private DataSource ds;
@@ -69,8 +77,10 @@ public class MusicTrackUnitTests {
         // The SQL script to create the database is in src/test/resources
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
+                .addPackage(AlbumJpaController.class.getPackage())
                 .addPackage(MusicTrackJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
+                .addPackage(Album.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
@@ -83,62 +93,99 @@ public class MusicTrackUnitTests {
     }
 
     /**
-     * Test that the findMostRecentTracks method only returns 3 music tracks.
-     *
-     * @throws SQLException
+     * Test that the method returns albums from the same genre.
      */
     @Test
-    public void testFindMostRecentTracks() throws SQLException {
-        int trackCount = controller.findMostRecentTracks().size();
-        assertEquals(3, trackCount);
-    }
+    public void testFindRelatedAlbumsWithTrackParam() {
+        MusicTrack track = trackController.findMusicTrack(1);
 
-    /**
-     * Find a track and test that all its related tracks are part of the same
-     * album and that the results don't return the input track.
-     *
-     * @throws SQLException
-     */
-    @Test
-    public void testFindRelatedTracks() throws SQLException {
-        MusicTrack track = controller.findMusicTrack(1);
-        List<MusicTrack> tracksInSameAlbum = controller.findAllRelatedTracks(track);
-
+        List<Album> albumResults = albumController.findRelatedAlbums(track);
         boolean checkConditions = true;
 
-        for (MusicTrack m : tracksInSameAlbum) {
-            if (m.getAlbumid().getAlbumid() != track.getAlbumid().getAlbumid() || m.getInventoryid() == track.getInventoryid()) {
+        for (Album a : albumResults) {
+            //make sure that the returned album is in the same cateogory and is not the same album as the given track.
+            if (!a.getMusicTrackList().get(0).getMusiccategory().equals(track.getMusiccategory()) || a.getAlbumid() == track.getAlbumid().getAlbumid()) {
                 checkConditions = false;
             }
         }
         assertTrue(checkConditions);
     }
-    
-  
+
     /**
-     * Testing to ensure that all returned tracks have a lower sale price than
-     * list price.
+     * Test that this method returns the first 3 related albums from the same
+     * genre.
      */
     @Test
-    public void testGetSpecialTracks() {
-        List<MusicTrack> specialTracks = controller.getSpecialTracks();
+    public void testFindRelatedAlbumsCount() {
+        MusicTrack track = trackController.findMusicTrack(1);
+
+        List<Album> albumResults = albumController.findRelatedAlbums(track);
+
+        assertEquals(3, albumResults.size());
+    }
+
+    /**
+     * Test that this method returns albums from the same genre
+     */
+    @Test
+    public void testFindRelatedAlbumsWithAlbumParam() {
+        Album album = albumController.findAlbum(1);
+        List<Album> albumResults = albumController.findRelatedAlbums(album);
         boolean checkConditions = true;
 
-        for (MusicTrack m : specialTracks) {
-            if (m.getSaleprice() >= m.getListprice()) {
+        for (Album a : albumResults) {
+            //make sure that the returned album is in the same cateogory and is not the same album as the given track.
+            if (!a.getMusicTrackList().get(0).getMusiccategory().equals(album.getMusicTrackList().get(0).getMusiccategory()) || a.getAlbumid() == album.getAlbumid()) {
                 checkConditions = false;
             }
         }
         assertTrue(checkConditions);
     }
-    
+
     /**
-     * Test that the method returns no more than 3 tracks.
+     * Test that the method only returns albums that have a sale price less than
+     * the list price.
      */
     @Test
-    public void testGetSpecialTracksCount(){
-        List<MusicTrack> specialTracks = controller.getSpecialTracks();
-        assertTrue(specialTracks.size() <= 3);
+    public void testGetSpecialAlbums() {
+        List<Album> specialAlbums = this.albumController.getSpecialAlbums();
+        boolean checkConditions = true;
+
+        for (Album a : specialAlbums) {
+            if (a.getSaleprice() >= a.getListprice()) {
+                checkConditions = false;
+            }
+        }
+        assertTrue(checkConditions);
+    }
+
+    /**
+     * Ensure that the method only returns at most 3 albums that are on sale.
+     */
+    @Test
+    public void testGetSpecialAlbumsCount() {
+        List<Album> specialAlbums = albumController.getSpecialAlbums();
+        assertTrue(specialAlbums.size() <= 3);
+    }
+
+    /**
+     * Test the the tracks returned are part of the input album
+     */
+    @Test
+    public void testGetAlbumsTracks() {
+        Album album = this.albumController.findAlbum(1);
+        
+        List<MusicTrack> albumTracks = this.albumController.getAlbumTracks(album.getAlbumid());
+        
+        boolean checkConditions = true;
+        for(MusicTrack track : albumTracks){
+            //the track's album's id must be the same as the input album
+            if(track.getAlbumid().getAlbumid() != album.getAlbumid()){
+                checkConditions = false;
+            }
+        }
+        
+        assertTrue(checkConditions);
     }
 
     /**
@@ -200,4 +247,5 @@ public class MusicTrackUnitTests {
         return line.startsWith("--") || line.startsWith("//")
                 || line.startsWith("/*");
     }
+
 }

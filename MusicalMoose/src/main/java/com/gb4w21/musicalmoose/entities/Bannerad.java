@@ -38,6 +38,10 @@ public class Bannerad implements Serializable {
     @Size(max = 255)
     @Column(name = "FILENAME")
     private String filename;
+    @Column(name = "DISPLAYED")
+    private Boolean displayed;
+    @Column(name = "PAGEPOSITION")
+    private Integer pageposition;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -102,6 +106,22 @@ public class Bannerad implements Serializable {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public Boolean getDisplayed() {
+        return displayed;
+    }
+
+    public void setDisplayed(Boolean displayed) {
+        this.displayed = displayed;
+    }
+
+    public Integer getPageposition() {
+        return pageposition;
+    }
+
+    public void setPageposition(Integer pageposition) {
+        this.pageposition = pageposition;
     }
     
 }

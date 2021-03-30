@@ -8,18 +8,23 @@ package com.gb4w21.musicalmoose.controller;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Bannerad;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -44,7 +49,7 @@ public class BanneradJpaController implements Serializable {
     public void create(Bannerad bannerad) throws RollbackFailureException {
         try {
             utx.begin();
-        
+
             em.persist(bannerad);
 
             utx.commit();
@@ -139,6 +144,27 @@ public class BanneradJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
 
+    }
+
+    public Bannerad getRunningAd(int pagePosition) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Bannerad> banneradRoot = cq.from(Bannerad.class);
+
+        //we want the ad that was selected to be displayed and also has the first position
+        cq.where(cb.equal(banneradRoot.get("displayed"), 1), cb.equal(banneradRoot.get("pageposition"), pagePosition));
+        Query q = em.createQuery(cq);
+
+        try {
+            return (Bannerad) q.getSingleResult();
+        } catch (javax.persistence.NoResultException NoResultException) {
+            return null;
+        }
+    }
+
+    public void redirectToWebsite(Bannerad ad) throws IOException {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.redirect(ad.getUrl());
     }
 
 }

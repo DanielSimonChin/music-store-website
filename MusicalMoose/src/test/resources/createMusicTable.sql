@@ -142,6 +142,8 @@ CREATE TABLE BANNERAD (
     URL MEDIUMTEXT,
     BANNERADDID INT NOT NULL auto_increment,
     FILENAME VARCHAR(255),
+    DISPLAYED BIT(1),
+    PAGEPOSITION INT DEFAULT 0,
     PRIMARY KEY (BANNERADDID)
 );
 
@@ -363,12 +365,12 @@ VALUE
 (14, TIMESTAMP("2020-03-05", "11:03:11"), "Amara", 8, "A replay type of song wow", 1, 3, 12),
 (15, TIMESTAMP("2020-03-05", "04:13:55"), "Quincey", 9, "AMAZING! Highly recommend taking a listen", 1, 2, 13);
 
-INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL) VALUES
-(1, "walmartbanner.png”", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4"),
-(2, "amazonbanner.png", "https://www.amazon.com/"),
-(3, "hmbanner.png", "https://www2.hm.com/en_ca/index.html"),
-(4, "logitechbanner.png", "https://www.cdw.com/product/Logitech-F310-Gamepad/2168504?cm_cat=bing&cm_ite=2168504&cm_pla=NA-NA-Logitech_PD&cm_ven=acquirgy&ef_id=b24db09c7341170d30d2d0b2ada242e5:G:s&s_kwcid=AL!4223!10!73255048915844!73254985619399"),
-(5, "disneybanner.png", "https://disneyparks.disney.go.com/ca/");
+INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL, DISPLAYED, PAGEPOSITION) VALUES
+(1, "walmartbanner.jpg", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4", 0, 0),
+(2, "amazonbanner.jpg", "https://www.amazon.com/", 0, 0),
+(3, "hmbanner.jpg", "https://www2.hm.com/en_ca/index.html", 1, 1),
+(4, "logitechbanner.jpg", "https://www.logitech.com/en-ca", 1, 2),
+(5, "disneybanner.jpg", "https://disneyparks.disney.go.com/ca/",0, 0);
 
 INSERT INTO SALE (SALEID, CLIENTID, SALEDATE) VALUES
 (1, 1,TIMESTAMP("2021-02-13",  "00:00:00")),
