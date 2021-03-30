@@ -24,38 +24,28 @@
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
                         <div class="topnav">
-                            <a class="active">#{msgs.musicInv}</a>
+                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
                             <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
-                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a class="active">Ads</a>
                             <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
                             <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
                         </div>
                         <table>
                             <tr>
-                                <button id="addMusic" class="rowButton">Add music record</button>
+                                <button id="addMusic" class="rowButton">Add ad record</button>
                                 &nbsp;
                                 <input type="text" placeholder="Search"/>
                             </tr>
                             <tr>
                                 <td class="rowButton"><img src="./icons/delete-cart.png"/></td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Inventory Number:</td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Track Title:</td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Artist:</td>
+                                <td><img class="icon" src="./icons/edit-solid.svg"/>URL of the ad:</td>
+                                <td><img class="icon" src="./icons/edit-solid.svg"/>Filename:</td>
+                                <td>Displayed: <input type="checkbox"/></td>
                                 <td>
-                                    Click to edit:
+                                    Page position:
                                     <select>
-                                        <option>Songwriter:</option>
-                                        <option>Play Length:</option>
-                                        <option>Number on Album:</option>
-                                        <option>Album Number:</option>
-                                        <option>Music Category:</option>
-                                        <option>Cost Price:</option>
-                                        <option>List Price:</option>
-                                        <option>Sale Price:</option>
-                                        <option>Date entered into inventory:</option>
-                                        <option>Sold as Individual Track or Part of Album:</option>
-                                        <option>Removal Status:</option>
-                                        <option>Removal Date:</option>
+                                        <option>1</option>
+                                        <option>2</option>
                                     </select>
                                 </td>
 
