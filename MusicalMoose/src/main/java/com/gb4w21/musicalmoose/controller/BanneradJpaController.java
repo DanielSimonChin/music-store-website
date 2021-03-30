@@ -162,6 +162,11 @@ public class BanneradJpaController implements Serializable {
         }
     }
 
+    /**
+     * Redirect the user to a new window representing the ad's url field
+     * @param ad
+     * @throws IOException 
+     */
     public void redirectToWebsite(Bannerad ad) throws IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         externalContext.redirect(ad.getUrl());

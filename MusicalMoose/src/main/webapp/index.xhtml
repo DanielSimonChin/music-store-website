@@ -69,34 +69,16 @@
 
                         <div class="box news">
 
+                            <!-- The news section that brings the user to a new window with the news highlight -->
                             <ui:repeat value="#{newsJpaController.getDisplayedNews()}" var="news">
-                                <a>
-                                    <h1>#{news.newtitle}</h1>
-                                    <p>#{news.getTruncatedNewsText()}</p>
-                                </a>
+                                <h:form target="_blank">
+                                    <h:commandLink actionListener="#{newsJpaController.redirectToWebsite(news)}">
+                                        <h1>#{news.newtitle}</h1>
+                                        <p>#{news.getTruncatedNewsText()}</p>
+                                    </h:commandLink>
+                                </h:form>
                             </ui:repeat>
 
-                            <!--                            <a href="">
-                            
-                                                            <h1>The Weeknd Gives a Dizzying Tour of His Career During the Super Bowl Halftime Show</h1>
-                            
-                                                            <p>The Weeknd headlined the Super Bowl LV halftime show with a career-spanning, sequin-bombed medley
-                                                                of his biggest hits</p>
-                                                        </a>
-                                                        <a href="">
-                            
-                                                            <h1>Watch Eric Church, Jazmine Sullivan Perform ‘Star-Spangled Banner’ at Super Bowl LV</h1>
-                            
-                                                            <p>The Super Bowl LV kicked off Sunday with a performance of “America the Beautiful” by H.E.R., who
-                                                                accompanied the patriotic song on electric guitar.</p>
-                                                        </a>
-                                                        <a href="">
-                            
-                                                            <h1>Watch Miley Cyrus Headline Super Bowl LV Tailgate, Bring Out Billy Idol</h1>
-                            
-                                                            <p>Miley Cyrus tore through a set of her hits and covers and welcomed guests Billy Idol and Joan
-                                                                Jett while headlining the Super Bowl LV pregame on Sunday.</p>
-                                                        </a>-->
 
                         </div>
                         <h:form>
