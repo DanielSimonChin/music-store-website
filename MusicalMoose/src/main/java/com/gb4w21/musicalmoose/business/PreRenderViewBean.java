@@ -6,6 +6,7 @@
 package com.gb4w21.musicalmoose.business;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
@@ -46,8 +47,11 @@ public class PreRenderViewBean {
      * Writing a cookie
      */
     public void writeCookie() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("maxAge", 31536000);
+        
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().addResponseCookie("GenreTracking", "RAP", null);
+        context.getExternalContext().addResponseCookie("GenreTracking", "RAP", properties);
     }
 
 }

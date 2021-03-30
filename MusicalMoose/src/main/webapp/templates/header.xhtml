@@ -19,7 +19,12 @@
                     <a href="/MusicalMoose/#home">#{msgs.headerHome}</a>
                     <a href="/MusicalMoose/#genres">#{msgs.headerGenres}</a>
                     <a href="/MusicalMoose/#recent">#{msgs.headerRecentlyAdded}</a>
-                    <a href="/MusicalMoose/checkout.xhtml">#{msgs.headerCheckout}</a>
+                    
+                    <h:form>
+                    <!--<a href="/MusicalMoose/cart.xhtml"># {msgs.headerCart}</a>-->
+                        <h:commandLink value="#{msgs.headerCart}" action="#{shoppingCartController.toShoppingCart()}" />
+                    </h:form>
+                        
                     <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
                     <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
                     <div><h:form>

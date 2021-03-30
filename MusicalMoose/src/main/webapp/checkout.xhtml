@@ -8,20 +8,27 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <head>
-
         <title>Musical Moose</title>
-        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-
     </head>
 
     <h:body>
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
-                <link rel="stylesheet" href="checkout.css"/>
-                <h1 id="title">#{msgs.shoppingCart}</h1>
+                <link rel="stylesheet" href="cart.css"/>
+                
+                <h1 id="title">#{msgs.checkout}</h1>
+                
+                <h:commandButton value="#{msgs.back}" onclick="window.history.back();" 
+                                 style="
+                                 margin-left: 120px; 
+                                 padding-left: 25px; 
+                                 padding-right: 25px; 
+                                 padding-top: 15px; 
+                                 padding-bottom: 15px;
+                                 border-radius: 15px;"/>
+                
                 <div id="info1" class="container-info">
                     <form>
-
                         <div class="row">
                             <h3>#{msgs.payment}</h3>
                             <label for="fname">Select Card</label>
@@ -45,77 +52,25 @@
                             <br></br>
                             <br></br>
                             <label for="expmonth">#{msgs.expirationMonth}</label>
-                            <input type="text" id="expmonth" name="expmonth" placeholder="November"/>
+                            <input type="text" id="expmonth" name="expmonth" placeholder="03"/>
                             <br></br>
                             <br></br>
                             <label for="expyear">#{msgs.expirationYear}</label>
-                            <input type="text" id="expyear" name="expyear" placeholder="2021"/>
+                            <input type="text" id="expyear" name="expyear" placeholder="21"/>
 
                         </div>
                         <br></br>
-                        <input type="submit" value="#{msgs.purchase}" class="btn-sub"/>
+                        <input type="submit" value="#{msgs.purchase}" class="btn-sub" 
+                               style="
+                                 padding-left: 25px; 
+                                 padding-right: 25px; 
+                                 padding-top: 10px; 
+                                 padding-bottom: 10px;
+                                 border-radius: 15px;"/>
                     </form>
                 </div>
-
-                <div id="info2" class="container-info">
-                    <h4>#{msgs.cart}</h4>
-                    <div id="scrollcart">
-                        <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">
-                            <h:form>
-<!--                                <c:choose>
-                                    <c:when test="$ {cartItems.isAlbum}">
-                                        <h:commandLink value="# {cartItems.title}" action="# {albumJpaController.searchSingleAlbum(cartItems.id)}" />
-                                            <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                        </h:commandLink>
-                                        album
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h:commandLink value="$ {cartItems.title}" action="# {musicTrackJpaController.selectSingleTrack(cartItems.id)}" />
-                                            <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                            <h:button value="hi"></h:button>
-                                        </h:commandLink>
-                                        track
-                                    </c:otherwise>
-                                </c:choose>-->
-
-<!--                            <c:if test="$ {cartItems.isAlbum}">
-                                    <h:commandLink value="# {cartItems.title}" action="# {albumJpaController.searchSingleAlbum(cartItems.id)}" />
-                                        <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                    </h:commandLink>
-                                    album
-                                </c:if>
-                                <c:if test="$ {cartItems.isAlbum}">
-                                    <h:commandLink value="$ {cartItems.title}" action="# {musicTrackJpaController.selectSingleTrack(cartItems.id)}" />
-                                        <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                        <h:button value="hi"></h:button>
-                                    </h:commandLink>
-                                    track
-                                </c:if>-->
-                                <ui:fragment rendered="#{cartItems.isAlbum}">
-                                    <h:commandLink value="#{cartItems.title} - Album: $#{cartItems.price}" action="#{albumJpaController.searchSingleAlbum(cartItems.id)}">
-                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
-                                    </h:commandLink>
-                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
-                                        <h:graphicImage value="icons/delete-cart.png" />
-                                    </h:commandLink>
-                                </ui:fragment>
-
-                                <ui:fragment rendered="#{not cartItems.isAlbum}">
-                                    <h:commandLink value="#{cartItems.title} - Track: $#{cartItems.price}" action="#{musicTrackJpaController.selectSingleTrack(cartItems.id)}">
-                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
-                                    </h:commandLink>
-                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
-                                        <h:graphicImage value="icons/delete-cart.png" />
-                                    </h:commandLink>
-                                </ui:fragment>
-                            </h:form>
-                        </ui:repeat>
-                    </div>
-
-                    <p>#{msgs.total} <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
-                </div>
+                
             </ui:define>
         </ui:composition>
     </h:body>
-
 </html>
