@@ -1,7 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
-import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
+import com.gb4w21.musicalmoose.controller.BanneradJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.entities.MusicTrack;
+import com.gb4w21.musicalmoose.entities.Bannerad;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -22,26 +27,28 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Arquillian unit tests for the MusicTrackController's methods that involve
- * CrtieriaBuilder queries.
+ *
+ * Arquillian unit tests for the methods in the Bannerad controller that involve
+ * queries.
  *
  * @author Daniel
  */
 @RunWith(Arquillian.class)
-public class MusicTrackUnitTests {
+public class BanneradUnitTests {
 
-    private final static Logger LOG = LoggerFactory.getLogger(MusicTrackUnitTests.class);
+    private final static Logger LOG = LoggerFactory.getLogger(BanneradUnitTests.class);
 
     @Inject
-    private MusicTrackJpaController controller;
+    private BanneradJpaController controller;
 
     @Resource(lookup = "java:app/jdbc/myMusic")
     private DataSource ds;
@@ -65,9 +72,9 @@ public class MusicTrackUnitTests {
         // The SQL script to create the database is in src/test/resources
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
-                .addPackage(MusicTrackJpaController.class.getPackage())
+                .addPackage(BanneradJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
-                .addPackage(MusicTrack.class.getPackage())
+                .addPackage(Bannerad.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -79,62 +86,28 @@ public class MusicTrackUnitTests {
     }
 
     /**
-     * Test that the findMostRecentTracks method only returns 3 music tracks.
-     *
-     * @throws SQLException
+     * Test that the returned ad has the displayed field as true and is the
+     * correct position that we inputted.
      */
     @Test
-    public void testFindMostRecentTracks() throws SQLException {
-        int trackCount = controller.findMostRecentTracks().size();
-        assertEquals(3, trackCount);
-    }
+    public void testGetRunningAd() {
+        Bannerad ad = this.controller.getRunningAd(1);
 
-    /**
-     * Find a track and test that all its related tracks are part of the same
-     * album and that the results don't return the input track.
-     *
-     * @throws SQLException
-     */
-    @Test
-    public void testFindRelatedTracks() throws SQLException {
-        MusicTrack track = controller.findMusicTrack(1);
-        List<MusicTrack> tracksInSameAlbum = controller.findAllRelatedTracks(track);
-
-        boolean checkConditions = true;
-
-        for (MusicTrack m : tracksInSameAlbum) {
-            if (m.getAlbumid().getAlbumid() != track.getAlbumid().getAlbumid() || m.getInventoryid() == track.getInventoryid()) {
-                checkConditions = false;
-            }
+        boolean checkConditions = false;
+        if (ad.getDisplayed() && ad.getPageposition() == 1) {
+            checkConditions = true;
         }
         assertTrue(checkConditions);
     }
-    
-  
-    /**
-     * Testing to ensure that all returned tracks have a lower sale price than
-     * list price.
-     */
-    @Test
-    public void testGetSpecialTracks() {
-        List<MusicTrack> specialTracks = controller.getSpecialTracks();
-        boolean checkConditions = true;
 
-        for (MusicTrack m : specialTracks) {
-            if (m.getSaleprice() >= m.getListprice()) {
-                checkConditions = false;
-            }
-        }
-        assertTrue(checkConditions);
-    }
-    
     /**
-     * Test that the method returns no more than 3 tracks.
+     * Test that the controller does not fail but when it does not find a result
+     * but instead returns null
      */
     @Test
-    public void testGetSpecialTracksCount(){
-        List<MusicTrack> specialTracks = controller.getSpecialTracks();
-        assertTrue(specialTracks.size() <= 3);
+    public void testGetRunningAdNoResult() {
+        Bannerad ad = this.controller.getRunningAd(0);
+        assertEquals(null, ad);
     }
 
     /**

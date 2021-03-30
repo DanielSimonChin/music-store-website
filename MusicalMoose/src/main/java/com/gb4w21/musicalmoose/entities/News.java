@@ -42,6 +42,10 @@ public class News implements Serializable {
     @Size(max = 16777215)
     @Column(name = "NEWSTEXT")
     private String newstext;
+    @Lob
+    @Size(max = 16777215)
+    @Column(name = "URL")
+    private String url;
     @Column(name = "DISPLAYED")
     private Boolean displayed;
 
@@ -115,6 +119,22 @@ public class News implements Serializable {
         return "com.gb4w21.musicalmoose.News[ newsid=" + newsid + " ]";
     }
 
+    
+    /**
+     * @return the shortened version of the news text for the front page.
+     */
+    public String getTruncatedNewsText(){
+        return newstext.substring(0,Math.min(newstext.length(), 180)) + "...";
+    }
+
+    public Boolean getDisplayed() {
+        return displayed;
+    }
+
+    public void setDisplayed(Boolean displayed) {
+        this.displayed = displayed;
+    }
+
     public String getNewtitle() {
         return newtitle;
     }
@@ -130,20 +150,12 @@ public class News implements Serializable {
     public void setNewstext(String newstext) {
         this.newstext = newstext;
     }
-    
-    /**
-     * @return the shortened version of the news text for the front page.
-     */
-    public String getTruncatedNewsText(){
-        return newstext.substring(0,180) + "...";
+
+    public String getUrl() {
+        return url;
     }
 
-    public Boolean getDisplayed() {
-        return displayed;
+    public void setUrl(String url) {
+        this.url = url;
     }
-
-    public void setDisplayed(Boolean displayed) {
-        this.displayed = displayed;
-    }
-    
 }

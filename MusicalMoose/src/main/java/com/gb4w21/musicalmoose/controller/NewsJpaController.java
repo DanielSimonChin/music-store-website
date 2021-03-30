@@ -7,11 +7,15 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
+import com.gb4w21.musicalmoose.entities.Bannerad;
 import com.gb4w21.musicalmoose.entities.News;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -159,6 +163,17 @@ public class NewsJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList();
+    }
+
+    /**
+     * Redirect the user to a new window representing the news' url field
+     *
+     * @param news
+     * @throws IOException
+     */
+    public void redirectToWebsite(News news) throws IOException {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.redirect(news.getUrl());
     }
 
 }
