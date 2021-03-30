@@ -17,10 +17,12 @@ and open the template in the editor.
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="invoice.css"/>
-                <h1 id="title"> #{msgs.invoice} <br></br><small>(A copy was emailed to you)</small></h1> 
+                <h1 id="title"> #{msgs.invoice} <br></br><small>#{msgs.copyOfEmail}</small></h1> 
                 <button id="printBtn">
                     Print
                 </button>
+                <br/>
+                <a id="download" href="/MusicalMoose/download.xhtml"><u>#{msgs.downloadSongs}</u></a>
                 <br/>
                 <div class="section-to-print" id="invoiceContainer">
                     <h1 id="title"><u>Musical Moose</u></h1>

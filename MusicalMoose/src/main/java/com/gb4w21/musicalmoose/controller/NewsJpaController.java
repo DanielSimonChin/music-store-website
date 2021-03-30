@@ -7,17 +7,22 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
+import com.gb4w21.musicalmoose.entities.Bannerad;
 import com.gb4w21.musicalmoose.entities.News;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.transaction.HeuristicMixedException;
@@ -139,6 +144,36 @@ public class NewsJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
 
+    }
+
+    /**
+     * Retrieves all the News objects that have been selected to be displayed on
+     * the front page. The displayed field will be set to 1 = true
+     *
+     * @return All News objects that have been set to be displayed
+     */
+    public List<News> getDisplayedNews() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<News> cq = cb.createQuery(News.class);
+        Root<News> news = cq.from(News.class);
+
+        //we only want the news highlights that have been set to be displayed by a manager with the value of "1"
+        cq.where(cb.equal(news.get("displayed"), 1));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
+    }
+
+    /**
+     * Redirect the user to a new window representing the news' url field
+     *
+     * @param news
+     * @throws IOException
+     */
+    public void redirectToWebsite(News news) throws IOException {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        externalContext.redirect(news.getUrl());
     }
 
 }

@@ -70,6 +70,8 @@ CREATE TABLE MUSIC_TRACK(
 
 CREATE TABLE CLIENT (
     CLIENTID INT NOT NULL auto_increment,
+    USERNAME VARCHAR(50),
+    PASSWORD VARCHAR(50),
     TITLE VARCHAR(255),
     LASTNAME VARCHAR(255),
     FIRSTNAME VARCHAR(255),
@@ -80,8 +82,8 @@ CREATE TABLE CLIENT (
     PROVINCE VARCHAR(255),
     COUNTRY VARCHAR(255),
     POSTALCODE VARCHAR(255),
-    HOMETELEPHONE BIGINT,
-    CELLTELEPHONE BIGINT,
+    HOMETELEPHONE VARCHAR(25),
+    CELLTELEPHONE VARCHAR(25),
     EMAIL VARCHAR(255),
     GENREOFLASTSEARCH VARCHAR(255),
     PRIMARY KEY (CLIENTID)
@@ -142,6 +144,8 @@ CREATE TABLE BANNERAD (
     URL MEDIUMTEXT,
     BANNERADDID INT NOT NULL auto_increment,
     FILENAME VARCHAR(255),
+    DISPLAYED BIT(1),
+    PAGEPOSITION INT DEFAULT 0,
     PRIMARY KEY (BANNERADDID)
 );
 
@@ -151,6 +155,8 @@ CREATE TABLE NEWS(
     NEWSTEXT MEDIUMTEXT,
     CREATEDDATE TIMESTAMP,
     LASTDISPLAYEDDTAE TIMESTAMP,
+    URL MEDIUMTEXT,
+    DISPLAYED BIT(1),
     PRIMARY KEY (NEWSID)
 );
 
@@ -177,13 +183,14 @@ CREATE TABLE RSS(
     URL VARCHAR(255),
     PRIMARY KEY (ID)
 );
-INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE)
+
+INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE, URL, DISPLAYED)
 VALUES 
-(1, "DRAKE COMES OUT WITH ANOTHER BANGER", "Drake lives in symbiosis with Kardashian-style celebrity culture, using veiled lyrics and social media posts to carefully extend or withdraw access to his narrative. Incidentally, one of the most evocative things he has written recently is the caption to an Instagram post he made celebrating his son’s birthday and sharing photos of him with the public for the first time. “It doesn’t matter what has happened in the past or what is happening around us now, you can always make the choice to break free of the wheel of suffering and panic and open up to your own light,” he wrote. The venue was appropriate for an artist whose success was formed in part on his ability to fill songs with pithy captions. But the message was a rarer thing: earnest, tenderhearted, with the focused sobriety of someone who has been meditating or studying Eckhart Tolle. Unfortunately, very little of that sentiment has made its way into his music, which remains guarded and skin-deep, even as it grows, like his houses, bigger and more expensive. (Pitchfork, Rawiya Kameir)", TIMESTAMP("2020-03-08", "11:03:11"), TIMESTAMP("2020-03-10", "11:03:11")), 
-(2, "DA BABY COLLABS WITH OTHER ARTISTS TO MAKE A HIT ALBUM", "Ever the savvy marketer, DaBaby does manage a few highlights that seem packaged to go viral. “Nasty” pairs a gleaming lilt from Ashanti with a fun, dynamic Megan Thee Stallion verse. It doesn’t have the explosive power of “Cash Shit,” Megan and DaBaby’s last collaboration, but the song is still mesmerizing, with DaBaby’s absurd, precise eroticism in full force. The album’s payoff arrives on the title track, a two-minute opus that stitches together four beat switches and contorts DaBaby’s flow over and over. It builds, it thrills, it makes you feel like you can run through a wall—everything a DaBaby song can and should do, when he asks it of himself. (Pitchfork, Dani Blum)", TIMESTAMP("2019-06-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11")), 
-(3, "DANIEL CAESAR DROPS SURPRISE ALBUMS THAT SHOCKS THE WORLD", "There are few R&B singers who would sample J. Robert Oppenheimer, the American theoretical physicist who helmed the design and research of the world’s first atomic bomb. But Toronto singer Daniel Caesar spotlights a quote from the scientist describing the Hindu deity Vishnu as the “destroyer of worlds” at the start of “Entropy,” setting the mood for his new album, Case Study 01. Coming from a love ballad crooner that previously held a reputation for having an insane amount of people proposing at his live shows, this might seem a little morbid and heady. But considering that 2017’s Freudian, was, well, named after Sigmund Freud as a tie-in to his grappling of ego and id within his romantic serenades, the 24-year-old artist now delves further into his philosophical explorations. (Pitchfork, Michelle Kim)", TIMESTAMP("2021-01-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11")), 
-(4, "FROM YOUTUBER TO ARTIST: JOJI RELEASES REVOLUTIONARY ALBUM IN BALLDS 1", "George Miller’s nearly seven years of trolling the internet as the equal parts viral and vile YouTube personas Filthy Frank and Pink Guy were accented by his quiet SoundCloud releases as Joji. Comprised of emotional croons and lo-fi, sample-driven production, Miller’s side project eventually caught the attention of 88rising, a largely Asian music collective home to acts like Rich Brian, NIKI, and Keith Ape. A debut EP and an 88rising world tour later, Joji has seemingly cleared the leap from bizarre internet comedian to full-fledged musician, officially retiring his YouTube channel and all. Now, with all the shiny trappings of a label and a fanbase hungry for self-deprecating zingers like “Yeah Right” rather than Pink Guy’s stir fry raps, his first full-length project BALLADS 1 makes an effort to push past the confines of his bedroom walls and tedious heartache. (Pitchfork, Braudie Blais-Billie)", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11")), 
-(5, "J COLE COMES OUT WITH HIT ALBUM TAKING THE HIP HOP WORLD BY SURPRISE", "Listening to a J. Cole album can feel like listening to a very intense young lawyer attempt to win a difficult case. Throughout his career, Cole’s raps have often been self-serious and polemical, with their success depending on the overall strength of his argumentation above all else. And while many of his individual claims can be convincing, you often get to the end of a song and think something like: Wait, did he really just argue that corporations take taxes and use them to buy and spread guns? Few artists stake so much on their ability to persuade an audience of their worldview, particularly when that worldview is so absolutist. You do not listen to J. Cole to enjoy his wit or his stories, but to partake in his wisdom, which often involves an element of moral panic: On his new addiction-themed album, KOD, he loves to suggest that people should abstain from things—smoking, drinking, online dating. Sometimes, he’s persuasive, but just as often, he simply seems self-righteous. (Pitchfork, Jonah Bromwich)", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"));
+(1, "Elton John reveals he’s been working on “something” with Metallica", "Elton John has teased an unlikely collaboration with Metallica, after the singer joined forces with the metal icons during the latest coronavirus lockdown.", TIMESTAMP("2020-03-08", "11:03:11"), TIMESTAMP("2020-03-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/elton-john-reveals-hes-been-working-on-something-with-metallica-2910055",1), 
+(2, "Red Velvet’s Wendy unveils release date of upcoming solo debut", "Wendy, the main vocalist of K-pop girl group Red Velvet, is set to make her solo debut soon.", TIMESTAMP("2019-06-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/red-velvet-wendy-solo-debut-2021-april-2897448",1), 
+(3, "Big Sean celebrates birthday with live performance of ‘Lucky Me’ and ‘Still I Rise’", "Big Sean celebrated his birthday this week with a live performance of new tracks ‘Lucky Me’ and ‘Still I Rise’ – watch it below.", TIMESTAMP("2021-01-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/big-sean-celebrates-birthday-with-live-performance-of-lucky-me-and-still-i-rise-2909838",1), 
+(4, "Future joins Diddy’s son King Combs on sleek new track ‘Holdin Me Down’", "Future has teamed up with Diddy‘s son King Combs on a sleek new track called ‘Holdin Me Down’ – listen to it below.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/future-joins-diddys-son-king-combs-on-sleek-new-track-holdin-me-down-2909817",0), 
+(5, "5,000 people attend COVID-19 experiment gig in Barcelona", "Five thousand people attended a concert in Barcelona last night (March 27) as part of a COVID-19 experiment. The show, which saw Spanish rock band Love of Lesbian playing at the Palau Sant Jordi arena, is said to be the biggest concert in Europe since the pandemic began last year.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/5000-people-attend-covid-19-experiment-gig-in-barcelona-2909802",0);
 
 INSERT INTO SURVEY (SURVEYID, SURVEYTITLE, QUESTION, ANSERW1, ANSERW1VOTES, ANSERW2, ANSERW2VOTES, ANSERW3, ANSERW3VOTES, ANSERW4, ANSERW4VOTES, DATESURVEYRCREATED, DATELASTUSED, SURVERYENDED)
 VALUES 
@@ -320,27 +327,27 @@ INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, P
 (100, 22,"Scream Hard as You Can", "Fear, and Loathing in Las Vegas", "Fear, and Loathing in Las Vegas", 3.56,2, "Anime", 7.11, 8.00, 3.57, 0.23, 0.19, 0.31, TIMESTAMP("2021-02-13",  "00:00:00"),"Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg", 0, 1, null );
 
 
-INSERT INTO CLIENT (CLIENTID, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH) VALUES
-(1, "Rev", "Burle", "Alli", "Wolf Group", "08957 Rutledge Trail", "495 Sheridan Parkway", "Ponoka", "Alberta", "Canada", "T4J", 1468741332, 7241183761, "aburle0@tinyurl.com", "Pop"),
-(2, "Ms", "Aish", "Quincey", "Sauer“O“Connell and Feeney", "5208 Messerschmidt Plaza", "5044 Canary Point", "Greensboro", "North Carolina", "United States", "27415", 3365404602, 4957162459, "qaish1@fema.gov", "Pop"),
-(3, "Mrs", "Anyon", "Amara", "Gottlieb, Toy and Ankunding", "668 Oriole Circle", "7 Bay Trail", "Atlanta", "Georgia", "United States", "30316", 4041939405, 7598581468, "aanyon2@army.mil", "Pop"),
-(4, "Honorable", "Shellum", "Lucien", "Cummings Group", "81203 Warrior Point", "26 Lyons Circle", "Savannah", "Georgia", "United States", "31422", 4789255309, 5812443576, "lshellum3@thetimes.co.uk", "Pop"),
-(5, "Rev", "Glasard", "Andy", "Johnson, Medhurst and Huels", "3791 Vidon Place", "2 Mallory Junction", "Baie-Saint-Paul", "Québec", "Canada", "G3Z", 9956132649, 6136927654, "aglasard4@godaddy.com", "Hip hop"),
-(6, "Mr", "Mayberry", "Chic", "McLaughlin, Kemmer and Dietrich", "1431 Delladonna Court", "3939 Cherokee Point", "Casselman", "Ontario", "Canada", "G8A", 9313712912, 3166935628, "cmayberry5@canalblog.com", "Hip hop"),
-(7, "Rev", "Siviour", "Marcos", "Miller, Veum and Windler", "25 Meadow Vale Point", "2492 Garrison Alley", "Albanel", "Québec", "Canada", "G8M", 5392188528, 9392987138, "msiviour6@dion.ne.jp", "Hip hop"),
-(8, "Dr", "Aslie", "Chase", "Bartoletti Group", "47215 Scoville Trail", "48 Northfield Plaza", "Amarillo", "Texas", "United States", "79176", 2818742780, 1131223695, "caslie7@people.com.cn", "Hip hop"),
-(9, "Rev", "Borrowman", "Helen-elizabeth", "Roob-Crist", "63298 Dryden Street", "08 3rd Terrace", "Knoxville", "Tennessee", "United States", "37995", 8655788675, 1432457839, "hborrowman8@php.net", "Rock"),
-(10,"Mr", "Metham", "Kania", "Gleichner Inc", "9810 Westport Point", "9 Florence Place", "Ajax", "Ontario", "Canada", "L1Z", 8299069589, 4363009404, "kmetham9@ucoz.ru", "Rock"),
-(11,"Rev", "Zimmerman", "Marquita", "Kunde Group", "57769 Maywood Parkway", "4 Northland Junction", "Grand Bank", "Newfoundland and Labrador", "Canada", "E8K", 4091189935, 8278455755, "mzimmermana@phoca.cz", "Rock"),
-(12,"Ms", "Seathwright", "Arline", "DuBuque, Schumm and Hettinger", "03 Mesta Place", "6 Morning Court", "Saint Petersburg", "Florida", "United States", "33710", 7278361158, 8797428462, "aseathwrightb@feedburner.com", "Rock"),
-(13,"Mr", "Brounsell", "Kelley", "Marvin, Russel and Purdy", "91 Rowland Drive", "4544 South Drive", "Kansas City", "Kansas", "United States", "66112", 8161198258, 7665016517, "kbrounsellc@jiathis.com", "Anime"),
-(14,"Rev", "Mazonowicz", "Shayne", "Dickens-Jakubowski", "31 Barby Alley", "517 Prairie Rose Road", "Corona", "California", "United States", "92878", 9517400149, 1384334954, "smazonowiczd@ezinearticles.com", "Anime"),
-(15,"Mr", "Drohun", "Tedie", "Stiedemann Inc", "6704 Stuart Road", "22540 Annamark Hill", "Burgeo", "Newfoundland and Labrador", "Canada", "N9A", 8409115038, 2029736271, "tdrohune@jiathis.com", "Anime"),
-(16,"Mrs", "Capon", "See", "Lynch LLC", "99572 Hudson Court", "59 Laurel Lane", "Richmond", "Virginia", "United States", "23285", 8047730443, 9796802414, "scaponf@last.fm", "Anime"),
-(17,"Rev", "Kildale", "Francisco", "Mayer LLC", "85 Vera Road", "360 Schiller Terrace", "Maskinongé", "Québec", "Canada", "T7A", 3692271272, 8946119827, "fkildaleg@answers.com", "R&B"),
-(18,"Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", 4471914490, 1529172744, "dpouletth@businesswire.com", "R&B"),
-(19,"Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", 3147308600, 3817116947, "bsackeri@europa.eu", "R&B"),
-(20,"Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", 2519196520, 1782694487, "gcanbyj@creativecommons.org", "R&B");
+INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH) VALUES
+(1, "edgeLord12", "tttt2", "Rev", "Burle", "Alli", "Wolf Group", "08957 Rutledge Trail", "495 Sheridan Parkway", "Ponoka", "Alberta", "Canada", "T4J", "1468741332", "7241183761", "aburle0@tinyurl.com", "Pop"),
+(2, "jdTrinity", "9876RRwwe", "Ms", "Aish", "Quincey", "Sauer“O“Connell and Feeney", "5208 Messerschmidt Plaza", "5044 Canary Point", "Greensboro", "North Carolina", "United States", "27415", "3365404602", "4957162459", "qaish1@fema.gov", "Pop"),
+(3, "honourGuy13", "wwww131", "Mrs", "Anyon", "Amara", "Gottlieb, Toy and Ankunding", "668 Oriole Circle", "7 Bay Trail", "Atlanta", "Georgia", "United States", "30316", "4041939405", "7598581468", "aanyon2@army.mil", "Pop"),
+(4, "MissTree222", "rrrr3333", "Honorable", "Shellum", "Lucien", "Cummings Group", "81203 Warrior Point", "26 Lyons Circle", "Savannah", "Georgia", "United States", "31422", "4789255309", "5812443576", "lshellum3@thetimes.co.uk", "Pop"),
+(5, "445MeAndYou", "ttt23hhhht2", "Rev", "Glasard", "Andy", "Johnson, Medhurst and Huels", "3791 Vidon Place", "2 Mallory Junction", "Baie-Saint-Paul", "Québec", "Canada", "G3Z", "9956132649", "6136927654", "aglasard4@godaddy.com", "Hip hop"),
+(6, "SpanishQueen11", "Qerf32fd", "Mr", "Mayberry", "Chic", "McLaughlin, Kemmer and Dietrich", "1431 Delladonna Court", "3939 Cherokee Point", "Casselman", "Ontario", "Canada", "G8A", "9313712912", "3166935628", "cmayberry5@canalblog.com", "Hip hop"),
+(7, "MusicPerson49", "rfrffrfrf321", "Rev", "Siviour", "Marcos", "Miller, Veum and Windler", "25 Meadow Vale Point", "2492 Garrison Alley", "Albanel", "Québec", "Canada", "G8M", "5392188528", "9392987138", "msiviour6@dion.ne.jp", "Hip hop"),
+(8, "98wHelloThere", "ZZZzzz44", "Dr", "Aslie", "Chase", "Bartoletti Group", "47215 Scoville Trail", "48 Northfield Plaza", "Amarillo", "Texas", "United States", "79176", "2818742780", "1131223695", "caslie7@people.com.cn", "Hip hop"),
+(9, "WhoAmI57", "5468fcfcQWQ", "Rev", "Borrowman", "Helen-elizabeth", "Roob-Crist", "63298 Dryden Street", "08 3rd Terrace", "Knoxville", "Tennessee", "United States", "37995", "8655788675", "1432457839", "hborrowman8@php.net", "Rock"),
+(10, "IThink291", "99YYdnej", "Mr", "Metham", "Kania", "Gleichner Inc", "9810 Westport Point", "9 Florence Place", "Ajax", "Ontario", "Canada", "L1Z", "8299069589", "4363009404", "kmetham9@ucoz.ru", "Rock"),
+(11, "MrHiiii887", "wjbQQ11", "Rev", "Zimmerman", "Marquita", "Kunde Group", "57769 Maywood Parkway", "4 Northland Junction", "Grand Bank", "Newfoundland and Labrador", "Canada", "E8K", "4091189935", "8278455755", "mzimmermana@phoca.cz", "Rock"),
+(12, "rrrrrrrrrr77777", "292UInnd", "Ms", "Seathwright", "Arline", "DuBuque, Schumm and Hettinger", "03 Mesta Place", "6 Morning Court", "Saint Petersburg", "Florida", "United States", "33710", "7278361158", "8797428462", "aseathwrightb@feedburner.com", "Rock"),
+(13, "EdgeLord38", "UBRhbr93", "Mr", "Brounsell", "Kelley", "Marvin, Russel and Purdy", "91 Rowland Drive", "4544 South Drive", "Kansas City", "Kansas", "United States", "66112", "8161198258", "7665016517", "kbrounsellc@jiathis.com", "Anime"),
+(14, "pika", "thrbej11U", "Rev", "Mazonowicz", "Shayne", "Dickens-Jakubowski", "31 Barby Alley", "517 Prairie Rose Road", "Corona", "California", "United States", "92878", "9517400149", "1384334954", "smazonowiczd@ezinearticles.com", "Anime"),
+(15, "pikachu025", "hdjefbQ11", "Mr", "Drohun", "Tedie", "Stiedemann Inc", "6704 Stuart Road", "22540 Annamark Hill", "Burgeo", "Newfoundland and Labrador", "Canada", "N9A", "8409115038", "2029736271", "tdrohune@jiathis.com", "Anime"),
+(16, "IHatePikachu520", "dhdd44Q", "Mrs", "Capon", "See", "Lynch LLC", "99572 Hudson Court", "59 Laurel Lane", "Richmond", "Virginia", "United States", "23285", "8047730443", "9796802414", "scaponf@last.fm", "Anime"),
+(17, "IamIronMan88", "jsbf29YY", "Rev", "Kildale", "Francisco", "Mayer LLC", "85 Vera Road", "360 Schiller Terrace", "Maskinongé", "Québec", "Canada", "T7A", "3692271272", "8946119827", "fkildaleg@answers.com", "R&B"),
+(18, "Miss23Earth", "wwh283S", "Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", "4471914490", "1529172744", "dpouletth@businesswire.com", "R&B"),
+(19, "PizzaMan12", "dddnhd22", "Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", "3147308600", "3817116947", "bsackeri@europa.eu", "R&B"),
+(20, "One1Two2", "0033ththt", "Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "gcanbyj@creativecommons.org", "R&B");
 
 
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
@@ -361,12 +368,12 @@ VALUE
 (14, TIMESTAMP("2020-03-05", "11:03:11"), "Amara", 8, "A replay type of song wow", 1, 3, 12),
 (15, TIMESTAMP("2020-03-05", "04:13:55"), "Quincey", 9, "AMAZING! Highly recommend taking a listen", 1, 2, 13);
 
-INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL) VALUES
-(1, "walmartbanner.png”", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4"),
-(2, "amazonbanner.png", "https://www.amazon.com/"),
-(3, "hmbanner.png", "https://www2.hm.com/en_ca/index.html"),
-(4, "logitechbanner.png", "https://www.cdw.com/product/Logitech-F310-Gamepad/2168504?cm_cat=bing&cm_ite=2168504&cm_pla=NA-NA-Logitech_PD&cm_ven=acquirgy&ef_id=b24db09c7341170d30d2d0b2ada242e5:G:s&s_kwcid=AL!4223!10!73255048915844!73254985619399"),
-(5, "disneybanner.png", "https://disneyparks.disney.go.com/ca/");
+INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL, DISPLAYED, PAGEPOSITION) VALUES
+(1, "walmartbanner.jpg", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4", 0, 0),
+(2, "amazonbanner.jpg", "https://www.amazon.com/", 0, 0),
+(3, "hmbanner.jpg", "https://www2.hm.com/en_ca/index.html", 1, 1),
+(4, "logitechbanner.jpg", "https://www.logitech.com/en-ca", 1, 2),
+(5, "disneybanner.jpg", "https://disneyparks.disney.go.com/ca/",0, 0);
 
 INSERT INTO SALE (SALEID, CLIENTID, SALEDATE) VALUES
 (1, 1,TIMESTAMP("2021-02-13",  "00:00:00")),

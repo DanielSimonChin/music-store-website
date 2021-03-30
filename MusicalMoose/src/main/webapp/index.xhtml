@@ -20,6 +20,8 @@
                 <link rel="stylesheet" href="frontdoor.css"/>
 
 
+
+
                 <div class="wrapper">
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
@@ -29,6 +31,7 @@
                             <h1 id="home">#{msgs.musicSpecials}</h1>
 
                             <div class="box">
+
 
                                 <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
                                     <h:form >
@@ -45,7 +48,6 @@
                                         </h:commandLink>
                                     </h:form>
                                 </ui:repeat>
-
                             </div>
                         </div>
 
@@ -59,34 +61,25 @@
                                         <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
                                     </h:commandLink>
                                 </ui:repeat>
-                                
+
                             </div>
                         </h:form>
 
                         <h1 id="myList">#{msgs.newsHighlights}</h1>
 
                         <div class="box news">
-                            <a href="">
 
-                                <h1>The Weeknd Gives a Dizzying Tour of His Career During the Super Bowl Halftime Show</h1>
+                            <!-- The news section that brings the user to a new window with the news highlight -->
+                            <ui:repeat value="#{newsJpaController.getDisplayedNews()}" var="news">
+                                <h:form target="_blank">
+                                    <h:commandLink actionListener="#{newsJpaController.redirectToWebsite(news)}">
+                                        <h1>#{news.newtitle}</h1>
+                                        <p>#{news.getTruncatedNewsText()}</p>
+                                    </h:commandLink>
+                                </h:form>
+                            </ui:repeat>
 
-                                <p>The Weeknd headlined the Super Bowl LV halftime show with a career-spanning, sequin-bombed medley
-                                    of his biggest hits</p>
-                            </a>
-                            <a href="">
 
-                                <h1>Watch Eric Church, Jazmine Sullivan Perform ‘Star-Spangled Banner’ at Super Bowl LV</h1>
-
-                                <p>The Super Bowl LV kicked off Sunday with a performance of “America the Beautiful” by H.E.R., who
-                                    accompanied the patriotic song on electric guitar.</p>
-                            </a>
-                            <a href="">
-
-                                <h1>Watch Miley Cyrus Headline Super Bowl LV Tailgate, Bring Out Billy Idol</h1>
-
-                                <p>Miley Cyrus tore through a set of her hits and covers and welcomed guests Billy Idol and Joan
-                                    Jett while headlining the Super Bowl LV pregame on Sunday.</p>
-                            </a>
                         </div>
                         <h:form>
                             <h:panelGrid columns="1">
@@ -122,7 +115,17 @@
 
                             </h:panelGrid>
                         </h:form>
-                        <img class="ad" src="ads/ad_1.png" alt="" />
+
+                        <!-- Display the first running ad -->
+                        <ui:param name="ad1" value="#{banneradJpaController.getRunningAd(1)}"/>
+                        <!-- Will only display the commmandLink if the returned Bannerad object is not empty. Also want the external link to open a new tab -->
+                        <h:form target="_blank">
+                            <h:commandLink actionListener="#{banneradJpaController.redirectToWebsite(ad1)}" rendered="#{not empty ad1}" >
+                                <h:graphicImage class="ad" value="ads/#{ad1.filename}" />
+                            </h:commandLink>
+                        </h:form>
+
+
 
                         <h1 id="genres">#{msgs.browseGenres}</h1>
 
@@ -165,7 +168,15 @@
                                 </h:form>
                             </ui:repeat>
                         </div>
-                        <img class="ad2" src="ads/ad_2.png" alt="" />
+
+                        <!-- Display the second running ad -->
+                        <ui:param name="ad2" value="#{banneradJpaController.getRunningAd(2)}"/>
+                        <!-- Will only display the commmandLink if the returned Bannerad object is not empty. Also want the external link to open a new tab -->
+                        <h:form target="_blank">
+                            <h:commandLink actionListener="#{banneradJpaController.redirectToWebsite(ad2)}" rendered="#{not empty ad2}" >
+                                <h:graphicImage class="ad2" value="ads/#{ad2.filename}" />
+                            </h:commandLink>
+                        </h:form>
                     </section>
                 </div>
             </ui:define>

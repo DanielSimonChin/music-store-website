@@ -16,6 +16,7 @@ import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Review;
+import com.gb4w21.musicalmoose.util.LoginController;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,8 @@ public class ReviewJpaController implements Serializable {
     private UserTransaction utx;
     @Inject
     ClientJpaController clientJpaController;
-
+    @Inject
+    LoginController loginController;
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
@@ -256,7 +258,9 @@ public class ReviewJpaController implements Serializable {
         LOG.info("Rating:" + review.getRating());
         LOG.info("Review:" + review.getReviewtext());
         review.setAprovalstatus(false);
-        Client client = clientJpaController.findClient(getClientId());
+        Client client = clientJpaController.findClient(loginController.getLoginBean().getId());
+        LOG.info("Client id:"+loginController.getLoginBean().getId());
+        LOG.info("Client name:"+loginController.getLoginBean().getUsername());
         review.setClientid(client);
         review.setClientname(client.getFirstname());
         create(review);
@@ -286,12 +290,7 @@ public class ReviewJpaController implements Serializable {
         return trackCreated;
     }
 
-    public int getClientId() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Object loggedCookie = context.getExternalContext().getRequestCookieMap().get("LogCookie");
-        //return Integer.parseInt(((Cookie) loggedCookie).getValue());
-        return 3;
-    }
+ 
 
     public boolean checkUserLoged() {
         FacesContext context = FacesContext.getCurrentInstance();
