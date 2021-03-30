@@ -70,6 +70,8 @@ CREATE TABLE MUSIC_TRACK(
 
 CREATE TABLE CLIENT (
     CLIENTID INT NOT NULL auto_increment,
+    USERNAME VARCHAR(50),
+    PASSWORD VARCHAR(50),
     TITLE VARCHAR(255),
     LASTNAME VARCHAR(255),
     FIRSTNAME VARCHAR(255),
@@ -80,8 +82,8 @@ CREATE TABLE CLIENT (
     PROVINCE VARCHAR(255),
     COUNTRY VARCHAR(255),
     POSTALCODE VARCHAR(255),
-    HOMETELEPHONE BIGINT,
-    CELLTELEPHONE BIGINT,
+    HOMETELEPHONE VARCHAR(25),
+    CELLTELEPHONE VARCHAR(25),
     EMAIL VARCHAR(255),
     GENREOFLASTSEARCH VARCHAR(255),
     PRIMARY KEY (CLIENTID)
@@ -324,27 +326,27 @@ INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, P
 (100, 22,"Scream Hard as You Can", "Fear, and Loathing in Las Vegas", "Fear, and Loathing in Las Vegas", 3.56,2, "Anime", 7.11, 8.00, 3.57, 0.23, 0.19, 0.31, TIMESTAMP("2021-02-13",  "00:00:00"),"Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg", 0, 1, null );
 
 
-INSERT INTO CLIENT (CLIENTID, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH) VALUES
-(1, "Rev", "Burle", "Alli", "Wolf Group", "08957 Rutledge Trail", "495 Sheridan Parkway", "Ponoka", "Alberta", "Canada", "T4J", 1468741332, 7241183761, "aburle0@tinyurl.com", "Pop"),
-(2, "Ms", "Aish", "Quincey", "Sauer“O“Connell and Feeney", "5208 Messerschmidt Plaza", "5044 Canary Point", "Greensboro", "North Carolina", "United States", "27415", 3365404602, 4957162459, "qaish1@fema.gov", "Pop"),
-(3, "Mrs", "Anyon", "Amara", "Gottlieb, Toy and Ankunding", "668 Oriole Circle", "7 Bay Trail", "Atlanta", "Georgia", "United States", "30316", 4041939405, 7598581468, "aanyon2@army.mil", "Pop"),
-(4, "Honorable", "Shellum", "Lucien", "Cummings Group", "81203 Warrior Point", "26 Lyons Circle", "Savannah", "Georgia", "United States", "31422", 4789255309, 5812443576, "lshellum3@thetimes.co.uk", "Pop"),
-(5, "Rev", "Glasard", "Andy", "Johnson, Medhurst and Huels", "3791 Vidon Place", "2 Mallory Junction", "Baie-Saint-Paul", "Québec", "Canada", "G3Z", 9956132649, 6136927654, "aglasard4@godaddy.com", "Hip hop"),
-(6, "Mr", "Mayberry", "Chic", "McLaughlin, Kemmer and Dietrich", "1431 Delladonna Court", "3939 Cherokee Point", "Casselman", "Ontario", "Canada", "G8A", 9313712912, 3166935628, "cmayberry5@canalblog.com", "Hip hop"),
-(7, "Rev", "Siviour", "Marcos", "Miller, Veum and Windler", "25 Meadow Vale Point", "2492 Garrison Alley", "Albanel", "Québec", "Canada", "G8M", 5392188528, 9392987138, "msiviour6@dion.ne.jp", "Hip hop"),
-(8, "Dr", "Aslie", "Chase", "Bartoletti Group", "47215 Scoville Trail", "48 Northfield Plaza", "Amarillo", "Texas", "United States", "79176", 2818742780, 1131223695, "caslie7@people.com.cn", "Hip hop"),
-(9, "Rev", "Borrowman", "Helen-elizabeth", "Roob-Crist", "63298 Dryden Street", "08 3rd Terrace", "Knoxville", "Tennessee", "United States", "37995", 8655788675, 1432457839, "hborrowman8@php.net", "Rock"),
-(10,"Mr", "Metham", "Kania", "Gleichner Inc", "9810 Westport Point", "9 Florence Place", "Ajax", "Ontario", "Canada", "L1Z", 8299069589, 4363009404, "kmetham9@ucoz.ru", "Rock"),
-(11,"Rev", "Zimmerman", "Marquita", "Kunde Group", "57769 Maywood Parkway", "4 Northland Junction", "Grand Bank", "Newfoundland and Labrador", "Canada", "E8K", 4091189935, 8278455755, "mzimmermana@phoca.cz", "Rock"),
-(12,"Ms", "Seathwright", "Arline", "DuBuque, Schumm and Hettinger", "03 Mesta Place", "6 Morning Court", "Saint Petersburg", "Florida", "United States", "33710", 7278361158, 8797428462, "aseathwrightb@feedburner.com", "Rock"),
-(13,"Mr", "Brounsell", "Kelley", "Marvin, Russel and Purdy", "91 Rowland Drive", "4544 South Drive", "Kansas City", "Kansas", "United States", "66112", 8161198258, 7665016517, "kbrounsellc@jiathis.com", "Anime"),
-(14,"Rev", "Mazonowicz", "Shayne", "Dickens-Jakubowski", "31 Barby Alley", "517 Prairie Rose Road", "Corona", "California", "United States", "92878", 9517400149, 1384334954, "smazonowiczd@ezinearticles.com", "Anime"),
-(15,"Mr", "Drohun", "Tedie", "Stiedemann Inc", "6704 Stuart Road", "22540 Annamark Hill", "Burgeo", "Newfoundland and Labrador", "Canada", "N9A", 8409115038, 2029736271, "tdrohune@jiathis.com", "Anime"),
-(16,"Mrs", "Capon", "See", "Lynch LLC", "99572 Hudson Court", "59 Laurel Lane", "Richmond", "Virginia", "United States", "23285", 8047730443, 9796802414, "scaponf@last.fm", "Anime"),
-(17,"Rev", "Kildale", "Francisco", "Mayer LLC", "85 Vera Road", "360 Schiller Terrace", "Maskinongé", "Québec", "Canada", "T7A", 3692271272, 8946119827, "fkildaleg@answers.com", "R&B"),
-(18,"Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", 4471914490, 1529172744, "dpouletth@businesswire.com", "R&B"),
-(19,"Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", 3147308600, 3817116947, "bsackeri@europa.eu", "R&B"),
-(20,"Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", 2519196520, 1782694487, "gcanbyj@creativecommons.org", "R&B");
+INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH) VALUES
+(1, "edgeLord12", "tttt2", "Rev", "Burle", "Alli", "Wolf Group", "08957 Rutledge Trail", "495 Sheridan Parkway", "Ponoka", "Alberta", "Canada", "T4J", "1468741332", "7241183761", "aburle0@tinyurl.com", "Pop"),
+(2, "jdTrinity", "9876RRwwe", "Ms", "Aish", "Quincey", "Sauer“O“Connell and Feeney", "5208 Messerschmidt Plaza", "5044 Canary Point", "Greensboro", "North Carolina", "United States", "27415", "3365404602", "4957162459", "qaish1@fema.gov", "Pop"),
+(3, "honourGuy13", "wwww131", "Mrs", "Anyon", "Amara", "Gottlieb, Toy and Ankunding", "668 Oriole Circle", "7 Bay Trail", "Atlanta", "Georgia", "United States", "30316", "4041939405", "7598581468", "aanyon2@army.mil", "Pop"),
+(4, "MissTree222", "rrrr3333", "Honorable", "Shellum", "Lucien", "Cummings Group", "81203 Warrior Point", "26 Lyons Circle", "Savannah", "Georgia", "United States", "31422", "4789255309", "5812443576", "lshellum3@thetimes.co.uk", "Pop"),
+(5, "445MeAndYou", "ttt23hhhht2", "Rev", "Glasard", "Andy", "Johnson, Medhurst and Huels", "3791 Vidon Place", "2 Mallory Junction", "Baie-Saint-Paul", "Québec", "Canada", "G3Z", "9956132649", "6136927654", "aglasard4@godaddy.com", "Hip hop"),
+(6, "SpanishQueen11", "Qerf32fd", "Mr", "Mayberry", "Chic", "McLaughlin, Kemmer and Dietrich", "1431 Delladonna Court", "3939 Cherokee Point", "Casselman", "Ontario", "Canada", "G8A", "9313712912", "3166935628", "cmayberry5@canalblog.com", "Hip hop"),
+(7, "MusicPerson49", "rfrffrfrf321", "Rev", "Siviour", "Marcos", "Miller, Veum and Windler", "25 Meadow Vale Point", "2492 Garrison Alley", "Albanel", "Québec", "Canada", "G8M", "5392188528", "9392987138", "msiviour6@dion.ne.jp", "Hip hop"),
+(8, "98wHelloThere", "ZZZzzz44", "Dr", "Aslie", "Chase", "Bartoletti Group", "47215 Scoville Trail", "48 Northfield Plaza", "Amarillo", "Texas", "United States", "79176", "2818742780", "1131223695", "caslie7@people.com.cn", "Hip hop"),
+(9, "WhoAmI57", "5468fcfcQWQ", "Rev", "Borrowman", "Helen-elizabeth", "Roob-Crist", "63298 Dryden Street", "08 3rd Terrace", "Knoxville", "Tennessee", "United States", "37995", "8655788675", "1432457839", "hborrowman8@php.net", "Rock"),
+(10, "IThink291", "99YYdnej", "Mr", "Metham", "Kania", "Gleichner Inc", "9810 Westport Point", "9 Florence Place", "Ajax", "Ontario", "Canada", "L1Z", "8299069589", "4363009404", "kmetham9@ucoz.ru", "Rock"),
+(11, "MrHiiii887", "wjbQQ11", "Rev", "Zimmerman", "Marquita", "Kunde Group", "57769 Maywood Parkway", "4 Northland Junction", "Grand Bank", "Newfoundland and Labrador", "Canada", "E8K", "4091189935", "8278455755", "mzimmermana@phoca.cz", "Rock"),
+(12, "rrrrrrrrrr77777", "292UInnd", "Ms", "Seathwright", "Arline", "DuBuque, Schumm and Hettinger", "03 Mesta Place", "6 Morning Court", "Saint Petersburg", "Florida", "United States", "33710", "7278361158", "8797428462", "aseathwrightb@feedburner.com", "Rock"),
+(13, "EdgeLord38", "UBRhbr93", "Mr", "Brounsell", "Kelley", "Marvin, Russel and Purdy", "91 Rowland Drive", "4544 South Drive", "Kansas City", "Kansas", "United States", "66112", "8161198258", "7665016517", "kbrounsellc@jiathis.com", "Anime"),
+(14, "pika", "thrbej11U", "Rev", "Mazonowicz", "Shayne", "Dickens-Jakubowski", "31 Barby Alley", "517 Prairie Rose Road", "Corona", "California", "United States", "92878", "9517400149", "1384334954", "smazonowiczd@ezinearticles.com", "Anime"),
+(15, "pikachu025", "hdjefbQ11", "Mr", "Drohun", "Tedie", "Stiedemann Inc", "6704 Stuart Road", "22540 Annamark Hill", "Burgeo", "Newfoundland and Labrador", "Canada", "N9A", "8409115038", "2029736271", "tdrohune@jiathis.com", "Anime"),
+(16, "IHatePikachu520", "dhdd44Q", "Mrs", "Capon", "See", "Lynch LLC", "99572 Hudson Court", "59 Laurel Lane", "Richmond", "Virginia", "United States", "23285", "8047730443", "9796802414", "scaponf@last.fm", "Anime"),
+(17, "IamIronMan88", "jsbf29YY", "Rev", "Kildale", "Francisco", "Mayer LLC", "85 Vera Road", "360 Schiller Terrace", "Maskinongé", "Québec", "Canada", "T7A", "3692271272", "8946119827", "fkildaleg@answers.com", "R&B"),
+(18, "Miss23Earth", "wwh283S", "Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", "4471914490", "1529172744", "dpouletth@businesswire.com", "R&B"),
+(19, "PizzaMan12", "dddnhd22", "Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", "3147308600", "3817116947", "bsackeri@europa.eu", "R&B"),
+(20, "One1Two2", "0033ththt", "Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "gcanbyj@creativecommons.org", "R&B");
 
 
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 

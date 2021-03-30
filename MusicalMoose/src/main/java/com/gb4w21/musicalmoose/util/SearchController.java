@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.logging.Level;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -63,7 +65,8 @@ public class SearchController implements Serializable {
     private boolean searchError;
     @PersistenceContext
     private EntityManager entityManager;
-
+   // @Inject
+   // private FacesContext facesContext1;
     public SearchController() {
 
     }
@@ -122,7 +125,7 @@ public class SearchController implements Serializable {
         this.searchResultsAlbum = searchResultsAlbum;
 
     }
-    
+   
     private void clearSearchResult(){
         searchResultsTrack = new ArrayList<SearchResult>();
         searchResultsAlbum = new ArrayList<SearchResult>();

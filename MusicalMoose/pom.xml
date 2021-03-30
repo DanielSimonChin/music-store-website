@@ -29,6 +29,7 @@
             MusicalMoose 
         </finalName>
     </build>
+
     
     <repositories>
         <repository>
@@ -37,8 +38,13 @@
         </repository>
     </repositories>
     
-    <dependencies>
+      <dependencies>
         <dependency>
+            <groupId>org.primefaces</groupId>
+            <artifactId>primefaces</artifactId>
+            <version>10.0.0</version>
+        </dependency>
+         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.23</version>
@@ -50,6 +56,7 @@
             <version>2.4.1</version>
         </dependency>
     </dependencies>
+
 </project>
 
 
