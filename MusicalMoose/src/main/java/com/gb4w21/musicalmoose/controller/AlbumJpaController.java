@@ -206,11 +206,7 @@ public class AlbumJpaController implements Serializable {
     public String searchSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
         writeCookie();
-        LOG.info("album id:"+id);
-        LOG.info("album id:"+id);
-        LOG.info("album id:"+id);
-        LOG.info("album id:"+id);
-        LOG.info("album id:"+id);
+  
         return "searchAlbum";
     }
     

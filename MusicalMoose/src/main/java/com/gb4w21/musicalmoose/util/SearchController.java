@@ -64,27 +64,33 @@ public class SearchController implements Serializable {
     private AlbumJpaController albumJpaController;
     @Inject
     private MusicTrackJpaController musicTrackJpaController;
-    private String category;
+    private String category = "TrackName";
     private boolean searchError;
     @PersistenceContext
     private EntityManager entityManager;
-   // @Inject
-   // private FacesContext facesContext1;
+    // @Inject
+    // private FacesContext facesContext1;
+
     public SearchController() {
 
     }
-    public Date getToDate(){
+
+    public Date getToDate() {
         return toDate;
     }
-    public void setToDate(Date toDate){
-        this.toDate= toDate;
+
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
     }
-    public Date getFromDate(){
+
+    public Date getFromDate() {
         return fromDate;
     }
-    public void setFromDate(Date fromDate){
-        this.fromDate= fromDate;
+
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
+
     public boolean getSearchError() {
         return searchError;
     }
@@ -128,34 +134,40 @@ public class SearchController implements Serializable {
         this.searchResultsAlbum = searchResultsAlbum;
 
     }
-   
-    private void clearSearchResult(){
+
+    private void clearSearchResult() {
         searchResultsTrack = new ArrayList<SearchResult>();
         searchResultsAlbum = new ArrayList<SearchResult>();
     }
+
     public String searchForPage() throws Exception {
         clearSearchResult();
+        LOG.info("category" + category);
+        LOG.info("category" + category);
+        LOG.info("category" + category);
+        LOG.info("category" + category);
+
         if (category.equals(SearchCategory.AlbumTitle.toString())) {
             searchResultsAlbums();
         } else if (category.equals(SearchCategory.Artist.toString())) {
             searchResultsArtist();
         } else if (category.equals(SearchCategory.Date.toString())) {
-        
-                searchResultsDate();
-        
+
+            searchResultsDate();
+
         } else if (category.equals(SearchCategory.TrackName.toString())) {
             searchResultsMusicTrack();
         }
         searchText = "";
-        
-        fromDate=null;
-        toDate=null;
+
+        fromDate = null;
+        toDate = null;
         if (searchResultsAlbum.size() + searchResultsTrack.size() == 0) {
             searchText = "";
             searchError = true;
             return "index";
         }
-        searchError =false;
+        searchError = false;
         if (searchResultsTrack.size() == 0 && searchResultsAlbum.size() == 1) {
             setSingleAlbum();
             return "albumpage";
@@ -167,8 +179,6 @@ public class SearchController implements Serializable {
         return "searchPage";
 
     }
-
-    
 
     private void setSingleTrack() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -214,25 +224,34 @@ public class SearchController implements Serializable {
         searchResultsTrack = query.getResultList();
 
     }
-     public void validateDate(FacesContext context, UIComponent component,
-            Object value) {
-         
-         if(value!=null){
-             Date chosenDate = (Date)value;
-             Date currentDate =new Date();
-             LOG.info("Date:"+value.toString());
-         
-          if(chosenDate.compareTo(currentDate) > 0) {
-              FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "dateError", null);
+
+    public void validateDateFrom(FacesContext context, UIComponent component,Object value) {
+        if (value != null && compareDate((Date) value)) {
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "dateErrorFrom", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(message);
-          }
-         
-         }
-       
+        }
     }
+
+    public void validateDateTo(FacesContext context, UIComponent component, Object value) {
+        if (value != null && compareDate((Date) value)) {
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "dateErrorTo", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+    }
+
+    private boolean compareDate(Date chosenDate) {
+        Date currentDate = new Date();
+        LOG.info("Date:" + chosenDate.toString());
+        return chosenDate.compareTo(currentDate) > 0;
+    }
+
+  
     private void searchResultsAlbums() {
         searchText = "%" + searchText + "%";
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -247,7 +266,7 @@ public class SearchController implements Serializable {
     }
 
     private void searchResultsDate() throws ParseException {
-       
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<SearchResult> cq = cb.createQuery(SearchResult.class);
 
@@ -287,5 +306,5 @@ public class SearchController implements Serializable {
         searchResultsTrack.addAll(query.getResultList());
 
     }
-    
+
 }

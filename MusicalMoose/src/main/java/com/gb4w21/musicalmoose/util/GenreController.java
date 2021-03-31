@@ -44,37 +44,37 @@ public class GenreController implements Serializable {
     }
 
     public String searchPop() throws Exception {
-        LOG.info("wwwwwwwwwwwwww1");
+      
         searchGener(Pop);
-        LOG.info("wwwwwwwwwwwwww1");
+   
         return "searchPage";
     }
 
     public String searchRB() throws Exception {
-        LOG.info("wwwwwwwwwwwwww2");
+    
         searchGener(RB);
-        LOG.info("wwwwwwwwwwwwww2");
+      
         return "searchPage";
     }
 
     public String searchRock() throws Exception {
-        LOG.info("wwwwwwwwwwwwww3");
+      
         searchGener(Rock);
-        LOG.info("wwwwwwwwwwwwww3");
+   
         return "searchPage";
     }
 
     public String searchHipHop() throws Exception {
-        LOG.info("wwwwwwwwwwwwww4");
+  
         searchGener(Hip_hop);
-        LOG.info("wwwwwwwwwwwwww4");
+       
         return "searchPage";
     }
 
     public String searchAnime() throws Exception {
-        LOG.info("wwwwwwwwwwwwww5");
+        
         searchGener(Anime);
-        LOG.info("wwwwwwwwwwwwww5");
+     
         return "searchPage";
     }
 

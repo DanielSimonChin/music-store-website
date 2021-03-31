@@ -33,6 +33,8 @@
                             <div class="box">
 
 
+
+
                                 <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
                                     <h:form >
                                         <h:commandLink value="#{specialTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specialTracks)}">
@@ -184,4 +186,7 @@
 
     </h:body>
 </html>
+
+
+
 
