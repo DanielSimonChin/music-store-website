@@ -1,74 +1,75 @@
-.container-info{
+#addMusic{
+    width:15% !important;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+.icon{
     display:inline-block;
-
-    padding:10px;
-    margin:center;
-}
-
-#title{
-    text-align: center;
-    margin-bottom:-30px;
-}
-
-#scrollcart{
-    overflow-y:scroll;
-    height:70%;
-}
-
-#info1{
-    margin-top:70px;
-    margin-left:40px;
-    width:30%;
-}
-
-#info2{
-    width: 45%;
-    margin-right: 10%;
-    margin-left:40px;
-    height:380px;
-}
-
-.card{
-    display:inline-block;
-    width:55px;
-    filter: invert(85%) sepia(38%) saturate(253%) hue-rotate(27deg) brightness(107%) contrast(94%);
+    width:30px;
+    vertical-align: bottom;
+    margin-top: -2px;    
+    margin-left:3px;
+    filter: invert(100%) sepia(32%) saturate(0%) hue-rotate(154deg) brightness(108%) contrast(101%);
     cursor:pointer;
     margin-right:5px;
-    margin-top:10px;
 }
 
-.card:hover{
-    width:60px;
+.icon:hover{
+    width:35px;
     margin-right:0px;
-    margin-top:5px;
+    margin-top:-4px;
 }
 
-.card:active{
+.icon:active{
     filter: invert(34%) sepia(34%) saturate(4233%) hue-rotate(212deg) brightness(89%) contrast(86%);
 }
 
-/* width */
-::-webkit-scrollbar {
-  width: 10px;
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
 }
 
-/* Track */
-::-webkit-scrollbar-track {
-  background: #f1f1f1; 
-}
- 
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #888; 
+.rowButton{
+    cursor:pointer;
+    text-align:center !important;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+td, th {
+    width: 15% !important;
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
 }
 
-input[type=radio]{
-    margin-right:35px;
+tr:nth-child(even) {
+    background-color: gray;
+    color:white;
+}
+
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.topnav a.active {
+    background-color: var(--light);
+    color: white;
 }
 
 /* CSS VARIABLES */
@@ -82,6 +83,15 @@ input[type=radio]{
 .box form{
     transition: transform .3s;
 }
+
+.adjustEllipse{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100% !important;
+    display: block;
+}
+
 
 .box form:hover{
     transition: transform .3s;
@@ -150,10 +160,9 @@ html, body {
     overflow-x: hidden;
 }
 
-
-img {
-    max-width: 100%;
-}
+@media screen and (max-width:768px){
+th,td { display:block; width:100% !important; }
+  }
 
 h1 {
     padding-top: 60px;  
@@ -201,14 +210,12 @@ header {
 
 
 .main-nav {
+    display: flex;
     grid-area: mn;
     padding: 0 30px 0 20px;
+}
 
-    display: flex;
-  }
-  
-  .main-nav a {
-
+.main-nav a {
     color: var(--light);
     text-decoration: none;
     margin: 5px;  
@@ -308,7 +315,8 @@ footer {
         display: block;
         margin-left: auto;
         margin-right: 0;
-        margin-top:-400px;
+        margin-top: -550px;
+        margin-bottom: 190px;
     }
 
     .ad2{
