@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <head>
+
+        <title>Musical Moose</title>
+        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
+
+    </head>
+
+    <h:body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <div class="wrapper">
+                    <br/>
+                    <br/>
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+                        <div class="topnav">
+                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
+                            <a class="active" >Album Inventory</a>
+                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
+                        </div>
+                        <table>
+                            <tr>
+                                <button id="addMusic" class="rowButton">Add album record</button>
+                                &nbsp;
+                                <input type="text" placeholder="Search"/>
+                            </tr>
+                            <tr>
+                                <td class="rowButton"><img src="./icons/delete-cart.png"/></td>
+                                <td><img class="icon" src="./icons/edit-solid.svg"/>Album Number:</td>
+                                <td><img class="icon" src="./icons/edit-solid.svg"/>Album Title:</td>
+                                <td><img class="icon" src="./icons/edit-solid.svg"/>Artist:</td>
+                                <td>
+                                    Click to edit:
+                                    <select>
+                                        <option>Release Date:</option>
+                                        <option>Recording Label:</option>
+                                        <option>Number of Tracks:</option>
+                                        <option>Date entered into inventory:</option>
+                                        <option>Cost Price:</option>
+                                        <option>Album Cover Image File Name:</option>
+                                        <option>List Price:</option>
+                                        <option>Sale Price:</option>
+                                        <option>Removal Status:</option>
+                                        <option>Removal Date:</option>
+                                    </select>
+                                </td>
+
+
+                            </tr>
+                        </table>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
