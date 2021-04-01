@@ -61,6 +61,7 @@ public class ShoppingCartController implements Serializable {
             
             checkedCookies = true;
         }
+        this.toShoppingCart();
     }
     
     private void addAlbumCookiesToShoppingCart() {
@@ -224,6 +225,8 @@ public class ShoppingCartController implements Serializable {
     }
     
     public String backPage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().addResponseCookie("BACKPAGE", prevPage, null);
         return prevPage;
     }
     
