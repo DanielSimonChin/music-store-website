@@ -67,9 +67,9 @@ public class LoginController  implements Serializable{
         return loginLastPage;
     }
     public String signOut(){
-        loginBean=new  LoginBean();
+        loginBean = new LoginBean();
         loginBean.setLoggedIn(false);
-        return null;
+        return "index";
     }
     public void validateUser(FacesContext context, UIComponent component,
             Object value) {
@@ -95,6 +95,9 @@ public class LoginController  implements Serializable{
         loginBean.setId(registeredClient.getClientid());
         loginBean.setLoggedIn(true);
         
+        if (loginLastPage.equals("cart")) {
+            return "checkout";
+        }
         return loginLastPage;
     }
    

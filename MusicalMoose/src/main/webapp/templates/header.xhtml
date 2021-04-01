@@ -17,8 +17,15 @@
                 </div>
                 <nav class="main-nav">
                     <a href="/MusicalMoose/#home">#{msgs.headerHome}</a>
-                    <a href="/MusicalMoose/checkout.xhtml">#{msgs.headerCheckout}</a>
-                    <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
+                    
+                    <!--<a href="/MusicalMoose/cart.xhtml">#{msgs.headerCart}</a>-->
+                    <h:form>
+                        <h:commandLink value="#{msgs.headerCart}" action="#{shoppingCartController.toShoppingCart()}" />
+                    </h:form>
+                    
+                    <ui:fragment rendered="#{loginController.loginBean.loggedIn}">
+                        <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
+                    </ui:fragment>
                     <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
                     <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.admin}</a>
 

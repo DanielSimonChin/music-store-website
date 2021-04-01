@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <head>
+
+        <title>Musical Moose</title>
+        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
+
+    </head>
+
+    <h:body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="cart.css"/>
+                
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{shoppingCartController.checkCookies()}" />
+                </f:metadata>
+                
+                <h1 id="title">#{msgs.shoppingCart}</h1>
+                
+                <h:form>
+                <h:commandButton value="#{msgs.back}" action="#{shoppingCartController.backPage()}" 
+                                 style="
+                                 margin-left: 120px; 
+                                 padding-left: 25px; 
+                                 padding-right: 25px; 
+                                 padding-top: 15px; 
+                                 padding-bottom: 15px;
+                                 border-radius: 15px;"/>
+                </h:form>
+
+                <div id="info2" class="container-info" style="padding-left: 250px; margin-bottom: 360px">
+                    <h4>#{msgs.cart}</h4>
+                    <div id="scrollcart" style="padding-bottom: 240px;">
+                        <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">
+                            <h:form>
+                                <ui:fragment rendered="#{cartItems.isAlbum}">
+                                    <h:commandLink value="Album: #{cartItems.title} - #{cartItems.artiste} $#{cartItems.price}" action="#{albumJpaController.searchSingleAlbum(cartItems.id)}">
+                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
+                                    </h:commandLink>
+                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
+                                        <h:graphicImage value="icons/delete-cart.png" />
+                                    </h:commandLink>
+                                </ui:fragment>
+
+                                <ui:fragment rendered="#{not cartItems.isAlbum}">
+                                    <h:commandLink value="Track: #{cartItems.title} - #{cartItems.artiste} $#{cartItems.price}" action="#{musicTrackJpaController.selectSingleTrack(cartItems.id)}">
+                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
+                                    </h:commandLink>
+                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
+                                        <h:graphicImage value="icons/delete-cart.png" />
+                                    </h:commandLink>
+                                </ui:fragment>
+                            </h:form>
+                        </ui:repeat>
+                    </div>
+
+                    <p>#{msgs.total} <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
+                    <!--<f:convertNumber minFractionDigits="2" />-->
+                    
+                    <h:form>
+                        <h:commandButton 
+                            value="#{msgs.checkout}" 
+                            action="#{checkoutController.toCheckout()}"   
+                            style="
+                                margin-top: 10px;
+                                padding-left: 25px; 
+                                padding-right: 25px; 
+                                padding-top: 15px; 
+                                padding-bottom: 15px;
+                                border-radius: 15px;"
+                            rendered="#{not shoppingCartController.checkCartEmpty()}"/>
+                    </h:form>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+
+</html>

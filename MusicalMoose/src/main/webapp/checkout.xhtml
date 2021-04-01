@@ -5,117 +5,140 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
 
     <head>
-
         <title>Musical Moose</title>
-        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-
     </head>
 
     <h:body>
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
-                <link rel="stylesheet" href="checkout.css"/>
-                <h1 id="title">#{msgs.shoppingCart}</h1>
+                <link rel="stylesheet" href="cart.css"/>
+                
+                <h1 id="title">#{msgs.checkout}</h1>
+                <h:form>
+                    <h:commandButton value="#{msgs.backcart}" action="cart" 
+                                     style="
+                                     margin-left: 120px; 
+                                     padding-left: 25px; 
+                                     padding-right: 25px; 
+                                     padding-top: 15px; 
+                                     padding-bottom: 15px;
+                                     border-radius: 15px;"/>
+                </h:form>
+                
                 <div id="info1" class="container-info">
-                    <form>
+                    <h:form>
+                    <div class="row">
+                        <h3>#{msgs.payment}</h3>
+                        <label for="fname">Select Card</label>
+                        
+                            <!--<h:panelGrid columns="4">-->
+                                <div class="icon-container">
+<!--                                    <label for="mastercardcheck">
+                                        <img class="card" src="./icons/cc-mastercard-brands.svg"/>
+                                    </label>
+                                    <label for="visacheck">
+                                        <img class="card" src="./icons/cc-visa-brands.svg"/>
+                                    </label>
+                                    <br></br>
+                                    <input type="radio" id="mastercardcheck" name="cardcheck" value="mastercard" />
+                                    <input type="radio" id="visacheck" name="cardcheck" value="visa"/>-->
+                                    
+                                    <h:selectOneRadio 
+                                        id="cardSelect"
+                                        value="selectCard"
+                                        required="true"
+                                        requiredMessage="#{msgs.required}">
+                                        <f:selectItem itemValue="Mastercard">
+                                            <img class="card" src="./icons/cc-mastercard-brands.svg"/>
+                                        </f:selectItem>
+                                        <f:selectItem itemValue="Visa"> 
+                                            <img class="card" src="./icons/cc-visa-brands.svg"/>
+                                        </f:selectItem>
+                                    </h:selectOneRadio>
+                                    <h:messages id="cardSelectError" for="cardSelect" style="color: red"/>
+                                </div>
 
-                        <div class="row">
-                            <h3>#{msgs.payment}</h3>
-                            <label for="fname">Select Card</label>
-                            <div class="icon-container">
-                                <label for="mastercardcheck">
-                                    <img class="card" src="./icons/cc-mastercard-brands.svg"/>
-                                </label>
-                                <label for="visacheck">
-                                    <img class="card" src="./icons/cc-visa-brands.svg"/>
-                                </label>
-                                <br></br>
-                                <input type="radio" id="mastercardcheck" name="cardcheck" value="mastercard"/>
-                                <input type="radio" id="visacheck" name="cardcheck" value="visa"/>
-                            </div>
-                            <label for="cname">#{msgs.nameOnCard}</label>
-                            <input type="text" id="cname" name="cardname" placeholder="Mike Smith"/>
-                            <br></br>
-                            <br></br>
-                            <label for="ccnum">#{msgs.creditCardNumber}</label>
-                            <input type="text" id="ccnum" name="cardnumber" placeholder="XXXX-XXXX-XXXX-XXXX"/>
-                            <br></br>
-                            <br></br>
-                            <label for="expmonth">#{msgs.expirationMonth}</label>
-                            <input type="text" id="expmonth" name="expmonth" placeholder="November"/>
-                            <br></br>
-                            <br></br>
-                            <label for="expyear">#{msgs.expirationYear}</label>
-                            <input type="text" id="expyear" name="expyear" placeholder="2021"/>
+                                <h:outputLabel for="cname" value="#{msgs.nameOnCard}"/>
+                                <h:inputText id="cname"
+                                             required="true"
+                                             requiredMessage="#{msgs.required}">
+                                    <f:validateLength minimum="3"/>
+                                    <!--<f:ajax event="blur" render="creditNameError"/>-->
+                                </h:inputText>
+                                <h:messages id="creditNameError" for="cname" style="color: red"/>
 
+                                <h:outputLabel for="ccnum" value="#{msgs.creditCardNumber}"/>
+                                <h:inputText id="ccnum"
+                                             required="true"
+                                             requiredMessage="#{msgs.required}"
+                                             validator="#{checkoutController.validateCreditCard}">
+                                    <!--<f:validateLength minimum="16" maximum="20" />-->
+                                    <!--<f:ajax event="blur" render="creditCardError"/>-->
+                                </h:inputText>
+                                <h:messages id="creditCardError" for="ccnum" style="color: red"/>
+
+
+                                <h:outputLabel for="expmonth" value="Expiration Month/Year"/>
+                                <h:inputText id="expmonth" 
+                                             a:placeholder="MM/YYYY"
+                                             required="true"
+                                             requiredMessage="#{msgs.required}">
+                                    <f:convertDateTime pattern="MM/yyyy" />
+                                    <!--<f:ajax event="blur" render="expDateError"/>-->
+                                </h:inputText>
+                                <h:messages id="expDateError" for="expmonth" style="color: red"/>
+
+                                <h:outputLabel for="province" value="Province"/>
+                                <h:selectOneMenu id="province" value="#{checkoutController.provinceBean.selectedItem}"> 
+                                    <f:selectItems value="#{checkoutController.provinceBean.selectItems}" />
+                                    <p:ajax event="change" update="gsthstText pstText totalText" />
+<!--                                    <f:selectItem itemValue="Alberta" itemLabel="Alberta" /> 
+                                    <f:selectItem itemValue="British Columbia" itemLabel="British Columbia" /> 
+                                    <f:selectItem itemValue="Manitoba" itemLabel="Manitoba" /> 
+                                    <f:selectItem itemValue="New Brunswick" itemLabel="New Brunswick" /> 
+                                    <f:selectItem itemValue="Newfoundland and Labrador" itemLabel="Newfoundland and Labrador" /> 
+                                    <f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" /> 
+                                    <f:selectItem itemValue="Nove Scotia" itemLabel="Nove Scotia" /> 
+                                    <f:selectItem itemValue="Nunavut" itemLabel="Nunavut" /> 
+                                    <f:selectItem itemValue="Ontario" itemLabel="Ontario" /> 
+                                    <f:selectItem itemValue="Prince Edward Island" itemLabel="Prince Edward Island" /> 
+                                    <f:selectItem itemValue="Quebec" itemLabel="Quebec" /> 
+                                    <f:selectItem itemValue="Saskatchewan" itemLabel="Saskatchewan" /> 
+                                    <f:selectItem itemValue="Yukon" itemLabel="Yukon" /> -->
+                                </h:selectOneMenu> 
+                            <!--</h:panelGrid>-->
+                        
                         </div>
+
                         <br></br>
-                        <input type="submit" value="#{msgs.purchase}" class="btn-sub"/>
-                    </form>
-                </div>
+                        
+                        <h3>Order Summary</h3>
+                        <h:outputText value="Items: $#{shoppingCartController.calculateTotal()}" />
+                        <br></br>
+                        <h:outputText value="Shipping and Handling: $#{checkoutController.shippingHandlingPrice}" />
+                        <br></br>
+                        <h:outputText id="gsthstText" value="Estimated GST/HST: $#{checkoutController.GSTHSTPrice}" />
+                        <br></br>
+                        <h:outputText id="pstText" value="Estimated PST: $#{checkoutController.PSTPrice}" />
+                        <br></br>
+                        <h:outputText id="totalText" value="Order Total: $#{checkoutController.totalPrice}" />
+                        <br></br><br></br>
 
-                <div id="info2" class="container-info">
-                    <h4>#{msgs.cart}</h4>
-                    <div id="scrollcart">
-                        <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">
-                            <h:form>
-<!--                                <c:choose>
-                                    <c:when test="$ {cartItems.isAlbum}">
-                                        <h:commandLink value="# {cartItems.title}" action="# {albumJpaController.searchSingleAlbum(cartItems.id)}" />
-                                            <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                        </h:commandLink>
-                                        album
-                                    </c:when>
-                                    <c:otherwise>
-                                        <h:commandLink value="$ {cartItems.title}" action="# {musicTrackJpaController.selectSingleTrack(cartItems.id)}" />
-                                            <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                            <h:button value="hi"></h:button>
-                                        </h:commandLink>
-                                        track
-                                    </c:otherwise>
-                                </c:choose>-->
-
-<!--                            <c:if test="$ {cartItems.isAlbum}">
-                                    <h:commandLink value="# {cartItems.title}" action="# {albumJpaController.searchSingleAlbum(cartItems.id)}" />
-                                        <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                    </h:commandLink>
-                                    album
-                                </c:if>
-                                <c:if test="$ {cartItems.isAlbum}">
-                                    <h:commandLink value="$ {cartItems.title}" action="# {musicTrackJpaController.selectSingleTrack(cartItems.id)}" />
-                                        <h:graphicImage value="album_covers/# {cartItems.albumimagefilenamesmall}" />
-                                        <h:button value="hi"></h:button>
-                                    </h:commandLink>
-                                    track
-                                </c:if>-->
-                                <ui:fragment rendered="#{cartItems.isAlbum}">
-                                    <h:commandLink value="#{cartItems.title} - Album: $#{cartItems.price}" action="#{albumJpaController.searchSingleAlbum(cartItems.id)}">
-                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
-                                    </h:commandLink>
-                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
-                                        <h:graphicImage value="icons/delete-cart.png" />
-                                    </h:commandLink>
-                                </ui:fragment>
-
-                                <ui:fragment rendered="#{not cartItems.isAlbum}">
-                                    <h:commandLink value="#{cartItems.title} - Track: $#{cartItems.price}" action="#{musicTrackJpaController.selectSingleTrack(cartItems.id)}">
-                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
-                                    </h:commandLink>
-                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
-                                        <h:graphicImage value="icons/delete-cart.png" />
-                                    </h:commandLink>
-                                </ui:fragment>
-                            </h:form>
-                        </ui:repeat>
-                    </div>
-
-                    <p>#{msgs.total} <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
+                        <h:commandButton value="#{msgs.purchase}" styleClass="btn-sub" action="#{checkoutController.toInvoice()}"
+                                style="
+                                padding-left: 25px; 
+                                padding-right: 25px; 
+                                padding-top: 10px; 
+                                padding-bottom: 10px;
+                                border-radius: 15px;"/>
+                    </h:form>
                 </div>
             </ui:define>
         </ui:composition>
     </h:body>
-
 </html>
