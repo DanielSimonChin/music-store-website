@@ -16,6 +16,7 @@ import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -297,8 +298,11 @@ public class MusicTrackJpaController implements Serializable {
     private void writeCookie() {
 //        recentGenre = searchedTrack.getMusiccategory();
         if (searchedTrack != null && searchedTrack.getMusiccategory() != null) {
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("maxAge", 31536000);
+
             FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
+            context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), properties);
         }
     }
 
@@ -394,7 +398,6 @@ public class MusicTrackJpaController implements Serializable {
         this.searchedTrack = track;
         return "relatedTrack";
     }
-    
 
     @PostConstruct
     public void init() {
@@ -420,12 +423,12 @@ public class MusicTrackJpaController implements Serializable {
     public void setSelectedTracks(List<MusicTrack> selectedTracks) {
         this.selectedTracks = selectedTracks;
     }
-    
-    public void openNew(){
+
+    public void openNew() {
         this.selectedTrack = new MusicTrack();
     }
-    
-    public boolean hasSelectedTracks(){
+
+    public boolean hasSelectedTracks() {
         return this.selectedTracks != null && !this.selectedTracks.isEmpty();
     }
 

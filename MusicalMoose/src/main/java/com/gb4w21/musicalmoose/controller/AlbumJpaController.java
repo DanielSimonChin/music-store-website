@@ -15,7 +15,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
@@ -225,7 +227,7 @@ public class AlbumJpaController implements Serializable {
         return "detailAlbum";
     }
     
-    private Album findAlbumById(int id) throws NonexistentEntityException {
+    public Album findAlbumById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
@@ -357,8 +359,11 @@ public class AlbumJpaController implements Serializable {
             if (musicTracks.size() > 0 && musicTracks.get(0).getMusiccategory() != null) {
 
 //            recentGenre = musicTracks.get(0).getMusiccategory();
+                Map<String, Object> properties = new HashMap<>();
+                properties.put("maxAge", 31536000);
+                
                 FacesContext context = FacesContext.getCurrentInstance();
-                context.getExternalContext().addResponseCookie("GenreTracking", musicTracks.get(0).getMusiccategory(), null);
+                context.getExternalContext().addResponseCookie("GenreTracking", musicTracks.get(0).getMusiccategory(), properties);
             }
         }
     }

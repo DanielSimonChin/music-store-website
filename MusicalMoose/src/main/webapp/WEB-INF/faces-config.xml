@@ -57,14 +57,14 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>checkout.xhtml</from-view-id>
+        <from-view-id>cart.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detailTrack</from-outcome>
             <to-view-id>trackpage.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>checkout.xhtml</from-view-id>
+        <from-view-id>cart.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detailAlbum</from-outcome>
             <to-view-id>albumpage.xhtml</to-view-id>
@@ -108,6 +108,47 @@
         <navigation-case>
             <from-outcome>relatedAlbumFromAlbum</from-outcome>
             <to-view-id>albumpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    
+    
+    
+    <navigation-rule>
+        <from-view-id>index.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>albumpage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>trackpage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>cart.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>homepage</from-outcome>
+            <to-view-id>index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>cart.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>checkout</from-outcome>
+            <to-view-id>checkout.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
 </faces-config>
