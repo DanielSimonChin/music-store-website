@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author victo
+ * @author victoAlberta
  */
 @Named
 @SessionScoped
@@ -43,11 +43,10 @@ public class ShoppingCartController implements Serializable {
     private AlbumJpaController albumJpaController;
     @Inject
     private MusicTrackJpaController musicTrackJpaController;
-    @PersistenceContext(unitName = "musicPU")
-    private EntityManager em;
     
     private List<ShoppingCartItem> shoppingCart;;
     private boolean checkedCookies;
+    private String prevPage;
     
     
     public ShoppingCartController() {
@@ -205,21 +204,41 @@ public class ShoppingCartController implements Serializable {
         }
     }
     
-    public float calculateTotal() {
+    public BigDecimal calculateTotal() {
         float totalAmount = 0;
         for (int i = 0; i < shoppingCart.size(); i++) {
             totalAmount += shoppingCart.get(i).getPrice();
         }
-        BigDecimal bd = new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
-        float totalAmountBd = bd.floatValue();
-        return totalAmountBd;
+        return new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
     }
     
     public String toShoppingCart() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        String tempPrevPage = context.getViewRoot().getViewId();
+        tempPrevPage = tempPrevPage.substring(1, tempPrevPage.length() - 6);
+        
+        if (!tempPrevPage.equals("cart")) {
+            this.prevPage = tempPrevPage;
+        }
         return "shoppingcartpage";
     }
     
-    public String toCheckout() {
-        return "checkout";
+    public String backPage() {
+        return prevPage;
+    }
+    
+    public boolean checkCartEmpty() {
+        return this.shoppingCart.isEmpty();
+    }
+    
+    public void clearCart() {
+        shoppingCart.clear();
+        removeCookie("cart_album");
+        removeCookie("cart_track");
+    }
+    
+    private void removeCookie(String cookieName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().addResponseCookie(cookieName, "", null);
     }
 }

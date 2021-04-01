@@ -25,8 +25,8 @@
                 
                 <h1 id="title">#{msgs.shoppingCart}</h1>
                 
-                
-                <h:commandButton value="#{msgs.back}" onclick="window.history.back()" 
+                <h:form>
+                <h:commandButton value="#{msgs.back}" action="#{shoppingCartController.backPage()}" 
                                  style="
                                  margin-left: 120px; 
                                  padding-left: 25px; 
@@ -34,6 +34,7 @@
                                  padding-top: 15px; 
                                  padding-bottom: 15px;
                                  border-radius: 15px;"/>
+                </h:form>
 
                 <div id="info2" class="container-info" style="padding-left: 250px; margin-bottom: 360px">
                     <h4>#{msgs.cart}</h4>
@@ -62,16 +63,20 @@
                     </div>
 
                     <p>#{msgs.total} <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
+                    <!--<f:convertNumber minFractionDigits="2" />-->
+                    
                     <h:form>
-                        <h:commandButton value="#{msgs.checkout}" 
-                                         action="#{shoppingCartController.toCheckout()}"
-                                         style="
-                                            margin-top: 10px;
-                                            padding-left: 25px; 
-                                            padding-right: 25px; 
-                                            padding-top: 15px; 
-                                            padding-bottom: 15px;
-                                            border-radius: 15px;"/>
+                        <h:commandButton 
+                            value="#{msgs.checkout}" 
+                            action="#{checkoutController.toCheckout()}"   
+                            style="
+                                margin-top: 10px;
+                                padding-left: 25px; 
+                                padding-right: 25px; 
+                                padding-top: 15px; 
+                                padding-bottom: 15px;
+                                border-radius: 15px;"
+                            rendered="#{not shoppingCartController.checkCartEmpty()}"/>
                     </h:form>
                 </div>
             </ui:define>

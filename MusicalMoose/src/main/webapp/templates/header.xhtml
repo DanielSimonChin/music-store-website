@@ -20,12 +20,15 @@
                     <a href="/MusicalMoose/#genres">#{msgs.headerGenres}</a>
                     <a href="/MusicalMoose/#recent">#{msgs.headerRecentlyAdded}</a>
                     
-                    <h:form>
-                    <!--<a href="/MusicalMoose/cart.xhtml"># {msgs.headerCart}</a>-->
-                        <h:commandLink value="#{msgs.headerCart}" action="#{shoppingCartController.toShoppingCart()}" />
-                    </h:form>
-                        
-                    <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
+                    <!--<h:form>-->
+                    <a href="/MusicalMoose/cart.xhtml">#{msgs.headerCart}</a>
+<!--                        <h:commandLink value="#{msgs.headerCart}" action="#{shoppingCartController.toShoppingCart()}" />
+                    </h:form>-->
+                    
+                    <ui:fragment rendered="#{loginController.loginBean.loggedIn}">
+                        <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
+                    </ui:fragment>
+                    
                     <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
 
                     <div><h:form >
