@@ -27,14 +27,14 @@ and open the template in the editor.
                 <div class="section-to-print" id="invoiceContainer">
                     <h1 id="title"><u>Musical Moose</u></h1>
                     <p><b>#{msgs.saleNumber} 123</b></p>
-                    <p><b>#{msgs.clientNumber} 123</b></p>
+                    <p><b>#{msgs.clientNumber} #{loginController.loginBean.id}</b></p>
                     <p><b>#{msgs.dateOfSale} 2021-03-16</b></p>
                     <p>---</p>
-                    <p><b>#{msgs.totalNetValueOfTheSale} $123.00</b></p>
-                    <p><b>#{msgs.PST} $123.00</b></p>
-                    <p><b>#{msgs.GST} $123.00</b></p>
-                    <p><b>#{msgs.HST} $123.00</b></p>
-                    <p><b>#{msgs.totalGrossValueOfTheSale} $123.00</b></p>
+                    <p><b>#{msgs.totalNetValueOfTheSale} $#{shoppingCartController.calculateTotal()}</b></p>
+                    <p><b>#{msgs.PST} $#{checkoutController.PST}</b></p>
+                    <p><b>#{msgs.GST} $#{checkoutController.GST}</b></p>
+                    <p><b>#{msgs.HST} $#{checkoutController.HST}</b></p>
+                    <p><b>#{msgs.totalGrossValueOfTheSale} $#{checkoutController.totalPrice}</b></p>
                     <br/>
                     <br/>
                 </div>

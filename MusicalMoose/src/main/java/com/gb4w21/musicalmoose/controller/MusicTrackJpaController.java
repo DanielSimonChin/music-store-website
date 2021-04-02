@@ -16,6 +16,7 @@ import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -289,8 +290,11 @@ public class MusicTrackJpaController implements Serializable {
     private void writeCookie() {
 //        recentGenre = searchedTrack.getMusiccategory();
         if (searchedTrack != null && searchedTrack.getMusiccategory() != null) {
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("maxAge", 31536000);
+            
             FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), null);
+            context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), properties);
         }
     }
 
@@ -316,7 +320,7 @@ public class MusicTrackJpaController implements Serializable {
         return "detailTrack";
     }
     
-    private MusicTrack findTrackById(int id) throws NonexistentEntityException {
+    public MusicTrack findTrackById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
