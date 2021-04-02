@@ -69,7 +69,13 @@ public class LoginController  implements Serializable{
     public String signOut(){
         loginBean=new  LoginBean();
         loginBean.setLoggedIn(false);
-        return null;
+        Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
+        if(registeredClient.getIsmanager()){
+            return "index";
+        }
+        else{
+            return null;
+        }
     }
     public void validateUser(FacesContext context, UIComponent component,
             Object value) {
@@ -91,11 +97,18 @@ public class LoginController  implements Serializable{
         
     }
     public String loggIn(){
+        LOG.info("username:"+loginBean.getUsername());
+        LOG.info("password:"+loginBean.getPassword());
         Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
         loginBean.setId(registeredClient.getClientid());
         loginBean.setLoggedIn(true);
-        
-        return loginLastPage;
+        LOG.info("Is manager:"+registeredClient.getIsmanager());
+        if(!registeredClient.getIsmanager()){
+            return loginLastPage;
+        }
+        else{
+            return "adminfront";
+        }
     }
    
 }

@@ -29,7 +29,7 @@ and open the template in the editor.
                             <br/>
                             <h3>#{msgs.register}</h3>
                             <h:outputLabel for="cname" value="#{msgs.username}"/>
-                            <h:inputText id="cname" label="#{msgs.username}"  value="#{registrationBean.username}" required="true" requiredMessage="#{msgs.required}" a:placeholder="DawsonConsumer" validator="#{registrationController.validateUserNameError}">
+                            <h:inputText id="cname" label="#{msgs.username}"  value="#{registrationBean.username}" required="true" requiredMessage="#{msgs.required}" a:placeholder="DawsonConsumer" validator="#{validationController.validateUserNameError}">
                                 <f:validateLength minimum="8" maximum="27" />
 
                                 <f:ajax event="blur" render="userNameError" />
@@ -136,7 +136,7 @@ and open the template in the editor.
                             <br></br>
                             <br></br>
                             <h:outputLabel for="hphone" value="#{msgs.homeTelephone}"/>
-                            <h:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{registrationBean.hometelephone}" required="true"  requiredMessage="#{msgs.required}" a:placeholder="514-987-9876" validator="#{registrationController.validateHomePhoneNumber}">
+                            <h:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{registrationBean.hometelephone}" required="true"  requiredMessage="#{msgs.required}" a:placeholder="514-987-9876" validator="#{validationController.validateHomePhoneNumber}">
                                 <f:validateLength  minimum="10" maximum="25" />
                                 <f:ajax event="blur" render="hphoneError" />
                             </h:inputText>
@@ -153,7 +153,7 @@ and open the template in the editor.
                             <br></br>
                             <br></br>
                             <h:outputLabel for="email" value="#{msgs.email}"/>
-                            <h:inputText id="email" label="#{msgs.email}" value="#{registrationBean.email}" required="true" requiredMessage="#{msgs.required}" a:placeholder="example@hotmail.com" validator="#{registrationController.validateEmailError}">
+                            <h:inputText id="email" label="#{msgs.email}" value="#{registrationBean.email}" required="true" requiredMessage="#{msgs.required}" a:placeholder="example@hotmail.com" validator="#{validationController.validateEmailError}">
                                 <f:validateLength minimum="10" maximum="50" />
                                 <f:ajax event="blur" render="emailError" />
                             </h:inputText>

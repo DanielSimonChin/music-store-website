@@ -32,14 +32,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Creditcardinfo.findByCreditcardbrand", query = "SELECT c FROM Creditcardinfo c WHERE c.creditcardbrand = :creditcardbrand"),
     @NamedQuery(name = "Creditcardinfo.findByCreditcardnumber", query = "SELECT c FROM Creditcardinfo c WHERE c.creditcardnumber = :creditcardnumber"),
     @NamedQuery(name = "Creditcardinfo.findByExpirationmonth", query = "SELECT c FROM Creditcardinfo c WHERE c.expirationmonth = :expirationmonth"),
-    @NamedQuery(name = "Creditcardinfo.findByExpirationyear", query = "SELECT c FROM Creditcardinfo c WHERE c.expirationyear = :expirationyear")})
+    @NamedQuery(name = "Creditcardinfo.findByExpirationyear", query = "SELECT c FROM Creditcardinfo c WHERE c.expirationyear = :expirationyear"),
+    @NamedQuery(name = "Creditcardinfo.findByCreditcardremoved", query = "SELECT c FROM Creditcardinfo c WHERE c.creditcardremoved = :creditcardremoved")})
 public class Creditcardinfo implements Serializable {
-
-    @Size(max = 255)
-    @Column(name = "CREDITCARDBRAND")
-    private String creditcardbrand;
-    @Column(name = "CREDITCARDNUMBER")
-    private BigInteger creditcardnumber;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -47,10 +42,17 @@ public class Creditcardinfo implements Serializable {
     @Basic(optional = false)
     @Column(name = "CREDITCARDID")
     private Integer creditcardid;
+    @Size(max = 255)
+    @Column(name = "CREDITCARDBRAND")
+    private String creditcardbrand;
+    @Column(name = "CREDITCARDNUMBER")
+    private BigInteger creditcardnumber;
     @Column(name = "EXPIRATIONMONTH")
     private Short expirationmonth;
     @Column(name = "EXPIRATIONYEAR")
     private Short expirationyear;
+    @Column(name = "CREDITCARDREMOVED")
+    private Boolean creditcardremoved;
     @JoinColumn(name = "CLIENTID", referencedColumnName = "CLIENTID")
     @ManyToOne
     private Client clientid;
@@ -70,6 +72,21 @@ public class Creditcardinfo implements Serializable {
         this.creditcardid = creditcardid;
     }
 
+    public String getCreditcardbrand() {
+        return creditcardbrand;
+    }
+
+    public void setCreditcardbrand(String creditcardbrand) {
+        this.creditcardbrand = creditcardbrand;
+    }
+
+    public BigInteger getCreditcardnumber() {
+        return creditcardnumber;
+    }
+
+    public void setCreditcardnumber(BigInteger creditcardnumber) {
+        this.creditcardnumber = creditcardnumber;
+    }
 
     public Short getExpirationmonth() {
         return expirationmonth;
@@ -85,6 +102,14 @@ public class Creditcardinfo implements Serializable {
 
     public void setExpirationyear(Short expirationyear) {
         this.expirationyear = expirationyear;
+    }
+
+    public Boolean getCreditcardremoved() {
+        return creditcardremoved;
+    }
+
+    public void setCreditcardremoved(Boolean creditcardremoved) {
+        this.creditcardremoved = creditcardremoved;
     }
 
     public Client getClientid() {
@@ -117,23 +142,7 @@ public class Creditcardinfo implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.Creditcardinfo[ creditcardid=" + creditcardid + " ]";
-    }
-
-    public String getCreditcardbrand() {
-        return creditcardbrand;
-    }
-
-    public void setCreditcardbrand(String creditcardbrand) {
-        this.creditcardbrand = creditcardbrand;
-    }
-
-    public BigInteger getCreditcardnumber() {
-        return creditcardnumber;
-    }
-
-    public void setCreditcardnumber(BigInteger creditcardnumber) {
-        this.creditcardnumber = creditcardnumber;
+        return "com.gb4w21.musicalmoose.entities.Creditcardinfo[ creditcardid=" + creditcardid + " ]";
     }
     
 }

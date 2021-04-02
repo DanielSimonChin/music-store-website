@@ -43,7 +43,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Client.findByHometelephone", query = "SELECT c FROM Client c WHERE c.hometelephone = :hometelephone"),
     @NamedQuery(name = "Client.findByCelltelephone", query = "SELECT c FROM Client c WHERE c.celltelephone = :celltelephone"),
     @NamedQuery(name = "Client.findByEmail", query = "SELECT c FROM Client c WHERE c.email = :email"),
-    @NamedQuery(name = "Client.findByGenreoflastsearch", query = "SELECT c FROM Client c WHERE c.genreoflastsearch = :genreoflastsearch")})
+    @NamedQuery(name = "Client.findByGenreoflastsearch", query = "SELECT c FROM Client c WHERE c.genreoflastsearch = :genreoflastsearch"),
+    @NamedQuery(name = "Client.findByIsmanager", query = "SELECT c FROM Client c WHERE c.ismanager = :ismanager"),
+    @NamedQuery(name = "Client.findByClientremoved", query = "SELECT c FROM Client c WHERE c.clientremoved = :clientremoved")})
 public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -101,6 +103,10 @@ public class Client implements Serializable {
     @Size(max = 255)
     @Column(name = "GENREOFLASTSEARCH")
     private String genreoflastsearch;
+    @Column(name = "ISMANAGER")
+    private Boolean ismanager;
+    @Column(name = "CLIENTREMOVED")
+    private Boolean clientremoved;
     @OneToMany(mappedBy = "clientid")
     private List<Creditcardinfo> creditcardinfoList;
     @OneToMany(mappedBy = "clientid")
@@ -113,24 +119,6 @@ public class Client implements Serializable {
 
     public Client(Integer clientid) {
         this.clientid = clientid;
-    }
-    public List<Creditcardinfo> getCreditcardinfoList() {
-        return creditcardinfoList;
-    }
-    public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
-        this.creditcardinfoList = creditcardinfoList;
-    }
-    public List<Sale> getSaleList() {
-        return saleList;
-    }
-    public void setSaleList(List<Sale> saleList) {
-        this.saleList = saleList;
-    }
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
     }
 
     public Integer getClientid() {
@@ -267,6 +255,44 @@ public class Client implements Serializable {
 
     public void setGenreoflastsearch(String genreoflastsearch) {
         this.genreoflastsearch = genreoflastsearch;
+    }
+
+    public Boolean getIsmanager() {
+        return ismanager;
+    }
+
+    public void setIsmanager(Boolean ismanager) {
+        this.ismanager = ismanager;
+    }
+
+    public Boolean getClientremoved() {
+        return clientremoved;
+    }
+
+    public void setClientremoved(Boolean clientremoved) {
+        this.clientremoved = clientremoved;
+    }
+
+    public List<Creditcardinfo> getCreditcardinfoList() {
+        return creditcardinfoList;
+    }
+
+    public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
+        this.creditcardinfoList = creditcardinfoList;
+    }
+
+    public List<Sale> getSaleList() {
+        return saleList;
+    }
+
+    public void setSaleList(List<Sale> saleList) {
+        this.saleList = saleList;
+    }
+     public List<Review> getReviewList() {
+        return reviewList;
+    }
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
     }
 
     @Override

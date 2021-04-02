@@ -5,7 +5,6 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Client;
@@ -36,11 +35,12 @@ import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 @Named
 @SessionScoped
 public class ClientJpaController implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(ClientJpaController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(BanneradJpaController.class);
 
     @Resource
     private UserTransaction utx;
@@ -58,9 +58,9 @@ public class ClientJpaController implements Serializable {
         if (client.getReviewList() == null) {
             client.setReviewList(new ArrayList<Review>());
         }
+      
         try {
             utx.begin();
-          
             List<Creditcardinfo> attachedCreditcardinfoList = new ArrayList<Creditcardinfo>();
             for (Creditcardinfo creditcardinfoListCreditcardinfoToAttach : client.getCreditcardinfoList()) {
                 creditcardinfoListCreditcardinfoToAttach = em.getReference(creditcardinfoListCreditcardinfoToAttach.getClass(), creditcardinfoListCreditcardinfoToAttach.getCreditcardid());
@@ -118,12 +118,12 @@ public class ClientJpaController implements Serializable {
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
         }
+
     }
 
     public void edit(Client client) throws NonexistentEntityException, Exception {
-
+        
         try {
-
             utx.begin();
             Client persistentClient = em.find(Client.class, client.getClientid());
             List<Creditcardinfo> creditcardinfoListOld = persistentClient.getCreditcardinfoList();
@@ -205,7 +205,7 @@ public class ClientJpaController implements Serializable {
                     }
                 }
             }
-            utx.commit();
+              utx.commit();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -221,9 +221,11 @@ public class ClientJpaController implements Serializable {
             }
             throw ex;
         }
+
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
+        
         try {
             utx.begin();
             Client client;
@@ -248,7 +250,7 @@ public class ClientJpaController implements Serializable {
                 reviewListReview.setClientid(null);
                 reviewListReview = em.merge(reviewListReview);
             }
-            em.remove(client);
+             em.remove(client);
             utx.commit();
         } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
@@ -258,6 +260,7 @@ public class ClientJpaController implements Serializable {
             }
             throw ex;
         }
+
     }
 
     public List<Client> findClientEntities() {
@@ -269,33 +272,35 @@ public class ClientJpaController implements Serializable {
     }
 
     private List<Client> findClientEntities(boolean all, int maxResults, int firstResult) {
-
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Client.class));
-        Query q = em.createQuery(cq);
-        if (!all) {
-            q.setMaxResults(maxResults);
-            q.setFirstResult(firstResult);
-        }
-        return q.getResultList();
-
+        
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Client.class));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+       
     }
 
     public Client findClient(Integer id) {
-
-        return em.find(Client.class, id);
-
+       
+            return em.find(Client.class, id);
+        
     }
 
     public int getClientCount() {
-
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        Root<Client> rt = cq.from(Client.class);
-        cq.select(em.getCriteriaBuilder().count(rt));
-        Query q = em.createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-
+       
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Client> rt = cq.from(Client.class);
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createQuery(cq);
+            return ((Long) q.getSingleResult()).intValue();
+        
     }
+    
+    
      public Client findUser(String userName, String password){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -310,5 +315,5 @@ public class ClientJpaController implements Serializable {
             return null;
         }
     }
-}
 
+}

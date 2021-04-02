@@ -5,8 +5,6 @@
  */
 package com.gb4w21.musicalmoose.entities;
 
-import com.gb4w21.musicalmoose.entities.Invoicedetail;
-import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -34,6 +32,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "Sale.findAll", query = "SELECT s FROM Sale s"),
     @NamedQuery(name = "Sale.findBySaleid", query = "SELECT s FROM Sale s WHERE s.saleid = :saleid"),
+    @NamedQuery(name = "Sale.findBySaleremoved", query = "SELECT s FROM Sale s WHERE s.saleremoved = :saleremoved"),
     @NamedQuery(name = "Sale.findBySaledate", query = "SELECT s FROM Sale s WHERE s.saledate = :saledate")})
 public class Sale implements Serializable {
 
@@ -43,6 +42,8 @@ public class Sale implements Serializable {
     @Basic(optional = false)
     @Column(name = "SALEID")
     private Integer saleid;
+    @Column(name = "SALEREMOVED")
+    private Boolean saleremoved;
     @Column(name = "SALEDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date saledate;
@@ -65,6 +66,14 @@ public class Sale implements Serializable {
 
     public void setSaleid(Integer saleid) {
         this.saleid = saleid;
+    }
+
+    public Boolean getSaleremoved() {
+        return saleremoved;
+    }
+
+    public void setSaleremoved(Boolean saleremoved) {
+        this.saleremoved = saleremoved;
     }
 
     public Date getSaledate() {
@@ -113,7 +122,7 @@ public class Sale implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.Sale[ saleid=" + saleid + " ]";
+        return "com.gb4w21.musicalmoose.entities.Sale[ saleid=" + saleid + " ]";
     }
     
 }

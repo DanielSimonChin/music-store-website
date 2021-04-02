@@ -281,10 +281,7 @@ public class MusicTrackJpaController implements Serializable {
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
         LOG.info("" + track.getTracktitle());
-        LOG.info("" + track.getTracktitle());
-        LOG.info("" + track.getTracktitle());
-        LOG.info("" + track.getTracktitle());
-        LOG.info("" + track.getTracktitle());
+        
         writeCookie();
         return "detailTrack";
     }

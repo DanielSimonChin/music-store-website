@@ -27,10 +27,10 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Daniel
+ * @author owner
  */
 @Entity
-@Table(name = "music_track", catalog = "", schema = "")
+@Table(name = "music_track", catalog = "MUSICSTORAGE", schema = "")
 @NamedQueries({
     @NamedQuery(name = "MusicTrack.findAll", query = "SELECT m FROM MusicTrack m"),
     @NamedQuery(name = "MusicTrack.findByInventoryid", query = "SELECT m FROM MusicTrack m WHERE m.inventoryid = :inventoryid"),
@@ -54,6 +54,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "MusicTrack.findByRemovaldate", query = "SELECT m FROM MusicTrack m WHERE m.removaldate = :removaldate")})
 public class MusicTrack implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "INVENTORYID")
+    private Integer inventoryid;
     @Size(max = 255)
     @Column(name = "TRACKTITLE")
     private String tracktitle;
@@ -63,6 +69,11 @@ public class MusicTrack implements Serializable {
     @Size(max = 255)
     @Column(name = "SONGWRITER")
     private String songwriter;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "PLAYLENGTH")
+    private Float playlength;
+    @Column(name = "SELECTIONNUMBER")
+    private Integer selectionnumber;
     @Size(max = 255)
     @Column(name = "MUSICCATEGORY")
     private String musiccategory;
@@ -78,22 +89,6 @@ public class MusicTrack implements Serializable {
     @Lob
     @Column(name = "IMAGECONTENTSMALL")
     private byte[] imagecontentsmall;
-    @OneToMany(mappedBy = "inventoryid")
-    private List<Invoicedetail> invoicedetailList;
-    @OneToMany(mappedBy = "inventoryid")
-    private List<Review> reviewList;
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "INVENTORYID")
-    private Integer inventoryid;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "PLAYLENGTH")
-    private Float playlength;
-    @Column(name = "SELECTIONNUMBER")
-    private Integer selectionnumber;
     @Column(name = "COSTPRICE")
     private Float costprice;
     @Column(name = "LISTPRICE")
@@ -116,6 +111,8 @@ public class MusicTrack implements Serializable {
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
+    @OneToMany(mappedBy = "inventoryid")
+    private List<Invoicedetail> invoicedetailList;
     @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
     @ManyToOne
     private Album albumid;
@@ -135,6 +132,30 @@ public class MusicTrack implements Serializable {
         this.inventoryid = inventoryid;
     }
 
+    public String getTracktitle() {
+        return tracktitle;
+    }
+
+    public void setTracktitle(String tracktitle) {
+        this.tracktitle = tracktitle;
+    }
+
+    public String getArtist() {
+        return artist;
+    }
+
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public String getSongwriter() {
+        return songwriter;
+    }
+
+    public void setSongwriter(String songwriter) {
+        this.songwriter = songwriter;
+    }
+
     public Float getPlaylength() {
         return playlength;
     }
@@ -149,6 +170,46 @@ public class MusicTrack implements Serializable {
 
     public void setSelectionnumber(Integer selectionnumber) {
         this.selectionnumber = selectionnumber;
+    }
+
+    public String getMusiccategory() {
+        return musiccategory;
+    }
+
+    public void setMusiccategory(String musiccategory) {
+        this.musiccategory = musiccategory;
+    }
+
+    public String getAlbumimagefilenamebig() {
+        return albumimagefilenamebig;
+    }
+
+    public void setAlbumimagefilenamebig(String albumimagefilenamebig) {
+        this.albumimagefilenamebig = albumimagefilenamebig;
+    }
+
+    public String getAlbumimagefilenamesmall() {
+        return albumimagefilenamesmall;
+    }
+
+    public void setAlbumimagefilenamesmall(String albumimagefilenamesmall) {
+        this.albumimagefilenamesmall = albumimagefilenamesmall;
+    }
+
+    public byte[] getImagecontentbig() {
+        return imagecontentbig;
+    }
+
+    public void setImagecontentbig(byte[] imagecontentbig) {
+        this.imagecontentbig = imagecontentbig;
+    }
+
+    public byte[] getImagecontentsmall() {
+        return imagecontentsmall;
+    }
+
+    public void setImagecontentsmall(byte[] imagecontentsmall) {
+        this.imagecontentsmall = imagecontentsmall;
     }
 
     public Float getCostprice() {
@@ -215,13 +276,6 @@ public class MusicTrack implements Serializable {
         this.partofalbum = partofalbum;
     }
 
-    public String getPartOfAlbumStringFormat() {
-        if (partofalbum) {
-            return "Part of album";
-        }
-        return "Single";
-    }
-
     public Boolean getRemovalstatus() {
         return removalstatus;
     }
@@ -236,6 +290,14 @@ public class MusicTrack implements Serializable {
 
     public void setRemovaldate(Date removaldate) {
         this.removaldate = removaldate;
+    }
+
+    public List<Invoicedetail> getInvoicedetailList() {
+        return invoicedetailList;
+    }
+
+    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
+        this.invoicedetailList = invoicedetailList;
     }
 
     public Album getAlbumid() {
@@ -270,85 +332,5 @@ public class MusicTrack implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.MusicTrack[ inventoryid=" + inventoryid + " ]";
     }
-
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
-    public String getTracktitle() {
-        return tracktitle;
-    }
-
-    public void setTracktitle(String tracktitle) {
-        this.tracktitle = tracktitle;
-    }
-
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getSongwriter() {
-        return songwriter;
-    }
-
-    public void setSongwriter(String songwriter) {
-        this.songwriter = songwriter;
-    }
-
-    public String getMusiccategory() {
-        return musiccategory;
-    }
-
-    public void setMusiccategory(String musiccategory) {
-        this.musiccategory = musiccategory;
-    }
-
-    public String getAlbumimagefilenamebig() {
-        return albumimagefilenamebig;
-    }
-
-    public void setAlbumimagefilenamebig(String albumimagefilenamebig) {
-        this.albumimagefilenamebig = albumimagefilenamebig;
-    }
-
-    public String getAlbumimagefilenamesmall() {
-        return albumimagefilenamesmall;
-    }
-
-    public void setAlbumimagefilenamesmall(String albumimagefilenamesmall) {
-        this.albumimagefilenamesmall = albumimagefilenamesmall;
-    }
-
-    public byte[] getImagecontentbig() {
-        return imagecontentbig;
-    }
-
-    public void setImagecontentbig(byte[] imagecontentbig) {
-        this.imagecontentbig = imagecontentbig;
-    }
-
-    public byte[] getImagecontentsmall() {
-        return imagecontentsmall;
-    }
-
-    public void setImagecontentsmall(byte[] imagecontentsmall) {
-        this.imagecontentsmall = imagecontentsmall;
-    }
-
-    public List<Invoicedetail> getInvoicedetailList() {
-        return invoicedetailList;
-    }
-
-    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
-        this.invoicedetailList = invoicedetailList;
-    }
-
+    
 }

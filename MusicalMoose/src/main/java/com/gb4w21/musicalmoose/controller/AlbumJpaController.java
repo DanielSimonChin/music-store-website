@@ -330,10 +330,7 @@ public class AlbumJpaController implements Serializable {
     public String selectAlbum(Album album) {
         this.selectedAlbum = album;
         LOG.info("" + album.getAlbumtitle());
-        //      LOG.info(""+album.getAlbumtitle());
-        //    LOG.info(""+album.getAlbumtitle());
-        //  LOG.info(""+album.getAlbumtitle());
-        // LOG.info(""+album.getAlbumtitle());
+        
         writeCookie();
         return "detailAlbum";
     }
