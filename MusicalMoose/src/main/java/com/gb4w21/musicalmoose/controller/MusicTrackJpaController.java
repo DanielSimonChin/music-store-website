@@ -495,10 +495,17 @@ public class MusicTrackJpaController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 
+    /**
+     * If the admin makes a song unavailable to clients, then set the removal
+     * date to the current day
+     */
     public void setRemovalDate() {
-        if (this.selectedTrack.getRemovalstatus()) {
-            this.selectedTrack.setRemovaldate(new Date());
+        if (this.selectedTrack.getAvailable()) {
+            this.selectedTrack.setRemovaldate(null);
+            return;
         }
+        this.selectedTrack.setRemovaldate(new Date());
+
     }
 
 }

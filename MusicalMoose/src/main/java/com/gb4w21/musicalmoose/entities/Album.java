@@ -46,7 +46,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Album.findByPst", query = "SELECT a FROM Album a WHERE a.pst = :pst"),
     @NamedQuery(name = "Album.findByGst", query = "SELECT a FROM Album a WHERE a.gst = :gst"),
     @NamedQuery(name = "Album.findByHst", query = "SELECT a FROM Album a WHERE a.hst = :hst"),
-    @NamedQuery(name = "Album.findByRemovalstatus", query = "SELECT a FROM Album a WHERE a.removalstatus = :removalstatus"),
     @NamedQuery(name = "Album.findByRemovaldate", query = "SELECT a FROM Album a WHERE a.removaldate = :removaldate")})
 public class Album implements Serializable {
 
@@ -71,6 +70,8 @@ public class Album implements Serializable {
     @Lob
     @Column(name = "IMAGECONTENTSMALL")
     private byte[] imagecontentsmall;
+    @Column(name = "AVAILABLE")
+    private Boolean available;
     @OneToMany(mappedBy = "albumid")
     private List<Invoicedetail> invoicedetailList;
 
@@ -80,11 +81,11 @@ public class Album implements Serializable {
     @Basic(optional = false)
     @Column(name = "ALBUMID")
     private Integer albumid;
-    
+
     @Column(name = "RELEASEDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date releasedate;
-    
+
     @Column(name = "NUMBEROFTRACKS")
     private Integer numberoftracks;
     @Column(name = "DATEENTERED")
@@ -103,8 +104,6 @@ public class Album implements Serializable {
     private Float gst;
     @Column(name = "HST")
     private Float hst;
-    @Column(name = "REMOVALSTATUS")
-    private Boolean removalstatus;
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
@@ -126,7 +125,6 @@ public class Album implements Serializable {
         this.albumid = albumid;
     }
 
-
     public Date getReleasedate() {
         return releasedate;
     }
@@ -134,7 +132,6 @@ public class Album implements Serializable {
     public void setReleasedate(Date releasedate) {
         this.releasedate = releasedate;
     }
-
 
     public Integer getNumberoftracks() {
         return numberoftracks;
@@ -151,7 +148,6 @@ public class Album implements Serializable {
     public void setDateentered(Date dateentered) {
         this.dateentered = dateentered;
     }
-
 
     public Float getCostprice() {
         return costprice;
@@ -201,14 +197,6 @@ public class Album implements Serializable {
         this.hst = hst;
     }
 
-    public Boolean getRemovalstatus() {
-        return removalstatus;
-    }
-
-    public void setRemovalstatus(Boolean removalstatus) {
-        this.removalstatus = removalstatus;
-    }
-
     public Date getRemovaldate() {
         return removaldate;
     }
@@ -248,6 +236,22 @@ public class Album implements Serializable {
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Album[ albumid=" + albumid + " ]";
+    }
+
+    public List<Invoicedetail> getInvoicedetailList() {
+        return invoicedetailList;
+    }
+
+    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
+        this.invoicedetailList = invoicedetailList;
+    }
+
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     public String getAlbumtitle() {
@@ -306,12 +310,4 @@ public class Album implements Serializable {
         this.imagecontentsmall = imagecontentsmall;
     }
 
-    public List<Invoicedetail> getInvoicedetailList() {
-        return invoicedetailList;
-    }
-
-    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
-        this.invoicedetailList = invoicedetailList;
-    }
-    
 }

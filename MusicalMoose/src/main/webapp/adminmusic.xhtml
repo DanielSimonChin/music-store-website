@@ -99,9 +99,8 @@
                                         </h:outputText>
                                     </p:column>
 
-                                    <p:column headerText="#{msgs.tableAvailableHeader}" sortBy="#{product.removalstatus}">
-<!--                                        <h:outputText value="#{product.isAvailableToClients()}"/>-->
-                                        <h:outputText value="#{product.removalstatus}"/>
+                                    <p:column headerText="#{msgs.tableAvailableHeader}" sortBy="#{product.available}">
+                                        <h:outputText value="#{product.isAvailableToClients()}"/>
                                     </p:column>
 
                                     <p:column exportable="false">
@@ -128,9 +127,10 @@
 
                                             <div class="p-field">
                                                 <p:outputLabel for="available" value="#{msgs.availableToClients}"/>
-                                                <p:selectOneMenu id="available" value="#{musicTrackJpaController.selectedTrack.removalstatus}">
+                                                <p:selectOneMenu id="available" value="#{musicTrackJpaController.selectedTrack.available}">
                                                     <f:selectItem itemLabel="#{msgs.yesOption}" itemValue="true"/>
                                                     <f:selectItem itemLabel="#{msgs.noOption}" itemValue="false"/>
+                                                    <p:ajax event="change" listener="#{musicTrackJpaController.setRemovalDate()}" />
                                                 </p:selectOneMenu>
                                             </div>
 
