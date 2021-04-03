@@ -12,308 +12,330 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <h:body>
-        <h:form id="form">
-            <div class="card crud-demo">
-                <p:growl id="messages" showDetail="true"/>
-
-                <p:toolbar>
-
-                    <p:toolbarGroup align="right">
-
-                        <h:form >
-                            <p:inputText id="navsearch"  value="#{clientManagerController.clientSearch}" validator="#{clientManagerController.validateClientSearch}" required="true" requiredMessage="#{msgs.required}" />
-                            <p:commandButton value="#{msgs.search}" action="#{clientManagerController.searchClients()}"/> 
-
-                            <br></br>
-                            <p:message id="searchError" for="navsearch" style="color:red" />
-                        </h:form>
-                        <h:form >
-                            <p:commandButton value="#{msgs.searchAll}" action="#{clientManagerController.searchAllClients()}"/> 
-                        </h:form>
-                    </p:toolbarGroup>
-                </p:toolbar>
-                
-                
-                <p:dataTable id="dt-products" widgetVar="dtClients" var="client" value="#{clientManagerController.clients}"
-                             reflow="true" styleClass="clients-table"
-                             selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
-                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
-                    <f:facet name="header">
-                        <div class="products-table-header">
-                            <span style="font-weight: bold">#{msgs.clients}</span>
-
-                            
-
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <div class="wrapper">
+                    <br/>
+                    <br/>
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+                        <div class="topnav">
+                            <a class="active">#{msgs.musicInv}</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
+                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
                         </div>
-                    </f:facet>
+                        <h:form id="form">
+                            <div class="card crud-demo">
+                                <p:growl id="messages" showDetail="true"/>
+
+                                <p:toolbar>
+
+                                    <p:toolbarGroup align="right">
+
+                                        <h:form >
+                                            <p:inputText id="navsearch"  value="#{clientManagerController.clientSearch}" validator="#{clientManagerController.validateClientSearch}" required="true" requiredMessage="#{msgs.required}" />
+                                            <p:commandButton value="#{msgs.search}" action="#{clientManagerController.searchClients()}"/> 
+
+                                            <br></br>
+                                            <p:message id="searchError" for="navsearch" style="color:red" />
+                                        </h:form>
+                                        <h:form >
+                                            <p:commandButton value="#{msgs.searchAll}" action="#{clientManagerController.searchAllClients()}"/> 
+                                        </h:form>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
 
 
-                    <p:column selectionMode="multiple" exportable="false"></p:column>
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="client" value="#{clientManagerController.clients}"
+                                             reflow="true" styleClass="products-table"
+                                             selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.clients}</span>
 
-                    <p:column style="color: black" headerText="#{msgs.id}" sortBy="#{client.clientid}" filterBy="#{client.clientid}">
-                        <h:outputText style="color: black" value="#{client.clientid}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
-                        <h:outputText style="color: black" value="#{client.email}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.username}" sortBy="#{client.username}" filterBy="#{client.username}">
-                        <h:outputText style="color: black" value="#{client.username}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.password}" sortBy="#{client.password}" filterBy="#{client.password}">
-                        <h:outputText style="color: black" value="#{client.password}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.title}" sortBy="#{client.title}" filterBy="#{client.title}">
-                        <h:outputText style="color: black" value="#{client.title}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.firstName}" sortBy="#{client.firstname}" filterBy="#{client.firstname}">
-                        <h:outputText style="color: black" value="#{client.firstname}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.lastName}" sortBy="#{client.lastname}" filterBy="#{client.lastname}">
-                        <h:outputText style="color: black" value="#{client.lastname}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.companyName}" sortBy="#{client.companyname}" filterBy="#{client.companyname}">
-                        <h:outputText style="color: black" rendered="#{empty client.companyname}" value="#{msgs.nullMs}"/>
-                        <h:outputText style="color: black" rendered="#{not empty client.companyname}" value="#{client.companyname}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.city}" sortBy="#{client.city}" filterBy="#{client.city}">
-                        <h:outputText style="color: black" value="#{client.city}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.province}" sortBy="#{client.province}" filterBy="#{client.province}">
-                        <h:outputText style="color: black" value="#{client.province}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.country}" sortBy="#{client.country}" filterBy="#{client.country}">
-                        <h:outputText style="color: black" value="#{client.country}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.address1}" sortBy="#{client.address1}" filterBy="#{client.address1}">
-                        <h:outputText style="color: black" value="#{client.address1}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.address2}" sortBy="#{client.address2}" filterBy="#{client.address2}">
-                        <h:outputText style="color: black" rendered="#{empty client.address2}" value="#{msgs.nullMs}"/>
-                        <h:outputText style="color: black" rendered="#{not empty client.address2}" value="#{client.address2}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.postalCode}" sortBy="#{client.postalcode}" filterBy="#{client.postalcode}">
-                        <h:outputText style="color: black" value="#{client.postalcode}"/>
-                    </p:column>
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
 
-                    <p:column headerText="#{msgs.homeTelephone}" sortBy="#{client.hometelephone}" filterBy="#{client.hometelephone}">
-                        <h:outputText style="color: black" value="#{client.hometelephone}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.cellphone}" sortBy="#{client.celltelephone}" filterBy="#{client.celltelephone}">
-                        <h:outputText style="color: black" rendered="#{empty client.celltelephone}" value="#{msgs.nullMs}"/>
-                        <h:outputText style="color: black" rendered="#{not empty client.celltelephone}" value="#{client.celltelephone}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.genreOfLastSearch}" sortBy="#{client.genreoflastsearch}" filterBy="#{client.genreoflastsearch}">
-                        <h:outputText style="color: black" value="#{client.genreoflastsearch}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.isManager}" sortBy="#{client.ismanager}" filterBy="#{client.ismanager}">
-                        <h:outputText style="color: black" rendered="#{client.ismanager}" value="#{msgs.trueMs}"/>
-                        <h:outputText style="color: black" rendered="#{not  client.ismanager}" value="#{msgs.falseMs}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.accountActive}" sortBy="#{client.clientactive}" filterBy="#{client.clientactive}">
-                        <h:outputText style="color: black" rendered="#{client.clientactive}" value="#{msgs.trueMs}"/>
-                        <h:outputText style="color: black" rendered="#{not  client.clientactive}" value="#{msgs.falseMs}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.numberOfSales}" sortBy="#{client.saleList.size()}" filterBy="#{client.saleList.size()}">
-                        <h:outputText style="color: black" value="#{client.saleList.size()}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.numberOfReviews}" sortBy="#{client.reviewList.size()}" filterBy="#{client.reviewList.size()}">
-                        <h:outputText style="color: black" value="#{client.reviewList.size()}"/>
-                    </p:column>
-                    <p:column headerText="#{msgs.numberOfCreditCards}" sortBy="#{client.creditcardinfoList.size()}" filterBy="#{client.creditcardinfoList.size()}">
-                        <h:outputText style="color: black" value="#{client.creditcardinfoList.size()}"/>
-                    </p:column>
-                    <p:column exportable="false">
-                        <p:commandButton  update=":form:manage-product-content"
-                                          oncomplete="PF('manageProductDialog').show()"
-                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
-                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
-                            <p:resetInput target=":form:manage-product-content"/>
-                        </p:commandButton>
-                        <p:commandButton class="ui-button-warning rounded-button"  process="@this"
-                                         oncomplete="PF('deleteProductDialog').show()">
-                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
-                        </p:commandButton>
-                    </p:column>
+                                        </div>
+                                    </f:facet>
 
-                </p:dataTable>
 
-                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true"
-                          widgetVar="manageProductDialog" responsive="true">
-                    <p:outputPanel id="manage-product-content" class="ui-fluid">
-                        <p:outputPanel rendered="#{not empty clientManagerController.selectedClient}">
-                            <div class="p-field">
-                                <p:outputLabel for="cname" value="#{msgs.username}"/>
-                                <p:inputText id="cname" label="#{msgs.username}"  value="#{clientManagerController.selectedClient.username}" required="true" requiredMessage="#{msgs.required}"  validator="#{validationController.validateUserNameError}">
-                                    <f:validateLength minimum="8" maximum="27" />
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
 
-                                    <f:ajax event="blur" render="userNameError" />
-                                </p:inputText>
-                                <p:message id="userNameError" for="cname" style="color:red" />
+                                    <p:column  headerText="#{msgs.id}" sortBy="#{client.clientid}" filterBy="#{client.clientid}">
+                                        <h:outputText  value="#{client.clientid}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
+                                        <h:outputText  value="#{client.email}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.username}" sortBy="#{client.username}" filterBy="#{client.username}">
+                                        <h:outputText value="#{client.username}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.password}" sortBy="#{client.password}" filterBy="#{client.password}">
+                                        <h:outputText  value="#{client.password}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.title}" sortBy="#{client.title}" filterBy="#{client.title}">
+                                        <h:outputText value="#{client.title}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.firstName}" sortBy="#{client.firstname}" filterBy="#{client.firstname}">
+                                        <h:outputText value="#{client.firstname}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.lastName}" sortBy="#{client.lastname}" filterBy="#{client.lastname}">
+                                        <h:outputText value="#{client.lastname}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.companyName}" sortBy="#{client.companyname}" filterBy="#{client.companyname}">
+                                        <h:outputText rendered="#{empty client.companyname}" value="#{msgs.nullMs}"/>
+                                        <h:outputText rendered="#{not empty client.companyname}" value="#{client.companyname}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.city}" sortBy="#{client.city}" filterBy="#{client.city}">
+                                        <h:outputText value="#{client.city}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.province}" sortBy="#{client.province}" filterBy="#{client.province}">
+                                        <h:outputText value="#{client.province}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.country}" sortBy="#{client.country}" filterBy="#{client.country}">
+                                        <h:outputText value="#{client.country}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.address1}" sortBy="#{client.address1}" filterBy="#{client.address1}">
+                                        <h:outputText value="#{client.address1}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.address2}" sortBy="#{client.address2}" filterBy="#{client.address2}">
+                                        <h:outputText rendered="#{empty client.address2}" value="#{msgs.nullMs}"/>
+                                        <h:outputText rendered="#{not empty client.address2}" value="#{client.address2}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.postalCode}" sortBy="#{client.postalcode}" filterBy="#{client.postalcode}">
+                                        <h:outputText value="#{client.postalcode}"/>
+                                    </p:column>
 
+                                    <p:column headerText="#{msgs.homeTelephone}" sortBy="#{client.hometelephone}" filterBy="#{client.hometelephone}">
+                                        <h:outputText value="#{client.hometelephone}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.cellphone}" sortBy="#{client.celltelephone}" filterBy="#{client.celltelephone}">
+                                        <h:outputText rendered="#{empty client.celltelephone}" value="#{msgs.nullMs}"/>
+                                        <h:outputText rendered="#{not empty client.celltelephone}" value="#{client.celltelephone}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.genreOfLastSearch}" sortBy="#{client.genreoflastsearch}" filterBy="#{client.genreoflastsearch}">
+                                        <h:outputText value="#{client.genreoflastsearch}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.isManager}" sortBy="#{client.ismanager}" filterBy="#{client.ismanager}">
+                                        <h:outputText rendered="#{client.ismanager}" value="#{msgs.trueMs}"/>
+                                        <h:outputText rendered="#{not  client.ismanager}" value="#{msgs.falseMs}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.accountActive}" sortBy="#{client.clientactive}" filterBy="#{client.clientactive}">
+                                        <h:outputText rendered="#{client.clientactive}" value="#{msgs.trueMs}"/>
+                                        <h:outputText rendered="#{not  client.clientactive}" value="#{msgs.falseMs}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.numberOfSales}" sortBy="#{client.saleList.size()}" filterBy="#{client.saleList.size()}">
+                                        <h:outputText value="#{client.saleList.size()}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.numberOfReviews}" sortBy="#{client.reviewList.size()}" filterBy="#{client.reviewList.size()}">
+                                        <h:outputText value="#{client.reviewList.size()}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.numberOfCreditCards}" sortBy="#{client.creditcardinfoList.size()}" filterBy="#{client.creditcardinfoList.size()}">
+                                        <h:outputText value="#{client.creditcardinfoList.size()}"/>
+                                    </p:column>
+                                    <p:column exportable="false">
+                                        <p:commandButton  update=":form:manage-product-content"
+                                                          oncomplete="PF('manageProductDialog').show()"
+                                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+                                        <p:commandButton class="ui-button-warning rounded-button"  process="@this"
+                                                         oncomplete="PF('deleteProductDialog').show()">
+                                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
+                                        </p:commandButton>
+                                    </p:column>
+
+                                </p:dataTable>
+
+                                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true"
+                                          widgetVar="manageProductDialog" responsive="true">
+                                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty clientManagerController.selectedClient}">
+                                            <div class="p-field">
+                                                <p:outputLabel for="cname" value="#{msgs.username}"/>
+                                                <p:inputText id="cname" label="#{msgs.username}"  value="#{clientManagerController.selectedClient.username}" required="true" requiredMessage="#{msgs.required}"  validator="#{validationController.validateUserNameError}">
+                                                    <f:validateLength minimum="8" maximum="27" />
+
+                                                    <f:ajax event="blur" render="userNameError" />
+                                                </p:inputText>
+                                                <p:message id="userNameError" for="cname" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="password" value="#{msgs.password}"/>
+                                                <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}}" requiredMessage="#{msgs.required}"   required="true">
+                                                    <f:validateLength minimum="6" maximum="27" />
+                                                    <f:ajax event="blur" render="password1Error" />
+                                                </p:inputText>
+                                                <p:message id="passwordError" for="password" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="title" value="#{msgs.title}"/>
+                                                <p:selectOneRadio id="title" label="#{msgs.title}" value="#{clientManagerController.selectedClient.title}" required="true" requiredMessage="#{msgs.required}">
+                                                    <f:selectItem id="mr"  itemValue="mr" itemLabel="#{msgs.mr}" />
+                                                    <f:selectItem id="ms"  itemValue="ms" itemLabel="#{msgs.ms}" />  
+                                                    <f:selectItem id="other"  itemValue="other" itemLabel="#{msgs.other}" />  
+                                                </p:selectOneRadio>
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="email" value="#{msgs.email}"/>
+                                                <p:inputText id="email" label="#{msgs.email}" value="#{clientManagerController.selectedClient.email}" required="true" requiredMessage="#{msgs.required}" validator="#{validationController.validateEmailError}">
+                                                    <f:validateLength minimum="10" maximum="50" />
+                                                    <f:ajax event="blur" render="emailError" />
+                                                </p:inputText>
+                                                <p:message id="emailError" for="email" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="fname" value="#{msgs.firstName}"/>
+
+                                                <p:inputText id="fname" label="#{msgs.firstName}" value="#{clientManagerController.selectedClient.firstname}" required="true"  requiredMessage="#{msgs.required}" >
+                                                    <f:validateLength  maximum="50" />
+                                                    <f:ajax event="blur" render="fristNameError" />
+                                                </p:inputText>
+                                                <p:message id="fristNameError" for="fname" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="lname" value="#{msgs.lastName}"/>
+                                                <p:inputText id="lname" label="#{msgs.lastName}" value="#{clientManagerController.selectedClient.lastname}" required="true" requiredMessage="#{msgs.required}" >
+                                                    <f:validateLength  maximum="50" />
+                                                    <f:ajax event="blur" render="lastNameError" />
+                                                </p:inputText>
+                                                <p:message id="lastNameError" for="lname" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="compname" value="#{msgs.companyName}"/>
+                                                <p:inputText id="compname" label="#{msgs.companyName}" value="#{clientManagerController.selectedClient.companyname}" >
+                                                    <f:validateLength maximum="50" />
+                                                    <f:ajax event="blur" render="companyNameError" />
+                                                </p:inputText>
+                                                <p:message id="companyNameError" for="compname" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="addr1" value="#{msgs.address1}"/>
+                                                <p:inputText id="addr1" label="#{msgs.address1}" value="#{clientManagerController.selectedClient.address1}" required="true" requiredMessage="#{msgs.required}" >
+                                                    <f:validateLength maximum="50" />
+                                                    <f:ajax event="blur" render="addr1Error" />
+                                                </p:inputText>
+                                                <p:message id="addr1Error" for="addr1" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="addr2" value="#{msgs.address2}"/>
+                                                <p:inputText id="addr2" label="#{msgs.address2}" value="#{clientManagerController.selectedClient.address2}"  validator="#{clientManagerController.validateAddress}">
+                                                    <f:validateLength  maximum="50" />
+                                                    <f:ajax event="blur" render="addr2Error" />
+                                                </p:inputText>
+                                                <p:message id="addr2Error" for="addr2" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="city" value="#{msgs.city}"/>
+                                                <p:inputText id="city" label="#{msgs.city}" value="#{clientManagerController.selectedClient.city}" required="true" requiredMessage="#{msgs.required}" >
+                                                    <f:validateLength  maximum="50" />
+                                                    <f:ajax event="blur" render="cityError" />
+                                                </p:inputText>
+                                                <p:message id="cityError" for="city" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="province" value="#{msgs.province}"/>
+                                                <p:inputText id="province" label="#{msgs.province}" value="#{clientManagerController.selectedClient.province}" required="true" requiredMessage="#{msgs.required}" >
+                                                    <f:validateLength maximum="50" />
+                                                    <f:ajax event="blur" render="provinceError" />
+                                                </p:inputText>
+                                                <p:message id="provinceError" for="province" style="color:red" />
+                                                <br></br>
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="crountry" value="#{msgs.country}"/>
+                                                <p:inputText id="crountry" label="#{msgs.country}" value="#{clientManagerController.selectedClient.country}" required="true" requiredMessage="#{msgs.required}" >                           
+                                                    <f:validateLength  maximum="50" />
+                                                    <f:ajax event="blur" render="countryError" />
+                                                </p:inputText>
+                                                <p:message id="countryError" for="country" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="pcode" value="#{msgs.postalCode}"/>
+                                                <p:inputText id="pcode" label="#{msgs.postalCode}" value="#{clientManagerController.selectedClient.postalcode}" required="true" requiredMessage="#{msgs.required}" >
+                                                    <f:validateLength minimum="5" maximum="9" />
+                                                    <f:ajax event="blur" render="pcodeError" />
+                                                </p:inputText>
+                                                <p:message id="pcodeError" for="pcode" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="hphone" value="#{msgs.homeTelephone}"/>
+                                                <p:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{clientManagerController.selectedClient.hometelephone}" required="true"  requiredMessage="#{msgs.required}"  validator="#{registrationController.validateHomePhoneNumber}">
+                                                    <f:validateLength  minimum="10" maximum="25" />
+                                                    <f:ajax event="blur" render="hphoneError" />
+                                                </p:inputText>
+                                                <p:message id="hphoneError" for="hphone" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="cphone" value="#{msgs.cellphone}"/>
+                                                <p:inputText id="cphone" label="#{msgs.cellphone}" value="#{clientManagerController.selectedClient.celltelephone}"   validator="#{clientManagerController.validateCellPhoneNumber}">
+                                                    <f:validateLength minimum="10" maximum="25" />
+                                                    <f:ajax event="blur" render="cphoneError" />
+                                                </p:inputText>
+                                                <p:message id="cphoneError" for="cphone" style="color:red" />
+
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="manager">#{msgs.isManager}</p:outputLabel>
+                                                <p:selectOneRadio id="manager" value="#{clientManagerController.selectedClient.ismanager}"
+                                                                  layout="responsive" columns="2">
+                                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.isManager}" />
+                                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.notManager}" />
+
+                                                </p:selectOneRadio>
+                                            </div>
+                                            <div class="p-field">
+
+                                                <p:outputLabel for="accountactive">#{msgs.accountActivity}</p:outputLabel>
+                                                <p:selectOneRadio id="accountactive" value="#{clientManagerController.selectedClient.clientactive}"
+                                                                  layout="responsive" columns="2">
+                                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.active}" />
+                                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.deactive}" />
+
+                                                </p:selectOneRadio>
+                                            </div>
+
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+                                    <f:facet name="footer">
+                                        <p:commandButton value="#{msgs.save}"  actionListener="#{clientManagerController.saveClient()}"
+                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                                         class="ui-button-secondary"/>
+                                    </f:facet>
+                                </p:dialog>
+
+                                <p:confirmDialog global="true" showEffect="fade" width="300">
+                                    <p:commandButton value="#{msgs.yes}" type="button" styleClass="ui-confirmdialog-yes" />
+                                    <p:commandButton value="#{msgs.no}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                     />
+                                </p:confirmDialog>
                             </div>
-                            <div class="p-field">
-                                <p:outputLabel for="password" value="#{msgs.password}"/>
-                                <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}}" requiredMessage="#{msgs.required}"   required="true">
-                                    <f:validateLength minimum="6" maximum="27" />
-                                    <f:ajax event="blur" render="password1Error" />
-                                </p:inputText>
-                                <p:message id="passwordError" for="password" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="title" value="#{msgs.title}"/>
-                                <p:selectOneRadio id="title" label="#{msgs.title}" value="#{clientManagerController.selectedClient.title}" required="true" requiredMessage="#{msgs.required}">
-                                    <f:selectItem id="mr"  itemValue="mr" itemLabel="#{msgs.mr}" />
-                                    <f:selectItem id="ms"  itemValue="ms" itemLabel="#{msgs.ms}" />  
-                                    <f:selectItem id="other"  itemValue="other" itemLabel="#{msgs.other}" />  
-                                </p:selectOneRadio>
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="email" value="#{msgs.email}"/>
-                                <p:inputText id="email" label="#{msgs.email}" value="#{clientManagerController.selectedClient.email}" required="true" requiredMessage="#{msgs.required}" validator="#{validationController.validateEmailError}">
-                                    <f:validateLength minimum="10" maximum="50" />
-                                    <f:ajax event="blur" render="emailError" />
-                                </p:inputText>
-                                <p:message id="emailError" for="email" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="fname" value="#{msgs.firstName}"/>
-
-                                <p:inputText id="fname" label="#{msgs.firstName}" value="#{clientManagerController.selectedClient.firstname}" required="true"  requiredMessage="#{msgs.required}" >
-                                    <f:validateLength  maximum="50" />
-                                    <f:ajax event="blur" render="fristNameError" />
-                                </p:inputText>
-                                <p:message id="fristNameError" for="fname" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="lname" value="#{msgs.lastName}"/>
-                                <p:inputText id="lname" label="#{msgs.lastName}" value="#{clientManagerController.selectedClient.lastname}" required="true" requiredMessage="#{msgs.required}" >
-                                    <f:validateLength  maximum="50" />
-                                    <f:ajax event="blur" render="lastNameError" />
-                                </p:inputText>
-                                <p:message id="lastNameError" for="lname" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="compname" value="#{msgs.companyName}"/>
-                                <p:inputText id="compname" label="#{msgs.companyName}" value="#{clientManagerController.selectedClient.companyname}" >
-                                    <f:validateLength maximum="50" />
-                                    <f:ajax event="blur" render="companyNameError" />
-                                </p:inputText>
-                                <p:message id="companyNameError" for="compname" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="addr1" value="#{msgs.address1}"/>
-                                <p:inputText id="addr1" label="#{msgs.address1}" value="#{clientManagerController.selectedClient.address1}" required="true" requiredMessage="#{msgs.required}" >
-                                    <f:validateLength maximum="50" />
-                                    <f:ajax event="blur" render="addr1Error" />
-                                </p:inputText>
-                                <p:message id="addr1Error" for="addr1" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="addr2" value="#{msgs.address2}"/>
-                                <p:inputText id="addr2" label="#{msgs.address2}" value="#{clientManagerController.selectedClient.address2}"  validator="#{clientManagerController.validateAddress}">
-                                    <f:validateLength  maximum="50" />
-                                    <f:ajax event="blur" render="addr2Error" />
-                                </p:inputText>
-                                <p:message id="addr2Error" for="addr2" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="city" value="#{msgs.city}"/>
-                                <p:inputText id="city" label="#{msgs.city}" value="#{clientManagerController.selectedClient.city}" required="true" requiredMessage="#{msgs.required}" >
-                                    <f:validateLength  maximum="50" />
-                                    <f:ajax event="blur" render="cityError" />
-                                </p:inputText>
-                                <p:message id="cityError" for="city" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="province" value="#{msgs.province}"/>
-                                <p:inputText id="province" label="#{msgs.province}" value="#{clientManagerController.selectedClient.province}" required="true" requiredMessage="#{msgs.required}" >
-                                    <f:validateLength maximum="50" />
-                                    <f:ajax event="blur" render="provinceError" />
-                                </p:inputText>
-                                <p:message id="provinceError" for="province" style="color:red" />
-                                <br></br>
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="crountry" value="#{msgs.country}"/>
-                                <p:inputText id="crountry" label="#{msgs.country}" value="#{clientManagerController.selectedClient.country}" required="true" requiredMessage="#{msgs.required}" >                           
-                                    <f:validateLength  maximum="50" />
-                                    <f:ajax event="blur" render="countryError" />
-                                </p:inputText>
-                                <p:message id="countryError" for="country" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="pcode" value="#{msgs.postalCode}"/>
-                                <p:inputText id="pcode" label="#{msgs.postalCode}" value="#{clientManagerController.selectedClient.postalcode}" required="true" requiredMessage="#{msgs.required}" >
-                                    <f:validateLength minimum="5" maximum="9" />
-                                    <f:ajax event="blur" render="pcodeError" />
-                                </p:inputText>
-                                <p:message id="pcodeError" for="pcode" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="hphone" value="#{msgs.homeTelephone}"/>
-                                <p:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{clientManagerController.selectedClient.hometelephone}" required="true"  requiredMessage="#{msgs.required}"  validator="#{registrationController.validateHomePhoneNumber}">
-                                    <f:validateLength  minimum="10" maximum="25" />
-                                    <f:ajax event="blur" render="hphoneError" />
-                                </p:inputText>
-                                <p:message id="hphoneError" for="hphone" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="cphone" value="#{msgs.cellphone}"/>
-                                <p:inputText id="cphone" label="#{msgs.cellphone}" value="#{clientManagerController.selectedClient.celltelephone}"   validator="#{clientManagerController.validateCellPhoneNumber}">
-                                    <f:validateLength minimum="10" maximum="25" />
-                                    <f:ajax event="blur" render="cphoneError" />
-                                </p:inputText>
-                                <p:message id="cphoneError" for="cphone" style="color:red" />
-
-                            </div>
-                            <div class="p-field">
-                                <p:outputLabel for="manager">#{msgs.isManager}</p:outputLabel>
-                                <p:selectOneRadio id="manager" value="#{clientManagerController.selectedClient.ismanager}"
-                                                  layout="responsive" columns="2">
-                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.isManager}" />
-                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.notManager}" />
-
-                                </p:selectOneRadio>
-                            </div>
-                            <div class="p-field">
-
-                                <p:outputLabel for="accountactive">#{msgs.accountActivity}</p:outputLabel>
-                                <p:selectOneRadio id="accountactive" value="#{clientManagerController.selectedClient.clientactive}"
-                                                  layout="responsive" columns="2">
-                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.active}" />
-                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.deactive}" />
-
-                                </p:selectOneRadio>
-                            </div>
-
-                        </p:outputPanel>
-                    </p:outputPanel>
-                    <f:facet name="footer">
-                        <p:commandButton value="#{msgs.save}"  actionListener="#{clientManagerController.saveClient()}"
-                                         update="manage-product-content" process="manage-product-content @this"/>
-                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
-                                         class="ui-button-secondary"/>
-                    </f:facet>
-                </p:dialog>
-
-                <p:confirmDialog global="true" showEffect="fade" width="300">
-                    <p:commandButton value="#{msgs.yes}" type="button" styleClass="ui-confirmdialog-yes" />
-                    <p:commandButton value="#{msgs.no}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                     />
-                </p:confirmDialog>
-            </div>
-        </h:form>
+                        </h:form>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
