@@ -228,9 +228,9 @@ public class MusicTrack implements Serializable {
     
     public String isAvailableToClients(){
         if(this.removalstatus){
-            return "Yes";
+            return "No";
         }
-        return "No";
+        return "Yes";
     }
 
     public void setRemovalstatus(Boolean removalstatus) {

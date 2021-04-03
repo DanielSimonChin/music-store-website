@@ -14,8 +14,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -39,6 +42,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,12 +59,13 @@ public class MusicTrackJpaController implements Serializable {
     private EntityManager em;
 
     private MusicTrack searchedTrack;
-//    private String recentGenre;
 
     //The global variables used for the track management page
     private List<MusicTrack> tracks;
     private MusicTrack selectedTrack;
     private List<MusicTrack> selectedTracks;
+    //When the cancel button is clicked, we want the selectedTrack to be the same as the trackCopy
+    private MusicTrack trackCopy;
 
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
         try {
@@ -327,7 +332,7 @@ public class MusicTrackJpaController implements Serializable {
         return "detailTrack";
     }
 
-    private MusicTrack findTrackById(int id) throws NonexistentEntityException {
+    public MusicTrack findTrackById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
@@ -399,37 +404,101 @@ public class MusicTrackJpaController implements Serializable {
         return "relatedTrack";
     }
 
+    /**
+     * The data table should be filled with all the track entity objects from
+     * the database.
+     */
     @PostConstruct
     public void init() {
         this.tracks = findMusicTrackEntities();
     }
 
+    /**
+     * @return the list of all tracks displayed in the data table
+     */
     public List<MusicTrack> getTracks() {
         return this.tracks;
     }
 
+    /**
+     * @return the selected track that the user chose.
+     */
     public MusicTrack getSelectedTrack() {
         return this.selectedTrack;
     }
 
+    /**
+     * When a track is clicked, it becomes the selected track
+     *
+     * @param musicTrack
+     */
     public void setSelectedTrack(MusicTrack musicTrack) {
         this.selectedTrack = musicTrack;
     }
 
+    /**
+     * @return the list of all selected tracks
+     */
     public List<MusicTrack> getSelectedTracks() {
         return this.selectedTracks;
     }
 
+    /**
+     * Set the list of selected tracks
+     *
+     * @param selectedTracks
+     */
     public void setSelectedTracks(List<MusicTrack> selectedTracks) {
         this.selectedTracks = selectedTracks;
     }
 
+    /**
+     * When a user clicks on the create button, the selected track initializes a
+     * new object
+     */
     public void openNew() {
         this.selectedTrack = new MusicTrack();
     }
 
+    /**
+     * Check if the selected tracks is empty.
+     *
+     * @return true if it is not empty.
+     */
     public boolean hasSelectedTracks() {
         return this.selectedTracks != null && !this.selectedTracks.isEmpty();
+    }
+
+    /**
+     * Update the selected track and display a message for the user.
+     *
+     * @throws Exception
+     */
+    public void updateProduct() throws Exception {
+        edit(this.selectedTrack);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Updated"));
+
+        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    /**
+     * When the cancel button is clicked for the management form, all changes
+     * made before the cancel button was clicked will not affect the datatable
+     * or the database. Reset the datatable values.
+     *
+     * @throws NonexistentEntityException
+     */
+    public void cancelTrackForm() throws NonexistentEntityException {
+        this.tracks = findMusicTrackEntities();
+        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    public void setRemovalDate() {
+        if (this.selectedTrack.getRemovalstatus()) {
+            this.selectedTrack.setRemovaldate(new Date());
+        }
     }
 
 }
