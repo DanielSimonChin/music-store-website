@@ -23,6 +23,8 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -222,4 +224,31 @@ public class SaleJpaController implements Serializable {
 
     }
 
+    public Double getTotalTrackSales(int inventoryid) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Sale> cq = cb.createQuery(Sale.class);
+
+        Root<Sale> sale = cq.from(Sale.class);
+
+        Join saleInvoice = sale.join("invoicedetailList");
+
+        //We want all the sale objects that contain invoicedetail objects containing the parameter inventory id
+        cq.where(cb.equal(saleInvoice.get("inventoryid").get("inventoryid"), inventoryid));
+
+        Query q = em.createQuery(cq);
+
+        List<Sale> sales = q.getResultList();
+
+        Float totalSales = 0.0f;
+
+        for (Sale s : sales) {
+            List<Invoicedetail> invoiceDetails = s.getInvoicedetailList();
+            for (Invoicedetail invoice : invoiceDetails) {
+                totalSales += invoice.getTotalgrossvalue();
+
+            }
+        }
+        return totalSales.doubleValue();
+    }
 }

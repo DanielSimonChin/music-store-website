@@ -5,7 +5,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <head>
 
@@ -30,38 +31,227 @@
                             <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
                             <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
                         </div>
-                        <table>
-                            <tr>
-                                <button id="addMusic" class="rowButton">Add music record</button>
-                                &nbsp;
-                                <input type="text" placeholder="Search"/>
-                            </tr>
-                            <tr>
-                                <td class="rowButton"><img src="./icons/delete-cart.png"/></td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Inventory Number:</td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Track Title:</td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Artist:</td>
-                                <td>
-                                    Click to edit:
-                                    <select>
-                                        <option>Songwriter:</option>
-                                        <option>Play Length:</option>
-                                        <option>Number on Album:</option>
-                                        <option>Album Number:</option>
-                                        <option>Music Category:</option>
-                                        <option>Cost Price:</option>
-                                        <option>List Price:</option>
-                                        <option>Sale Price:</option>
-                                        <option>Date entered into inventory:</option>
-                                        <option>Sold as Individual Track or Part of Album:</option>
-                                        <option>Removal Status:</option>
-                                        <option>Removal Date:</option>
-                                    </select>
-                                </td>
 
 
-                            </tr>
-                        </table>
+                        <h:form id="form">
+                            <div>
+                                <p:growl id="messages" showDetail="true"/>
+
+                                <p:toolbar>
+                                    <p:toolbarGroup>
+                                        <p:commandButton value="#{msgs.newBtn}" icon="pi pi-plus"
+                                                         styleClass="ui-button-success" style="margin-right: .5rem">
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+                                        <p:commandButton value="#{msgs.removeBtn}" icon="pi pi-trash"
+                                                         styleClass="ui-button-danger">
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                    </p:toolbarGroup>
+
+                                </p:toolbar>
+
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{musicTrackJpaController.tracks}"
+                                             reflow="true" styleClass="products-table"
+                                             selection="#{musicTrackJpaController.selectedTracks}" rowKey="#{product.inventoryid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.musicTracksHeader}</span>
+
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
+
+                                        </div>
+                                    </f:facet>
+
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                                    <p:column headerText="#{msgs.inventoryNumber}" sortBy="#{product.inventoryid}" filterBy="#{product.inventoryid}">
+                                        <h:outputText value="#{product.inventoryid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.trackName}" sortBy="#{product.tracktitle}" filterBy="#{product.tracktitle}">
+                                        <h:outputText value="#{product.tracktitle}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.artist}" sortBy="#{product.artist}" filterBy="#{product.artist}">
+                                        <h:outputText value="#{product.artist}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableListPriceHeader}" sortBy="#{product.listprice}">
+                                        <h:outputText value="#{product.listprice}" style="font-weight: 700">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableCategoryHeader}" sortBy="#{product.musiccategory}" filterBy="#{product.musiccategory}">
+                                        <h:outputText value="#{product.musiccategory}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableTotalSalesHeader}" sortBy="#{saleJpaController.getTotalTrackSales(product.inventoryid)}">
+                                        <h:outputText value="#{saleJpaController.getTotalTrackSales(product.inventoryid)}">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableAvailableHeader}" sortBy="#{product.available}">
+                                        <h:outputText value="#{product.isAvailableToClients()}"/>
+                                    </p:column>
+
+                                    <p:column exportable="false">
+                                        <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
+                                                         oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{product}" target="#{musicTrackJpaController.selectedTrack}"/>
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this">
+
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:dialog header="Music Track Details" showEffect="fade" modal="true" width="625" height="500"
+                                          widgetVar="manageProductDialog" responsive="true">
+                                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty musicTrackJpaController.selectedTrack}">
+                                            <p:graphicImage value="album_covers/#{musicTrackJpaController.selectedTrack.albumimagefilenamesmall}"
+                                                            styleClass="product-image"
+                                                            rendered="#{not empty musicTrackJpaController.selectedTrack.albumimagefilenamesmall}"/>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="available" value="#{msgs.availableToClients}"/>
+                                                <p:selectOneMenu id="available" value="#{musicTrackJpaController.selectedTrack.available}">
+                                                    <f:selectItem itemLabel="#{msgs.yesOption}" itemValue="true"/>
+                                                    <f:selectItem itemLabel="#{msgs.noOption}" itemValue="false"/>
+                                                    <p:ajax event="change" listener="#{musicTrackJpaController.setRemovalDate()}" />
+                                                </p:selectOneMenu>
+                                            </div>
+
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="tracktitle">#{msgs.trackName}</p:outputLabel>
+                                                <p:inputText id="tracktitle" value="#{musicTrackJpaController.selectedTrack.tracktitle}" required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="artist">#{msgs.artist}</p:outputLabel>
+                                                <p:inputText id="artist" value="#{musicTrackJpaController.selectedTrack.artist}" required="true"/>
+                                            </div>
+
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="songwriter">#{msgs.songwriter}</p:outputLabel>
+                                                <p:inputText id="songwriter" value="#{musicTrackJpaController.selectedTrack.songwriter}" required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="categoryoptions" value="#{msgs.selectMusicCategory}"/>
+                                                <p:selectOneMenu id="categoryoptions" value="#{musicTrackJpaController.selectedTrack.musiccategory}" required="true">
+                                                    <f:selectItem itemLabel="#{msgs.categorySelectOne}" itemValue=""/>
+                                                    <f:selectItem itemLabel="#{msgs.hipHop}" itemValue="Hip hop"/>
+                                                    <f:selectItem itemLabel="#{msgs.pop}" itemValue="Pop"/>
+                                                    <f:selectItem itemLabel="#{msgs.rock}" itemValue="Rock"/>
+                                                    <f:selectItem itemLabel="#{msgs.randb}" itemValue="#{msgs.randb}"/>
+                                                    <f:selectItem itemLabel="#{msgs.anime}" itemValue="Anime"/>
+                                                    <f:facet name="footer">
+                                                        <p:divider styleClass="p-mt-0" />
+                                                        <h:outputText value="#{msgs.category5options}" style="font-weight:bold;"/>
+                                                    </f:facet>
+                                                </p:selectOneMenu>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="costprice">#{msgs.formCostPrice}</p:outputLabel>
+                                                <p:inputNumber id="costprice" value="#{musicTrackJpaController.selectedTrack.costprice}"
+                                                               symbol=" CAD" symbolPosition="s"
+                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="listprice">#{msgs.formListPrice}</p:outputLabel>
+                                                <p:inputNumber id="listprice" value="#{musicTrackJpaController.selectedTrack.listprice}"
+                                                               symbol=" CAD" symbolPosition="s"
+                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="saleprice">#{msgs.formSalePrice}</p:outputLabel>
+                                                <p:inputNumber id="saleprice" value="#{musicTrackJpaController.selectedTrack.saleprice}"
+                                                               symbol=" CAD" symbolPosition="s"
+                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="pstinput">#{msgs.formPST}</p:outputLabel>
+                                                <p:inputNumber id="pstinput" value="#{musicTrackJpaController.selectedTrack.pst}" modifyValueOnWheel="false" required="true" />
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="gstinput">#{msgs.formGST}</p:outputLabel>
+                                                <p:inputNumber id="gstinput" value="#{musicTrackJpaController.selectedTrack.gst}" modifyValueOnWheel="false" required="true" />
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="hstinput">#{msgs.formHST}</p:outputLabel>
+                                                <p:inputNumber id="hstinput" value="#{musicTrackJpaController.selectedTrack.hst}" modifyValueOnWheel="false" required="true" />
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="albumcoverssmall">#{msgs.selectSmallCover}</p:outputLabel>
+                                                <p:selectOneMenu id="albumcoverssmall" value="#{musicTrackJpaController.selectedTrack.albumimagefilenamesmall}" filter="true" filterMatchMode="startsWith"
+                                                                 var="filename" panelStyle="width:180px" >
+                                                    <f:selectItems value="#{fileUploadController.getFileNames()}" var="covers" itemLabel="#{covers}" itemValue="#{covers}"/>
+
+                                                    <p:column>  
+                                                        <p:graphicImage value="/album_covers/#{filename}" width="50" height="50"/>  
+                                                    </p:column>  
+
+                                                    <p:column>  
+                                                        #{filename}
+                                                    </p:column>  
+                                                </p:selectOneMenu>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="albumcoversbig">#{msgs.selectBigCover}</p:outputLabel>
+                                                <p:selectOneMenu id="albumcoversbig" value="#{musicTrackJpaController.selectedTrack.albumimagefilenamebig}" filter="true" filterMatchMode="startsWith"
+                                                                 var="filename" panelStyle="width:180px" >
+                                                    <f:selectItems value="#{fileUploadController.getFileNames()}" var="covers" itemLabel="#{covers}" itemValue="#{covers}"/>
+
+                                                    <p:column>  
+                                                        <p:graphicImage value="/album_covers/#{filename}" width="50" height="50"/>  
+                                                    </p:column>  
+
+                                                    <p:column>  
+                                                        #{filename}
+                                                    </p:column>  
+                                                </p:selectOneMenu>
+                                            </div>
+
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{musicTrackJpaController.updateProduct}"
+                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                        <p:commandButton value="Cancel" icon="pi pi-times" actionListener="#{musicTrackJpaController.cancelTrackForm}" 
+                                                         class="ui-button-secondary"/>
+                                    </f:facet>
+
+                                </p:dialog>
+
+
+                            </div>
+
+
+                        </h:form>
                     </section>
                 </div>
             </ui:define>

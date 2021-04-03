@@ -50,7 +50,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "MusicTrack.findByHst", query = "SELECT m FROM MusicTrack m WHERE m.hst = :hst"),
     @NamedQuery(name = "MusicTrack.findByDateentered", query = "SELECT m FROM MusicTrack m WHERE m.dateentered = :dateentered"),
     @NamedQuery(name = "MusicTrack.findByPartofalbum", query = "SELECT m FROM MusicTrack m WHERE m.partofalbum = :partofalbum"),
-    @NamedQuery(name = "MusicTrack.findByRemovalstatus", query = "SELECT m FROM MusicTrack m WHERE m.removalstatus = :removalstatus"),
     @NamedQuery(name = "MusicTrack.findByRemovaldate", query = "SELECT m FROM MusicTrack m WHERE m.removaldate = :removaldate")})
 public class MusicTrack implements Serializable {
 
@@ -89,6 +88,15 @@ public class MusicTrack implements Serializable {
     @Lob
     @Column(name = "IMAGECONTENTSMALL")
     private byte[] imagecontentsmall;
+    @Column(name = "AVAILABLE")
+    private Boolean available;
+
+    
+    @OneToMany(mappedBy = "inventoryid")
+    private List<Review> reviewList;
+
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+  
     @Column(name = "COSTPRICE")
     private Float costprice;
     @Column(name = "LISTPRICE")
@@ -106,8 +114,6 @@ public class MusicTrack implements Serializable {
     private Date dateentered;
     @Column(name = "PARTOFALBUM")
     private Boolean partofalbum;
-    @Column(name = "REMOVALSTATUS")
-    private Boolean removalstatus;
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
@@ -276,12 +282,19 @@ public class MusicTrack implements Serializable {
         this.partofalbum = partofalbum;
     }
 
-    public Boolean getRemovalstatus() {
-        return removalstatus;
+    public String getPartOfAlbumStringFormat() {
+        if (partofalbum) {
+            return "Part of album";
+        }
+        return "Single";
     }
 
-    public void setRemovalstatus(Boolean removalstatus) {
-        this.removalstatus = removalstatus;
+    public String isAvailableToClients() {
+        if (this.available) {
+            return "Yes";
+        }
+        return "No";
+
     }
 
     public Date getRemovaldate() {
@@ -308,6 +321,22 @@ public class MusicTrack implements Serializable {
         this.albumid = albumid;
     }
 
+    public Boolean getAvailable() {
+        return available;
+    }
+
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -332,5 +361,11 @@ public class MusicTrack implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.MusicTrack[ inventoryid=" + inventoryid + " ]";
     }
-    
+
+  
+ 
+
+  
+
+  
 }

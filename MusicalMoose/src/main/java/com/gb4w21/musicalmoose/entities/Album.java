@@ -46,7 +46,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Album.findByPst", query = "SELECT a FROM Album a WHERE a.pst = :pst"),
     @NamedQuery(name = "Album.findByGst", query = "SELECT a FROM Album a WHERE a.gst = :gst"),
     @NamedQuery(name = "Album.findByHst", query = "SELECT a FROM Album a WHERE a.hst = :hst"),
-    @NamedQuery(name = "Album.findByRemovalstatus", query = "SELECT a FROM Album a WHERE a.removalstatus = :removalstatus"),
     @NamedQuery(name = "Album.findByRemovaldate", query = "SELECT a FROM Album a WHERE a.removaldate = :removaldate")})
 public class Album implements Serializable {
 
@@ -85,6 +84,8 @@ public class Album implements Serializable {
     @Lob
     @Column(name = "IMAGECONTENTSMALL")
     private byte[] imagecontentsmall;
+    @Column(name = "AVAILABLE")
+    private Boolean available;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "COSTPRICE")
     private Float costprice;
@@ -98,8 +99,6 @@ public class Album implements Serializable {
     private Float gst;
     @Column(name = "HST")
     private Float hst;
-    @Column(name = "REMOVALSTATUS")
-    private Boolean removalstatus;
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
@@ -131,6 +130,7 @@ public class Album implements Serializable {
         this.albumtitle = albumtitle;
     }
 
+
     public Date getReleasedate() {
         return releasedate;
     }
@@ -154,6 +154,7 @@ public class Album implements Serializable {
     public void setRecordlabel(String recordlabel) {
         this.recordlabel = recordlabel;
     }
+
 
     public Integer getNumberoftracks() {
         return numberoftracks;
@@ -251,14 +252,6 @@ public class Album implements Serializable {
         this.hst = hst;
     }
 
-    public Boolean getRemovalstatus() {
-        return removalstatus;
-    }
-
-    public void setRemovalstatus(Boolean removalstatus) {
-        this.removalstatus = removalstatus;
-    }
-
     public Date getRemovaldate() {
         return removaldate;
     }
@@ -282,7 +275,13 @@ public class Album implements Serializable {
     public void setMusicTrackList(List<MusicTrack> musicTrackList) {
         this.musicTrackList = musicTrackList;
     }
+    public Boolean getAvailable() {
+        return available;
+    }
 
+    public void setAvailable(Boolean available) {
+        this.available = available;
+    }
     @Override
     public int hashCode() {
         int hash = 0;
@@ -307,5 +306,7 @@ public class Album implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Album[ albumid=" + albumid + " ]";
     }
-    
+
+
+   
 }
