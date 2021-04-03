@@ -1,16 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
     <head>
-        <title>TODO supply a title</title>
+        <title>Manage Review</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+    <h:body>
+        <h:form id="form">
+            <div class="card crud-demo">
+                <p:growl id="messages" showDetail="true"/>
+
+                <p:toolbar>
+                    <p:toolbarGroup align="right">
+                        <p:fileUpload mode="simple" skinSimple="true" label="#{msgs.import}" />
+                        <p:commandButton value="#{msgs.export}"  styleClass="ui-button-help" ajax="false">
+                            <p:dataExporter type="pdf" target="dt-products" fileName="products"/>
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{clientManagerController.clients}"
+                             reflow="true" styleClass="products-table"
+                             selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
+                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                    <f:facet name="header">
+                        <div class="products-table-header">
+                            <span style="font-weight: bold">PRODUCTS</span>
+
+                            <span class="filter-container ui-input-icon-left">
+                                <i class="pi pi-search"></i>
+                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                            </span>
+
+                        </div>
+                    </f:facet>
+                    <p:ajax event="rowSelect" update=":form:delete-products-button"/>
+                    <p:ajax event="rowUnselect" update=":form:delete-products-button"/>
+                    <p:ajax event="rowSelectCheckbox" update=":form:delete-products-button"/>
+                    <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button"/>
+                    <p:ajax event="toggleSelect" update=":form:delete-products-button"/>
+                    <p:column selectionMode="multiple" exportable="false"></p:column>
+                    <p:column exportable="false">
+                        
+                        
+                        
+                        
+                        
+                        <p:commandButton  update=":form:manage-product-content"
+                                          oncomplete="PF('manageProductDialog').show()"
+                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
+                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
+                            <p:resetInput target=":form:manage-product-content"/>
+                        </p:commandButton>
+                        <p:commandButton class="ui-button-warning rounded-button"  process="@this"
+                                         oncomplete="PF('deleteProductDialog').show()">
+                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
 </html>

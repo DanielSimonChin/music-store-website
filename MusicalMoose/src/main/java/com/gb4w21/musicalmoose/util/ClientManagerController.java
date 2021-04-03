@@ -4,11 +4,15 @@
  * and open the template in the editor.
  */
 package com.gb4w21.musicalmoose.util;
+import com.gb4w21.musicalmoose.beans.SearchResult;
 import javax.faces.application.Application;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Client;
+import com.gb4w21.musicalmoose.entities.Client_;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -30,6 +34,11 @@ import javax.faces.component.UIComponent;
 import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 @Named
 @SessionScoped
 public class ClientManagerController implements Serializable{
@@ -44,21 +53,35 @@ public class ClientManagerController implements Serializable{
     private List<Client> clients;
 
     private Client selectedClient;
-
+    private String clientSearch;
     private List<Client> selectedClients;
     public ClientManagerController(){
         
     }
     public List<Client> getSelectedClients(){
+        if(selectedClients==null){
+            selectedClients=new ArrayList<>();
+        }
         return selectedClients;
+    }
+    public String getClientSearch(){
+        return clientSearch;
+    }
+    public void setClientSearch(String clientSearch){
+        this.clientSearch=clientSearch;
     }
     public List<Client> getClients(){
         if(clients==null){
-            clients=clientJpaController.findClientEntities();
+            clients=new ArrayList<>();
         }
+        LOG.info("clients size22:"+clients.size());
+        LOG.info("clients size22:"+clients.size());
+        LOG.info("clients size22:"+clients.size());
+        LOG.info("clients size22:"+clients.size());
         return clients;
     }
     public Client getSelectedClient(){
+        
         return selectedClient;
     }
      public void setSelectedClients(List<Client> selectedClients){
@@ -72,6 +95,54 @@ public class ClientManagerController implements Serializable{
     }
     public void createNewClient() {
         this.selectedClient = new Client();
+    
+    }
+    public String toClientManagement(){
+        clients=new ArrayList<>();
+        selectedClients=new ArrayList<>();
+        this.selectedClient=null;
+        return "adminclient";
+    }
+    public String searchAllClients(){
+        selectedClient=null;
+        selectedClients=new ArrayList<>();
+        clients=clients=clientJpaController.findClientEntities();
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        return null;
+    }
+    public String searchClients(){
+        selectedClient=null;
+        selectedClients=new ArrayList<>();
+        clients=getClientFromDatabase(clientSearch);
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        return "adminclient";
+    }
+    private List<Client> getClientFromDatabase(String clientSearch){
+        String clientSearchText = "%" + clientSearch + "%";
+        LOG.info("client search:"+clientSearch);
+        LOG.info("client search:"+clientSearch);
+        LOG.info("client search:"+clientSearch);
+        LOG.info("client search:"+clientSearch);
+        LOG.info("client search:"+clientSearch);
+        LOG.info("client search:"+clientSearch);
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Client> cq = cb.createQuery(Client.class);
+        Root<Client> client = cq.from(Client.class);
+        cq.select(client);
+        cq.where(cb.like(client.get("username"), clientSearchText));
+        TypedQuery<Client> query = entityManager.createQuery(cq);
+        List<Client> clients=query.getResultList();
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        LOG.info("clients size:"+clients.size());
+        return clients;
     }
        public void saveClient() {
         if (this.selectedClient.getUsername()== null) {
@@ -161,6 +232,19 @@ public class ClientManagerController implements Serializable{
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(message);
+        }
+    }
+     public void validateClientSearch(FacesContext context, UIComponent component,
+            Object value) {
+         
+        if (value==null||value.toString().equals("")||getClientFromDatabase(value.toString()).isEmpty()) {
+
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "noResults", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            
         }
     }
     public void validateAddress(FacesContext context, UIComponent component,

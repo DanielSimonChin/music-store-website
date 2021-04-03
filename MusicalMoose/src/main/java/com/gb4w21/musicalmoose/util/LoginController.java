@@ -87,7 +87,7 @@ public class LoginController  implements Serializable{
         String userName = ((String) nameInput.getLocalValue());
         String password = value.toString();
         Client registeredClient= clientJpaController.findUser(userName, password);
-        if (registeredClient==null) {
+        if (registeredClient==null||!registeredClient.getClientactive()) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "loginError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);

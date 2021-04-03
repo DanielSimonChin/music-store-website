@@ -17,123 +17,110 @@
                 <p:growl id="messages" showDetail="true"/>
 
                 <p:toolbar>
-                    <p:toolbarGroup>
-                        <!--
-                        <p:commandButton value="New"  actionListener="#{clientManagerController.createNewClient()}"
-                                         update=":form:manage-product-content" oncomplete="PF('manageProductDialog').show()"
-                                         styleClass="ui-button-success" style="margin-right: .5rem">
-                            <p:resetInput target=":form:manage-product-content"/>
-                        </p:commandButton> -->
-                        <p:commandButton id="delete-products-button" value="#{clientManagerController.deleteClientButtonMessage}"
-                                         actionListener="#{clientManagerController.deleteSelectedClients}"
-                                         styleClass="ui-button-danger" disabled="#{!clientManagerController.hasSelectedClients()}"
-                                         update="@this">
-                            <p:confirm header="Confirmation" message="Delete the selected products?" />
-                        </p:commandButton>
-                    </p:toolbarGroup>
+
                     <p:toolbarGroup align="right">
-                        <p:fileUpload mode="simple" skinSimple="true" label="Import" />
-                        <p:commandButton value="Export"  styleClass="ui-button-help" ajax="false">
-                            <p:dataExporter type="pdf" target="dt-products" fileName="products"/>
-                        </p:commandButton>
+
+                        <h:form >
+                            <p:inputText id="navsearch"  value="#{clientManagerController.clientSearch}" validator="#{clientManagerController.validateClientSearch}" required="true" requiredMessage="#{msgs.required}" />
+                            <p:commandButton value="#{msgs.search}" action="#{clientManagerController.searchClients()}"/> 
+
+                            <br></br>
+                            <p:message id="searchError" for="navsearch" style="color:red" />
+                        </h:form>
+                        <h:form >
+                            <p:commandButton value="#{msgs.searchAll}" action="#{clientManagerController.searchAllClients()}"/> 
+                        </h:form>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{clientManagerController.clients}"
-                             reflow="true" styleClass="products-table"
+                
+                
+                <p:dataTable id="dt-products" widgetVar="dtClients" var="client" value="#{clientManagerController.clients}"
+                             reflow="true" styleClass="clients-table"
                              selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
                     <f:facet name="header">
                         <div class="products-table-header">
-                            <span style="font-weight: bold">PRODUCTS</span>
+                            <span style="font-weight: bold">#{msgs.clients}</span>
 
-                            <span class="filter-container ui-input-icon-left">
-                                <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
-                            </span>
+                            
 
                         </div>
                     </f:facet>
 
-                    <p:ajax event="rowSelect" update=":form:delete-products-button"/>
-                    <p:ajax event="rowUnselect" update=":form:delete-products-button"/>
-                    <p:ajax event="rowSelectCheckbox" update=":form:delete-products-button"/>
-                    <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button"/>
-                    <p:ajax event="toggleSelect" update=":form:delete-products-button"/>
+
                     <p:column selectionMode="multiple" exportable="false"></p:column>
 
-                    <p:column headerText="Id" sortBy="#{client.clientid}" filterBy="#{client.clientid}">
-                        <h:outputText value="#{client.clientid}"/>
+                    <p:column style="color: black" headerText="#{msgs.id}" sortBy="#{client.clientid}" filterBy="#{client.clientid}">
+                        <h:outputText style="color: black" value="#{client.clientid}"/>
                     </p:column>
-                    <p:column headerText="Email" sortBy="#{client.email}" filterBy="#{client.email}">
-                        <h:outputText value="#{client.email}"/>
+                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
+                        <h:outputText style="color: black" value="#{client.email}"/>
                     </p:column>
-                    <p:column headerText="Username" sortBy="#{client.username}" filterBy="#{client.username}">
-                        <h:outputText value="#{client.username}"/>
+                    <p:column headerText="#{msgs.username}" sortBy="#{client.username}" filterBy="#{client.username}">
+                        <h:outputText style="color: black" value="#{client.username}"/>
                     </p:column>
-                    <p:column headerText="Password" sortBy="#{client.password}" filterBy="#{client.password}">
-                        <h:outputText value="#{client.password}"/>
+                    <p:column headerText="#{msgs.password}" sortBy="#{client.password}" filterBy="#{client.password}">
+                        <h:outputText style="color: black" value="#{client.password}"/>
                     </p:column>
-                    <p:column headerText="Title" sortBy="#{client.title}" filterBy="#{client.title}">
-                        <h:outputText value="#{client.title}"/>
+                    <p:column headerText="#{msgs.title}" sortBy="#{client.title}" filterBy="#{client.title}">
+                        <h:outputText style="color: black" value="#{client.title}"/>
                     </p:column>
-                    <p:column headerText="Frist Name" sortBy="#{client.firstname}" filterBy="#{client.firstname}">
-                        <h:outputText value="#{client.firstname}"/>
+                    <p:column headerText="#{msgs.firstName}" sortBy="#{client.firstname}" filterBy="#{client.firstname}">
+                        <h:outputText style="color: black" value="#{client.firstname}"/>
                     </p:column>
-                    <p:column headerText="Last Name" sortBy="#{client.lastname}" filterBy="#{client.lastname}">
-                        <h:outputText value="#{client.lastname}"/>
+                    <p:column headerText="#{msgs.lastName}" sortBy="#{client.lastname}" filterBy="#{client.lastname}">
+                        <h:outputText style="color: black" value="#{client.lastname}"/>
                     </p:column>
-                    <p:column headerText="Company Name" sortBy="#{client.companyname}" filterBy="#{client.companyname}">
-                        <h:outputText rendered="#{empty client.companyname}" value="Null"/>
-                        <h:outputText rendered="#{not empty client.companyname}" value="#{client.companyname}"/>
+                    <p:column headerText="#{msgs.companyName}" sortBy="#{client.companyname}" filterBy="#{client.companyname}">
+                        <h:outputText style="color: black" rendered="#{empty client.companyname}" value="#{msgs.nullMs}"/>
+                        <h:outputText style="color: black" rendered="#{not empty client.companyname}" value="#{client.companyname}"/>
                     </p:column>
-                    <p:column headerText="City" sortBy="#{client.city}" filterBy="#{client.city}">
-                        <h:outputText value="#{client.city}"/>
+                    <p:column headerText="#{msgs.city}" sortBy="#{client.city}" filterBy="#{client.city}">
+                        <h:outputText style="color: black" value="#{client.city}"/>
                     </p:column>
-                    <p:column headerText="Province" sortBy="#{client.province}" filterBy="#{client.province}">
-                        <h:outputText value="#{client.province}"/>
+                    <p:column headerText="#{msgs.province}" sortBy="#{client.province}" filterBy="#{client.province}">
+                        <h:outputText style="color: black" value="#{client.province}"/>
                     </p:column>
-                    <p:column headerText="Country" sortBy="#{client.country}" filterBy="#{client.country}">
-                        <h:outputText value="#{client.country}"/>
+                    <p:column headerText="#{msgs.country}" sortBy="#{client.country}" filterBy="#{client.country}">
+                        <h:outputText style="color: black" value="#{client.country}"/>
                     </p:column>
-                    <p:column headerText="Address1" sortBy="#{client.address1}" filterBy="#{client.address1}">
-                        <h:outputText  value="#{client.address1}"/>
+                    <p:column headerText="#{msgs.address1}" sortBy="#{client.address1}" filterBy="#{client.address1}">
+                        <h:outputText style="color: black" value="#{client.address1}"/>
                     </p:column>
-                    <p:column headerText="Address2" sortBy="#{client.address2}" filterBy="#{client.address2}">
-                        <h:outputText rendered="#{empty client.address2}" value="Null"/>
-                        <h:outputText rendered="#{not empty client.address2}" value="#{client.address2}"/>
+                    <p:column headerText="#{msgs.address2}" sortBy="#{client.address2}" filterBy="#{client.address2}">
+                        <h:outputText style="color: black" rendered="#{empty client.address2}" value="#{msgs.nullMs}"/>
+                        <h:outputText style="color: black" rendered="#{not empty client.address2}" value="#{client.address2}"/>
                     </p:column>
-                    <p:column headerText="Postal Code" sortBy="#{client.postalcode}" filterBy="#{client.postalcode}">
-                        <h:outputText  value="#{client.postalcode}"/>
+                    <p:column headerText="#{msgs.postalCode}" sortBy="#{client.postalcode}" filterBy="#{client.postalcode}">
+                        <h:outputText style="color: black" value="#{client.postalcode}"/>
                     </p:column>
-                    <p:column headerText="Home Phone" sortBy="#{client.hometelephone}" filterBy="#{client.hometelephone}">
-                        <h:outputText  value="#{client.hometelephone}"/>
-                    </p:column>
-                    <p:column headerText="Cell Phone" sortBy="#{client.celltelephone}" filterBy="#{client.celltelephone}">
-                        <h:outputText rendered="#{empty client.celltelephone}" value="Null"/>
-                        <h:outputText rendered="#{not empty client.celltelephone}" value="#{client.celltelephone}"/>
-                    </p:column>
+
                     <p:column headerText="#{msgs.homeTelephone}" sortBy="#{client.hometelephone}" filterBy="#{client.hometelephone}">
-                        <h:outputText  value="#{client.hometelephone}"/>
+                        <h:outputText style="color: black" value="#{client.hometelephone}"/>
                     </p:column>
                     <p:column headerText="#{msgs.cellphone}" sortBy="#{client.celltelephone}" filterBy="#{client.celltelephone}">
-                        <h:outputText rendered="#{empty client.celltelephone}" value="Null"/>
-                        <h:outputText rendered="#{not empty client.celltelephone}" value="#{client.celltelephone}"/>
+                        <h:outputText style="color: black" rendered="#{empty client.celltelephone}" value="#{msgs.nullMs}"/>
+                        <h:outputText style="color: black" rendered="#{not empty client.celltelephone}" value="#{client.celltelephone}"/>
                     </p:column>
-                    <p:column headerText="Genre Of Last Search" sortBy="#{client.genreoflastsearch}" filterBy="#{client.genreoflastsearch}">
-                        <h:outputText  value="#{client.genreoflastsearch}"/>
+                    <p:column headerText="#{msgs.genreOfLastSearch}" sortBy="#{client.genreoflastsearch}" filterBy="#{client.genreoflastsearch}">
+                        <h:outputText style="color: black" value="#{client.genreoflastsearch}"/>
                     </p:column>
-                    <p:column headerText="Is Manager" sortBy="#{client.ismanager}" filterBy="#{client.ismanager}">
-                        <h:outputText  rendered="#{client.ismanager}" value="True"/>
-                        <h:outputText  rendered="#{not  client.ismanager}" value="False"/>
+                    <p:column headerText="#{msgs.isManager}" sortBy="#{client.ismanager}" filterBy="#{client.ismanager}">
+                        <h:outputText style="color: black" rendered="#{client.ismanager}" value="#{msgs.trueMs}"/>
+                        <h:outputText style="color: black" rendered="#{not  client.ismanager}" value="#{msgs.falseMs}"/>
                     </p:column>
-                    <p:column headerText="Number of Sales" sortBy="#{client.saleList.size()}" filterBy="#{client.saleList.size()}">
-                        <h:outputText  value="#{client.saleList.size()}"/>
+                    <p:column headerText="#{msgs.accountActive}" sortBy="#{client.clientactive}" filterBy="#{client.clientactive}">
+                        <h:outputText style="color: black" rendered="#{client.clientactive}" value="#{msgs.trueMs}"/>
+                        <h:outputText style="color: black" rendered="#{not  client.clientactive}" value="#{msgs.falseMs}"/>
                     </p:column>
-                    <p:column headerText="Number of Reviews" sortBy="#{client.reviewList.size()}" filterBy="#{client.reviewList.size()}">
-                        <h:outputText  value="#{client.reviewList.size()}"/>
+                    <p:column headerText="#{msgs.numberOfSales}" sortBy="#{client.saleList.size()}" filterBy="#{client.saleList.size()}">
+                        <h:outputText style="color: black" value="#{client.saleList.size()}"/>
                     </p:column>
-                    <p:column headerText="Number of Cerdit Cards" sortBy="#{client.creditcardinfoList.size()}" filterBy="#{client.creditcardinfoList.size()}">
-                        <h:outputText  value="#{client.creditcardinfoList.size()}"/>
+                    <p:column headerText="#{msgs.numberOfReviews}" sortBy="#{client.reviewList.size()}" filterBy="#{client.reviewList.size()}">
+                        <h:outputText style="color: black" value="#{client.reviewList.size()}"/>
+                    </p:column>
+                    <p:column headerText="#{msgs.numberOfCreditCards}" sortBy="#{client.creditcardinfoList.size()}" filterBy="#{client.creditcardinfoList.size()}">
+                        <h:outputText style="color: black" value="#{client.creditcardinfoList.size()}"/>
                     </p:column>
                     <p:column exportable="false">
                         <p:commandButton  update=":form:manage-product-content"
@@ -142,7 +129,7 @@
                             <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
                             <p:resetInput target=":form:manage-product-content"/>
                         </p:commandButton>
-                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                        <p:commandButton class="ui-button-warning rounded-button"  process="@this"
                                          oncomplete="PF('deleteProductDialog').show()">
                             <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
                         </p:commandButton>
@@ -150,7 +137,7 @@
 
                 </p:dataTable>
 
-                <p:dialog header="Product Details" showEffect="fade" modal="true"
+                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true"
                           widgetVar="manageProductDialog" responsive="true">
                     <p:outputPanel id="manage-product-content" class="ui-fluid">
                         <p:outputPanel rendered="#{not empty clientManagerController.selectedClient}">
@@ -166,7 +153,7 @@
                             </div>
                             <div class="p-field">
                                 <p:outputLabel for="password" value="#{msgs.password}"/>
-                                <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}" requiredMessage="#{msgs.required}"   required="true">
+                                <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}}" requiredMessage="#{msgs.required}"   required="true">
                                     <f:validateLength minimum="6" maximum="27" />
                                     <f:ajax event="blur" render="password1Error" />
                                 </p:inputText>
@@ -225,8 +212,7 @@
                                     <f:ajax event="blur" render="addr1Error" />
                                 </p:inputText>
                                 <p:message id="addr1Error" for="addr1" style="color:red" />
-                                <p:outputLabel for="name">Name</p:outputLabel>
-                                <p:inputText id="name" value="#{crudView.selectedProduct.name}" required="true"/>
+
                             </div>
                             <div class="p-field">
                                 <p:outputLabel for="addr2" value="#{msgs.address2}"/>
@@ -235,8 +221,7 @@
                                     <f:ajax event="blur" render="addr2Error" />
                                 </p:inputText>
                                 <p:message id="addr2Error" for="addr2" style="color:red" />
-                                <p:outputLabel for="description">Description</p:outputLabel>
-                                <p:inputTextarea id="description" value="#{crudView.selectedProduct.description}"/>
+
                             </div>
                             <div class="p-field">
                                 <p:outputLabel for="city" value="#{msgs.city}"/>
@@ -294,11 +279,21 @@
 
                             </div>
                             <div class="p-field">
-                                <p:outputLabel for="manager">Is Manager</p:outputLabel>
+                                <p:outputLabel for="manager">#{msgs.isManager}</p:outputLabel>
                                 <p:selectOneRadio id="manager" value="#{clientManagerController.selectedClient.ismanager}"
                                                   layout="responsive" columns="2">
-                                    <f:selectItem itemValue="#{true}" itemLabel="Is Manager" />
-                                    <f:selectItem itemValue="#{false}" itemLabel="Not Manager" />
+                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.isManager}" />
+                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.notManager}" />
+
+                                </p:selectOneRadio>
+                            </div>
+                            <div class="p-field">
+
+                                <p:outputLabel for="accountactive">#{msgs.accountActivity}</p:outputLabel>
+                                <p:selectOneRadio id="accountactive" value="#{clientManagerController.selectedClient.clientactive}"
+                                                  layout="responsive" columns="2">
+                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.active}" />
+                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.deactive}" />
 
                                 </p:selectOneRadio>
                             </div>
@@ -306,25 +301,17 @@
                         </p:outputPanel>
                     </p:outputPanel>
                     <f:facet name="footer">
-                        <p:commandButton value="Save"  actionListener="#{clientManagerController.saveClient()}"
+                        <p:commandButton value="#{msgs.save}"  actionListener="#{clientManagerController.saveClient()}"
                                          update="manage-product-content" process="manage-product-content @this"/>
-                        <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
                                          class="ui-button-secondary"/>
                     </f:facet>
                 </p:dialog>
 
-                <p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade" width="300"
-                                 message="Delete the product?" header="Confirm" severity="warn">
-                    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{clientManagerController.deleteClient()}"
-                                     process="@this" oncomplete="PF('deleteProductDialog').hide()"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" 
-                                     onclick="PF('deleteProductDialog').hide()"/>
-                </p:confirmDialog>
-
                 <p:confirmDialog global="true" showEffect="fade" width="300">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" />
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
-                                     icon="pi pi-times"/>
+                    <p:commandButton value="#{msgs.yes}" type="button" styleClass="ui-confirmdialog-yes" />
+                    <p:commandButton value="#{msgs.no}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                     />
                 </p:confirmDialog>
             </div>
         </h:form>

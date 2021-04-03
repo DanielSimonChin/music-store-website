@@ -45,7 +45,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Client.findByEmail", query = "SELECT c FROM Client c WHERE c.email = :email"),
     @NamedQuery(name = "Client.findByGenreoflastsearch", query = "SELECT c FROM Client c WHERE c.genreoflastsearch = :genreoflastsearch"),
     @NamedQuery(name = "Client.findByIsmanager", query = "SELECT c FROM Client c WHERE c.ismanager = :ismanager"),
-    @NamedQuery(name = "Client.findByClientremoved", query = "SELECT c FROM Client c WHERE c.clientremoved = :clientremoved")})
+    @NamedQuery(name = "Client.findByClientremoved", query = "SELECT c FROM Client c WHERE c.clientactive= :clientactive")})
 public class Client implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -105,8 +105,8 @@ public class Client implements Serializable {
     private String genreoflastsearch;
     @Column(name = "ISMANAGER")
     private Boolean ismanager;
-    @Column(name = "CLIENTREMOVED")
-    private Boolean clientremoved;
+    @Column(name = "CLIENTACTIVE")
+    private Boolean clientactive;
     @OneToMany(mappedBy = "clientid")
     private List<Creditcardinfo> creditcardinfoList;
     @OneToMany(mappedBy = "clientid")
@@ -265,12 +265,12 @@ public class Client implements Serializable {
         this.ismanager = ismanager;
     }
 
-    public Boolean getClientremoved() {
-        return clientremoved;
+    public Boolean getClientactive() {
+        return clientactive;
     }
 
-    public void setClientremoved(Boolean clientremoved) {
-        this.clientremoved = clientremoved;
+    public void setClientactive(Boolean clientactive) {
+        this.clientactive = clientactive;
     }
 
     public List<Creditcardinfo> getCreditcardinfoList() {
