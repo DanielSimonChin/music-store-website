@@ -50,7 +50,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "MusicTrack.findByHst", query = "SELECT m FROM MusicTrack m WHERE m.hst = :hst"),
     @NamedQuery(name = "MusicTrack.findByDateentered", query = "SELECT m FROM MusicTrack m WHERE m.dateentered = :dateentered"),
     @NamedQuery(name = "MusicTrack.findByPartofalbum", query = "SELECT m FROM MusicTrack m WHERE m.partofalbum = :partofalbum"),
-    @NamedQuery(name = "MusicTrack.findByRemovalstatus", query = "SELECT m FROM MusicTrack m WHERE m.removalstatus = :removalstatus"),
     @NamedQuery(name = "MusicTrack.findByRemovaldate", query = "SELECT m FROM MusicTrack m WHERE m.removaldate = :removaldate")})
 public class MusicTrack implements Serializable {
 
@@ -78,6 +77,8 @@ public class MusicTrack implements Serializable {
     @Lob
     @Column(name = "IMAGECONTENTSMALL")
     private byte[] imagecontentsmall;
+    @Column(name = "AVAILABLE")
+    private Boolean available;
     @OneToMany(mappedBy = "inventoryid")
     private List<Invoicedetail> invoicedetailList;
     @OneToMany(mappedBy = "inventoryid")
@@ -111,8 +112,6 @@ public class MusicTrack implements Serializable {
     private Date dateentered;
     @Column(name = "PARTOFALBUM")
     private Boolean partofalbum;
-    @Column(name = "REMOVALSTATUS")
-    private Boolean removalstatus;
     @Column(name = "REMOVALDATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date removaldate;
@@ -222,12 +221,11 @@ public class MusicTrack implements Serializable {
         return "Single";
     }
 
-    public Boolean getRemovalstatus() {
-        return removalstatus;
-    }
-
-    public void setRemovalstatus(Boolean removalstatus) {
-        this.removalstatus = removalstatus;
+    public String isAvailableToClients() {
+        if (this.available) {
+            return "Yes";
+        }
+        return "No";
     }
 
     public Date getRemovaldate() {
@@ -277,6 +275,20 @@ public class MusicTrack implements Serializable {
 
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
+    }
+
+    public List<Invoicedetail> getInvoicedetailList() {
+        return invoicedetailList;
+    }
+
+    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
+        this.invoicedetailList = invoicedetailList;
+    }
+    public Boolean getAvailable() {
+        return available;
+    }
+    public void setAvailable(Boolean available) {
+        this.available = available;
     }
 
     public String getTracktitle() {
@@ -341,14 +353,6 @@ public class MusicTrack implements Serializable {
 
     public void setImagecontentsmall(byte[] imagecontentsmall) {
         this.imagecontentsmall = imagecontentsmall;
-    }
-
-    public List<Invoicedetail> getInvoicedetailList() {
-        return invoicedetailList;
-    }
-
-    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
-        this.invoicedetailList = invoicedetailList;
     }
 
 }

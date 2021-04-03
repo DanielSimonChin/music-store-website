@@ -36,7 +36,7 @@ CREATE TABLE ALBUM (
     PST FLOAT,
     GST FLOAT,
     HST FLOAT,
-    REMOVALSTATUS BIT(1),
+    AVAILABLE BIT(1),
     REMOVALDATE TIMESTAMP,
     PRIMARY KEY (ALBUMID)
 );
@@ -62,7 +62,7 @@ CREATE TABLE MUSIC_TRACK(
     HST FLOAT,
     DATEENTERED TIMESTAMP,
     PARTOFALBUM BIT(1),
-    REMOVALSTATUS BIT(1),
+    AVAILABLE BIT(1),
     REMOVALDATE TIMESTAMP,
     CONSTRAINT fkalbumid FOREIGN KEY (ALBUMID) REFERENCES ALBUM(ALBUMID), 
     PRIMARY KEY (INVENTORYID)
@@ -199,7 +199,7 @@ VALUES
 (3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 1),
 (4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 1);
 
-INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,REMOVALSTATUS, REMOVALDATE ) values
+INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,AVAILABLE, REMOVALDATE ) values
 (1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 19.99, 17.99, 15.99, 0.42, 0.45,0.49, 1, null),
 (2, "DAMN", TIMESTAMP("2017-04-14",  "00:00:00"), "Kendrick Lamar", "Top Dawg Entertainment", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "damn_big.jpg","damn_small.png",21.99, 22.99, 17.99, 0.42, 0.45,0.49, 1, null),
 (3, "THE GOAT", TIMESTAMP("2020-05-15",  "00:00:00"), "Polo G", "Columbia Records", 16, TIMESTAMP("2021-02-13",  "00:00:00"), "the_goat_big.png","the_goat_small.png",15.23, 17.99, 11.01, 0.42, 0.45,0.49, 1, null),
@@ -224,7 +224,8 @@ INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBER
 (22, "Shingeki no Kiseki", TIMESTAMP("2017-05-17",  "00:00:00"), "Linked Horizon", "Pony Canyon", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg",15.00, 13.00, 11.00, 0.45, 0.32,0.03, 1, null);
 
 
-INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, PLAYLENGTH, SELECTIONNUMBER, MUSICCATEGORY, COSTPRICE, LISTPRICE, SALEPRICE, PST,GST,HST,DATEENTERED , ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL,PARTOFALBUM,  REMOVALSTATUS, REMOVALDATE) values
+
+INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, PLAYLENGTH, SELECTIONNUMBER, MUSICCATEGORY, COSTPRICE, LISTPRICE, SALEPRICE, PST,GST,HST,DATEENTERED , ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL,PARTOFALBUM, AVAILABLE, REMOVALDATE) values
 (1, 1, "Get Ugly", "Lil Baby", "Dominique Jones", 2.35, 1, "Hip hop", 5.66, 5.00, 4.23, 0.15, 0.33,0.13,  TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 0, 1, null ),
 (2, 1, "Woah", "Lil Baby", "Dominique Jones", 3.03, 5, "Hip hop", 6.75, 7.00, 4.12, 0.15, 0.33,0.13,  TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 0, 1, null ),
 (3, 1, "Emotionally Scarred", "Lil Baby", "Dominique Jones", 7.34, 8, "Hip hop", 5.12, 5.00, 3.23, 0.15, 0.33,0.13,  TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 0, 1, null ),
@@ -325,6 +326,7 @@ INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, P
 (98, 22, "Crossover", "Fear, and Loathing in Las Vegas", "Fear, and Loathing in Las Vegas", 3.12,3, "Anime", 7.60, 8.00, 3.49, 0.23, 0.19, 0.31, TIMESTAMP("2021-02-13",  "00:00:00"),"Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg", 0, 1, null ),
 (99, 22, "Acceleration", "Fear, and Loathing in Las Vegas", "Fear, and Loathing in Las Vegas", 3.08,1, "Anime", 7.43, 8.00, 3.12, 0.23, 0.19, 0.31, TIMESTAMP("2021-02-13",  "00:00:00"),"Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg", 0, 1, null ),
 (100, 22,"Scream Hard as You Can", "Fear, and Loathing in Las Vegas", "Fear, and Loathing in Las Vegas", 3.56,2, "Anime", 7.11, 8.00, 3.57, 0.23, 0.19, 0.31, TIMESTAMP("2021-02-13",  "00:00:00"),"Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg", 0, 1, null );
+
 
 
 INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH) VALUES

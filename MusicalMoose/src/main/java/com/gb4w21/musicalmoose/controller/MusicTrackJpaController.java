@@ -14,14 +14,18 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -38,6 +42,7 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +59,13 @@ public class MusicTrackJpaController implements Serializable {
     private EntityManager em;
 
     private MusicTrack searchedTrack;
-//    private String recentGenre;
+
+    //The global variables used for the track management page
+    private List<MusicTrack> tracks;
+    private MusicTrack selectedTrack;
+    private List<MusicTrack> selectedTracks;
+    //When the cancel button is clicked, we want the selectedTrack to be the same as the trackCopy
+    private MusicTrack trackCopy;
 
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
         try {
@@ -236,8 +247,7 @@ public class MusicTrackJpaController implements Serializable {
             Query q = em.createQuery(cq);
 
             return q.getResultList();
-        }
-        catch (NullPointerException ex) {
+        } catch (NullPointerException ex) {
             return new ArrayList<MusicTrack>();
         }
     }
@@ -295,7 +305,7 @@ public class MusicTrackJpaController implements Serializable {
         if (searchedTrack != null && searchedTrack.getMusiccategory() != null) {
             Map<String, Object> properties = new HashMap<>();
             properties.put("maxAge", 31536000);
-            
+
             FacesContext context = FacesContext.getCurrentInstance();
             context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), properties);
         }
@@ -305,24 +315,23 @@ public class MusicTrackJpaController implements Serializable {
         this.searchedTrack = track;
         return "detailTrackFromAlbum";
     }
-    
-    public String searchSingleTrack(int id){
+
+    public String searchSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
         writeCookie();
         return "searchTrack";
     }
-    
+
     public String selectSingleTrack(int id) {
         try {
             this.searchedTrack = findTrackById(id);
-        }
-        catch (NonexistentEntityException e) {
+        } catch (NonexistentEntityException e) {
             return null;
         }
         writeCookie();
         return "detailTrack";
     }
-    
+
     public MusicTrack findTrackById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -331,7 +340,7 @@ public class MusicTrackJpaController implements Serializable {
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
 
         cq.select(musicTrack);
-        
+
         cq.where(cb.equal(musicTrack.get("inventoryid"), id));
 
         Query q = em.createQuery(cq);
@@ -359,7 +368,7 @@ public class MusicTrackJpaController implements Serializable {
         List<MusicTrack> tracks = query.getResultList();
         final int specialsLimt = 3;
         List<MusicTrack> specialList = new ArrayList<>();
-        if (tracks.size()>specialsLimt) {
+        if (tracks.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
                 specialList.add(tracks.get(i));
             }
@@ -382,7 +391,7 @@ public class MusicTrackJpaController implements Serializable {
     public void setMusicTrack(MusicTrack musicTrack) {
         this.searchedTrack = musicTrack;
     }
-    
+
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.
@@ -393,6 +402,110 @@ public class MusicTrackJpaController implements Serializable {
     public String searchRelatedTrack(MusicTrack track) {
         this.searchedTrack = track;
         return "relatedTrack";
+    }
+
+    /**
+     * The data table should be filled with all the track entity objects from
+     * the database.
+     */
+    @PostConstruct
+    public void init() {
+        this.tracks = findMusicTrackEntities();
+    }
+
+    /**
+     * @return the list of all tracks displayed in the data table
+     */
+    public List<MusicTrack> getTracks() {
+        return this.tracks;
+    }
+
+    /**
+     * @return the selected track that the user chose.
+     */
+    public MusicTrack getSelectedTrack() {
+        return this.selectedTrack;
+    }
+
+    /**
+     * When a track is clicked, it becomes the selected track
+     *
+     * @param musicTrack
+     */
+    public void setSelectedTrack(MusicTrack musicTrack) {
+        this.selectedTrack = musicTrack;
+    }
+
+    /**
+     * @return the list of all selected tracks
+     */
+    public List<MusicTrack> getSelectedTracks() {
+        return this.selectedTracks;
+    }
+
+    /**
+     * Set the list of selected tracks
+     *
+     * @param selectedTracks
+     */
+    public void setSelectedTracks(List<MusicTrack> selectedTracks) {
+        this.selectedTracks = selectedTracks;
+    }
+
+    /**
+     * When a user clicks on the create button, the selected track initializes a
+     * new object
+     */
+    public void openNew() {
+        this.selectedTrack = new MusicTrack();
+    }
+
+    /**
+     * Check if the selected tracks is empty.
+     *
+     * @return true if it is not empty.
+     */
+    public boolean hasSelectedTracks() {
+        return this.selectedTracks != null && !this.selectedTracks.isEmpty();
+    }
+
+    /**
+     * Update the selected track and display a message for the user.
+     *
+     * @throws Exception
+     */
+    public void updateProduct() throws Exception {
+        edit(this.selectedTrack);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Updated"));
+
+        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    /**
+     * When the cancel button is clicked for the management form, all changes
+     * made before the cancel button was clicked will not affect the datatable
+     * or the database. Reset the datatable values.
+     *
+     * @throws NonexistentEntityException
+     */
+    public void cancelTrackForm() throws NonexistentEntityException {
+        this.tracks = findMusicTrackEntities();
+        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    /**
+     * If the admin makes a song unavailable to clients, then set the removal
+     * date to the current day
+     */
+    public void setRemovalDate() {
+        if (this.selectedTrack.getAvailable()) {
+            this.selectedTrack.setRemovaldate(null);
+            return;
+        }
+        this.selectedTrack.setRemovaldate(new Date());
+
     }
 
 }
