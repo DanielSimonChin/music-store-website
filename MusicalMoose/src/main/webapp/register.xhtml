@@ -163,7 +163,7 @@ and open the template in the editor.
 
                         </div>
                         <br></br>
-                        <h:commandButton value="#{msgs.createAccount}" action="#{registrationController.addNewUser()}" />
+                        <h:commandButton class="buttonsub" value="#{msgs.createAccount}" action="#{registrationController.addNewUser()}" />
 
 
                     </h:form>
@@ -172,6 +172,7 @@ and open the template in the editor.
                         <h:commandButton value="#{msgs.alreadyAccount}" action="#{loginController.toLoginPage()}" />
                     </h:form>   
                 </div>
+                <script src="./register.js"></script>
             </ui:define>
         </ui:composition>
     </h:body>
