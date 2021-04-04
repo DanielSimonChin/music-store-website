@@ -23,13 +23,13 @@
                         </p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
-                <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{clientManagerController.clients}"
+                <p:dataTable id="dt-products" widgetVar="dtProducts" var="review" value="#{reviewManagerController.reviews}"
                              reflow="true" styleClass="products-table"
-                             selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
+                             selection="#{reviewManagerController.selectedReviews}" rowKey="#{review.reviewid}" paginator="true"
                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
                     <f:facet name="header">
                         <div class="products-table-header">
-                            <span style="font-weight: bold">PRODUCTS</span>
+                            <span style="font-weight: bold">#{msgs.reviews}</span>
 
                             <span class="filter-container ui-input-icon-left">
                                 <i class="pi pi-search"></i>
@@ -38,28 +38,40 @@
 
                         </div>
                     </f:facet>
-                    <p:ajax event="rowSelect" update=":form:delete-products-button"/>
-                    <p:ajax event="rowUnselect" update=":form:delete-products-button"/>
-                    <p:ajax event="rowSelectCheckbox" update=":form:delete-products-button"/>
-                    <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button"/>
-                    <p:ajax event="toggleSelect" update=":form:delete-products-button"/>
+
                     <p:column selectionMode="multiple" exportable="false"></p:column>
                     <p:column exportable="false">
-                        
-                        
-                        
-                        
-                        
+
+
+                        <p:column  headerText="#{msgs.id}" sortBy="#{review.reviewid}" filterBy="#{review.reviewid}">
+                            <h:outputText  value="#{review.reviewid}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs.username}" sortBy="#{review.inventoryid.tracktitle}" filterBy="#{review.inventoryid.tracktitle}">
+                            <h:outputText value="#{review.inventoryid.tracktitle}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs.username}" sortBy="#{review.clientname}" filterBy="#{review.clientname}">
+                            <h:outputText value="#{review.clientname}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs.email}" sortBy="#{review.rating}" filterBy="#{review.rating}">
+                            <h:outputText  value="#{review.rating}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs.email}" sortBy="#{review.reviewtext}" filterBy="#{review.reviewtext}">
+                            <h:outputText  value="#{review.reviewtext}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs.email}" sortBy="#{review.reviewdate}" filterBy="#{review.reviewdate}">
+                            <h:outputText  value="#{review.reviewdate.toString}"/>
+                        </p:column>
+                        <p:column headerText="#{msgs.isManager}" sortBy="#{review.aprovalstatus}" >
+                            <h:outputText rendered="#{review.aprovalstatus}" value="#{msgs.trueMs}"/>
+                            <h:outputText rendered="#{not  review.aprovalstatus}" value="#{msgs.falseMs}"/>
+                        </p:column>
                         <p:commandButton  update=":form:manage-product-content"
                                           oncomplete="PF('manageProductDialog').show()"
                                           styleClass="edit-button rounded-button ui-button-success" process="@this">
                             <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
                             <p:resetInput target=":form:manage-product-content"/>
                         </p:commandButton>
-                        <p:commandButton class="ui-button-warning rounded-button"  process="@this"
-                                         oncomplete="PF('deleteProductDialog').show()">
-                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
-                        </p:commandButton>
+
                     </p:column>
 
                 </p:dataTable>

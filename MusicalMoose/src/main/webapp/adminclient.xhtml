@@ -33,19 +33,17 @@
 
                                 <p:toolbar>
 
-                                    <p:toolbarGroup align="right">
-
+                                    <p:toolbarGroup align="right">                                         
                                         <h:form >
                                             <p:inputText id="navsearch"  value="#{clientManagerController.clientSearch}" validator="#{clientManagerController.validateClientSearch}" required="true" requiredMessage="#{msgs.required}" />
-                                            <p:commandButton value="#{msgs.search}" action="#{clientManagerController.searchClients()}"/> 
+                                            <h:commandButton value="#{msgs.search}" action="#{clientManagerController.searchClients()}"/> 
 
                                             <br></br>
                                             <p:message id="searchError" for="navsearch" style="color:red" />
                                         </h:form>
-                                        <h:form >
-                                            <p:commandButton value="#{msgs.searchAll}" action="#{clientManagerController.searchAllClients()}"/> 
-                                        </h:form>
+                                      
                                     </p:toolbarGroup>
+                                   
                                 </p:toolbar>
 
 
@@ -53,17 +51,7 @@
                                              reflow="true" styleClass="products-table"
                                              selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
                                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
-                                    <f:facet name="header">
-                                        <div class="products-table-header">
-                                            <span style="font-weight: bold">#{msgs.clients}</span>
-
-                                            <span class="filter-container ui-input-icon-left">
-                                                <i class="pi pi-search"></i>
-                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
-                                            </span>
-
-                                        </div>
-                                    </f:facet>
+                                 
 
 
                                     <p:column selectionMode="multiple" exportable="false"></p:column>
@@ -71,11 +59,12 @@
                                     <p:column  headerText="#{msgs.id}" sortBy="#{client.clientid}" filterBy="#{client.clientid}">
                                         <h:outputText  value="#{client.clientid}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
-                                        <h:outputText  value="#{client.email}"/>
-                                    </p:column>
+                                   
                                     <p:column headerText="#{msgs.username}" sortBy="#{client.username}" filterBy="#{client.username}">
                                         <h:outputText value="#{client.username}"/>
+                                    </p:column>
+                                     <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
+                                        <h:outputText  value="#{client.email}"/>
                                     </p:column>
                                     <p:column headerText="#{msgs.password}" sortBy="#{client.password}" filterBy="#{client.password}">
                                         <h:outputText  value="#{client.password}"/>
@@ -123,45 +112,44 @@
                                     <p:column headerText="#{msgs.genreOfLastSearch}" sortBy="#{client.genreoflastsearch}" filterBy="#{client.genreoflastsearch}">
                                         <h:outputText value="#{client.genreoflastsearch}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.isManager}" sortBy="#{client.ismanager}" filterBy="#{client.ismanager}">
+                                    <p:column headerText="#{msgs.isManager}" sortBy="#{client.ismanager}" >
                                         <h:outputText rendered="#{client.ismanager}" value="#{msgs.trueMs}"/>
                                         <h:outputText rendered="#{not  client.ismanager}" value="#{msgs.falseMs}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.accountActive}" sortBy="#{client.clientactive}" filterBy="#{client.clientactive}">
+                                    <p:column headerText="#{msgs.accountActive}" sortBy="#{client.clientactive}" >
                                         <h:outputText rendered="#{client.clientactive}" value="#{msgs.trueMs}"/>
                                         <h:outputText rendered="#{not  client.clientactive}" value="#{msgs.falseMs}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.numberOfSales}" sortBy="#{client.saleList.size()}" filterBy="#{client.saleList.size()}">
+                                    <p:column headerText="#{msgs.numberOfSales}" sortBy="#{client.saleList.size()}" >
                                         <h:outputText value="#{client.saleList.size()}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.numberOfReviews}" sortBy="#{client.reviewList.size()}" filterBy="#{client.reviewList.size()}">
+                                    <p:column headerText="#{msgs.numberOfReviews}" sortBy="#{client.reviewList.size()}" >
                                         <h:outputText value="#{client.reviewList.size()}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.numberOfCreditCards}" sortBy="#{client.creditcardinfoList.size()}" filterBy="#{client.creditcardinfoList.size()}">
-                                        <h:outputText value="#{client.creditcardinfoList.size()}"/>
+                                    <p:column headerText="#{msgs.totalSaleValue}" sortBy="#{clientManagerController.getTotalSales(client)}">
+                                        <h:outputText value="#{clientManagerController.getTotalSales(client)}" style="font-weight: 700" >
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                         </h:outputText>
                                     </p:column>
                                     <p:column exportable="false">
-                                        <p:commandButton  update=":form:manage-product-content"
-                                                          oncomplete="PF('manageProductDialog').show()"
-                                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                        <p:commandButton  icon="pi pi-pencil" update=":form:manage-product-content"
+                                                         oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
                                             <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
                                             <p:resetInput target=":form:manage-product-content"/>
                                         </p:commandButton>
-                                        <p:commandButton class="ui-button-warning rounded-button"  process="@this"
-                                                         oncomplete="PF('deleteProductDialog').show()">
-                                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
-                                        </p:commandButton>
+                                        
                                     </p:column>
 
                                 </p:dataTable>
 
-                                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true"
-                                          widgetVar="manageProductDialog" responsive="true">
+                                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
+                                        width="860" height="540" widgetVar="manageProductDialog" responsive="true">
                                     <p:outputPanel id="manage-product-content" class="ui-fluid">
                                         <p:outputPanel rendered="#{not empty clientManagerController.selectedClient}">
                                             <div class="p-field">
                                                 <p:outputLabel for="cname" value="#{msgs.username}"/>
-                                                <p:inputText id="cname" label="#{msgs.username}"  value="#{clientManagerController.selectedClient.username}" required="true" requiredMessage="#{msgs.required}"  validator="#{validationController.validateUserNameError}">
+                                                <p:inputText id="cname" label="#{msgs.username}"  value="#{clientManagerController.selectedClient.username}" required="true" requiredMessage="#{msgs.required}"  validator="#{clientManagerController.validateClientUserNameError}">
                                                     <f:validateLength minimum="8" maximum="27" />
 
                                                     <f:ajax event="blur" render="userNameError" />
@@ -171,7 +159,7 @@
                                             </div>
                                             <div class="p-field">
                                                 <p:outputLabel for="password" value="#{msgs.password}"/>
-                                                <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}}" requiredMessage="#{msgs.required}"   required="true">
+                                                <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}" requiredMessage="#{msgs.required}"   required="true">
                                                     <f:validateLength minimum="6" maximum="27" />
                                                     <f:ajax event="blur" render="password1Error" />
                                                 </p:inputText>
@@ -261,8 +249,8 @@
 
                                             </div>
                                             <div class="p-field">
-                                                <p:outputLabel for="crountry" value="#{msgs.country}"/>
-                                                <p:inputText id="crountry" label="#{msgs.country}" value="#{clientManagerController.selectedClient.country}" required="true" requiredMessage="#{msgs.required}" >                           
+                                                <p:outputLabel for="country" value="#{msgs.country}"/>
+                                                <p:inputText id="country" label="#{msgs.country}" value="#{clientManagerController.selectedClient.country}" required="true" requiredMessage="#{msgs.required}" >                           
                                                     <f:validateLength  maximum="50" />
                                                     <f:ajax event="blur" render="countryError" />
                                                 </p:inputText>

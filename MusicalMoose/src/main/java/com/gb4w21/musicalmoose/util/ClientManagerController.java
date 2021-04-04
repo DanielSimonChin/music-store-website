@@ -4,12 +4,14 @@
  * and open the template in the editor.
  */
 package com.gb4w21.musicalmoose.util;
+
 import com.gb4w21.musicalmoose.beans.SearchResult;
 import javax.faces.application.Application;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Client;
+import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import com.gb4w21.musicalmoose.entities.Client_;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -39,121 +41,139 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+
 @Named
 @SessionScoped
-public class ClientManagerController implements Serializable{
+public class ClientManagerController implements Serializable {
+
     private final static Logger LOG = LoggerFactory.getLogger(ClientManagerController.class);
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$", Pattern.CASE_INSENSITIVE);
     @PersistenceContext
     private EntityManager entityManager;
     @Inject
     private ClientJpaController clientJpaController;
-    
 
     private List<Client> clients;
 
     private Client selectedClient;
     private String clientSearch;
     private List<Client> selectedClients;
-    public ClientManagerController(){
-        
+
+    public ClientManagerController() {
+
     }
-    public List<Client> getSelectedClients(){
-        if(selectedClients==null){
-            selectedClients=new ArrayList<>();
+
+    public List<Client> getSelectedClients() {
+        if (selectedClients == null) {
+            selectedClients = new ArrayList<>();
         }
         return selectedClients;
     }
-    public String getClientSearch(){
+
+    public String getClientSearch() {
         return clientSearch;
     }
-    public void setClientSearch(String clientSearch){
-        this.clientSearch=clientSearch;
+
+    public void setClientSearch(String clientSearch) {
+        this.clientSearch = clientSearch;
     }
-    public List<Client> getClients(){
-        if(clients==null){
-            clients=new ArrayList<>();
+
+    public List<Client> getClients() {
+        if (clients == null) {
+            clients = new ArrayList<>();
         }
-        LOG.info("clients size22:"+clients.size());
-        LOG.info("clients size22:"+clients.size());
-        LOG.info("clients size22:"+clients.size());
-        LOG.info("clients size22:"+clients.size());
+        LOG.info("clients size22:" + clients.size());
+        LOG.info("clients size22:" + clients.size());
+        LOG.info("clients size22:" + clients.size());
+        LOG.info("clients size22:" + clients.size());
         return clients;
     }
-    public Client getSelectedClient(){
-        
+
+    public Client getSelectedClient() {
+
         return selectedClient;
     }
-     public void setSelectedClients(List<Client> selectedClients){
-         this.selectedClients=selectedClients;
+
+    public void setSelectedClients(List<Client> selectedClients) {
+        this.selectedClients = selectedClients;
     }
-    public void setClients(List<Client> clients){
-         this.clients=clients;
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
-    public void setSelectedClient(Client selectedClient){
-         this.selectedClient=selectedClient;
+
+    public void setSelectedClient(Client selectedClient) {
+        this.selectedClient = selectedClient;
     }
+
     public void createNewClient() {
         this.selectedClient = new Client();
-    
+
     }
-    public String toClientManagement(){
-        clients=new ArrayList<>();
-        selectedClients=new ArrayList<>();
-        this.selectedClient=null;
+
+    public String toClientManagement() {
+        clients = new ArrayList<>();
+        selectedClients = new ArrayList<>();
+        this.selectedClient = null;
         return "adminclient";
     }
-    public String searchAllClients(){
-        selectedClient=null;
-        selectedClients=new ArrayList<>();
-        clients=clients=clientJpaController.findClientEntities();
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
-        return null;
-    }
-    public String searchClients(){
-        selectedClient=null;
-        selectedClients=new ArrayList<>();
-        clients=getClientFromDatabase(clientSearch);
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
+
+    public String searchAllClients() {
+        selectedClient = null;
+        selectedClients = new ArrayList<>();
+        clients = clients = clientJpaController.findClientEntities();
+        LOG.info("clients ALL size:" + clients.size());
+        LOG.info("clients ALL size:" + clients.size());
+        LOG.info("clients ALL size:" + clients.size());
+        LOG.info("clients ALL size:" + clients.size());
         return "adminclient";
     }
-    private List<Client> getClientFromDatabase(String clientSearch){
+
+    public String searchClients() {
+        selectedClient = null;
+        selectedClients = new ArrayList<>();
+        clients = getClientFromDatabase(clientSearch);
+        LOG.info("clients size:" + clients.size());
+        LOG.info("clients size:" + clients.size());
+        LOG.info("clients size:" + clients.size());
+        LOG.info("clients size:" + clients.size());
+        return "adminclient";
+    }
+
+    private List<Client> getClientFromDatabase(String clientSearch) {
         String clientSearchText = "%" + clientSearch + "%";
-        LOG.info("client search:"+clientSearch);
-        LOG.info("client search:"+clientSearch);
-        LOG.info("client search:"+clientSearch);
-        LOG.info("client search:"+clientSearch);
-        LOG.info("client search:"+clientSearch);
-        LOG.info("client search:"+clientSearch);
+        LOG.info("client search:" + clientSearch);
+        LOG.info("client search:" + clientSearch);
+        LOG.info("client search:" + clientSearch);
+        LOG.info("client search:" + clientSearch);
+        LOG.info("client search:" + clientSearch);
+        LOG.info("client search:" + clientSearch);
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
         cq.select(client);
         cq.where(cb.like(client.get("username"), clientSearchText));
         TypedQuery<Client> query = entityManager.createQuery(cq);
-        List<Client> clients=query.getResultList();
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
-        LOG.info("clients size:"+clients.size());
+        List<Client> clients = query.getResultList();
+        LOG.info("clients size:" + clients.size());
+        LOG.info("clients size:" + clients.size());
+        LOG.info("clients size:" + clients.size());
+        LOG.info("clients size:" + clients.size());
         return clients;
     }
-       public void saveClient() {
-        if (this.selectedClient.getUsername()== null) {
+
+    public void saveClient() {
+        LOG.info("save client");
+        LOG.info("save client");
+        LOG.info("save client");
+        if (this.selectedClient.getUsername() == null) {
             this.selectedClient.setUsername(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 9));
             this.clients.add(this.selectedClient);
-             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "clientCreated", null);
             FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-        else {
-             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+        } else {
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "clientUpdated", null);
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
@@ -161,63 +181,15 @@ public class ClientManagerController implements Serializable{
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
-       
-       public void deleteClient() {
-        this.clients.remove(this.selectedClient);
-        try {
-            clientJpaController.destroy(this.selectedClient.getClientid());
-        } catch (RollbackFailureException ex ) {
-          LOG.info("Destroyed error the client with the id "+selectedClient.getClientid()+" could not be deleted");
-        } catch (Exception ex) {
-            LOG.info("Destroyed error the client with the id "+selectedClient.getClientid()+" could not be deleted");
-        }
-        this.selectedClient = null;
-        FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "clientRemvoed", null);
-       
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-    }
-       
-        public boolean hasSelectedClients() {
+
+    public boolean hasSelectedClients() {
         return this.selectedClients != null && !this.selectedClients.isEmpty();
     }
-    public String getDeleteClientButtonMessage() {
-        if (hasSelectedClients()) {
-            int size = this.selectedClients.size();
-            FacesMessage messageProducts = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "productsSelected", null);
-            FacesMessage messageOneProduct = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "opneProductSelected", null);
-            return size > 1 ? size + messageProducts.getDetail() : messageOneProduct.getDetail();
-        }
-        FacesMessage messageDelete = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "delete", null);
-        
-        return messageDelete.getDetail();
-    }
-    public void deleteSelectedClients() {
-        this.clients.removeAll(this.selectedClients);
-        for(Client client :this.selectedClients){
-            try {
-                clientJpaController.destroy(client.getClientid());
-            } catch (RollbackFailureException ex) {
-                LOG.info("Destroyed error the client with the id "+selectedClient.getClientid()+" could not be deleted");
-            } catch (Exception ex) {
-                LOG.info("Destroyed error the client with the id "+selectedClient.getClientid()+" could not be deleted");
-            }
-        }
-        this.selectedClients = null;
-        FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "clientsRemvoed", null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-        PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
-    }
+
     public void validateCellPhoneNumber(FacesContext context, UIComponent component,
             Object value) {
         String cellPhoneNumber = value.toString();
-        String homePhoneNumber = ""+selectedClient.getHometelephone();
+        String homePhoneNumber = "" + selectedClient.getHometelephone();
         Matcher matcher = VALID_PHONE_NUMBER_PATTERN.matcher(cellPhoneNumber);
         if (!matcher.find()) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -226,7 +198,7 @@ public class ClientManagerController implements Serializable{
 
             throw new ValidatorException(message);
         }
-        if(cellPhoneNumber!=null&&(!cellPhoneNumber.equals(""))&&homePhoneNumber.equals(cellPhoneNumber)){
+        if (cellPhoneNumber != null && (!cellPhoneNumber.equals("")) && homePhoneNumber.equals(cellPhoneNumber)) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "phoneNumberIdenticalError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -234,19 +206,82 @@ public class ClientManagerController implements Serializable{
             throw new ValidatorException(message);
         }
     }
-     public void validateClientSearch(FacesContext context, UIComponent component,
+
+    public void validateClientSearch(FacesContext context, UIComponent component,
             Object value) {
-         
-        if (value==null||value.toString().equals("")||getClientFromDatabase(value.toString()).isEmpty()) {
 
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "noResults", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+        if (value == null || value.toString().equals("") || getClientFromDatabase(value.toString()).isEmpty()) {
 
-                throw new ValidatorException(message);
-            
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "noResults", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+
         }
     }
+    public double getTotalSales(Client chosenClient){
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
+        Root<Client> client = cq.from(Client.class);
+        Join sale = client.join("saleList");
+        Join invoicedetail = sale.join("invoicedetailList");
+        cq.where(cb.equal(client.get("clientid"), chosenClient.getClientid()));
+        cq.multiselect(invoicedetail.get("totalgrossvalue"));
+        TypedQuery<Object[]> query = entityManager.createQuery(cq);
+        List<Object[]> prices = query.getResultList();
+        Float totalValue=0.f;
+        for(Object price:prices){
+            totalValue += (Float)price;
+            LOG.info(""+price.toString());
+        }
+        return totalValue;
+    }
+    public void validateClientUserNameError(FacesContext context, UIComponent component,
+            Object value) {
+        String username = value.toString();
+        LOG.info("user error");
+        LOG.info("user error");
+        LOG.info("user error");
+        LOG.info("user error");
+        if (!this.selectedClient.getUsername().equals(username) && !checkUserName(username)) {
+            LOG.info("user error!");
+            LOG.info("user error!");
+            LOG.info("user error!");
+            LOG.info("user error!");
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "usernameTakenError", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+    }
+
+    private boolean checkUserName(String username) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Client> cq = cb.createQuery(Client.class);
+        Root<Client> client = cq.from(Client.class);
+        cq.select(client);
+        LOG.info("user error" + username);
+        LOG.info("user error" + username);
+        LOG.info("user error" + username);
+        LOG.info("user error" + username);
+        // Use String to refernce a field
+        cq.where(cb.equal(client.get("username"), username));
+
+        TypedQuery<Client> query = entityManager.createQuery(cq);
+
+        if (query.getResultList().isEmpty()) {
+            LOG.info("user error empty");
+            LOG.info("user error empty");
+            LOG.info("user error empty");
+            LOG.info("user error empty");
+            return true;
+        }
+        return false;
+
+    }
+
     public void validateAddress(FacesContext context, UIComponent component,
             Object value) {
         String address1 = selectedClient.getAddress1();

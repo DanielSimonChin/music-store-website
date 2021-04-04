@@ -262,7 +262,7 @@ public class ReviewJpaController implements Serializable {
         LOG.info("Client id:"+client.getClientid());
         LOG.info("Client name:"+client.getUsername());
         review.setClientid(client);
-        review.setClientname(client.getFirstname());
+        review.setClientname(client.getUsername());
         create(review);
         trackCreated = true;
         return "reviewpage";

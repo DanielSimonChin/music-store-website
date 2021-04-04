@@ -55,7 +55,15 @@ public class ValidationController implements Serializable{
     public void validateUserNameError(FacesContext context, UIComponent component,
             Object value) {
         String username = value.toString();
+        LOG.info("user error");
+        LOG.info("user error");
+        LOG.info("user error");
+        LOG.info("user error");
         if (!checkUserName(username)) {
+            LOG.info("user error!");
+            LOG.info("user error!");
+            LOG.info("user error!");
+            LOG.info("user error!");
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "usernameTakenError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -68,12 +76,20 @@ public class ValidationController implements Serializable{
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
         cq.select(client);
+        LOG.info("user error"+username);
+        LOG.info("user error"+username);
+        LOG.info("user error"+username);
+        LOG.info("user error"+username);
         // Use String to refernce a field
         cq.where(cb.equal(client.get("username"), username));
 
         TypedQuery<Client> query = entityManager.createQuery(cq);
 
         if (query.getResultList().isEmpty()) {
+            LOG.info("user error empty");
+            LOG.info("user error empty");
+            LOG.info("user error empty");
+            LOG.info("user error empty");
             return true;
         }
         return false;
