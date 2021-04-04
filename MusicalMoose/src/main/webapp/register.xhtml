@@ -63,7 +63,6 @@ and open the template in the editor.
                             <br></br>
                             <br></br>
                             <h:outputLabel for="fname" value="#{msgs.firstName}"/>
-                            <label for="fname">#{msgs.firstName}</label>
                             <h:inputText id="fname" label="#{msgs.firstName}" value="#{registrationBean.firstname}" required="true"  requiredMessage="#{msgs.required}" a:placeholder="Mike">
                                 <f:validateLength  maximum="50" />
                                 <f:ajax event="blur" render="fristNameError" />
