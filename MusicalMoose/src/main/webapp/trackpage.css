@@ -139,6 +139,10 @@ input[type=submit]{
     color:white;
 }
 
+#shopcartlink{
+    margin: 5px;
+}
+
 .sub-nav-logo{
     color:#575757 !important;
 }
@@ -223,10 +227,10 @@ header {
     margin: 0; 
     padding: 0; 
 
-  }
-  
-  
-  .main-nav {
+}
+
+
+.main-nav {
     display: flex;
 
     grid-area: mn;

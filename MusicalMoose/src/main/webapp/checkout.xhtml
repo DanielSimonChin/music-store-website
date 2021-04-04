@@ -32,7 +32,7 @@
                 
                 <div id="info1" class="container-info">
                     <h:form>
-                    <div class="row">
+                    <div id="infobox">
                         <h3>#{msgs.payment}</h3>
                         <label for="fname">Select Card</label>
                         
@@ -115,8 +115,7 @@
                         
                         </div>
 
-                        <br></br>
-                        
+                        <div id="summary">
                         <h3>Order Summary</h3>
                         <h:outputText value="Items: $#{shoppingCartController.calculateTotal()}" />
                         <br></br>
@@ -136,6 +135,7 @@
                                 padding-top: 10px; 
                                 padding-bottom: 10px;
                                 border-radius: 15px;"/>
+                        </div>
                     </h:form>
                 </div>
             </ui:define>
