@@ -167,6 +167,10 @@ header {
     color: var(--dark);
 }
 
+#shopcartlink{
+    margin: 5px;
+}
+
 
 /* MAIN CONTIANER */
 .main-container {

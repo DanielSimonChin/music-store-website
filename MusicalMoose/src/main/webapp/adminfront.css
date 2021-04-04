@@ -128,6 +128,10 @@ select option{
     margin-top: -85px;
 }
 
+#shopcartlink{
+    margin: 5px;
+}
+
 a{
     color:#EDF7B5;
     text-decoration: none;
@@ -161,8 +165,8 @@ html, body {
 }
 
 @media screen and (max-width:768px){
-th,td { display:block; width:100% !important; }
-  }
+    th,td { display:block; width:100% !important; }
+}
 
 h1 {
     padding-top: 60px;  

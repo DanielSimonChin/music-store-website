@@ -16,17 +16,23 @@
 }
 
 #info1{
-    margin-top:70px;
-    margin-left:40px;
-    width:30%;
+    margin-left: 37%;
+    width:50%;
 }
 
 #info2{
-    width: 45%;
-    margin-right: 10%;
-    margin-left:40px;
-    padding-left: 100px;
+    width: 90%;
+    padding-left: 15%;
     height:380px;
+}
+
+.back{
+    margin-left: 10%; 
+    padding-left: 25px; 
+    padding-right: 25px; 
+    padding-top: 15px; 
+    padding-bottom: 15px;
+    border-radius: 15px;
 }
 
 .card{
@@ -50,22 +56,22 @@
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1; 
+    background: #f1f1f1; 
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #888; 
+    background: #888; 
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555; 
+    background: #555; 
 }
 
 input[type=radio]{
@@ -146,6 +152,10 @@ html, body {
     line-height: 1.4;
 }
 
+#shopcartlink{
+    margin: 5px;
+}
+
 html, body {
     max-width: 100%;
     overflow-x: hidden;
@@ -206,9 +216,9 @@ header {
     padding: 0 30px 0 20px;
 
     display: flex;
-  }
-  
-  .main-nav a {
+}
+
+.main-nav a {
 
     color: var(--light);
     text-decoration: none;
