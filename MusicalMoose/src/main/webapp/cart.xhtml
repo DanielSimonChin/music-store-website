@@ -26,17 +26,10 @@
                 <h1 id="title">#{msgs.shoppingCart}</h1>
                 
                 <h:form>
-                <h:commandButton value="#{msgs.back}" action="#{shoppingCartController.backPage()}" 
-                                 style="
-                                 margin-left: 120px; 
-                                 padding-left: 25px; 
-                                 padding-right: 25px; 
-                                 padding-top: 15px; 
-                                 padding-bottom: 15px;
-                                 border-radius: 15px;"/>
+                <h:commandButton class="back" value="#{msgs.back}" action="#{shoppingCartController.backPage()}" />
                 </h:form>
 
-                <div id="info2" class="container-info" style="padding-left: 250px; margin-bottom: 360px">
+                <div id="info2" class="container-info">
                     <h4>#{msgs.cart}</h4>
                     <div id="scrollcart" style="padding-bottom: 240px;">
                         <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">

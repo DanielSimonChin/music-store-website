@@ -63,7 +63,6 @@ and open the template in the editor.
                             <br></br>
                             <br></br>
                             <h:outputLabel for="fname" value="#{msgs.firstName}"/>
-                            <label for="fname">#{msgs.firstName}</label>
                             <h:inputText id="fname" label="#{msgs.firstName}" value="#{registrationBean.firstname}" required="true"  requiredMessage="#{msgs.required}" a:placeholder="Mike">
                                 <f:validateLength  maximum="50" />
                                 <f:ajax event="blur" render="fristNameError" />
@@ -164,7 +163,7 @@ and open the template in the editor.
 
                         </div>
                         <br></br>
-                        <h:commandButton value="#{msgs.createAccount}" action="#{registrationController.addNewUser()}" />
+                        <h:commandButton class="buttonsub" value="#{msgs.createAccount}" action="#{registrationController.addNewUser()}" />
 
 
                     </h:form>
@@ -173,6 +172,7 @@ and open the template in the editor.
                         <h:commandButton value="#{msgs.alreadyAccount}" action="#{loginController.toLoginPage()}" />
                     </h:form>   
                 </div>
+                <script src="./register.js"></script>
             </ui:define>
         </ui:composition>
     </h:body>
