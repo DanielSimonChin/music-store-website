@@ -94,14 +94,14 @@ public class GenreController implements Serializable {
 
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener),cb.equal(album.get("removalstatus"), 0));
+        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener),cb.equal(album.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"),  album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchController.setSearchResultsAlbum(query.getResultList());
 
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener), cb.equal(musicTrack.get("removalstatus"), 0));
+        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener), cb.equal(musicTrack.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchController.setSearchResultsTrack(query.getResultList());

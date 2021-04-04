@@ -11,71 +11,120 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <h:body>
-        <h:form id="form">
-            <div class="card crud-demo">
-                <p:growl id="messages" showDetail="true"/>
-
-                <p:toolbar>
-                    <p:toolbarGroup align="right">
-                        <p:fileUpload mode="simple" skinSimple="true" label="#{msgs.import}" />
-                        <p:commandButton value="#{msgs.export}"  styleClass="ui-button-help" ajax="false">
-                            <p:dataExporter type="pdf" target="dt-products" fileName="products"/>
-                        </p:commandButton>
-                    </p:toolbarGroup>
-                </p:toolbar>
-                <p:dataTable id="dt-products" widgetVar="dtProducts" var="review" value="#{reviewManagerController.reviews}"
-                             reflow="true" styleClass="products-table"
-                             selection="#{reviewManagerController.selectedReviews}" rowKey="#{review.reviewid}" paginator="true"
-                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
-                    <f:facet name="header">
-                        <div class="products-table-header">
-                            <span style="font-weight: bold">#{msgs.reviews}</span>
-
-                            <span class="filter-container ui-input-icon-left">
-                                <i class="pi pi-search"></i>
-                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
-                            </span>
-
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <div class="wrapper">
+                    <br/>
+                    <br/>
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+                        <div class="topnav">
+                            <a class="active">#{msgs.musicInv}</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
+                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
                         </div>
-                    </f:facet>
+                        <h:form id="form">
+                            <div class="card crud-demo">
+                                <p:growl id="messages" showDetail="true"/>
 
-                    <p:column selectionMode="multiple" exportable="false"></p:column>
-                    <p:column exportable="false">
+                                <p:toolbar>
+                                    <p:toolbarGroup align="right">
+                                        <p:fileUpload mode="simple" skinSimple="true" label="#{msgs.import}" />
+                                        <p:commandButton value="#{msgs.export}"  styleClass="ui-button-help" ajax="false">
+                                            <p:dataExporter type="pdf" target="dt-products" fileName="products"/>
+                                        </p:commandButton>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="review" value="#{reviewManagerController.reviews}"
+                                             reflow="true" styleClass="products-table"
+                                             selection="#{reviewManagerController.selectedReviews}" rowKey="#{review.reviewid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.reviews}</span>
+
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
+
+                                        </div>
+                                    </f:facet>
+
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
 
 
-                        <p:column  headerText="#{msgs.id}" sortBy="#{review.reviewid}" filterBy="#{review.reviewid}">
-                            <h:outputText  value="#{review.reviewid}"/>
-                        </p:column>
-                        <p:column headerText="#{msgs.username}" sortBy="#{review.inventoryid.tracktitle}" filterBy="#{review.inventoryid.tracktitle}">
-                            <h:outputText value="#{review.inventoryid.tracktitle}"/>
-                        </p:column>
-                        <p:column headerText="#{msgs.username}" sortBy="#{review.clientname}" filterBy="#{review.clientname}">
-                            <h:outputText value="#{review.clientname}"/>
-                        </p:column>
-                        <p:column headerText="#{msgs.email}" sortBy="#{review.rating}" filterBy="#{review.rating}">
-                            <h:outputText  value="#{review.rating}"/>
-                        </p:column>
-                        <p:column headerText="#{msgs.email}" sortBy="#{review.reviewtext}" filterBy="#{review.reviewtext}">
-                            <h:outputText  value="#{review.reviewtext}"/>
-                        </p:column>
-                        <p:column headerText="#{msgs.email}" sortBy="#{review.reviewdate}" filterBy="#{review.reviewdate}">
-                            <h:outputText  value="#{review.reviewdate.toString}"/>
-                        </p:column>
-                        <p:column headerText="#{msgs.isManager}" sortBy="#{review.aprovalstatus}" >
-                            <h:outputText rendered="#{review.aprovalstatus}" value="#{msgs.trueMs}"/>
-                            <h:outputText rendered="#{not  review.aprovalstatus}" value="#{msgs.falseMs}"/>
-                        </p:column>
-                        <p:commandButton  update=":form:manage-product-content"
-                                          oncomplete="PF('manageProductDialog').show()"
-                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
-                            <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
-                            <p:resetInput target=":form:manage-product-content"/>
-                        </p:commandButton>
 
-                    </p:column>
+                                    <p:column  headerText="#{msgs.id}" sortBy="#{review.reviewid}" filterBy="#{review.reviewid}">
+                                        <h:outputText  value="#{review.reviewid}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.trackTitle}" sortBy="#{review.inventoryid.tracktitle}" filterBy="#{review.inventoryid.tracktitle}">
+                                        <h:outputText value="#{review.inventoryid.tracktitle}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.clientName}" sortBy="#{review.clientname}" filterBy="#{review.clientname}">
+                                        <h:outputText value="#{review.clientname}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.rating}" sortBy="#{review.rating}" filterBy="#{review.rating}">
+                                        <h:outputText  value="#{review.rating}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.writtenReview}" sortBy="#{review.reviewtext}" filterBy="#{review.reviewtext}">
+                                        <h:outputText  value="#{review.reviewtext}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.reveiwDate}" sortBy="#{review.reviewdate}" >
+                                        <h:outputText  value="#{review.reviewdate}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.approvalStatus}" sortBy="#{review.aprovalstatus}" >
+                                        <h:outputText rendered="#{review.aprovalstatus}" value="#{msgs.approved}"/>
+                                        <h:outputText rendered="#{not  review.aprovalstatus}" value="#{msgs.notApproved}"/>
+                                    </p:column>
+                                    <p:column exportable="false">
+                                        <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
+                                                         oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{review}" target="#{reviewManagerController.selectedReview}"/>
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+                                    </p:column>
 
-                </p:dataTable>
-            </div>
-        </h:form>
+
+                                </p:dataTable>
+                                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
+                                          width="460" height="250" widgetVar="manageProductDialog" responsive="true">
+                                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty reviewManagerController.selectedReview}">
+                                            <div class="p-field">
+
+                                                <p:outputLabel for="reviewapproved">#{msgs.approvalStatus}</p:outputLabel>
+                                                <p:selectOneRadio id="reviewapproved" value="#{reviewManagerController.selectedReview.aprovalstatus}"
+                                                                  layout="responsive" columns="2">
+                                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.approved}" />
+                                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.notApproved}" />
+
+                                                </p:selectOneRadio>
+                                            </div>
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+                                    <f:facet name="footer">
+                                        <p:commandButton value="#{msgs.save}"  actionListener="#{reviewManagerController.saveReview()}"
+                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                                         class="ui-button-secondary"/>
+                                    </f:facet>
+                                </p:dialog>
+
+                                <p:confirmDialog global="true" showEffect="fade" width="300">
+                                    <p:commandButton value="#{msgs.yes}" type="button" styleClass="ui-confirmdialog-yes" />
+                                    <p:commandButton value="#{msgs.no}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                     />
+                                </p:confirmDialog>
+                            </div>
+                        </h:form>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>

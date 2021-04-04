@@ -82,10 +82,7 @@ public class ClientManagerController implements Serializable {
         if (clients == null) {
             clients = new ArrayList<>();
         }
-        LOG.info("clients size22:" + clients.size());
-        LOG.info("clients size22:" + clients.size());
-        LOG.info("clients size22:" + clients.size());
-        LOG.info("clients size22:" + clients.size());
+       
         return clients;
     }
 
@@ -122,10 +119,7 @@ public class ClientManagerController implements Serializable {
         selectedClient = null;
         selectedClients = new ArrayList<>();
         clients = clients = clientJpaController.findClientEntities();
-        LOG.info("clients ALL size:" + clients.size());
-        LOG.info("clients ALL size:" + clients.size());
-        LOG.info("clients ALL size:" + clients.size());
-        LOG.info("clients ALL size:" + clients.size());
+     
         return "adminclient";
     }
 
@@ -133,21 +127,13 @@ public class ClientManagerController implements Serializable {
         selectedClient = null;
         selectedClients = new ArrayList<>();
         clients = getClientFromDatabase(clientSearch);
-        LOG.info("clients size:" + clients.size());
-        LOG.info("clients size:" + clients.size());
-        LOG.info("clients size:" + clients.size());
-        LOG.info("clients size:" + clients.size());
+     
         return "adminclient";
     }
 
     private List<Client> getClientFromDatabase(String clientSearch) {
         String clientSearchText = "%" + clientSearch + "%";
-        LOG.info("client search:" + clientSearch);
-        LOG.info("client search:" + clientSearch);
-        LOG.info("client search:" + clientSearch);
-        LOG.info("client search:" + clientSearch);
-        LOG.info("client search:" + clientSearch);
-        LOG.info("client search:" + clientSearch);
+    
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
@@ -155,29 +141,26 @@ public class ClientManagerController implements Serializable {
         cq.where(cb.like(client.get("username"), clientSearchText));
         TypedQuery<Client> query = entityManager.createQuery(cq);
         List<Client> clients = query.getResultList();
-        LOG.info("clients size:" + clients.size());
-        LOG.info("clients size:" + clients.size());
-        LOG.info("clients size:" + clients.size());
-        LOG.info("clients size:" + clients.size());
+        
         return clients;
     }
 
-    public void saveClient() {
-        LOG.info("save client");
-        LOG.info("save client");
-        LOG.info("save client");
+    public void saveClient()  {
+       try{
         if (this.selectedClient.getUsername() == null) {
-            this.selectedClient.setUsername(UUID.randomUUID().toString().replaceAll("-", "").substring(0, 9));
-            this.clients.add(this.selectedClient);
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "clientCreated", null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            LOG.info("Soemone tried editing a nonexsitence client");
         } else {
+             clientJpaController.edit(selectedClient);
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "clientUpdated", null);
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
-
+       }
+       catch(RollbackFailureException ex){
+           LOG.info("create exception:"+ex.getLocalizedMessage());
+       } catch (Exception ex) {
+            LOG.info("editing expection:"+ex.getLocalizedMessage());
+        }
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
@@ -240,15 +223,9 @@ public class ClientManagerController implements Serializable {
     public void validateClientUserNameError(FacesContext context, UIComponent component,
             Object value) {
         String username = value.toString();
-        LOG.info("user error");
-        LOG.info("user error");
-        LOG.info("user error");
-        LOG.info("user error");
+     
         if (!this.selectedClient.getUsername().equals(username) && !checkUserName(username)) {
-            LOG.info("user error!");
-            LOG.info("user error!");
-            LOG.info("user error!");
-            LOG.info("user error!");
+        
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "usernameTakenError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -262,20 +239,14 @@ public class ClientManagerController implements Serializable {
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
         cq.select(client);
-        LOG.info("user error" + username);
-        LOG.info("user error" + username);
-        LOG.info("user error" + username);
-        LOG.info("user error" + username);
+   
         // Use String to refernce a field
         cq.where(cb.equal(client.get("username"), username));
 
         TypedQuery<Client> query = entityManager.createQuery(cq);
 
         if (query.getResultList().isEmpty()) {
-            LOG.info("user error empty");
-            LOG.info("user error empty");
-            LOG.info("user error empty");
-            LOG.info("user error empty");
+   
             return true;
         }
         return false;

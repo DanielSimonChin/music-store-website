@@ -6,6 +6,7 @@ import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.Review;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -52,6 +53,9 @@ public class ReviewManagerController implements Serializable {
 
     }
     public List<Review> getReviews(){
+        if(reviews==null||reviews.isEmpty()){
+            reviews=reviewJpaController.findReviewEntities();
+        }
         return reviews;
     }
     public void setReviews(List<Review> reviews){
@@ -69,5 +73,27 @@ public class ReviewManagerController implements Serializable {
     public void setSelectedReview(Review selectedReview){
         this.selectedReview=selectedReview;
     }
-
+    public String toReviewPage(){
+        reviews = new ArrayList<>();
+        selectedReviews = new ArrayList<>();
+        this.selectedReview = null;
+        return "adminreview";
+    }
+     public void saveReview() {
+       try{
+        if (this.selectedReview.getClientid()== null) {
+               LOG.info("Some one tried to edit a non exsitent review");
+        } else {
+            reviewJpaController.edit(selectedReview);
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "reviewUpdated", null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+       } catch (Exception ex) {
+            LOG.info("Error with editing:"+ex.getLocalizedMessage());
+        }
+      
+        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
 }

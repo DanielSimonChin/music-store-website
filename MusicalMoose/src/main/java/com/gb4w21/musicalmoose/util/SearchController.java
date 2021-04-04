@@ -220,7 +220,7 @@ public class SearchController implements Serializable {
         CriteriaQuery<SearchResult> cq = cb.createQuery(SearchResult.class);
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("tracktitle"), searchText), cb.equal(musicTrack.get("removalstatus"), 0));
+        cq.where(cb.like(musicTrack.get("tracktitle"), searchText), cb.equal(musicTrack.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsTrack = query.getResultList();
@@ -260,7 +260,7 @@ public class SearchController implements Serializable {
         CriteriaQuery<SearchResult> cq = cb.createQuery(SearchResult.class);
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(album.get("albumtitle"), searchText),cb.equal(album.get("removalstatus"), 0));
+        cq.where(cb.like(album.get("albumtitle"), searchText),cb.equal(album.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsAlbum = query.getResultList();
@@ -274,14 +274,14 @@ public class SearchController implements Serializable {
 
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.between(album.get("dateentered"), fromDate, toDate), cb.equal(album.get("removalstatus"), 0));
+        cq.where(cb.between(album.get("dateentered"), fromDate, toDate), cb.equal(album.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsAlbum = query.getResultList();
 
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
-        cq.where(cb.between(album.get("dateentered"), fromDate, toDate), cb.equal(musicTrack.get("removalstatus"), 0));
+        cq.where(cb.between(album.get("dateentered"), fromDate, toDate), cb.equal(musicTrack.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchResultsTrack.addAll(query.getResultList());
@@ -295,14 +295,14 @@ public class SearchController implements Serializable {
 
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(album.get("artist"), searchText),cb.equal(album.get("removalstatus"), 0));
+        cq.where(cb.like(album.get("artist"), searchText),cb.equal(album.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsAlbum = query.getResultList();
 
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("artist"), searchText), cb.equal(musicTrack.get("removalstatus"), 0));
+        cq.where(cb.like(musicTrack.get("artist"), searchText), cb.equal(musicTrack.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchResultsTrack.addAll(query.getResultList());
