@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +44,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 import org.primefaces.PrimeFaces;
+import org.primefaces.model.file.UploadedFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -452,11 +454,23 @@ public class MusicTrackJpaController implements Serializable {
         this.selectedTracks = selectedTracks;
     }
 
+    public MusicTrack getTrack(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("no id provided");
+        }
+        for (MusicTrack m : tracks) {
+            if (id.equals(m.getInventoryid())) {
+                return m;
+            }
+        }
+        return null;
+    }
+
     /**
      * When a user clicks on the create button, the selected track initializes a
      * new object
      */
-    public void openNew() {
+    public void openNew() throws NonexistentEntityException {
         this.selectedTrack = new MusicTrack();
     }
 
@@ -470,13 +484,54 @@ public class MusicTrackJpaController implements Serializable {
     }
 
     /**
+     * Set the available table field for each selected track to false.
+     *
+     * @throws Exception
+     */
+    public void removeSelectedTracks() throws Exception {
+        for (MusicTrack track : this.selectedTracks) {
+            track.setAvailable(Boolean.FALSE);
+            edit(track);
+        }
+
+        this.selectedTracks = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Products set to unavailable"));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
+    }
+
+    /**
+     * Set the selected track's available field to false.
+     *
+     * @throws Exception
+     */
+    public void removeTrack() throws Exception {
+        this.selectedTrack.setAvailable(Boolean.FALSE);
+
+        edit(this.selectedTrack);
+        this.selectedTrack = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product set to unavailable"));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    /**
      * Update the selected track and display a message for the user.
      *
      * @throws Exception
      */
-    public void updateProduct() throws Exception {
-        edit(this.selectedTrack);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Updated"));
+    public void saveProduct() throws Exception {
+        //If this is a new track
+        if (this.selectedTrack.getInventoryid() == null) {
+            //The new track was entered at the current date and time
+            this.selectedTrack.setDateentered(new Date());
+            create(this.selectedTrack);
+            this.tracks.add(this.selectedTrack);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Created"));
+            //A currently existing track that was edited.
+        } else {
+            edit(this.selectedTrack);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Updated"));
+        }
 
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
@@ -507,5 +562,4 @@ public class MusicTrackJpaController implements Serializable {
         this.selectedTrack.setRemovaldate(new Date());
 
     }
-
 }

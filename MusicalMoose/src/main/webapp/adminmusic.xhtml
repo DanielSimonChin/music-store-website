@@ -39,18 +39,31 @@
 
                                 <p:toolbar>
                                     <p:toolbarGroup>
-                                        <p:commandButton value="#{msgs.newBtn}" icon="pi pi-plus"
+                                        <p:commandButton value="#{msgs.newBtn}" icon="pi pi-plus" actionListener="#{musicTrackJpaController.openNew}"
+                                                         update=":form:manage-product-content" oncomplete="PF('manageProductDialog').show()"
                                                          styleClass="ui-button-success" style="margin-right: .5rem">
                                             <p:resetInput target=":form:manage-product-content"/>
                                         </p:commandButton>
-                                        <p:commandButton value="#{msgs.removeBtn}" icon="pi pi-trash"
-                                                         styleClass="ui-button-danger">
-                                            <p:resetInput target=":form:manage-product-content"/>
+
+                                        <p:commandButton id="delete-products-button" value="#{msgs.removeBtn}"
+                                                         icon="pi pi-trash" actionListener="#{musicTrackJpaController.removeSelectedTracks()}"
+                                                         styleClass="ui-button-danger" disabled="#{!musicTrackJpaController.hasSelectedTracks()}"
+                                                         update="@this">
+                                            <p:confirm header="#{msgs.confirmationHeader}" message="#{msgs.deleteProductsMessage}"
+                                                       icon="pi pi-exclamation-triangle"/>
                                         </p:commandButton>
 
                                     </p:toolbarGroup>
-
                                 </p:toolbar>
+
+                                <h:form>
+                                    <p:fileUpload mode="advanced"
+                                                  multiple="false"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                  invalidFileMessage="#{msgs.invalidFileMessage}"
+                                                  listener="#{fileUploadController.handleFileUpload}"
+                                                  label="#{msgs.import}"/>
+                                </h:form>
 
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{musicTrackJpaController.tracks}"
                                              reflow="true" styleClass="products-table"
@@ -68,6 +81,12 @@
 
                                         </div>
                                     </f:facet>
+
+                                    <p:ajax event="rowSelect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowSelectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="toggleSelect" update=":form:delete-products-button"/>
 
                                     <p:column selectionMode="multiple" exportable="false"></p:column>
 
@@ -111,8 +130,9 @@
                                             <p:resetInput target=":form:manage-product-content"/>
                                         </p:commandButton>
 
-                                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this">
-
+                                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                         oncomplete="PF('deleteProductDialog').show()">
+                                            <f:setPropertyActionListener value="#{product}" target="#{musicTrackJpaController.selectedTrack}"/>
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
@@ -149,6 +169,16 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="songwriter">#{msgs.songwriter}</p:outputLabel>
                                                 <p:inputText id="songwriter" value="#{musicTrackJpaController.selectedTrack.songwriter}" required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="playlength">#{msgs.playlength}</p:outputLabel>
+                                                <p:inputNumber id="playlength" value="#{musicTrackJpaController.selectedTrack.playlength}" required="true" decimalPlaces="2" decimalSeparator="."/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="selectionnumber">#{msgs.selectionNumber}</p:outputLabel>
+                                                <p:inputNumber id="selectionnumber" value="#{musicTrackJpaController.selectedTrack.selectionnumber}" required="true" decimalPlaces="0"/>
                                             </div>
 
                                             <div class="p-field">
@@ -204,6 +234,30 @@
                                             </div>
 
                                             <div class="p-field">
+                                                <p:selectBooleanCheckbox value="#{musicTrackJpaController.selectedTrack.partofalbum}" itemLabel="#{msgs.partOfAlbum}">
+                                                    <p:ajax event="change" update="albumselection albumselectionlabel albumSelectionGroup"/>
+                                                </p:selectBooleanCheckbox>
+
+                                            </div>
+
+                                            <h:panelGroup id="albumSelectionGroup" class="p-field">
+                                                <p:outputLabel id="albumselectionlabel" for="albumselection" rendered="#{musicTrackJpaController.selectedTrack.partofalbum}">#{msgs.selectTrackAlbum}</p:outputLabel>
+                                                <p:selectOneMenu id="albumselection" value="#{musicTrackJpaController.selectedTrack.albumid}" converter="albumConverter" filter="true" filterMatchMode="startsWith"
+                                                                 var="a" panelStyle="width:180px" rendered="#{musicTrackJpaController.selectedTrack.partofalbum}" >
+                                                    <f:selectItems value="#{albumJpaController.findAlbumEntities()}" var="album" itemLabel="#{album.albumtitle}" itemValue="#{album}"/>
+
+                                                    <p:column>  
+                                                        <p:graphicImage value="/album_covers/#{a.albumimagefilenamesmall}" width="50" height="50"/>  
+                                                    </p:column>  
+
+                                                    <p:column>  
+                                                        #{a.albumtitle}
+                                                    </p:column>  
+                                                </p:selectOneMenu> 
+                                            </h:panelGroup>
+
+
+                                            <div class="p-field">
                                                 <p:outputLabel for="albumcoverssmall">#{msgs.selectSmallCover}</p:outputLabel>
                                                 <p:selectOneMenu id="albumcoverssmall" value="#{musicTrackJpaController.selectedTrack.albumimagefilenamesmall}" filter="true" filterMatchMode="startsWith"
                                                                  var="filename" panelStyle="width:180px" >
@@ -239,13 +293,29 @@
                                     </p:outputPanel>
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{musicTrackJpaController.updateProduct}"
+                                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{musicTrackJpaController.saveProduct()}"
                                                          update="manage-product-content" process="manage-product-content @this"/>
-                                        <p:commandButton value="Cancel" icon="pi pi-times" actionListener="#{musicTrackJpaController.cancelTrackForm}" 
+                                        <p:commandButton value="Cancel" icon="pi pi-times" actionListener="#{musicTrackJpaController.cancelTrackForm()}" 
                                                          class="ui-button-secondary"/>
                                     </f:facet>
 
                                 </p:dialog>
+
+                                <p:confirmDialog global="true" widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                                 message="#{msgs.deleteProductsMessage}" header="#{msgs.confirmationHeader}" severity="warn">
+                                    <p:commandButton value="#{msgs.yesOption}" icon="pi pi-check" actionListener="#{musicTrackJpaController.removeTrack()}"
+                                                     process="@this" oncomplete="PF('deleteProductDialog').hide()"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                     onclick="PF('deleteProductDialog').hide()"/>
+                                </p:confirmDialog>
+
+                                <p:confirmDialog global="true" showEffect="fade" width="300">
+                                    <p:commandButton value="#{msgs.yesOption}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                     icon="pi pi-times"/>
+                                </p:confirmDialog>
+
+
 
 
                             </div>
