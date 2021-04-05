@@ -179,7 +179,7 @@ CREATE TABLE SURVEY(
     ANSERW4VOTES INT,
     DATESURVEYRCREATED TIMESTAMP,
     DATELASTUSED TIMESTAMP,
-    SURVERYENDED BIT(1),
+    SURVERYINUSE BIT(1),
     PRIMARY KEY (SURVEYID)
 );
 
@@ -198,12 +198,12 @@ VALUES
 (4, "Future joins Diddy’s son King Combs on sleek new track ‘Holdin Me Down’", "Future has teamed up with Diddy‘s son King Combs on a sleek new track called ‘Holdin Me Down’ – listen to it below.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/future-joins-diddys-son-king-combs-on-sleek-new-track-holdin-me-down-2909817",0), 
 (5, "5,000 people attend COVID-19 experiment gig in Barcelona", "Five thousand people attended a concert in Barcelona last night (March 27) as part of a COVID-19 experiment. The show, which saw Spanish rock band Love of Lesbian playing at the Palau Sant Jordi arena, is said to be the biggest concert in Europe since the pandemic began last year.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/5000-people-attend-covid-19-experiment-gig-in-barcelona-2909802",0);
 
-INSERT INTO SURVEY (SURVEYID, SURVEYTITLE, QUESTION, ANSERW1, ANSERW1VOTES, ANSERW2, ANSERW2VOTES, ANSERW3, ANSERW3VOTES, ANSERW4, ANSERW4VOTES, DATESURVEYRCREATED, DATELASTUSED, SURVERYENDED)
+INSERT INTO SURVEY (SURVEYID, SURVEYTITLE, QUESTION, ANSERW1, ANSERW1VOTES, ANSERW2, ANSERW2VOTES, ANSERW3, ANSERW3VOTES, ANSERW4, ANSERW4VOTES, DATESURVEYRCREATED, DATELASTUSED, SURVERYINUSE)
 VALUES 
-(1, "Teens and music in todays generation", "Which genre of music do you listen to most?", "HIP HOP", 43, "R&B", 23, "Rock", 13, "Indie Music", 28, TIMESTAMP("2020-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"), 0),
-(2, "Most popular artist for elders", "Which artist are you most familiar with?", "Drake", 43, "Ariana Grande", 81, "Justin Bieber", 61, "Beyonce", 88, TIMESTAMP("2021-01-03", "11:03:11"), TIMESTAMP("2021-02-20", "11:03:11"), 1),
-(3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 1),
-(4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 1);
+(1, "Teens and music in todays generation", "Which genre of music do you listen to most?", "HIP HOP", 43, "R&B", 23, "Rock", 13, "Indie Music", 28, TIMESTAMP("2020-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"), 1),
+(2, "Most popular artist for elders", "Which artist are you most familiar with?", "Drake", 43, "Ariana Grande", 81, "Justin Bieber", 61, "Beyonce", 88, TIMESTAMP("2021-01-03", "11:03:11"), TIMESTAMP("2021-02-20", "11:03:11"), 0),
+(3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 0),
+(4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 0);
 
 INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,AVAILABLE, REMOVALDATE ) values
 (1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 19.99, 17.99, 15.99, 0.42, 0.45,0.49, 1, null),

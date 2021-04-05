@@ -117,7 +117,7 @@ public class SurveyUnitTest {
      @Test
     public void testFindClient(){
         Survey survey=controller.getRunningSurvey();
-        assertEquals(survey.getSurveryended(), false);
+        assertEquals(survey.getSurveryinuse(), true);
     }
     /**
      * Restore the database to a known state before testing. This is important

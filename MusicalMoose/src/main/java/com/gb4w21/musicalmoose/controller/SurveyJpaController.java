@@ -155,7 +155,7 @@ public class SurveyJpaController implements Serializable {
         CriteriaQuery cq = cb.createQuery();
         Root<Survey> survey = cq.from(Survey.class);
         cq.select(survey);
-        cq.where(cb.equal(survey.get("surveryended"), 0));
+        cq.where(cb.equal(survey.get("surveryinuse"), 1));
         TypedQuery<Survey> query = em.createQuery(cq);
         try{
             return query.getSingleResult();

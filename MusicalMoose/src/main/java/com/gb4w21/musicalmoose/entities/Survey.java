@@ -84,7 +84,7 @@ public class Survey implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date datelastused;
     @Column(name = "SURVERYENDED")
-    private Boolean surveryended;
+    private Boolean surveryinuse;
 
     public Survey() {
     }
@@ -153,12 +153,12 @@ public class Survey implements Serializable {
         this.datelastused = datelastused;
     }
 
-    public Boolean getSurveryended() {
-        return surveryended;
+    public Boolean getSurveryinuse() {
+        return surveryinuse;
     }
 
-    public void setSurveryended(Boolean surveryended) {
-        this.surveryended = surveryended;
+    public void setSurveryinuse(Boolean surveryended) {
+        this.surveryinuse = surveryended;
     }
 
     @Override
