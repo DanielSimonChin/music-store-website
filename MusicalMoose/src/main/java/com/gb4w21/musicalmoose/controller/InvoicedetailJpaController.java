@@ -7,7 +7,6 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.entities.Creditcardinfo;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -35,7 +34,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class InvoicedetailJpaController implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(CreditcardinfoJpaController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(InvoicedetailJpaController.class);
 
     @Resource
     private UserTransaction utx;
@@ -109,7 +108,6 @@ public class InvoicedetailJpaController implements Serializable {
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
         try {
             utx.begin();
-            Creditcardinfo creditcardinfo;
             Invoicedetail invoicedetail;
             try {
                 invoicedetail = em.getReference(Invoicedetail.class, id);

@@ -1,4 +1,4 @@
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.beans.ProvinceBean;

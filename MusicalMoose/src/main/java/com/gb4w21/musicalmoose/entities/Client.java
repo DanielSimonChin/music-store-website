@@ -108,8 +108,6 @@ public class Client implements Serializable {
     @Column(name = "CLIENTACTIVE")
     private Boolean clientactive;
     @OneToMany(mappedBy = "clientid")
-    private List<Creditcardinfo> creditcardinfoList;
-    @OneToMany(mappedBy = "clientid")
     private List<Sale> saleList;
     @OneToMany(mappedBy = "clientid")
     private List<Review> reviewList;
@@ -120,6 +118,20 @@ public class Client implements Serializable {
     public Client(Integer clientid) {
         this.clientid = clientid;
     }
+
+    public List<Sale> getSaleList() {
+        return saleList;
+    }
+    public void setSaleList(List<Sale> saleList) {
+        this.saleList = saleList;
+    }
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
 
     public Integer getClientid() {
         return clientid;
@@ -273,27 +285,8 @@ public class Client implements Serializable {
         this.clientactive = clientactive;
     }
 
-    public List<Creditcardinfo> getCreditcardinfoList() {
-        return creditcardinfoList;
-    }
+   
 
-    public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
-        this.creditcardinfoList = creditcardinfoList;
-    }
-
-    public List<Sale> getSaleList() {
-        return saleList;
-    }
-
-    public void setSaleList(List<Sale> saleList) {
-        this.saleList = saleList;
-    }
-     public List<Review> getReviewList() {
-        return reviewList;
-    }
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
 
     @Override
     public int hashCode() {

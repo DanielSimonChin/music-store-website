@@ -5,6 +5,7 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
+import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import java.io.Serializable;
@@ -66,6 +67,7 @@ public class MusicTrackJpaController implements Serializable {
     private List<MusicTrack> selectedTracks;
     //When the cancel button is clicked, we want the selectedTrack to be the same as the trackCopy
     private MusicTrack trackCopy;
+    private PreRenderViewBean preRenderViewBean = new PreRenderViewBean();
 
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
         try {
@@ -251,38 +253,7 @@ public class MusicTrackJpaController implements Serializable {
             return new ArrayList<MusicTrack>();
         }
     }
-
-//    public List<MusicTrack> findRecentGenreTracks() {
-//        findRecentGenreCookie();
-//        if (recentGenre == null || recentGenre.isEmpty()) {
-//            return null;
-//        }
-//        
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//
-//        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
-//
-//        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
-//
-////        cq.select(musicTrack).where(cb.equal(musicTrack.get("musiccategory"), recentGenre));
-//        
-//        Join albumsTracks = musicTrack.join("albumid");
-//        cq.where(cb.equal(musicTrack.get("musiccategory"), recentGenre));
-//
-//        Query q = em.createQuery(cq);
-//
-//        return q.getResultList().subList(0, 5);
-//    }
-//    
-//    private void findRecentGenreCookie() {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//
-//        // Retrieve a GenreTracking cookie
-//        Object genreTrackingCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
-//        if (genreTrackingCookie != null && ((Cookie) genreTrackingCookie).getValue().isEmpty()) {
-//            recentGenre = ((Cookie) genreTrackingCookie).getValue();
-//        }
-//    }
+    
     /**
      * Set the selected track and display the trackpage.xhtml
      *
@@ -292,20 +263,13 @@ public class MusicTrackJpaController implements Serializable {
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
         LOG.info("" + track.getTracktitle());
+
         
-        writeCookie();
+  
+
+        LOG.info("" + track.getTracktitle());
+
         return "detailTrack";
-    }
-
-    private void writeCookie() {
-//        recentGenre = searchedTrack.getMusiccategory();
-        if (searchedTrack != null && searchedTrack.getMusiccategory() != null) {
-            Map<String, Object> properties = new HashMap<>();
-            properties.put("maxAge", 31536000);
-
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().addResponseCookie("GenreTracking", searchedTrack.getMusiccategory(), properties);
-        }
     }
 
     public String showTrackFromAlbum(MusicTrack track) {
@@ -315,7 +279,9 @@ public class MusicTrackJpaController implements Serializable {
 
     public String searchSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
-        writeCookie();
+        if (searchedTrack != null) {
+            this.preRenderViewBean.writeGenreTrackingCookie(searchedTrack.getMusiccategory());
+        }
         return "searchTrack";
     }
 
@@ -325,7 +291,9 @@ public class MusicTrackJpaController implements Serializable {
         } catch (NonexistentEntityException e) {
             return null;
         }
-        writeCookie();
+        if (searchedTrack != null) {
+            this.preRenderViewBean.writeGenreTrackingCookie(searchedTrack.getMusiccategory());
+        }
         return "detailTrack";
     }
 
