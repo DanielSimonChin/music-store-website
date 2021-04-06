@@ -163,6 +163,7 @@ public class NewsJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList();
+    
     }
 
     /**

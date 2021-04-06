@@ -5,7 +5,6 @@
  */
 package com.gb4w21.musicalmoose.entities;
 
-import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -36,7 +35,8 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Invoicedetail.findByPst", query = "SELECT i FROM Invoicedetail i WHERE i.pst = :pst"),
     @NamedQuery(name = "Invoicedetail.findByGst", query = "SELECT i FROM Invoicedetail i WHERE i.gst = :gst"),
     @NamedQuery(name = "Invoicedetail.findByHst", query = "SELECT i FROM Invoicedetail i WHERE i.hst = :hst"),
-    @NamedQuery(name = "Invoicedetail.findByTotalgrossvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalgrossvalue = :totalgrossvalue")})
+    @NamedQuery(name = "Invoicedetail.findByTotalgrossvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalgrossvalue = :totalgrossvalue"),
+    @NamedQuery(name = "Invoicedetail.findByInvoicedetailremoved", query = "SELECT i FROM Invoicedetail i WHERE i.invoicedetailremoved = :invoicedetailremoved")})
 public class Invoicedetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -59,6 +59,8 @@ public class Invoicedetail implements Serializable {
     private Float hst;
     @Column(name = "TOTALGROSSVALUE")
     private Float totalgrossvalue;
+    @Column(name = "INVOICEDETAILREMOVED")
+    private Boolean invoicedetailremoved;
     @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
     @ManyToOne
     private Album albumid;
@@ -132,6 +134,14 @@ public class Invoicedetail implements Serializable {
         this.totalgrossvalue = totalgrossvalue;
     }
 
+    public Boolean getInvoicedetailremoved() {
+        return invoicedetailremoved;
+    }
+
+    public void setInvoicedetailremoved(Boolean invoicedetailremoved) {
+        this.invoicedetailremoved = invoicedetailremoved;
+    }
+
     public Album getAlbumid() {
         return albumid;
     }
@@ -178,7 +188,7 @@ public class Invoicedetail implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.Invoicedetail[ invoiceid=" + invoiceid + " ]";
+        return "com.gb4w21.musicalmoose.entities.Invoicedetail[ invoiceid=" + invoiceid + " ]";
     }
     
 }

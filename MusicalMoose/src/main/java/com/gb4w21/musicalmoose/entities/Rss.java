@@ -26,12 +26,9 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Rss.findAll", query = "SELECT r FROM Rss r"),
     @NamedQuery(name = "Rss.findById", query = "SELECT r FROM Rss r WHERE r.id = :id"),
-    @NamedQuery(name = "Rss.findByUrl", query = "SELECT r FROM Rss r WHERE r.url = :url")})
+    @NamedQuery(name = "Rss.findByUrl", query = "SELECT r FROM Rss r WHERE r.url = :url"),
+    @NamedQuery(name = "Rss.findByRssremoved", query = "SELECT r FROM Rss r WHERE r.rssremoved = :rssremoved")})
 public class Rss implements Serializable {
-
-    @Size(max = 255)
-    @Column(name = "URL")
-    private String url;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,6 +36,11 @@ public class Rss implements Serializable {
     @Basic(optional = false)
     @Column(name = "ID")
     private Integer id;
+    @Size(max = 255)
+    @Column(name = "URL")
+    private String url;
+    @Column(name = "RSSREMOVED")
+    private Boolean rssremoved;
 
     public Rss() {
     }
@@ -55,6 +57,21 @@ public class Rss implements Serializable {
         this.id = id;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Boolean getRssremoved() {
+        return rssremoved;
+    }
+
+    public void setRssremoved(Boolean rssremoved) {
+        this.rssremoved = rssremoved;
+    }
 
     @Override
     public int hashCode() {
@@ -78,15 +95,7 @@ public class Rss implements Serializable {
 
     @Override
     public String toString() {
-        return "com.gb4w21.musicalmoose.Rss[ id=" + id + " ]";
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+        return "com.gb4w21.musicalmoose.entities.Rss[ id=" + id + " ]";
     }
     
 }

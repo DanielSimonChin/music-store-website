@@ -54,8 +54,8 @@ public class ReviewJpaController implements Serializable {
     private UserTransaction utx;
     @Inject
     ClientJpaController clientJpaController;
-    @Inject
-    LoginController loginController;
+   // @Inject
+   // LoginController loginController;
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
@@ -251,17 +251,17 @@ public class ReviewJpaController implements Serializable {
         return "reviewpage";
     }
 
-    public String postReview() throws RollbackFailureException {
+    public String postReview(int id) throws RollbackFailureException {
         review.setReviewdate(new Date());
         review.setRating(Integer.parseInt(this.starRating));
         LOG.info("Rating:" + review.getRating());
         LOG.info("Review:" + review.getReviewtext());
         review.setAprovalstatus(false);
-        Client client = clientJpaController.findClient(loginController.getLoginBean().getId());
-        LOG.info("Client id:"+loginController.getLoginBean().getId());
-        LOG.info("Client name:"+loginController.getLoginBean().getUsername());
+        Client client = clientJpaController.findClient(id);
+        LOG.info("Client id:"+client.getClientid());
+        LOG.info("Client name:"+client.getUsername());
         review.setClientid(client);
-        review.setClientname(client.getFirstname());
+        review.setClientname(client.getUsername());
         create(review);
         trackCreated = true;
         return "reviewpage";
@@ -290,16 +290,5 @@ public class ReviewJpaController implements Serializable {
     }
 
  
-
-    public boolean checkUserLoged() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Object loggedCookie = context.getExternalContext().getRequestCookieMap().get("LogCookie");
-        if (loggedCookie != null && !(((Cookie) loggedCookie).getValue()).equals("none")) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
 
 }

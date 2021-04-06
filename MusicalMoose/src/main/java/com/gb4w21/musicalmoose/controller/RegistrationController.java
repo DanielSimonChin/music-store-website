@@ -85,6 +85,7 @@ public class RegistrationController implements Serializable {
 
     public String addNewUser() throws RollbackFailureException {
         registrationBean.setPassword(fristPassword);
+        registrationBean.setClientactive(true);
         clientJpaController.create(registrationBean);
         loginController.getLoginBean().setLoggedIn(true);
         loginController.getLoginBean().setId(clientJpaController.findUser(registrationBean.getUsername(), registrationBean.getPassword()).getClientid());

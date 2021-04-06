@@ -84,6 +84,8 @@ CREATE TABLE CLIENT (
     CELLTELEPHONE VARCHAR(25),
     EMAIL VARCHAR(255),
     GENREOFLASTSEARCH VARCHAR(255),
+    ISMANAGER BIT(1),
+    CLIENTACTIVE BIT(1),
     PRIMARY KEY (CLIENTID)
 );
 
@@ -101,9 +103,11 @@ CREATE TABLE REVIEW (
     PRIMARY KEY (REVIEWID)
 );
 
+
 CREATE TABLE SALE(
     SALEID INT NOT NULL auto_increment,
     CLIENTID INT,
+    SALEREMOVED BIT(1),
     CONSTRAINT fkclientid4 FOREIGN KEY (CLIENTID) REFERENCES CLIENT (CLIENTID),
     SALEDATE TIMESTAMP,
     PRIMARY KEY (SALEID)
@@ -120,6 +124,7 @@ CREATE TABLE INVOICEDETAIL(
     TOTALGROSSVALUE FLOAT,
     INVENTORYID INT, 
     ALBUMID INT,
+    INVOICEDETAILREMOVED BIT(1),
     CONSTRAINT fkinventoryid3 FOREIGN KEY (INVENTORYID) REFERENCES MUSIC_TRACK (INVENTORYID), 
     CONSTRAINT fkalbumid3 FOREIGN KEY (ALBUMID) REFERENCES ALBUM (ALBUMID),
     CONSTRAINT fksaleid3 FOREIGN KEY (SALEID) REFERENCES SALE (SALEID),
@@ -161,13 +166,14 @@ CREATE TABLE SURVEY(
     ANSERW4VOTES INT,
     DATESURVEYRCREATED TIMESTAMP,
     DATELASTUSED TIMESTAMP,
-    SURVERYENDED BIT(1),
+    SURVERYINUSE BIT(1),
     PRIMARY KEY (SURVEYID)
 );
 
 CREATE TABLE RSS(
     ID INT NOT NULL auto_increment,
     URL VARCHAR(255),
+    RSSREMOVED BIT(1),
     PRIMARY KEY (ID)
 );
 
@@ -179,12 +185,12 @@ VALUES
 (4, "Future joins Diddy’s son King Combs on sleek new track ‘Holdin Me Down’", "Future has teamed up with Diddy‘s son King Combs on a sleek new track called ‘Holdin Me Down’ – listen to it below.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/future-joins-diddys-son-king-combs-on-sleek-new-track-holdin-me-down-2909817",0), 
 (5, "5,000 people attend COVID-19 experiment gig in Barcelona", "Five thousand people attended a concert in Barcelona last night (March 27) as part of a COVID-19 experiment. The show, which saw Spanish rock band Love of Lesbian playing at the Palau Sant Jordi arena, is said to be the biggest concert in Europe since the pandemic began last year.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/5000-people-attend-covid-19-experiment-gig-in-barcelona-2909802",0);
 
-INSERT INTO SURVEY (SURVEYID, SURVEYTITLE, QUESTION, ANSERW1, ANSERW1VOTES, ANSERW2, ANSERW2VOTES, ANSERW3, ANSERW3VOTES, ANSERW4, ANSERW4VOTES, DATESURVEYRCREATED, DATELASTUSED, SURVERYENDED)
+INSERT INTO SURVEY (SURVEYID, SURVEYTITLE, QUESTION, ANSERW1, ANSERW1VOTES, ANSERW2, ANSERW2VOTES, ANSERW3, ANSERW3VOTES, ANSERW4, ANSERW4VOTES, DATESURVEYRCREATED, DATELASTUSED, SURVERYINUSE)
 VALUES 
-(1, "Teens and music in todays generation", "Which genre of music do you listen to most?", "HIP HOP", 43, "R&B", 23, "Rock", 13, "Indie Music", 28, TIMESTAMP("2020-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"), 0),
-(2, "Most popular artist for elders", "Which artist are you most familiar with?", "Drake", 43, "Ariana Grande", 81, "Justin Bieber", 61, "Beyonce", 88, TIMESTAMP("2021-01-03", "11:03:11"), TIMESTAMP("2021-02-20", "11:03:11"), 1),
-(3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 1),
-(4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 1);
+(1, "Teens and music in todays generation", "Which genre of music do you listen to most?", "HIP HOP", 43, "R&B", 23, "Rock", 13, "Indie Music", 28, TIMESTAMP("2020-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"), 1),
+(2, "Most popular artist for elders", "Which artist are you most familiar with?", "Drake", 43, "Ariana Grande", 81, "Justin Bieber", 61, "Beyonce", 88, TIMESTAMP("2021-01-03", "11:03:11"), TIMESTAMP("2021-02-20", "11:03:11"), 0),
+(3, "Device of music", "How do you listen to music on an daily basis?", "Speaker", 27, "Headphones", 81, "Earbuds", 65, "Other", 3, TIMESTAMP("2019-11-09", "11:03:11"), TIMESTAMP("2021-02-19", "11:03:11"), 0),
+(4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 0);
 
 INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,AVAILABLE, REMOVALDATE ) values
 (1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 19.99, 17.99, 15.99, 0.42, 0.45,0.49, 1, null),
@@ -316,27 +322,27 @@ INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, P
 
 
 
-INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH) VALUES
-(1, "edgeLord12", "tttt2", "Rev", "Burle", "Alli", "Wolf Group", "08957 Rutledge Trail", "495 Sheridan Parkway", "Ponoka", "Alberta", "Canada", "T4J", "1468741332", "7241183761", "aburle0@tinyurl.com", "Pop"),
-(2, "jdTrinity", "9876RRwwe", "Ms", "Aish", "Quincey", "Sauer“O“Connell and Feeney", "5208 Messerschmidt Plaza", "5044 Canary Point", "Greensboro", "North Carolina", "United States", "27415", "3365404602", "4957162459", "qaish1@fema.gov", "Pop"),
-(3, "honourGuy13", "wwww131", "Mrs", "Anyon", "Amara", "Gottlieb, Toy and Ankunding", "668 Oriole Circle", "7 Bay Trail", "Atlanta", "Georgia", "United States", "30316", "4041939405", "7598581468", "aanyon2@army.mil", "Pop"),
-(4, "MissTree222", "rrrr3333", "Honorable", "Shellum", "Lucien", "Cummings Group", "81203 Warrior Point", "26 Lyons Circle", "Savannah", "Georgia", "United States", "31422", "4789255309", "5812443576", "lshellum3@thetimes.co.uk", "Pop"),
-(5, "445MeAndYou", "ttt23hhhht2", "Rev", "Glasard", "Andy", "Johnson, Medhurst and Huels", "3791 Vidon Place", "2 Mallory Junction", "Baie-Saint-Paul", "Québec", "Canada", "G3Z", "9956132649", "6136927654", "aglasard4@godaddy.com", "Hip hop"),
-(6, "SpanishQueen11", "Qerf32fd", "Mr", "Mayberry", "Chic", "McLaughlin, Kemmer and Dietrich", "1431 Delladonna Court", "3939 Cherokee Point", "Casselman", "Ontario", "Canada", "G8A", "9313712912", "3166935628", "cmayberry5@canalblog.com", "Hip hop"),
-(7, "MusicPerson49", "rfrffrfrf321", "Rev", "Siviour", "Marcos", "Miller, Veum and Windler", "25 Meadow Vale Point", "2492 Garrison Alley", "Albanel", "Québec", "Canada", "G8M", "5392188528", "9392987138", "msiviour6@dion.ne.jp", "Hip hop"),
-(8, "98wHelloThere", "ZZZzzz44", "Dr", "Aslie", "Chase", "Bartoletti Group", "47215 Scoville Trail", "48 Northfield Plaza", "Amarillo", "Texas", "United States", "79176", "2818742780", "1131223695", "caslie7@people.com.cn", "Hip hop"),
-(9, "WhoAmI57", "5468fcfcQWQ", "Rev", "Borrowman", "Helen-elizabeth", "Roob-Crist", "63298 Dryden Street", "08 3rd Terrace", "Knoxville", "Tennessee", "United States", "37995", "8655788675", "1432457839", "hborrowman8@php.net", "Rock"),
-(10, "IThink291", "99YYdnej", "Mr", "Metham", "Kania", "Gleichner Inc", "9810 Westport Point", "9 Florence Place", "Ajax", "Ontario", "Canada", "L1Z", "8299069589", "4363009404", "kmetham9@ucoz.ru", "Rock"),
-(11, "MrHiiii887", "wjbQQ11", "Rev", "Zimmerman", "Marquita", "Kunde Group", "57769 Maywood Parkway", "4 Northland Junction", "Grand Bank", "Newfoundland and Labrador", "Canada", "E8K", "4091189935", "8278455755", "mzimmermana@phoca.cz", "Rock"),
-(12, "rrrrrrrrrr77777", "292UInnd", "Ms", "Seathwright", "Arline", "DuBuque, Schumm and Hettinger", "03 Mesta Place", "6 Morning Court", "Saint Petersburg", "Florida", "United States", "33710", "7278361158", "8797428462", "aseathwrightb@feedburner.com", "Rock"),
-(13, "EdgeLord38", "UBRhbr93", "Mr", "Brounsell", "Kelley", "Marvin, Russel and Purdy", "91 Rowland Drive", "4544 South Drive", "Kansas City", "Kansas", "United States", "66112", "8161198258", "7665016517", "kbrounsellc@jiathis.com", "Anime"),
-(14, "pika", "thrbej11U", "Rev", "Mazonowicz", "Shayne", "Dickens-Jakubowski", "31 Barby Alley", "517 Prairie Rose Road", "Corona", "California", "United States", "92878", "9517400149", "1384334954", "smazonowiczd@ezinearticles.com", "Anime"),
-(15, "pikachu025", "hdjefbQ11", "Mr", "Drohun", "Tedie", "Stiedemann Inc", "6704 Stuart Road", "22540 Annamark Hill", "Burgeo", "Newfoundland and Labrador", "Canada", "N9A", "8409115038", "2029736271", "tdrohune@jiathis.com", "Anime"),
-(16, "IHatePikachu520", "dhdd44Q", "Mrs", "Capon", "See", "Lynch LLC", "99572 Hudson Court", "59 Laurel Lane", "Richmond", "Virginia", "United States", "23285", "8047730443", "9796802414", "scaponf@last.fm", "Anime"),
-(17, "IamIronMan88", "jsbf29YY", "Rev", "Kildale", "Francisco", "Mayer LLC", "85 Vera Road", "360 Schiller Terrace", "Maskinongé", "Québec", "Canada", "T7A", "3692271272", "8946119827", "fkildaleg@answers.com", "R&B"),
-(18, "Miss23Earth", "wwh283S", "Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", "4471914490", "1529172744", "dpouletth@businesswire.com", "R&B"),
-(19, "PizzaMan12", "dddnhd22", "Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", "3147308600", "3817116947", "bsackeri@europa.eu", "R&B"),
-(20, "One1Two2", "0033ththt", "Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "gcanbyj@creativecommons.org", "R&B");
+INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH,ISMANAGER,CLIENTACTIVE) VALUES
+(1, "edgeLord12", "tttt2", "Rev", "Burle", "Alli", "Wolf Group", "08957 Rutledge Trail", "495 Sheridan Parkway", "Ponoka", "Alberta", "Canada", "T4J", "1468741332", "7241183761", "aburle0@tinyurl.com", "Pop",0,1),
+(2, "jdTrinity", "9876RRwwe", "Ms", "Aish", "Quincey", "Sauer“O“Connell and Feeney", "5208 Messerschmidt Plaza", "5044 Canary Point", "Greensboro", "North Carolina", "United States", "27415", "3365404602", "4957162459", "qaish1@fema.gov", "Pop",0,1),
+(3, "honourGuy13", "wwww131", "Mrs", "Anyon", "Amara", "Gottlieb, Toy and Ankunding", "668 Oriole Circle", "7 Bay Trail", "Atlanta", "Georgia", "United States", "30316", "4041939405", "7598581468", "aanyon2@army.mil", "Pop",0,1),
+(4, "MissTree222", "rrrr3333", "Honorable", "Shellum", "Lucien", "Cummings Group", "81203 Warrior Point", "26 Lyons Circle", "Savannah", "Georgia", "United States", "31422", "4789255309", "5812443576", "lshellum3@thetimes.co.uk", "Pop",0,1),
+(5, "445MeAndYou", "ttt23hhhht2", "Rev", "Glasard", "Andy", "Johnson, Medhurst and Huels", "3791 Vidon Place", "2 Mallory Junction", "Baie-Saint-Paul", "Québec", "Canada", "G3Z", "9956132649", "6136927654", "aglasard4@godaddy.com", "Hip hop",0,1),
+(6, "SpanishQueen11", "Qerf32fd", "Mr", "Mayberry", "Chic", "McLaughlin, Kemmer and Dietrich", "1431 Delladonna Court", "3939 Cherokee Point", "Casselman", "Ontario", "Canada", "G8A", "9313712912", "3166935628", "cmayberry5@canalblog.com", "Hip hop",0,1),
+(7, "MusicPerson49", "rfrffrfrf321", "Rev", "Siviour", "Marcos", "Miller, Veum and Windler", "25 Meadow Vale Point", "2492 Garrison Alley", "Albanel", "Québec", "Canada", "G8M", "5392188528", "9392987138", "msiviour6@dion.ne.jp", "Hip hop",0,1),
+(8, "98wHelloThere", "ZZZzzz44", "Dr", "Aslie", "Chase", "Bartoletti Group", "47215 Scoville Trail", "48 Northfield Plaza", "Amarillo", "Texas", "United States", "79176", "2818742780", "1131223695", "caslie7@people.com.cn", "Hip hop",0,1),
+(9, "WhoAmI57", "5468fcfcQWQ", "Rev", "Borrowman", "Helen-elizabeth", "Roob-Crist", "63298 Dryden Street", "08 3rd Terrace", "Knoxville", "Tennessee", "United States", "37995", "8655788675", "1432457839", "hborrowman8@php.net", "Rock",0,1),
+(10, "IThink291", "99YYdnej", "Mr", "Metham", "Kania", "Gleichner Inc", "9810 Westport Point", "9 Florence Place", "Ajax", "Ontario", "Canada", "L1Z", "8299069589", "4363009404", "kmetham9@ucoz.ru", "Rock",1,1),
+(11, "MrHiiii887", "wjbQQ11", "Rev", "Zimmerman", "Marquita", "Kunde Group", "57769 Maywood Parkway", "4 Northland Junction", "Grand Bank", "Newfoundland and Labrador", "Canada", "E8K", "4091189935", "8278455755", "mzimmermana@phoca.cz", "Rock",0,1),
+(12, "rrrrrrrrrr77777", "292UInnd", "Ms", "Seathwright", "Arline", "DuBuque, Schumm and Hettinger", "03 Mesta Place", "6 Morning Court", "Saint Petersburg", "Florida", "United States", "33710", "7278361158", "8797428462", "aseathwrightb@feedburner.com", "Rock",0,1),
+(13, "EdgeLord38", "UBRhbr93", "Mr", "Brounsell", "Kelley", "Marvin, Russel and Purdy", "91 Rowland Drive", "4544 South Drive", "Kansas City", "Kansas", "United States", "66112", "8161198258", "7665016517", "kbrounsellc@jiathis.com", "Anime",0,1),
+(14, "pika", "thrbej11U", "Rev", "Mazonowicz", "Shayne", "Dickens-Jakubowski", "31 Barby Alley", "517 Prairie Rose Road", "Corona", "California", "United States", "92878", "9517400149", "1384334954", "smazonowiczd@ezinearticles.com", "Anime",0,1),
+(15, "pikachu025", "hdjefbQ11", "Mr", "Drohun", "Tedie", "Stiedemann Inc", "6704 Stuart Road", "22540 Annamark Hill", "Burgeo", "Newfoundland and Labrador", "Canada", "N9A", "8409115038", "2029736271", "tdrohune@jiathis.com", "Anime",0,1),
+(16, "IHatePikachu520", "dhdd44Q", "Mrs", "Capon", "See", "Lynch LLC", "99572 Hudson Court", "59 Laurel Lane", "Richmond", "Virginia", "United States", "23285", "8047730443", "9796802414", "scaponf@last.fm", "Anime",1,1),
+(17, "IamIronMan88", "jsbf29YY", "Rev", "Kildale", "Francisco", "Mayer LLC", "85 Vera Road", "360 Schiller Terrace", "Maskinongé", "Québec", "Canada", "T7A", "3692271272", "8946119827", "fkildaleg@answers.com", "R&B",1,1),
+(18, "Miss23Earth", "wwh283S", "Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", "4471914490", "1529172744", "dpouletth@businesswire.com", "R&B",1,1),
+(19, "PizzaMan12", "dddnhd22", "Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", "3147308600", "3817116947", "bsackeri@europa.eu", "R&B",1,1),
+(20, "One1Two2", "0033ththt", "Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "gcanbyj@creativecommons.org", "R&B",1,1);
 
 
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
@@ -364,77 +370,80 @@ INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL, DISPLAYED, PAGEPOSITION) VALUE
 (4, "logitechbanner.jpg", "https://www.logitech.com/en-ca", 1, 2),
 (5, "disneybanner.jpg", "https://disneyparks.disney.go.com/ca/",0, 0);
 
-INSERT INTO SALE (SALEID, CLIENTID, SALEDATE) VALUES
-(1, 1,TIMESTAMP("2021-02-13",  "00:00:00")),
-(2, 1,TIMESTAMP("2021-02-13",  "00:00:00")),
-(3, 1,TIMESTAMP("2021-02-13",  "00:00:00")),
-(4, 2,TIMESTAMP("2021-02-13",  "00:00:00")),
-(5, 2,TIMESTAMP("2021-02-13",  "00:00:00")),
-(6, 3,TIMESTAMP("2021-02-13",  "00:00:00")),
-(7, 3,TIMESTAMP("2021-02-13",  "00:00:00")),
-(8, 4,TIMESTAMP("2021-02-13",  "00:00:00")),
-(9, 5,TIMESTAMP("2021-02-13",  "00:00:00")),
-(10, 6,TIMESTAMP("2021-02-13",  "00:00:00")),
-(11, 6,TIMESTAMP("2021-02-13",  "00:00:00")),
-(12, 7,TIMESTAMP("2021-02-13",  "00:00:00")),
-(13, 8,TIMESTAMP("2021-02-13",  "00:00:00")),
-(14, 9,TIMESTAMP("2021-02-13",  "00:00:00")),
-(15, 10,TIMESTAMP("2021-02-13", "00:00:00")),
-(16, 11,TIMESTAMP("2021-02-13",  "00:00:00")),
-(17, 12,TIMESTAMP("2021-02-13",  "00:00:00")),
-(18, 13,TIMESTAMP("2021-02-13",  "00:00:00")),
-(19, 14,TIMESTAMP("2021-02-13",  "00:00:00")),
-(20, 15,TIMESTAMP("2021-02-13",  "00:00:00")),
-(21, 16,TIMESTAMP("2021-02-13",  "00:00:00")),
-(22, 17,TIMESTAMP("2021-02-13",  "00:00:00")),
-(23, 18,TIMESTAMP("2021-02-13",  "00:00:00")),
-(24, 19,TIMESTAMP("2021-02-13",  "00:00:00")),
-(25, 19,TIMESTAMP("2021-02-13",  "00:00:00"));
+INSERT INTO SALE (SALEID, CLIENTID, SALEDATE,SALEREMOVED) VALUES
+(1, 1,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(2, 1,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(3, 1,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(4, 2,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(5, 2,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(6, 3,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(7, 3,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(8, 4,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(9, 5,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(10, 6,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(11, 6,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(12, 7,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(13, 8,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(14, 9,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(15, 10,TIMESTAMP("2021-02-13", "00:00:00"),0),
+(16, 11,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(17, 12,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(18, 13,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(19, 14,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(20, 15,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(21, 16,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(22, 17,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(23, 18,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(24, 19,TIMESTAMP("2021-02-13",  "00:00:00"),0),
+(25, 19,TIMESTAMP("2021-02-13",  "00:00:00"),0);
 
-INSERT INTO INVOICEDETAIL (INVOICEID, SALEDATE, SALEID, TOTALNETVALUE, TOTALGROSSVALUE, PST, GST, HST, INVENTORYID) VALUES
-(4, TIMESTAMP("2021-02-13",  "00:00:00"),3, 6.45, 10.41,0.49, 0.03, 0.20, 45),
-(5, TIMESTAMP("2021-02-13",  "00:00:00"),3, 6.48, 10.32,0.41, 0.33, 0.26, 67),
-(6, TIMESTAMP("2021-02-13",  "00:00:00"),4, 4.52, 8.12,0.35, 0.09, 0.11, 51),
-(7, TIMESTAMP("2021-02-13",  "00:00:00"),5, 8.25, 12.43,0.36, 0.09, 0.11, 12),
-(8, TIMESTAMP("2021-02-13",  "00:00:00"),6, 8.61, 12.30,0.37, 0.09, 0.11, 91),
-(11, TIMESTAMP("2021-02-13",  "00:00:00"),7, 4.97, 9.83,0.28, 0.09, 0.11, 73),
-(12, TIMESTAMP("2021-02-13",  "00:00:00"),8, 6.80, 11.41,0.13, 0.09, 0.11, 43),
-(17, TIMESTAMP("2021-02-13",  "00:00:00"),11, 4.45, 9.34,0.47, 0.09, 0.11, 49),
-(19, TIMESTAMP("2021-02-13",  "00:00:00"),12, 6.85, 10.23,0.08, 0.21, 0.43, 31),
-(20, TIMESTAMP("2021-02-13",  "00:00:00"),13, 3.75, 7.97,0.38, 0.12, 0.42, 21),
-(22, TIMESTAMP("2021-02-13",  "00:00:00"),15, 8.76, 11.56,0.25, 0.14, 0.23, 34),
-(24, TIMESTAMP("2021-02-13",  "00:00:00"),17, 7.63, 10.53,0.43, 0.39, 0.17, 46),
-(25, TIMESTAMP("2021-02-13",  "00:00:00"),18, 7.41, 10.79,0.23, 0.26, 0.18, 55),
-(27, TIMESTAMP("2021-02-13",  "00:00:00"),20, 6.12, 10.76,0.37, 0.19, 0.06, 43),
-(28, TIMESTAMP("2021-02-13",  "00:00:00"),20, 4.65, 8.17,0.04, 0.06, 0.04, 11),
-(29, TIMESTAMP("2021-02-13",  "00:00:00"),20, 9.45, 12.33,0.41, 0.39, 0.27, 81),
-(31, TIMESTAMP("2021-02-13",  "00:00:00"),20, 5.98, 9.89,0.08, 0.05, 0.07, 66),
-(32, TIMESTAMP("2021-02-13",  "00:00:00"),21, 4.11,9.67,0.27, 0.29, 0.16, 71),
-(35, TIMESTAMP("2021-02-13",  "00:00:00"),24, 6.65, 11.73,0.21, 0.11, 0.21, 61);
+INSERT INTO INVOICEDETAIL (INVOICEID, SALEDATE, SALEID, TOTALNETVALUE, TOTALGROSSVALUE, PST, GST, HST, INVENTORYID,INVOICEDETAILREMOVED) VALUES
+(4, TIMESTAMP("2021-02-13",  "00:00:00"),3, 6.45, 10.41,0.49, 0.03, 0.20, 45,0),
+(5, TIMESTAMP("2021-02-13",  "00:00:00"),3, 6.48, 10.32,0.41, 0.33, 0.26, 67,0),
+(6, TIMESTAMP("2021-02-13",  "00:00:00"),4, 4.52, 8.12,0.35, 0.09, 0.11, 51,0),
+(7, TIMESTAMP("2021-02-13",  "00:00:00"),5, 8.25, 12.43,0.36, 0.09, 0.11, 12,0),
+(8, TIMESTAMP("2021-02-13",  "00:00:00"),6, 8.61, 12.30,0.37, 0.09, 0.11, 91,0),
+(11, TIMESTAMP("2021-02-13",  "00:00:00"),7, 4.97, 9.83,0.28, 0.09, 0.11, 73,0),
+(12, TIMESTAMP("2021-02-13",  "00:00:00"),8, 6.80, 11.41,0.13, 0.09, 0.11, 43,0),
+(17, TIMESTAMP("2021-02-13",  "00:00:00"),11, 4.45, 9.34,0.47, 0.09, 0.11, 49,0),
+(19, TIMESTAMP("2021-02-13",  "00:00:00"),12, 6.85, 10.23,0.08, 0.21, 0.43, 31,0),
+(20, TIMESTAMP("2021-02-13",  "00:00:00"),13, 3.75, 7.97,0.38, 0.12, 0.42, 21,0),
+(22, TIMESTAMP("2021-02-13",  "00:00:00"),15, 8.76, 11.56,0.25, 0.14, 0.23, 34,0),
+(24, TIMESTAMP("2021-02-13",  "00:00:00"),17, 7.63, 10.53,0.43, 0.39, 0.17, 46,0),
+(25, TIMESTAMP("2021-02-13",  "00:00:00"),18, 7.41, 10.79,0.23, 0.26, 0.18, 55,0),
+(27, TIMESTAMP("2021-02-13",  "00:00:00"),20, 6.12, 10.76,0.37, 0.19, 0.06, 43,0),
+(28, TIMESTAMP("2021-02-13",  "00:00:00"),20, 4.65, 8.17,0.04, 0.06, 0.04, 11,0),
+(29, TIMESTAMP("2021-02-13",  "00:00:00"),20, 9.45, 12.33,0.41, 0.39, 0.27, 81,0),
+(31, TIMESTAMP("2021-02-13",  "00:00:00"),20, 5.98, 9.89,0.08, 0.05, 0.07, 66,0),
+(32, TIMESTAMP("2021-02-13",  "00:00:00"),21, 4.11,9.67,0.27, 0.29, 0.16, 71,0),
+(35, TIMESTAMP("2021-02-13",  "00:00:00"),24, 6.65, 11.73,0.21, 0.11, 0.21, 61,0);
 
-INSERT INTO INVOICEDETAIL (INVOICEID, SALEDATE, SALEID, TOTALNETVALUE, TOTALGROSSVALUE, PST, GST, HST, ALBUMID) VALUES
-(1, TIMESTAMP("2021-02-13",  "00:00:00"),1, 18.49, 23.59,0.33, 0.13, 0.12, 1),
-(2, TIMESTAMP("2021-02-13",  "00:00:00"),1, 16.46, 21.44,0.47, 0.24, 0.16, 11),
-(3, TIMESTAMP("2021-02-13",  "00:00:00"),2, 17.69, 22.65,0.52, 0.39, 0.03, 2),
-(9, TIMESTAMP("2021-02-13",  "00:00:00"),7, 18.14, 23.73,0.34, 0.09, 0.11, 21),
-(10, TIMESTAMP("2021-02-13",  "00:00:00"),7, 17.45, 21.53,0.32, 0.09, 0.11, 17),
-(13, TIMESTAMP("2021-02-13",  "00:00:00"),9, 17.11, 21.10,0.12, 0.09, 0.11, 1),
-(14, TIMESTAMP("2021-02-13",  "00:00:00"),10, 15.97, 20.01, 0.23, 0.09, 0.11, 9),
-(15, TIMESTAMP("2021-02-13",  "00:00:00"),11, 16.93, 21.84,0.25, 0.09, 0.11, 19),
-(16, TIMESTAMP("2021-02-13",  "00:00:00"),11, 18.65, 22.87,0.27, 0.09, 0.11, 3),
-(18, TIMESTAMP("2021-02-13",  "00:00:00"),11, 15.47, 20.61,0.48, 0.09, 0.11, 16),
-(21, TIMESTAMP("2021-02-13",  "00:00:00"),14, 17.11, 21.67,0.45, 0.13, 0.37, 5),
-(23, TIMESTAMP("2021-02-13",  "00:00:00"),16, 17.25, 21.39,0.04, 0.36, 0.20, 8),
-(36, TIMESTAMP("2021-02-13",  "00:00:00"),25, 15.45, 19.52,0.41, 0.19, 0.05, 22),
-(37, TIMESTAMP("2021-02-13",  "00:00:00"),25, 17.45, 21.53,0.45, 0.19, 0.01, 21),
-(26, TIMESTAMP("2021-02-13",  "00:00:00"),19, 20.11, 25.99,0.24, 0.29, 0.15, 5),
-(30, TIMESTAMP("2021-02-13",  "00:00:00"),20, 16.56, 22.55,0.49, 0.43, 0.21, 1),
-(33, TIMESTAMP("2021-02-13",  "00:00:00"),22, 16.43, 19.65,0.34, 0.05, 0.17, 16),
-(34, TIMESTAMP("2021-02-13",  "00:00:00"),23, 19.45, 24.53, 0.24, 0.29, 0.13, 13);
+INSERT INTO INVOICEDETAIL (INVOICEID, SALEDATE, SALEID, TOTALNETVALUE, TOTALGROSSVALUE, PST, GST, HST, ALBUMID,INVOICEDETAILREMOVED) VALUES
+(1, TIMESTAMP("2021-02-13",  "00:00:00"),1, 18.49, 23.59,0.33, 0.13, 0.12, 1,0),
+(2, TIMESTAMP("2021-02-13",  "00:00:00"),1, 16.46, 21.44,0.47, 0.24, 0.16, 11,0),
+(3, TIMESTAMP("2021-02-13",  "00:00:00"),2, 17.69, 22.65,0.52, 0.39, 0.03, 2,0),
+(9, TIMESTAMP("2021-02-13",  "00:00:00"),7, 18.14, 23.73,0.34, 0.09, 0.11, 21,0),
+(10, TIMESTAMP("2021-02-13",  "00:00:00"),7, 17.45, 21.53,0.32, 0.09, 0.11, 17,0),
+(13, TIMESTAMP("2021-02-13",  "00:00:00"),9, 17.11, 21.10,0.12, 0.09, 0.11, 1,0),
+(14, TIMESTAMP("2021-02-13",  "00:00:00"),10, 15.97, 20.01, 0.23, 0.09, 0.11, 9,0),
+(15, TIMESTAMP("2021-02-13",  "00:00:00"),11, 16.93, 21.84,0.25, 0.09, 0.11, 19,0),
+(16, TIMESTAMP("2021-02-13",  "00:00:00"),11, 18.65, 22.87,0.27, 0.09, 0.11, 3,0),
+(18, TIMESTAMP("2021-02-13",  "00:00:00"),11, 15.47, 20.61,0.48, 0.09, 0.11, 16,0),
+(21, TIMESTAMP("2021-02-13",  "00:00:00"),14, 17.11, 21.67,0.45, 0.13, 0.37, 5,0),
+(23, TIMESTAMP("2021-02-13",  "00:00:00"),16, 17.25, 21.39,0.04, 0.36, 0.20, 8,0),
+(36, TIMESTAMP("2021-02-13",  "00:00:00"),25, 15.45, 19.52,0.41, 0.19, 0.05, 22,0),
+(37, TIMESTAMP("2021-02-13",  "00:00:00"),25, 17.45, 21.53,0.45, 0.19, 0.01, 21,0),
+(26, TIMESTAMP("2021-02-13",  "00:00:00"),19, 20.11, 25.99,0.24, 0.29, 0.15, 5,0),
+(30, TIMESTAMP("2021-02-13",  "00:00:00"),20, 16.56, 22.55,0.49, 0.43, 0.21, 1,0),
+(33, TIMESTAMP("2021-02-13",  "00:00:00"),22, 16.43, 19.65,0.34, 0.05, 0.17, 16,0),
+(34, TIMESTAMP("2021-02-13",  "00:00:00"),23, 19.45, 24.53, 0.24, 0.29, 0.13, 13,0);
 
-INSERT INTO RSS (ID, URL) VALUES
-(1,"musicalmose.com/track"),
-(2, "musicalmose.com/album"),
-(3, "musicalmose.com/download"),
-(4, "musicalmose.com/help"),
-(5, "musicalmose.com/review");
+
+
+INSERT INTO RSS (ID, URL,RSSREMOVED) VALUES
+(1,"musicalmose.com/track",0),
+(2, "musicalmose.com/album",0),
+(3, "musicalmose.com/download",0),
+(4, "musicalmose.com/help",0),
+(5, "musicalmose.com/review",0);
+
