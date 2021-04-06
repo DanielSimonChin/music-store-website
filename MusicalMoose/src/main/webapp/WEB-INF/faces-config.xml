@@ -1,4 +1,3 @@
-
 <faces-config version="2.3"
               xmlns="http://xmlns.jcp.org/xml/ns/javaee"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -135,12 +134,39 @@
             <to-view-id>cart.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
-    
     <navigation-rule>
-        <from-view-id>cart.xhtml</from-view-id>
+        <from-view-id>help.xhtml</from-view-id>
         <navigation-case>
-            <from-outcome>homepage</from-outcome>
-            <to-view-id>index.xhtml</to-view-id>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminmusic.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>register.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>invoice.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
     

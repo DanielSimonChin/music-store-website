@@ -14,7 +14,6 @@ import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import com.gb4w21.musicalmoose.entities.Creditcardinfo;
 import java.util.ArrayList;
 import java.util.List;
 import com.gb4w21.musicalmoose.entities.Sale;
@@ -49,9 +48,6 @@ public class ClientJpaController implements Serializable {
     private EntityManager em;
 
     public void create(Client client) throws RollbackFailureException {
-        if (client.getCreditcardinfoList() == null) {
-            client.setCreditcardinfoList(new ArrayList<Creditcardinfo>());
-        }
         if (client.getSaleList() == null) {
             client.setSaleList(new ArrayList<Sale>());
         }
@@ -61,12 +57,6 @@ public class ClientJpaController implements Serializable {
         try {
             utx.begin();
           
-            List<Creditcardinfo> attachedCreditcardinfoList = new ArrayList<Creditcardinfo>();
-            for (Creditcardinfo creditcardinfoListCreditcardinfoToAttach : client.getCreditcardinfoList()) {
-                creditcardinfoListCreditcardinfoToAttach = em.getReference(creditcardinfoListCreditcardinfoToAttach.getClass(), creditcardinfoListCreditcardinfoToAttach.getCreditcardid());
-                attachedCreditcardinfoList.add(creditcardinfoListCreditcardinfoToAttach);
-            }
-            client.setCreditcardinfoList(attachedCreditcardinfoList);
             List<Sale> attachedSaleList = new ArrayList<Sale>();
             for (Sale saleListSaleToAttach : client.getSaleList()) {
                 saleListSaleToAttach = em.getReference(saleListSaleToAttach.getClass(), saleListSaleToAttach.getSaleid());
@@ -80,15 +70,6 @@ public class ClientJpaController implements Serializable {
             }
             client.setReviewList(attachedReviewList);
             em.persist(client);
-            for (Creditcardinfo creditcardinfoListCreditcardinfo : client.getCreditcardinfoList()) {
-                Client oldClientidOfCreditcardinfoListCreditcardinfo = creditcardinfoListCreditcardinfo.getClientid();
-                creditcardinfoListCreditcardinfo.setClientid(client);
-                creditcardinfoListCreditcardinfo = em.merge(creditcardinfoListCreditcardinfo);
-                if (oldClientidOfCreditcardinfoListCreditcardinfo != null) {
-                    oldClientidOfCreditcardinfoListCreditcardinfo.getCreditcardinfoList().remove(creditcardinfoListCreditcardinfo);
-                    oldClientidOfCreditcardinfoListCreditcardinfo = em.merge(oldClientidOfCreditcardinfoListCreditcardinfo);
-                }
-            }
             for (Sale saleListSale : client.getSaleList()) {
                 Client oldClientidOfSaleListSale = saleListSale.getClientid();
                 saleListSale.setClientid(client);
@@ -126,19 +107,10 @@ public class ClientJpaController implements Serializable {
 
             utx.begin();
             Client persistentClient = em.find(Client.class, client.getClientid());
-            List<Creditcardinfo> creditcardinfoListOld = persistentClient.getCreditcardinfoList();
-            List<Creditcardinfo> creditcardinfoListNew = client.getCreditcardinfoList();
             List<Sale> saleListOld = persistentClient.getSaleList();
             List<Sale> saleListNew = client.getSaleList();
             List<Review> reviewListOld = persistentClient.getReviewList();
             List<Review> reviewListNew = client.getReviewList();
-            List<Creditcardinfo> attachedCreditcardinfoListNew = new ArrayList<Creditcardinfo>();
-            for (Creditcardinfo creditcardinfoListNewCreditcardinfoToAttach : creditcardinfoListNew) {
-                creditcardinfoListNewCreditcardinfoToAttach = em.getReference(creditcardinfoListNewCreditcardinfoToAttach.getClass(), creditcardinfoListNewCreditcardinfoToAttach.getCreditcardid());
-                attachedCreditcardinfoListNew.add(creditcardinfoListNewCreditcardinfoToAttach);
-            }
-            creditcardinfoListNew = attachedCreditcardinfoListNew;
-            client.setCreditcardinfoList(creditcardinfoListNew);
             List<Sale> attachedSaleListNew = new ArrayList<Sale>();
             for (Sale saleListNewSaleToAttach : saleListNew) {
                 saleListNewSaleToAttach = em.getReference(saleListNewSaleToAttach.getClass(), saleListNewSaleToAttach.getSaleid());
@@ -154,23 +126,6 @@ public class ClientJpaController implements Serializable {
             reviewListNew = attachedReviewListNew;
             client.setReviewList(reviewListNew);
             client = em.merge(client);
-            for (Creditcardinfo creditcardinfoListOldCreditcardinfo : creditcardinfoListOld) {
-                if (!creditcardinfoListNew.contains(creditcardinfoListOldCreditcardinfo)) {
-                    creditcardinfoListOldCreditcardinfo.setClientid(null);
-                    creditcardinfoListOldCreditcardinfo = em.merge(creditcardinfoListOldCreditcardinfo);
-                }
-            }
-            for (Creditcardinfo creditcardinfoListNewCreditcardinfo : creditcardinfoListNew) {
-                if (!creditcardinfoListOld.contains(creditcardinfoListNewCreditcardinfo)) {
-                    Client oldClientidOfCreditcardinfoListNewCreditcardinfo = creditcardinfoListNewCreditcardinfo.getClientid();
-                    creditcardinfoListNewCreditcardinfo.setClientid(client);
-                    creditcardinfoListNewCreditcardinfo = em.merge(creditcardinfoListNewCreditcardinfo);
-                    if (oldClientidOfCreditcardinfoListNewCreditcardinfo != null && !oldClientidOfCreditcardinfoListNewCreditcardinfo.equals(client)) {
-                        oldClientidOfCreditcardinfoListNewCreditcardinfo.getCreditcardinfoList().remove(creditcardinfoListNewCreditcardinfo);
-                        oldClientidOfCreditcardinfoListNewCreditcardinfo = em.merge(oldClientidOfCreditcardinfoListNewCreditcardinfo);
-                    }
-                }
-            }
             for (Sale saleListOldSale : saleListOld) {
                 if (!saleListNew.contains(saleListOldSale)) {
                     saleListOldSale.setClientid(null);
@@ -232,11 +187,6 @@ public class ClientJpaController implements Serializable {
                 client.getClientid();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The client with id " + id + " no longer exists.", enfe);
-            }
-            List<Creditcardinfo> creditcardinfoList = client.getCreditcardinfoList();
-            for (Creditcardinfo creditcardinfoListCreditcardinfo : creditcardinfoList) {
-                creditcardinfoListCreditcardinfo.setClientid(null);
-                creditcardinfoListCreditcardinfo = em.merge(creditcardinfoListCreditcardinfo);
             }
             List<Sale> saleList = client.getSaleList();
             for (Sale saleListSale : saleList) {
