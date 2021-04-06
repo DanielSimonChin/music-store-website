@@ -52,7 +52,7 @@
                         </div>
 
                         <!--Only if has cookie-->
-                        <h:form rendered="#{albumJpaController.hasGenreCookie()}">
+                        <h:form rendered="#{preRenderViewBean.hasGenreCookie()}">
                             <h1 id="home">#{msgs.lastSearchedGenre}</h1>
                             <div class="box">
 

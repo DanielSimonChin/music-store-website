@@ -102,8 +102,6 @@ public class Client implements Serializable {
     @Column(name = "GENREOFLASTSEARCH")
     private String genreoflastsearch;
     @OneToMany(mappedBy = "clientid")
-    private List<Creditcardinfo> creditcardinfoList;
-    @OneToMany(mappedBy = "clientid")
     private List<Sale> saleList;
     @OneToMany(mappedBy = "clientid")
     private List<Review> reviewList;
@@ -113,12 +111,6 @@ public class Client implements Serializable {
 
     public Client(Integer clientid) {
         this.clientid = clientid;
-    }
-    public List<Creditcardinfo> getCreditcardinfoList() {
-        return creditcardinfoList;
-    }
-    public void setCreditcardinfoList(List<Creditcardinfo> creditcardinfoList) {
-        this.creditcardinfoList = creditcardinfoList;
     }
     public List<Sale> getSaleList() {
         return saleList;

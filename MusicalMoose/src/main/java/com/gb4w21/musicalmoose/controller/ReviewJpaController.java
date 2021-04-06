@@ -16,7 +16,6 @@ import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Review;
-import com.gb4w21.musicalmoose.util.LoginController;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
