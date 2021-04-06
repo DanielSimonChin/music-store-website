@@ -48,7 +48,7 @@
                                 </p:toolbar>
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="survey" value="#{surveyManagerController.surveys}"
                                              reflow="true" styleClass="products-table"
-                                             selection="#{surveyManagerController.selectedSurvey}" rowKey="#{survey.surveyid}" paginator="true"
+                                             selection="#{surveyManagerController.selectedSurveys}" rowKey="#{survey.surveyid}" paginator="true"
                                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
                                     <f:facet name="header">
                                         <div class="products-table-header">
@@ -72,29 +72,41 @@
                                     <p:column  headerText="#{msgs.question}" sortBy="#{survey.question}" filterBy="#{survey.question}">
                                         <h:outputText  value="#{survey.question}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw1}"  headerText="#{msgs.answer1}" sortBy="#{survey.anserw1}" filterBy="#{survey.anserw1}">
-                                        <h:outputText  value="#{survey.anserw1}"/>
+                                    <p:column  headerText="#{msgs.answer1}" sortBy="#{survey.anserw1}" filterBy="#{survey.anserw1}">
+                                        <h:outputText rendered="#{not empty survey.anserw1}"  value="#{survey.anserw1}"/>
+                                        <h:outputText rendered="#{empty survey.anserw1}"  value="#{msgs.nullMs}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw1}"  headerText="#{msgs.answer1Votes}" sortBy="#{survey.anserw1votes}" filterBy="#{survey.anserw1votes}">
-                                        <h:outputText  value="#{survey.anserw1votes}"/>
+                                    <p:column headerText="#{msgs.answer1Votes}" sortBy="#{survey.anserw1votes}" filterBy="#{survey.anserw1votes}">
+                                        <h:outputText rendered="#{not empty survey.anserw1}"  value="#{survey.anserw1votes}"/>
+                                        <h:outputText rendered="#{not empty survey.anserw1 and  empty survey.anserw1votes}"  value="0"/>
+                                        <h:outputText rendered="#{empty survey.anserw1}"  value="#{msgs.nullMs}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw2}"  headerText="#{msgs.answer2}" sortBy="#{survey.anserw2}" filterBy="#{survey.anserw2}">
-                                        <h:outputText  value="#{survey.anserw2}"/>
+                                    <p:column headerText="#{msgs.answer2}" sortBy="#{survey.anserw2}" filterBy="#{survey.anserw2}">
+                                        <h:outputText rendered="#{not empty survey.anserw2}"  value="#{survey.anserw2}"/>
+                                        <h:outputText rendered="#{empty survey.anserw2}"  value="#{msgs.nullMs}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw2}"  headerText="#{msgs.answer2Votes}" sortBy="#{survey.anserw2votes}" filterBy="#{survey.anserw2votes}">
-                                        <h:outputText  value="#{survey.anserw2votes}"/>
+                                    <p:column headerText="#{msgs.answer2Votes}" sortBy="#{survey.anserw2votes}" filterBy="#{survey.anserw2votes}">
+                                        <h:outputText rendered="#{not empty survey.anserw2}"  value="#{survey.anserw2votes}"/>
+                                      <h:outputText rendered="#{not empty survey.anserw2 and  empty survey.anserw2votes}"  value="0"/>
+                                        <h:outputText rendered="#{empty survey.anserw2}"  value="#{msgs.nullMs}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw3}"  headerText="#{msgs.answer3}" sortBy="#{survey.anserw3}" filterBy="#{survey.anserw3}">
-                                        <h:outputText  value="#{survey.anserw3}"/>
+                                    <p:column headerText="#{msgs.answer3}" sortBy="#{survey.anserw3}" filterBy="#{survey.anserw3}">
+                                        <h:outputText rendered="#{not empty survey.anserw3}"  value="#{survey.anserw3}"/>
+                                        <h:outputText rendered="#{empty survey.anserw3}"  value="#{msgs.nullMs}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw3}"  headerText="#{msgs.answer3Votes}" sortBy="#{survey.anserw3votes}" filterBy="#{survey.anserw3votes}">
-                                        <h:outputText  value="#{survey.anserw3votes}"/>
+                                    <p:column headerText="#{msgs.answer3Votes}" sortBy="#{survey.anserw3votes}" filterBy="#{survey.anserw3votes}">
+                                       <h:outputText rendered="#{not empty survey.anserw3}"  value="#{survey.anserw3votes}"/>
+                                       <h:outputText rendered="#{not empty survey.anserw3 and  empty survey.anserw3votes}"  value="0"/>
+                                        <h:outputText rendered="#{empty survey.anserw3}"  value="#{msgs.nullMs}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw4}"  headerText="#{msgs.answer4}" sortBy="#{survey.anserw4}" filterBy="#{survey.anserw4}">
-                                        <h:outputText  value="#{survey.anserw4}"/>
+                                    <p:column headerText="#{msgs.answer4}" sortBy="#{survey.anserw4}" filterBy="#{survey.anserw4}">
+                                        <h:outputText rendered="#{not empty survey.anserw4}"  value="#{survey.anserw4}"/>
+                                        <h:outputText rendered="#{empty survey.anserw4}"  value="#{msgs.nullMs}"/>
                                     </p:column>
-                                    <p:column rendered="#{empty survey.anserw4}"  headerText="#{msgs.answer4Votes}" sortBy="#{survey.anserw4votes}" filterBy="#{survey.anserw4votes}">
-                                        <h:outputText  value="#{survey.anserw4votes}"/>
+                                    <p:column headerText="#{msgs.answer4Votes}" sortBy="#{survey.anserw4votes}" filterBy="#{survey.anserw4votes}">
+                                        <h:outputText rendered="#{not empty survey.anserw4 and not empty survey.anserw4votes}"  value="#{survey.anserw4votes}"/>
+                                        <h:outputText rendered="#{not empty survey.anserw4 and  empty survey.anserw4votes}"  value="0"/>
+                                        <h:outputText rendered="#{empty survey.anserw4 }"  value="#{msgs.nullMs}"/>
                                     </p:column>
                                     <p:column   headerText="Date Created" sortBy="#{survey.datesurveyrcreated}" >
                                         <h:outputText  value="#{survey.datesurveyrcreated}"/>
@@ -110,7 +122,7 @@
                                         <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
                                                          oncomplete="PF('manageProductDialog').show()"
                                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                            <f:setPropertyActionListener value="#{product}" target="#{surveyManagerController.selectedSurvey}"/>
+                                            <f:setPropertyActionListener value="#{survey}" target="#{surveyManagerController.bigSurvey}"/>
                                             <p:resetInput target=":form:manage-product-content"/>
                                         </p:commandButton>
 
@@ -120,10 +132,10 @@
                                 <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
                                           width="860" height="540" widgetVar="manageProductDialog" responsive="true">
                                     <p:outputPanel id="manage-product-content" class="ui-fluid">
-                                        <p:outputPanel rendered="#{not empty surveyManagerController.selectedSurvey}">
+                                        <p:outputPanel rendered="#{not empty surveyManagerController.bigSurvey}">
                                             <div class="p-field">
                                                 <p:outputLabel for="title" value="#{msgs.surveyTitle}"/>
-                                                <p:inputText id="title" label="#{msgs.surveyTitle}"  value="#{surveyManagerController.selectedSurvey.surveytitle}" required="true" requiredMessage="#{msgs.required}"  validator="#{surveyManagerController.validateSurveyTitle}">
+                                                <p:inputText id="title" label="#{msgs.surveyTitle}"  value="#{surveyManagerController.bigSurvey.surveytitle}" required="true" requiredMessage="#{msgs.required}"  validator="#{surveyManagerController.validateSurveyTitle}">
                                                     
 
                                                     <f:ajax event="blur" render="titleError" />
@@ -133,57 +145,58 @@
                                             </div>
                                             <div class="p-field">
                                                 <p:outputLabel for="question" value="#{msgs.question}"/>
-                                                <p:inputText id="question" label="#{msgs.question}"  value="#{surveyManagerController.selectedSurvey.question}" required="true" requiredMessage="#{msgs.required}"  validator="#{surveyManagerController.validateSurveyQuestion}">
+                                                <p:inputText id="question" label="#{msgs.question}"  value="#{surveyManagerController.bigSurvey.question}" required="true" requiredMessage="#{msgs.required}"  validator="#{surveyManagerController.validateSurveyQuestion}">
                                                     
 
-                                                    <f:ajax event="blur" render="titleError" />
+                                                    <f:ajax event="blur" render="questionError" />
                                                 </p:inputText>
                                                 <p:message id="questionError" for="question" style="color:red" />
 
                                             </div>
                                             <div class="p-field">
                                                 <p:outputLabel for="answer1" value="#{msgs.answer1}"/>
-                                                <p:inputText id="answer1" label="#{msgs.answer1}"  value="#{surveyManagerController.selectedSurvey.anserw1}" required="true"  >
+                                                <p:inputText id="answer1" label="#{msgs.answer1}"  value="#{surveyManagerController.bigSurvey.anserw1}" required="true" requiredMessage="#{msgs.required}"    >
                                                     
 
-                                                    <f:ajax event="blur" render="titleError" />
+                                                    <f:ajax event="blur" render="answer1Error" />
                                                 </p:inputText>
-                                                <p:message id="answer1Error" for="answer1" style="color:red" />
+                                               <p:message id="answer1Error" for="answer1" style="color:red" />
 
                                             </div>
                                             <div class="p-field">
                                                  <p:outputLabel for="answer2" value="#{msgs.answer2}"/>
-                                                <p:inputText id="answer2" label="#{msgs.answer2}"  value="#{surveyManagerController.selectedSurvey.anserw2}" required="true"  >
+                                                <p:inputText id="answer2" label="#{msgs.answer2}"  value="#{surveyManagerController.bigSurvey.anserw2}" >
                                                     
 
-                                                    <f:ajax event="blur" render="titleError" />
+                                                    <f:ajax event="blur" render="answer2Error" />
                                                 </p:inputText>
                                                 <p:message id="answer2Error" for="answer2" style="color:red" />
 
                                             </div>
                                             <div class="p-field">
-                                                 <p:outputLabel for="answer3" value="#{msgs.anserw3}"/>
-                                                <p:inputText id="answer3" label="#{msgs.anserw3}"  value="#{surveyManagerController.selectedSurvey.anserw3}" required="true"  >
+                                                <p:outputLabel for="answer3" value="#{msgs.answer3}"/>
+                                                <p:inputText id="answer3" label="#{msgs.answer3}"  value="#{surveyManagerController.bigSurvey.anserw3}"  >
                                                     
 
-                                                    <f:ajax event="blur" render="titleError" />
+                                                    <f:ajax event="blur" render="answer3Error" />
                                                 </p:inputText>
                                                 <p:message id="answer3Error" for="answer3" style="color:red" />
 
                                             </div>
                                             <div class="p-field">
-                                                 <p:outputLabel for="title" value="#{msgs.answer4}"/>
-                                                <p:inputText id="title" label="#{msgs.answer4}"  value="#{surveyManagerController.selectedSurvey.anserw4}" required="true"  >
+                                                 <p:outputLabel for="answer4" value="#{msgs.answer4}"/>
+                                                <p:inputText id="answer4" label="#{msgs.answer4}"  value="#{surveyManagerController.bigSurvey.anserw4}" >
                                                     
 
-                                                    <f:ajax event="blur" render="titleError" />
+                                                    <f:ajax event="blur" render="answer4Error" />
                                                 </p:inputText>
-                                                <p:message id="titleError" for="title" style="color:red" />
+                                                <p:message id="answer4Error" for="answer4" style="color:red" />
+                                               
 
                                             </div>
                                             <div class="p-field">
                                                 <p:outputLabel for="reviewapproved">#{msgs.surveryInUse}</p:outputLabel>
-                                                <p:selectOneRadio id="reviewapproved" value="#{surveyManagerController.selectedSurvey.surveryinuse}"
+                                                <p:selectOneRadio id="reviewapproved" value="#{surveyManagerController.bigSurvey.surveryinuse}" required="true" requiredMessage="#{msgs.required}" >
                                                                   layout="responsive" columns="2">
                                                     <f:selectItem itemValue="#{true}" itemLabel="#{msgs.inUse}" />
                                                     <f:selectItem itemValue="#{false}" itemLabel="#{msgs.notInUse}" />

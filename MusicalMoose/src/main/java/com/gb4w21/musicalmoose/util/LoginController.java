@@ -67,10 +67,10 @@ public class LoginController  implements Serializable{
         return loginLastPage;
     }
     public String signOut(){
+        Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
+       
         loginBean = new LoginBean();
         loginBean.setLoggedIn(false);
-
-        Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
         if(registeredClient.getIsmanager()){
             return "index";
         }

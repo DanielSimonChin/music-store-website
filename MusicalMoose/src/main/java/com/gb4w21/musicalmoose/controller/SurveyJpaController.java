@@ -5,34 +5,31 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
-import com.gb4w21.musicalmoose.entities.MusicTrack;
+import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Survey;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.RollbackException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.Cookie;
+import javax.transaction.UserTransaction;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
-import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,16 +37,31 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class SurveyJpaController implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(SurveyJpaController.class);
+    private boolean isSurveyUsed = false;
+
+     private final static Logger LOG = LoggerFactory.getLogger(SurveyJpaController.class);
 
     @Resource
     private UserTransaction utx;
 
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
-    private boolean isSurveyUsed = false;
-    public void create(Survey survey) throws RollbackFailureException {
 
+    public void create(Survey survey) throws RollbackFailureException, javax.transaction.RollbackException {
+        LOG.debug("id"+survey.getSurveyid());
+        LOG.debug("id"+survey.getSurveytitle());
+        LOG.debug("id"+survey.getQuestion());
+        LOG.debug("id"+survey.getSurveryinuse());
+        LOG.debug("id"+survey.getAnserw1());
+        LOG.debug("id"+survey.getAnserw2());
+        LOG.debug("id"+survey.getAnserw3());
+        LOG.debug("id"+survey.getAnserw4());
+        LOG.debug("id"+survey.getAnserw1votes());
+        LOG.debug("id"+survey.getAnserw2votes());
+        LOG.debug("id"+survey.getAnserw3votes());
+        LOG.debug("id"+survey.getAnserw4votes());
+        LOG.debug("id"+survey.getDatesurveyrcreated());
+        LOG.debug("id"+survey.getDatelastused());
         try {
             utx.begin();
 
@@ -59,13 +71,14 @@ public class SurveyJpaController implements Serializable {
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             try {
                 utx.rollback();
-                LOG.error("Rollback");
+                LOG.error("Rollback" +ex.getLocalizedMessage());
             } catch (IllegalStateException | SecurityException | SystemException re) {
                 LOG.error("Rollback2");
 
                 throw new RollbackFailureException("An error occurred attempting to roll back the transaction.", re);
             }
         }
+
     }
 
     public void edit(Survey survey) throws NonexistentEntityException, Exception {
@@ -89,6 +102,7 @@ public class SurveyJpaController implements Serializable {
             }
             throw ex;
         }
+
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
@@ -111,6 +125,8 @@ public class SurveyJpaController implements Serializable {
             }
             throw ex;
         }
+
+
     }
 
     public List<Survey> findSurveyEntities() {
@@ -122,32 +138,22 @@ public class SurveyJpaController implements Serializable {
     }
 
     private List<Survey> findSurveyEntities(boolean all, int maxResults, int firstResult) {
-
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(Survey.class));
-        Query q = em.createQuery(cq);
-        if (!all) {
-            q.setMaxResults(maxResults);
-            q.setFirstResult(firstResult);
-        }
-        return q.getResultList();
-
+        
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            cq.select(cq.from(Survey.class));
+            Query q = em.createQuery(cq);
+            if (!all) {
+                q.setMaxResults(maxResults);
+                q.setFirstResult(firstResult);
+            }
+            return q.getResultList();
+      
     }
 
     public Survey findSurvey(Integer id) {
-
-        return em.find(Survey.class, id);
-
-    }
-
-    public int getSurveyCount() {
-
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        Root<Survey> rt = cq.from(Survey.class);
-        cq.select(em.getCriteriaBuilder().count(rt));
-        Query q = em.createQuery(cq);
-        return ((Long) q.getSingleResult()).intValue();
-
+       
+            return em.find(Survey.class, id);
+      
     }
 
     public Survey getRunningSurvey() {
@@ -157,18 +163,18 @@ public class SurveyJpaController implements Serializable {
         cq.select(survey);
         cq.where(cb.equal(survey.get("surveryinuse"), 1));
         TypedQuery<Survey> query = em.createQuery(cq);
-        try{
+        try {
             return query.getSingleResult();
-        }
-        catch(javax.persistence.NoResultException NoResultException){
+        } catch (javax.persistence.NoResultException NoResultException) {
             return null;
         }
 
     }
-    public boolean isSurveyUsed(){
+
+    public boolean isSurveyUsed() {
         return this.isSurveyUsed;
     }
-  
+
     public String incearseVote1() throws Exception {
         incearseVote(1);
         return "reloadindex";
@@ -189,12 +195,10 @@ public class SurveyJpaController implements Serializable {
         return "reloadindex";
     }
 
-    
-
     private void incearseVote(int voteNumber) throws Exception {
         Survey survey = getRunningSurvey();
         increaseRow(voteNumber, survey);
-        this.isSurveyUsed=true;
+        this.isSurveyUsed = true;
 
     }
 
@@ -211,5 +215,14 @@ public class SurveyJpaController implements Serializable {
         edit(survey);
     }
 
-   
+    public int getSurveyCount() {
+     
+            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+            Root<Survey> rt = cq.from(Survey.class);
+            cq.select(em.getCriteriaBuilder().count(rt));
+            Query q = em.createQuery(cq);
+            return ((Long) q.getSingleResult()).intValue();
+    
+    }
+
 }

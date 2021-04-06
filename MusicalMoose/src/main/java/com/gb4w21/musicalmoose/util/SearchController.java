@@ -189,7 +189,7 @@ public class SearchController implements Serializable {
         cq.where(cb.equal(musicTrack.get("tracktitle"), searchResultsTrack.get(0).getTracktitle()),
                 cb.equal(musicTrack.get("artist"), searchResultsTrack.get(0).getArtist()),
                 cb.equal(musicTrack.get("musiccategory"), searchResultsTrack.get(0).getMusiccategory()), 
-                cb.equal(musicTrack.get("removalstatus"), 0));
+                cb.equal(musicTrack.get("available"), 1));
 
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
 
@@ -206,7 +206,7 @@ public class SearchController implements Serializable {
         cq.where(cb.equal(album.get("albumtitle"), searchResultsAlbum.get(0).getAlbumtitle()),
                 cb.equal(album.get("artist"), searchResultsAlbum.get(0).getArtist()),
                 cb.equal(album.get("releasedate"), searchResultsAlbum.get(0).getReleasedate()),
-                cb.equal(album.get("removalstatus"), 0));
+                cb.equal(album.get("available"), 1));
 
         TypedQuery<Album> query = entityManager.createQuery(cq);
         albumJpaController.setSelectedAlbum(query.getSingleResult());
