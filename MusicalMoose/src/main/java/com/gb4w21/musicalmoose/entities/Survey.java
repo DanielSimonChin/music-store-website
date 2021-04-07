@@ -41,9 +41,15 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Survey.findByAnserw4votes", query = "SELECT s FROM Survey s WHERE s.anserw4votes = :anserw4votes"),
     @NamedQuery(name = "Survey.findByDatesurveyrcreated", query = "SELECT s FROM Survey s WHERE s.datesurveyrcreated = :datesurveyrcreated"),
     @NamedQuery(name = "Survey.findByDatelastused", query = "SELECT s FROM Survey s WHERE s.datelastused = :datelastused"),
-    @NamedQuery(name = "Survey.findBySurveryended", query = "SELECT s FROM Survey s WHERE s.surveryended = :surveryended")})
+    @NamedQuery(name = "Survey.findBySurveryinuse", query = "SELECT s FROM Survey s WHERE s.surveryinuse = :surveryinuse")})
 public class Survey implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "SURVEYID")
+    private Integer surveyid;
     @Size(max = 255)
     @Column(name = "SURVEYTITLE")
     private String surveytitle;
@@ -53,28 +59,21 @@ public class Survey implements Serializable {
     @Size(max = 255)
     @Column(name = "ANSERW1")
     private String anserw1;
+    @Column(name = "ANSERW1VOTES")
+    private Integer anserw1votes;
     @Size(max = 255)
     @Column(name = "ANSERW2")
     private String anserw2;
+    @Column(name = "ANSERW2VOTES")
+    private Integer anserw2votes;
     @Size(max = 255)
     @Column(name = "ANSERW3")
     private String anserw3;
+    @Column(name = "ANSERW3VOTES")
+    private Integer anserw3votes;
     @Size(max = 255)
     @Column(name = "ANSERW4")
     private String anserw4;
-
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "SURVEYID")
-    private Integer surveyid;
-    @Column(name = "ANSERW1VOTES")
-    private Integer anserw1votes;
-    @Column(name = "ANSERW2VOTES")
-    private Integer anserw2votes;
-    @Column(name = "ANSERW3VOTES")
-    private Integer anserw3votes;
     @Column(name = "ANSERW4VOTES")
     private Integer anserw4votes;
     @Column(name = "DATESURVEYRCREATED")
@@ -83,8 +82,8 @@ public class Survey implements Serializable {
     @Column(name = "DATELASTUSED")
     @Temporal(TemporalType.TIMESTAMP)
     private Date datelastused;
-    @Column(name = "SURVERYENDED")
-    private Boolean surveryended;
+    @Column(name = "SURVERYINUSE")
+    private Boolean surveryinuse;
 
     public Survey() {
     }
@@ -99,91 +98,6 @@ public class Survey implements Serializable {
 
     public void setSurveyid(Integer surveyid) {
         this.surveyid = surveyid;
-    }
-
-
-    public Integer getAnserw1votes() {
-        return anserw1votes;
-    }
-
-    public void setAnserw1votes(Integer anserw1votes) {
-        this.anserw1votes = anserw1votes;
-    }
-
-
-    public Integer getAnserw2votes() {
-        return anserw2votes;
-    }
-
-    public void setAnserw2votes(Integer anserw2votes) {
-        this.anserw2votes = anserw2votes;
-    }
-
-
-    public Integer getAnserw3votes() {
-        return anserw3votes;
-    }
-
-    public void setAnserw3votes(Integer anserw3votes) {
-        this.anserw3votes = anserw3votes;
-    }
-
-
-    public Integer getAnserw4votes() {
-        return anserw4votes;
-    }
-
-    public void setAnserw4votes(Integer anserw4votes) {
-        this.anserw4votes = anserw4votes;
-    }
-
-    public Date getDatesurveyrcreated() {
-        return datesurveyrcreated;
-    }
-
-    public void setDatesurveyrcreated(Date datesurveyrcreated) {
-        this.datesurveyrcreated = datesurveyrcreated;
-    }
-
-    public Date getDatelastused() {
-        return datelastused;
-    }
-
-    public void setDatelastused(Date datelastused) {
-        this.datelastused = datelastused;
-    }
-
-    public Boolean getSurveryended() {
-        return surveryended;
-    }
-
-    public void setSurveryended(Boolean surveryended) {
-        this.surveryended = surveryended;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (surveyid != null ? surveyid.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Survey)) {
-            return false;
-        }
-        Survey other = (Survey) object;
-        if ((this.surveyid == null && other.surveyid != null) || (this.surveyid != null && !this.surveyid.equals(other.surveyid))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.gb4w21.musicalmoose.Survey[ surveyid=" + surveyid + " ]";
     }
 
     public String getSurveytitle() {
@@ -210,12 +124,28 @@ public class Survey implements Serializable {
         this.anserw1 = anserw1;
     }
 
+    public Integer getAnserw1votes() {
+        return anserw1votes;
+    }
+
+    public void setAnserw1votes(Integer anserw1votes) {
+        this.anserw1votes = anserw1votes;
+    }
+
     public String getAnserw2() {
         return anserw2;
     }
 
     public void setAnserw2(String anserw2) {
         this.anserw2 = anserw2;
+    }
+
+    public Integer getAnserw2votes() {
+        return anserw2votes;
+    }
+
+    public void setAnserw2votes(Integer anserw2votes) {
+        this.anserw2votes = anserw2votes;
     }
 
     public String getAnserw3() {
@@ -226,12 +156,77 @@ public class Survey implements Serializable {
         this.anserw3 = anserw3;
     }
 
+    public Integer getAnserw3votes() {
+        return anserw3votes;
+    }
+
+    public void setAnserw3votes(Integer anserw3votes) {
+        this.anserw3votes = anserw3votes;
+    }
+
     public String getAnserw4() {
         return anserw4;
     }
 
     public void setAnserw4(String anserw4) {
         this.anserw4 = anserw4;
+    }
+
+    public Integer getAnserw4votes() {
+        return anserw4votes;
+    }
+
+    public void setAnserw4votes(Integer anserw4votes) {
+        this.anserw4votes = anserw4votes;
+    }
+
+    public Date getDatesurveyrcreated() {
+        return datesurveyrcreated;
+    }
+
+    public void setDatesurveyrcreated(Date datesurveyrcreated) {
+        this.datesurveyrcreated = datesurveyrcreated;
+    }
+
+    public Date getDatelastused() {
+        return datelastused;
+    }
+
+    public void setDatelastused(Date datelastused) {
+        this.datelastused = datelastused;
+    }
+
+    public Boolean getSurveryinuse() {
+        return surveryinuse;
+    }
+
+    public void setSurveryinuse(Boolean surveryinuse) {
+        this.surveryinuse = surveryinuse;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (surveyid != null ? surveyid.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Survey)) {
+            return false;
+        }
+        Survey other = (Survey) object;
+        if ((this.surveyid == null && other.surveyid != null) || (this.surveyid != null && !this.surveyid.equals(other.surveyid))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "com.gb4w21.musicalmoose.entities.Survey[ surveyid=" + surveyid + " ]";
     }
     
 }

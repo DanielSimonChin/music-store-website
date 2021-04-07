@@ -5,12 +5,15 @@
  */
 package com.gb4w21.musicalmoose.business;
 
+import com.gb4w21.musicalmoose.controller.ShoppingCartController;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -23,33 +26,120 @@ import org.slf4j.LoggerFactory;
  * @author victo
  */
 @Named
-@RequestScoped
-public class PreRenderViewBean {
+@SessionScoped
+public class PreRenderViewBean implements Serializable  {
 
-//    @Inject
-//    LoginBean loginBean;
     private final static Logger LOG = LoggerFactory.getLogger(PreRenderViewBean.class);
+    
+    @Inject
+    private ShoppingCartController shoppingCartController;
+    
+    private boolean checkedCookies = false;
 
     /**
-     * Look for a cookie
+     * Check for genre cookie
      */
-    public void checkCookies() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        // Retrieve a specific cookie
-        Object my_cookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
-        if (my_cookie != null) {
-            LOG.info(((Cookie) my_cookie).getName());
-            LOG.info(((Cookie) my_cookie).getValue());
+    public void checkGenreTrackingCookie() {
+        if (!checkedCookies) {
+            this.addAlbumCookiesToShoppingCart();
+            this.addTrackCookiesToShoppingCart();
+            
+            this.checkedCookies = true;
         }
+        this.shoppingCartController.toShoppingCart();
     }
 
     /**
      * Writing a cookie
      */
-    public void writeCookie() {
+    public void writeGenreTrackingCookie(String genre) {
+        if (genre != null) {
+            Map<String, Object> properties = new HashMap<>();
+            properties.put("maxAge", 60 * 60 * 24 * 365 * 10);
+
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().addResponseCookie("GenreTracking", genre, properties);
+        }
+    }
+    
+    public boolean hasGenreCookie() {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().addResponseCookie("GenreTracking", "RAP", null);
+        Object genreCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
+
+        if (genreCookie == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    private void addAlbumCookiesToShoppingCart() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object cartAlbumCookie = context.getExternalContext().getRequestCookieMap().get("cart_album");
+        if (cartAlbumCookie != null && !((Cookie)cartAlbumCookie).getValue().isEmpty()) {
+            String albumIdsString = ((Cookie)cartAlbumCookie).getValue();
+            String[] albumIds = albumIdsString.split(",");
+            
+            for (int i = 0; i < albumIds.length; i++) {
+                shoppingCartController.findAlbumById(Integer.parseInt(albumIds[i]));
+            }
+        }
+    }
+    
+    private void addTrackCookiesToShoppingCart() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object cartTrackCookie = context.getExternalContext().getRequestCookieMap().get("cart_track");
+        if (cartTrackCookie != null && !((Cookie)cartTrackCookie).getValue().isEmpty()) {
+            String trackIdsString = ((Cookie)cartTrackCookie).getValue();
+            String[] trackIds = trackIdsString.split(",");
+            
+            for (int i = 0; i < trackIds.length; i++) {
+                shoppingCartController.findMusicTrackById(Integer.parseInt(trackIds[i]));
+            }
+        }
+    }
+    
+    public void writeCartCookie(int id, String cookieName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object cartCookie = context.getExternalContext().getRequestCookieMap().get(cookieName);
+        
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("maxAge", 60 * 60 * 24 * 365 * 10);
+        
+        if (cartCookie == null || ((Cookie)cartCookie).getValue().isEmpty()) {
+            context.getExternalContext().addResponseCookie(cookieName, Integer.toString(id), properties);
+        }
+        else {
+            String cartCookiesIds = ((Cookie)cartCookie).getValue() + "," + Integer.toString(id);
+            context.getExternalContext().addResponseCookie(cookieName, cartCookiesIds, properties);
+        }
+    }
+    
+    public void removeCartCookie(int id, String cookieName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Object cartCookie = context.getExternalContext().getRequestCookieMap().get(cookieName);
+        
+        if (cartCookie != null) {
+            String cartCookiesIds = ((Cookie)cartCookie).getValue();
+            String idString = Integer.toString(id);
+            int idIndex = cartCookiesIds.indexOf(idString);
+            
+            if (idIndex == 0 && cartCookiesIds.length() > idString.length()) {
+                cartCookiesIds = cartCookiesIds.replace(idString + ",", "");
+            }
+            else if (idIndex == 0) {
+                cartCookiesIds = cartCookiesIds.replace(idString, "");
+            }
+            else {
+                cartCookiesIds = cartCookiesIds.replace("," + idString, "");
+            }
+            context.getExternalContext().addResponseCookie(cookieName, cartCookiesIds, null);
+        }
+    }
+    
+    public void removeCookie(String cookieName) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().addResponseCookie(cookieName, "", null);
     }
 
     /**

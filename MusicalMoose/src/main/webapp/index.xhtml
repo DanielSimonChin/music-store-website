@@ -33,6 +33,8 @@
                             <div class="box">
 
 
+
+
                                 <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
                                     <h:form >
                                         <h:commandLink value="#{specialTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specialTracks)}">
@@ -52,7 +54,7 @@
                         </div>
 
                         <!--Only if has cookie-->
-                        <h:form rendered="#{albumJpaController.hasGenreCookie()}">
+                        <h:form rendered="#{preRenderViewBean.hasGenreCookie()}">
                             <h1 id="home">#{msgs.lastSearchedGenre}</h1>
                             <div class="box">
 
@@ -78,41 +80,43 @@
                                     </h:commandLink>
                                 </h:form>
                             </ui:repeat>
-                            
+
                         </div>
                         <h:form>
-                            <h:panelGrid columns="1">
-                                <h3 id="myList">#{survey.question}</h3>
+                            <div class="box">
+                                <h:panelGrid columns="1">
+                                    <h3 id="myList">#{survey.question}</h3>
 
 
-                                <h:panelGroup>
-                                    <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
-                                    <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" id="voteOutput1" value="#{survey.anserw1votes}"/>
-                                    <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
-                                </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
+                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" id="voteOutput1" value="#{survey.anserw1votes}"/>
+                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
+                                    </h:panelGroup>
 
 
-                                <h:panelGroup>
-                                    <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                    <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" id="voteOutput2" value="#{survey.anserw2votes}"/>
-                                    <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" id="voteOutput2" value="#{survey.anserw2votes}"/>
+                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                    </h:panelGroup>
 
-                                <h:panelGroup>
-                                    <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                    <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" id="voteOutput3" value="#{survey.anserw3votes}"/>
-                                    <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" id="voteOutput3" value="#{survey.anserw3votes}"/>
+                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                    </h:panelGroup>
 
-                                <h:panelGroup>
-                                    <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                    <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                    <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" id="voteOutput4" value="#{survey.anserw4votes}"/>
-                                </h:panelGroup>
+                                    <h:panelGroup>
+                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" id="voteOutput4" value="#{survey.anserw4votes}"/>
+                                    </h:panelGroup>
 
+                                </h:panelGrid>
+                            </div>
 
-                                <br/>
-                            </h:panelGrid>
+                            <br/>
                         </h:form>
 
                         <!-- Display the first running ad -->
@@ -183,4 +187,7 @@
 
     </h:body>
 </html>
+
+
+
 

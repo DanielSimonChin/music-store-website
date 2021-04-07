@@ -5,6 +5,7 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
+import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Album;
@@ -18,13 +19,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -53,6 +52,7 @@ public class AlbumJpaController implements Serializable {
 
     private Album selectedAlbum;
 //    private String recentGenre;
+    private PreRenderViewBean preRenderViewBean = new PreRenderViewBean();
 
     public void create(Album album) throws RollbackFailureException {
         if (album.getMusicTrackList() == null) {
@@ -177,7 +177,6 @@ public class AlbumJpaController implements Serializable {
     }
 
     private List<Album> findAlbumEntities(boolean all, int maxResults, int firstResult) {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(Album.class));
         Query q = em.createQuery(cq);
@@ -190,9 +189,7 @@ public class AlbumJpaController implements Serializable {
     }
 
     public Album findAlbum(Integer id) {
-
         return em.find(Album.class, id);
-
     }
 
     public int getAlbumCount() {
@@ -207,11 +204,8 @@ public class AlbumJpaController implements Serializable {
 
     public String searchSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
-        writeCookie();
-        LOG.info("album id:"+id);
-        LOG.info("album id:"+id);
-        LOG.info("album id:"+id);
-        LOG.info("album id:"+id);
+
+        validateGenreCookie();
         LOG.info("album id:"+id);
         return "searchAlbum";
     }
@@ -223,7 +217,7 @@ public class AlbumJpaController implements Serializable {
         catch (NonexistentEntityException e) {
             return null;
         }
-        writeCookie();
+        validateGenreCookie();
         return "detailAlbum";
     }
     
@@ -336,11 +330,8 @@ public class AlbumJpaController implements Serializable {
     public String selectAlbum(Album album) {
         this.selectedAlbum = album;
         LOG.info("" + album.getAlbumtitle());
-        //      LOG.info(""+album.getAlbumtitle());
-        //    LOG.info(""+album.getAlbumtitle());
-        //  LOG.info(""+album.getAlbumtitle());
-        // LOG.info(""+album.getAlbumtitle());
-        writeCookie();
+        validateGenreCookie();
+
         return "detailAlbum";
     }
 
@@ -348,22 +339,15 @@ public class AlbumJpaController implements Serializable {
         this.selectedAlbum = album;
         LOG.info("" + album.getAlbumtitle());
 
-        writeCookie();
+        validateGenreCookie();
         return "albumpage";
     }
 
-    private void writeCookie() {
-
+    private void validateGenreCookie() {
         if (selectedAlbum != null) {
             List<MusicTrack> musicTracks = selectedAlbum.getMusicTrackList();
             if (musicTracks.size() > 0 && musicTracks.get(0).getMusiccategory() != null) {
-
-//            recentGenre = musicTracks.get(0).getMusiccategory();
-                Map<String, Object> properties = new HashMap<>();
-                properties.put("maxAge", 31536000);
-                
-                FacesContext context = FacesContext.getCurrentInstance();
-                context.getExternalContext().addResponseCookie("GenreTracking", musicTracks.get(0).getMusiccategory(), properties);
+                preRenderViewBean.writeGenreTrackingCookie(musicTracks.get(0).getMusiccategory());
             }
         }
     }
@@ -393,7 +377,7 @@ public class AlbumJpaController implements Serializable {
         Root<Album> album = cq.from(Album.class);
         cq.select(album);
 
-        cq.where(cb.lessThan(album.get("saleprice"), album.get("listprice")));
+        cq.where(cb.lessThan(album.get("saleprice"), album.get("listprice")),cb.equal(album.get("available"), 1));
         cq.orderBy(cb.desc(album.get("saleprice")));
         TypedQuery<Album> query = em.createQuery(cq);
         List<Album> albums = query.getResultList();
@@ -432,16 +416,5 @@ public class AlbumJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList();
-    }
-
-    public boolean hasGenreCookie() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Object genreCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
-
-        if (genreCookie == null) {
-            return false;
-        } else {
-            return true;
-        }
     }
 }

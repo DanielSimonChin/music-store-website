@@ -42,7 +42,7 @@
                                     <h:inputTextarea a:placeholder="#{msgs.writeYourDescription}"  rows = "10"  cols = "40" value = "#{trackReview.reviewtext}"   />
                                 </h:panelGroup>
                                 <h:panelGroup> 
-                                    <h:commandButton value="#{msgs.createReview}" action="#{reviewJpaController.postReview()}"/> 
+                                    <h:commandButton value="#{msgs.createReview}" action="#{reviewJpaController.postReview(loginController.loginBean.id)}"/> 
                                 </h:panelGroup>
                             </h:panelGrid>
                         </h:form>

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
@@ -85,6 +85,7 @@ public class RegistrationController implements Serializable {
 
     public String addNewUser() throws RollbackFailureException {
         registrationBean.setPassword(fristPassword);
+        registrationBean.setClientactive(true);
         clientJpaController.create(registrationBean);
         loginController.getLoginBean().setLoggedIn(true);
         loginController.getLoginBean().setId(clientJpaController.findUser(registrationBean.getUsername(), registrationBean.getPassword()).getClientid());

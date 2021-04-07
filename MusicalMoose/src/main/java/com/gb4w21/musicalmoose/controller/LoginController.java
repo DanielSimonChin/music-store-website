@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
@@ -67,9 +67,17 @@ public class LoginController  implements Serializable{
         return loginLastPage;
     }
     public String signOut(){
+        Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
+       
         loginBean = new LoginBean();
         loginBean.setLoggedIn(false);
-        return "index";
+        if(registeredClient.getIsmanager()){
+            return "index";
+        }
+        else{
+            return null;
+        }
+
     }
     public void validateUser(FacesContext context, UIComponent component,
             Object value) {
@@ -79,7 +87,7 @@ public class LoginController  implements Serializable{
         String userName = ((String) nameInput.getLocalValue());
         String password = value.toString();
         Client registeredClient= clientJpaController.findUser(userName, password);
-        if (registeredClient==null) {
+        if (registeredClient==null||!registeredClient.getClientactive()) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "loginError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -91,14 +99,27 @@ public class LoginController  implements Serializable{
         
     }
     public String loggIn(){
+        LOG.info("username:"+loginBean.getUsername());
+        LOG.info("password:"+loginBean.getPassword());
         Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
         loginBean.setId(registeredClient.getClientid());
         loginBean.setLoggedIn(true);
-        
-        if (loginLastPage.equals("cart")) {
-            return "checkout";
+        LOG.info("Is manager:"+registeredClient.getIsmanager());
+        if(registeredClient.getIsmanager()){
+            return "adminfront";
         }
-        return loginLastPage;
+        else if(loginLastPage.equals("cart")){
+           
+            return "checkout";
+       
+        }
+        else{
+            return loginLastPage;
+        }
+
+        
+        
+
     }
    
 }

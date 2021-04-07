@@ -4,7 +4,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Musical Moose</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -30,28 +31,38 @@
                     <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.admin}</a>
 
                     <div><h:form >
-                            <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}"/>
-
+                            <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}" required="true" requiredMessage="#{msgs.required}" />
+                        
                             <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
-                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}">
-                                <f:convertDateTime pattern="dd-MM-yyyy" />
-                            </h:inputText>
+                            <p:calendar id="toSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}" pattern="MM/dd/yyyy" validator="#{searchController.validateDateTo}" >
+                                 <f:ajax event="blur" render="toError" />
+                            </p:calendar>     
+                            
                             <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
-                            <h:inputText rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}">
-                                <f:convertDateTime pattern="dd-MM-yyyy" />
-                            </h:inputText>
-                            <h:selectOneMenu  value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> 
-                                <f:selectItem itemValue = "TrackName" itemLabel = "#{msgs.trackName}" /> 
+                            <p:calendar id="fromSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}" pattern="MM/dd/yyyy" validator="#{searchController.validateDateFrom}" >
+                                <f:ajax event="blur" render="fromError" /> 
+                            </p:calendar>  
+                            
+                            <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
+                            <br></br>
+                            <h:message id="toError" for="toSearch" style="color:red" />
+                            <h:message id="fromError" for="fromSearch" style="color:red" />
+                            <h:outputText rendered="#{searchController.searchError}" value="#{msgs.noResults}"/>
+                            
+                            
+                        </h:form>
+                        </div>
+                    <div>
+                    <h:form >
+                        <h:selectOneMenu   value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> 
+                                <f:selectItem itemValue = "TrackName"  itemLabel = "#{msgs.trackName}" /> 
                                 <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
                                 <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
                                 <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
 
                             </h:selectOneMenu> 
-                            <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
-                            <h:outputText rendered="#{searchController.searchError}" value="#{msgs.noResults}"/>
-                            <h:messages styleClass="errorMessage" showSummary="false"
-                                        showDetail="true" />
-                        </h:form></div>
+                    </h:form>
+                        </div>
                 </nav>
                 <nav class="sub-nav">
 

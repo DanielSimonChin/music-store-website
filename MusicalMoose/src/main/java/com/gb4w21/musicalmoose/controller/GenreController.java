@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.SearchResult;
 import com.gb4w21.musicalmoose.controller.BanneradJpaController;
@@ -44,37 +44,37 @@ public class GenreController implements Serializable {
     }
 
     public String searchPop() throws Exception {
-        LOG.info("wwwwwwwwwwwwww1");
+      
         searchGener(Pop);
-        LOG.info("wwwwwwwwwwwwww1");
+   
         return "searchPage";
     }
 
     public String searchRB() throws Exception {
-        LOG.info("wwwwwwwwwwwwww2");
+    
         searchGener(RB);
-        LOG.info("wwwwwwwwwwwwww2");
+      
         return "searchPage";
     }
 
     public String searchRock() throws Exception {
-        LOG.info("wwwwwwwwwwwwww3");
+      
         searchGener(Rock);
-        LOG.info("wwwwwwwwwwwwww3");
+   
         return "searchPage";
     }
 
     public String searchHipHop() throws Exception {
-        LOG.info("wwwwwwwwwwwwww4");
+  
         searchGener(Hip_hop);
-        LOG.info("wwwwwwwwwwwwww4");
+       
         return "searchPage";
     }
 
     public String searchAnime() throws Exception {
-        LOG.info("wwwwwwwwwwwwww5");
+        
         searchGener(Anime);
-        LOG.info("wwwwwwwwwwwwww5");
+     
         return "searchPage";
     }
 
@@ -94,14 +94,14 @@ public class GenreController implements Serializable {
 
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener));
-        cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
+        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener),cb.equal(album.get("available"), 1));
+        cq.select(cb.construct(SearchResult.class, album.get("albumtitle"),  album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchController.setSearchResultsAlbum(query.getResultList());
 
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener));
+        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener), cb.equal(musicTrack.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchController.setSearchResultsTrack(query.getResultList());
