@@ -34,6 +34,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Invoicedetail.findByTotalnetvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalnetvalue = :totalnetvalue"),
     @NamedQuery(name = "Invoicedetail.findByPst", query = "SELECT i FROM Invoicedetail i WHERE i.pst = :pst"),
     @NamedQuery(name = "Invoicedetail.findByGst", query = "SELECT i FROM Invoicedetail i WHERE i.gst = :gst"),
+    @NamedQuery(name = "Invoicedetail.findByProductdownloaded", query = "SELECT i FROM Invoicedetail i WHERE i.productdownloaded = :productdownloaded"),
     @NamedQuery(name = "Invoicedetail.findByHst", query = "SELECT i FROM Invoicedetail i WHERE i.hst = :hst"),
     @NamedQuery(name = "Invoicedetail.findByTotalgrossvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalgrossvalue = :totalgrossvalue"),
     @NamedQuery(name = "Invoicedetail.findByInvoicedetailremoved", query = "SELECT i FROM Invoicedetail i WHERE i.invoicedetailremoved = :invoicedetailremoved")})
@@ -57,6 +58,8 @@ public class Invoicedetail implements Serializable {
     private Float gst;
     @Column(name = "HST")
     private Float hst;
+    @Column(name = "PRODUCTDOWNLOADED")
+    private int productdownloaded;
     @Column(name = "TOTALGROSSVALUE")
     private Float totalgrossvalue;
     @Column(name = "INVOICEDETAILREMOVED")
@@ -73,7 +76,12 @@ public class Invoicedetail implements Serializable {
 
     public Invoicedetail() {
     }
-
+    public int getProductdownloaded(){
+        return productdownloaded;
+    }
+    public void setProductdownloaded(int productdownloaded){
+        this.productdownloaded=productdownloaded;
+    }
     public Invoicedetail(Integer invoiceid) {
         this.invoiceid = invoiceid;
     }
