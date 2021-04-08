@@ -14,6 +14,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Sale;
 import java.util.ArrayList;
 import java.util.List;
@@ -224,31 +225,60 @@ public class SaleJpaController implements Serializable {
 
     }
 
+    /**
+     * Retrieve the total gross value of a track's sales
+     *
+     * @param inventoryid
+     * @return the total gross sales of a track
+     */
     public Double getTotalTrackSales(int inventoryid) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
-        CriteriaQuery<Sale> cq = cb.createQuery(Sale.class);
+        CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
 
-        Root<Sale> sale = cq.from(Sale.class);
+        Root<Invoicedetail> invoice = cq.from(Invoicedetail.class);
 
-        Join saleInvoice = sale.join("invoicedetailList");
-
-        //We want all the sale objects that contain invoicedetail objects containing the parameter inventory id
-        cq.where(cb.equal(saleInvoice.get("inventoryid").get("inventoryid"), inventoryid));
+        //We want all the invoicedetail objects that have the parameter inventoryid
+        cq.where(cb.equal(invoice.get("inventoryid").get("inventoryid"), inventoryid));
 
         Query q = em.createQuery(cq);
 
-        List<Sale> sales = q.getResultList();
+        List<Invoicedetail> invoices = q.getResultList();
 
         Float totalSales = 0.0f;
 
-        for (Sale s : sales) {
-            List<Invoicedetail> invoiceDetails = s.getInvoicedetailList();
-            for (Invoicedetail invoice : invoiceDetails) {
-                totalSales += invoice.getTotalgrossvalue();
-
-            }
+        for (Invoicedetail i : invoices) {
+            totalSales += i.getTotalgrossvalue();
         }
         return totalSales.doubleValue();
     }
+
+    /**
+     * Retrieve the total gross value of an album's sales
+     *
+     * @param albumid
+     * @return the total gross sales of an album
+     */
+    public Double getTotalAlbumSales(int albumid) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
+
+        Root<Invoicedetail> invoice = cq.from(Invoicedetail.class);
+
+        //We want all the invoicedetail objects that have the parameter albumid
+        cq.where(cb.equal(invoice.get("albumid").get("albumid"), albumid));
+
+        Query q = em.createQuery(cq);
+
+        List<Invoicedetail> invoices = q.getResultList();
+
+        Float totalSales = 0.0f;
+
+        for (Invoicedetail i : invoices) {
+            totalSales += i.getTotalgrossvalue();
+        }
+        return totalSales.doubleValue();
+    }
+
 }

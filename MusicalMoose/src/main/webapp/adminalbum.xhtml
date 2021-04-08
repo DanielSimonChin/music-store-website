@@ -5,7 +5,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <head>
 
@@ -30,36 +31,261 @@
                             <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
                             <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
                         </div>
-                        <table>
-                            <tr>
-                                <button id="addMusic" class="rowButton">Add album record</button>
-                                &nbsp;
-                                <input type="text" placeholder="Search"/>
-                            </tr>
-                            <tr>
-                                <td class="rowButton"><img src="./icons/delete-cart.png"/></td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Album Number:</td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Album Title:</td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Artist:</td>
-                                <td>
-                                    Click to edit:
-                                    <select>
-                                        <option>Release Date:</option>
-                                        <option>Recording Label:</option>
-                                        <option>Number of Tracks:</option>
-                                        <option>Date entered into inventory:</option>
-                                        <option>Cost Price:</option>
-                                        <option>Album Cover Image File Name:</option>
-                                        <option>List Price:</option>
-                                        <option>Sale Price:</option>
-                                        <option>Removal Status:</option>
-                                        <option>Removal Date:</option>
-                                    </select>
-                                </td>
 
 
-                            </tr>
-                        </table>
+                        <h:form id="form">
+                            <div>
+                                <p:growl id="messages" showDetail="true"/>
+
+                                <p:toolbar>
+                                    <p:toolbarGroup>
+                                        <p:commandButton value="#{msgs.newBtn}" icon="pi pi-plus" actionListener="#{albumManagerController.openNew}"
+                                                         update=":form:manage-product-content" oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="ui-button-success" style="margin-right: .5rem">
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton id="delete-products-button" value="#{msgs.removeBtn}"
+                                                         icon="pi pi-trash" actionListener="#{albumManagerController.removeSelectedAlbums()}"
+                                                         styleClass="ui-button-danger" disabled="#{!albumManagerController.hasSelectedAlbums()}"
+                                                         update="@this">
+                                            <p:confirm header="#{msgs.confirmationHeader}" message="#{msgs.deleteProductsMessage}"
+                                                       icon="pi pi-exclamation-triangle"/>
+                                        </p:commandButton>
+
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+
+                                <h:form>
+                                    <p:fileUpload mode="advanced"
+                                                  multiple="false"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                  invalidFileMessage="#{msgs.invalidFileMessage}"
+                                                  listener="#{fileUploadController.handleFileUpload}"
+                                                  label="#{msgs.import}"/>
+                                </h:form>
+
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{albumManagerController.albums}"
+                                             reflow="true" styleClass="products-table"
+                                             selection="#{albumManagerController.selectedAlbums}" rowKey="#{product.albumid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.albumsHeader}</span>
+
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
+
+                                        </div>
+                                    </f:facet>
+
+                                    <p:ajax event="rowSelect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowSelectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="toggleSelect" update=":form:delete-products-button"/>
+
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                                    <p:column headerText="#{msgs.albumIdHeader}" sortBy="#{product.albumid}" filterBy="#{product.albumid}">
+                                        <h:outputText value="#{product.albumid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.albumTitleHeader}" sortBy="#{product.albumtitle}" filterBy="#{product.albumtitle}">
+                                        <h:outputText value="#{product.albumtitle}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.artist}" sortBy="#{product.artist}" filterBy="#{product.artist}">
+                                        <h:outputText value="#{product.artist}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.recordLabel}" sortBy="#{product.recordlabel}" filterBy="#{product.recordlabel}">
+                                        <h:outputText value="#{product.recordlabel}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.albumNumberOfTracks}" sortBy="#{product.numberoftracks}">
+                                        <h:outputText value="#{product.numberoftracks}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableListPriceHeader}" sortBy="#{product.listprice}">
+                                        <h:outputText value="#{product.listprice}" style="font-weight: 700">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </p:column>
+
+
+                                    <p:column headerText="#{msgs.tableTotalSalesHeader}" sortBy="#{saleJpaController.getTotalAlbumSales(product.albumid)}">
+                                        <h:outputText value="#{saleJpaController.getTotalAlbumSales(product.albumid)}">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableAvailableHeader}" sortBy="#{product.available}">
+                                        <h:outputText value="#{product.isAvailableToClients()}"/>
+                                    </p:column>
+
+                                    <p:column exportable="false">
+                                        <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
+                                                         oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{product}" target="#{albumManagerController.selectedAlbum}"/>
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                         oncomplete="PF('deleteProductDialog').show()">
+                                            <f:setPropertyActionListener value="#{product}" target="#{albumManagerController.selectedAlbum}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:dialog header="#{msgs.albumDetails}" showEffect="fade" modal="true" width="625" height="500"
+                                          widgetVar="manageProductDialog" responsive="true">
+                                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty albumManagerController.selectedAlbum}">
+                                            <p:graphicImage value="album_covers/#{albumManagerController.selectedAlbum.albumimagefilenamesmall}"
+                                                            styleClass="product-image"
+                                                            rendered="#{not empty albumManagerController.selectedAlbum.albumimagefilenamesmall}"/>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="available" value="#{msgs.availableToClients}"/>
+                                                <p:selectOneMenu id="available" value="#{albumManagerController.selectedAlbum.available}">
+                                                    <f:selectItem itemLabel="#{msgs.yesOption}" itemValue="true"/>
+                                                    <f:selectItem itemLabel="#{msgs.noOption}" itemValue="false"/>
+                                                    <p:ajax event="change" listener="#{albumManagerController.setRemovalDate()}" />
+                                                </p:selectOneMenu>
+                                            </div>
+
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="albumtitle">#{msgs.albumTitleHeader}</p:outputLabel>
+                                                <p:inputText id="albumtitle" value="#{albumManagerController.selectedAlbum.albumtitle}" required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="artist">#{msgs.artist}</p:outputLabel>
+                                                <p:inputText id="artist" value="#{albumManagerController.selectedAlbum.artist}" required="true"/>
+                                            </div>
+
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="recordlabel">#{msgs.recordLabel}</p:outputLabel>
+                                                <p:inputText id="recordlabel" value="#{albumManagerController.selectedAlbum.recordlabel}" required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="numberoftracks">#{msgs.numberOfTracks}</p:outputLabel>
+                                                <p:inputNumber id="numberoftracks" value="#{albumManagerController.selectedAlbum.numberoftracks}"
+                                                               decimalPlaces="0" required="true" minValue="0"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="costprice">#{msgs.formCostPrice}</p:outputLabel>
+                                                <p:inputNumber id="costprice" value="#{albumManagerController.selectedAlbum.costprice}"
+                                                               symbol=" CAD" symbolPosition="s"
+                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="listprice">#{msgs.formListPrice}</p:outputLabel>
+                                                <p:inputNumber id="listprice" value="#{albumManagerController.selectedAlbum.listprice}"
+                                                               symbol=" CAD" symbolPosition="s"
+                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="saleprice">#{msgs.formSalePrice}</p:outputLabel>
+                                                <p:inputNumber id="saleprice" value="#{albumManagerController.selectedAlbum.saleprice}"
+                                                               symbol=" CAD" symbolPosition="s"
+                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="pstinput">#{msgs.formPST}</p:outputLabel>
+                                                <p:inputNumber id="pstinput" value="#{albumManagerController.selectedAlbum.pst}" modifyValueOnWheel="false" required="true" />
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="gstinput">#{msgs.formGST}</p:outputLabel>
+                                                <p:inputNumber id="gstinput" value="#{albumManagerController.selectedAlbum.gst}" modifyValueOnWheel="false" required="true" />
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="hstinput">#{msgs.formHST}</p:outputLabel>
+                                                <p:inputNumber id="hstinput" value="#{albumManagerController.selectedAlbum.hst}" modifyValueOnWheel="false" required="true" />
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="albumcoverssmall">#{msgs.selectSmallCover}</p:outputLabel>
+                                                <p:selectOneMenu id="albumcoverssmall" value="#{albumManagerController.selectedAlbum.albumimagefilenamesmall}" filter="true" filterMatchMode="startsWith"
+                                                                 var="filename" panelStyle="width:180px" >
+                                                    <f:selectItems value="#{fileUploadController.getFileNames()}" var="covers" itemLabel="#{covers}" itemValue="#{covers}"/>
+
+                                                    <p:column>  
+                                                        <p:graphicImage value="/album_covers/#{filename}" width="50" height="50"/>  
+                                                    </p:column>  
+
+                                                    <p:column>  
+                                                        #{filename}
+                                                    </p:column>  
+                                                </p:selectOneMenu>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="albumcoversbig">#{msgs.selectBigCover}</p:outputLabel>
+                                                <p:selectOneMenu id="albumcoversbig" value="#{albumManagerController.selectedAlbum.albumimagefilenamebig}" filter="true" filterMatchMode="startsWith"
+                                                                 var="filename" panelStyle="width:180px" >
+                                                    <f:selectItems value="#{fileUploadController.getFileNames()}" var="covers" itemLabel="#{covers}" itemValue="#{covers}"/>
+
+                                                    <p:column>  
+                                                        <p:graphicImage value="/album_covers/#{filename}" width="50" height="50"/>  
+                                                    </p:column>  
+
+                                                    <p:column>  
+                                                        #{filename}
+                                                    </p:column>  
+                                                </p:selectOneMenu>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel rendered="#{musicTrackJpaController.getNonAlbumTracks().size() > 0}" for="trackselection">#{msgs.selectAlbumTracks}</p:outputLabel>
+                                                <p:selectCheckboxMenu rendered="#{musicTrackJpaController.getNonAlbumTracks().size() > 0}" id="trackselection" value="#{albumManagerController.selectedAlbum.musicTrackList}" label="#{msgs.checkBoxMenuTracks}" style="width: 15rem"
+                                                                      filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
+                                                    <f:selectItems value="#{musicTrackJpaController.getNonAlbumTracks()}" var="track" itemLabel="#{track.tracktitle}"/>
+                                                </p:selectCheckboxMenu>
+
+                                            </div>
+
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{albumManagerController.saveProduct()}"
+                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                        <p:commandButton value="Cancel" icon="pi pi-times" actionListener="#{albumManagerController.cancelAlbumForm()}" 
+                                                         class="ui-button-secondary"/>
+                                    </f:facet>
+
+                                </p:dialog>
+
+                                <p:confirmDialog global="true" widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                                 message="#{msgs.deleteProductsMessage}" header="#{msgs.confirmationHeader}" severity="warn">
+                                    <p:commandButton value="#{msgs.yesOption}" icon="pi pi-check" actionListener="#{albumManagerController.removeAlbum()}"
+                                                     process="@this" oncomplete="PF('deleteProductDialog').hide()"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                     onclick="PF('deleteProductDialog').hide()"/>
+                                </p:confirmDialog>
+
+                                <p:confirmDialog global="true" showEffect="fade" width="300">
+                                    <p:commandButton value="#{msgs.yesOption}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                     icon="pi pi-times"/>
+                                </p:confirmDialog>
+                            </div>
+                        </h:form>
                     </section>
                 </div>
             </ui:define>

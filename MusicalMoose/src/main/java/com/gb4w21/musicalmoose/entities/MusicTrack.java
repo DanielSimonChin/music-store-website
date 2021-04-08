@@ -291,10 +291,11 @@ public class MusicTrack implements Serializable {
 
     public String isAvailableToClients() {
         if (this.available) {
-            return "Yes";
+            return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "available", null).getDetail();
         }
-        return "No";
-
+        return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", "unavailable", null).getDetail();
     }
 
     public Date getRemovaldate() {
