@@ -27,7 +27,7 @@
                         <div class="topnav">
                             <a class="active">#{msgs.musicInv}</a>
                             <h:form>
-                             <h:commandButton value="client" action="#{clientManagerController.toClientManagement()}"/> 
+                                <h:commandButton value="client" action="#{clientManagerController.toClientManagement()}"/> 
                             </h:form>
 
                             <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
@@ -141,7 +141,7 @@
                                     </p:column>
                                 </p:dataTable>
 
-                                <p:dialog header="Music Track Details" showEffect="fade" modal="true" width="625" height="500"
+                                <p:dialog header="#{msgs.musicTrackDetails}" showEffect="fade" modal="true" width="625" height="500"
                                           widgetVar="manageProductDialog" responsive="true">
                                     <p:outputPanel id="manage-product-content" class="ui-fluid">
                                         <p:outputPanel rendered="#{not empty musicTrackJpaController.selectedTrack}">
@@ -240,6 +240,7 @@
                                             <div class="p-field">
                                                 <p:selectBooleanCheckbox value="#{musicTrackJpaController.selectedTrack.partofalbum}" itemLabel="#{msgs.partOfAlbum}">
                                                     <p:ajax event="change" update="albumselection albumselectionlabel albumSelectionGroup"/>
+                                                    <p:ajax event="change" listener="#{musicTrackJpaController.setAlbumidToNull()}"/>
                                                 </p:selectBooleanCheckbox>
 
                                             </div>

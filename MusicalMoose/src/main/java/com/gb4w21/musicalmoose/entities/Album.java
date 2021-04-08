@@ -8,6 +8,7 @@ package com.gb4w21.musicalmoose.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -130,7 +131,6 @@ public class Album implements Serializable {
         this.albumtitle = albumtitle;
     }
 
-
     public Date getReleasedate() {
         return releasedate;
     }
@@ -154,7 +154,6 @@ public class Album implements Serializable {
     public void setRecordlabel(String recordlabel) {
         this.recordlabel = recordlabel;
     }
-
 
     public Integer getNumberoftracks() {
         return numberoftracks;
@@ -275,6 +274,7 @@ public class Album implements Serializable {
     public void setMusicTrackList(List<MusicTrack> musicTrackList) {
         this.musicTrackList = musicTrackList;
     }
+
     public Boolean getAvailable() {
         return available;
     }
@@ -282,6 +282,16 @@ public class Album implements Serializable {
     public void setAvailable(Boolean available) {
         this.available = available;
     }
+
+    public String isAvailableToClients() {
+        if (this.available) {
+            return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "available", null).getDetail();
+        }
+        return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", "unavailable", null).getDetail();
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -307,6 +317,4 @@ public class Album implements Serializable {
         return "com.gb4w21.musicalmoose.entities.Album[ albumid=" + albumid + " ]";
     }
 
-
-   
 }
