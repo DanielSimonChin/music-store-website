@@ -417,4 +417,6 @@ public class AlbumJpaController implements Serializable {
 
         return q.getResultList();
     }
+    
+    
 }

@@ -226,33 +226,6 @@ public class SearchController implements Serializable {
         searchResultsTrack = query.getResultList();
 
     }
-
-    public void validateDateFrom(FacesContext context, UIComponent component,Object value) {
-        if (value != null && compareDate((Date) value)) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "dateErrorFrom", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-            throw new ValidatorException(message);
-        }
-    }
-
-    public void validateDateTo(FacesContext context, UIComponent component, Object value) {
-        if (value != null && compareDate((Date) value)) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "dateErrorTo", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-            throw new ValidatorException(message);
-        }
-    }
-
-    private boolean compareDate(Date chosenDate) {
-        Date currentDate = new Date();
-        LOG.info("Date:" + chosenDate.toString());
-        return chosenDate.compareTo(currentDate) > 0;
-    }
-
   
     private void searchResultsAlbums() {
         searchText = "%" + searchText + "%";

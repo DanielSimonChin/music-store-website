@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <title>Reports</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <h:body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <div class="wrapper">
+                    <br/>
+                    <br/>
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+                        <div class="topnav">
+                            <a class="active">#{msgs.report}</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
+                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
+                        </div>   
+                        <h:form id="form">
+                            <div class="card crud-demo">
+                                <p:growl id="messages" showDetail="true"/>
+
+                                <p:toolbar>
+                                    <p:toolbarGroup align="right">
+                                        <p:inputText id="specifiedSearch"   placeholder="#{msgs.specifiedSearch}" value="#{reportManagementController.specifiedSearch}" validator="#{reportManagementController.validateSpecificSearch}"/>
+
+                                        <h:outputLabel for="fromSearch" value="#{msgs.from}"/>
+                                        <p:calendar id="fromSearch" value="#{reportManagementController.fromDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateFrom}" >
+                                            <f:ajax event="blur" render="fromError" /> 
+                                        </p:calendar>  
+
+                                        <h:outputLabel for="toSearch" value="#{msgs.to}"/>
+                                        <p:calendar id="toSearch" value="#{reportManagementController.toDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateTo}" >
+                                            <f:ajax event="blur" render="toError" />
+                                        </p:calendar>  
+
+                                        <p:selectOneMenu   value="#{reportManagementController.reportCategory}" id="criteria" > 
+                                            <f:selectItem itemValue = "TotalSales"  itemLabel = "#{msgs.totalSales}" /> 
+                                            <f:selectItem itemValue = "SalesByClient" itemLabel = "#{msgs.salesByClient}" /> 
+                                            <f:selectItem itemValue = "SalesByArtist" itemLabel = "#{msgs.salesByArtist}" /> 
+                                            <f:selectItem itemValue = "SalesByTrack" itemLabel = "#{msgs.salesByTrack}" /> 
+                                            <f:selectItem itemValue = "SalesByAlbum"  itemLabel = "#{msgs.salesByAlbum}" /> 
+                                            <f:selectItem itemValue = "TopSellers" itemLabel = "#{msgs.topSellers}" /> 
+                                            <f:selectItem itemValue = "TopClients" itemLabel = "#{msgs.topClients}" /> 
+                                            <f:selectItem itemValue = "ZeroTracks" itemLabel = "#{msgs.zeroTracks}" /> 
+                                            <f:selectItem itemValue = "ZeroClients" itemLabel = "#{msgs.zeroClients}" /> 
+                                        </p:selectOneMenu> 
+                                        <p:commandButton value="#{msgs.newBtn}"  styleClass="ui-button-success" />
+                                        <br></br>
+                                        <h:message id="toError" for="toSearch" style="color:red" />
+                                        <h:message id="fromError" for="fromSearch" style="color:red" />
+                                    </p:toolbarGroup>
+
+                                </p:toolbar>
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="invoicedetail" value="#{reportManagementController.invoicedetails}"
+                                             rendered="#{reportManagementController.gettingSales}" 
+                                             reflow="true" styleClass="products-table"
+                                             rowKey="#{invoicedetail.invoiceid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">    
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.musicTracksHeader}</span>
+
+                                            <span class="filter-container ui-input-icon-left">
+                                                <h:outputText  value="#{msgs.totalPiceNetValue} #{reportManagementController.totalPiceNetValue}"/>
+                                                <h:outputText  value="#{msgs.totalPiceGrossValue} #{reportManagementController.totalPiceGrossValue}"/>
+                                                <h:outputText  value="#{msgs.toalNumberOfSales} #{reportManagementController.toalNumberOfSales}"/>
+                                                <h:outputText rendered="#{reportManagementController.reportCategory eq SalesByAlbum or reportManagementController.reportCategory eq SalesByTrack }" 
+                                                              value="#{msgs.totalNumberOfDownloads} #{reportManagementController.totalNumberOfDownloads}"/>
+
+                                            </span>
+                                        </div>
+                                    </f:facet>
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+                                    <p:column headerText="#{msgs.inventoryNumber}" >
+                                        <h:outputText value="#{invoicedetail.invoiceid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.trackName}" >
+                                        <h:outputText value="#{invoicedetail.totalnetvalue}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.artist}" >
+                                        <h:outputText value="#{invoicedetail.totalgrossvalue}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.trackName}" >
+                                        <h:outputText value="#{invoicedetail.gst}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.artist}" >
+                                        <h:outputText value="#{invoicedetail.pst}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.inventoryNumber}" >
+                                        <h:outputText value="#{invoicedetail.hst}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.inventoryNumber}" >
+                                        <h:outputText value="#{invoicedetail.albumid}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.trackName}" >
+                                        <h:outputText value="#{invoicedetail.productdownloaded}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.trackName}" >
+                                        <h:outputText value="#{invoicedetail.inventoryid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.artist}"  filterBy="#{invoicedetail.saledate}">
+                                        <h:outputText value="#{invoicedetail.saledate}"/>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="client" value="#{reportManagementController.clients}"
+                                             rendered="#{reportManagementController.reportCategory eq "TopClients" or reportManagementController.reportCategory eq "ZeroClients" }" 
+                                             reflow="true" styleClass="products-table"
+                                             rowKey="#{invoicedetail.invoiceid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">    
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.musicTracksHeader}</span>
+
+                                            </span>
+                                        </div>
+                                    </f:facet>
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                                    <p:column  headerText="#{msgs.id}" >
+                                        <h:outputText  value="#{client.clientid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.username}" >
+                                        <h:outputText value="#{client.username}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.email}" >
+                                        <h:outputText  value="#{client.email}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.password}" >
+                                        <h:outputText  value="#{client.password}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.title}" >
+                                        <h:outputText value="#{client.title}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.firstName}" >
+                                        <h:outputText value="#{client.firstname}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.lastName}" >
+                                        <h:outputText value="#{client.lastname}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.companyName}" >
+                                        <h:outputText rendered="#{empty client.companyname}" value="#{msgs.nullMs}"/>
+                                        <h:outputText rendered="#{not empty client.companyname}" value="#{client.companyname}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.city}" >
+                                        <h:outputText value="#{client.city}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.province}" >
+                                        <h:outputText value="#{client.province}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.country}" >
+                                        <h:outputText value="#{client.country}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.address1}" >
+                                        <h:outputText value="#{client.address1}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.address2}" >
+                                        <h:outputText rendered="#{empty client.address2}" value="#{msgs.nullMs}"/>
+                                        <h:outputText rendered="#{not empty client.address2}" value="#{client.address2}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.postalCode}" >
+                                        <h:outputText value="#{client.postalcode}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.homeTelephone}" >
+                                        <h:outputText value="#{client.hometelephone}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.cellphone}" >
+                                        <h:outputText rendered="#{empty client.celltelephone}" value="#{msgs.nullMs}"/>
+                                        <h:outputText rendered="#{not empty client.celltelephone}" value="#{client.celltelephone}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.genreOfLastSearch}" >
+                                        <h:outputText value="#{client.genreoflastsearch}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.isManager}" >
+                                        <h:outputText rendered="#{client.ismanager}" value="#{msgs.trueMs}"/>
+                                        <h:outputText rendered="#{not  client.ismanager}" value="#{msgs.falseMs}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.accountActive}"  >
+                                        <h:outputText rendered="#{client.clientactive}" value="#{msgs.trueMs}"/>
+                                        <h:outputText rendered="#{not  client.clientactive}" value="#{msgs.falseMs}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.numberOfSales}"  >
+                                        <h:outputText value="#{client.saleList.size()}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.numberOfReviews}"  >
+                                        <h:outputText value="#{client.reviewList.size()}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgs.totalSaleValue}" sortBy="#{clientManagerController.getTotalSales(client)}">
+                                        <h:outputText value="#{clientManagerController.getTotalSales(client)}" style="font-weight: 700" >
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:dataTable>
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="track" value="#{reportManagementController.tracks}"
+                                             rendered="#{reportManagementController.reportCategory eq "TopSellers" or reportManagementController.reportCategory eq "ZeroTracks" }" 
+                                             reflow="true" styleClass="products-table"
+                                             rowKey="#{track.inventoryid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">    
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.musicTracksHeader}</span>
+
+                                            </span>
+                                        </div>
+                                    </f:facet>
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+                                     <p:column headerText="#{msgs.inventoryNumber}" >
+                                        <h:outputText value="#{track.inventoryid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.trackName}" >
+                                        <h:outputText value="#{track.tracktitle}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.artist}" >
+                                        <h:outputText value="#{track.artist}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableListPriceHeader}" >
+                                        <h:outputText value="#{track.listprice}" style="font-weight: 700">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableCategoryHeader}" >
+                                        <h:outputText value="#{track.musiccategory}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableTotalSalesHeader}" sortBy="#{saleJpaController.getTotalTrackSales(track.inventoryid)}">
+                                        <h:outputText value="#{saleJpaController.getTotalTrackSales(track.inventoryid)}">
+                                            <f:convertNumber currencySymbol="$" type="currency"/>
+                                        </h:outputText>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.tableAvailableHeader}" >
+                                        <h:outputText value="#{track.isAvailableToClients()}"/>
+                                    </p:column>
+                                </p:dataTable>
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="album" value="#{reportManagementController.albums}"
+                                             rendered="#{reportManagementController.reportCategory eq "TopSellers" }" 
+                                             reflow="true" styleClass="products-table"
+                                             rowKey="#{album.albumid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">    
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.musicTracksHeader}</span>
+
+                                            </span>
+                                        </div>
+                                    </f:facet>
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </h:form>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</body>
+</html>

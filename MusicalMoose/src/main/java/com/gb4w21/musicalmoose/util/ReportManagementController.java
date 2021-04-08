@@ -72,43 +72,94 @@ public class ReportManagementController implements Serializable {
     @Inject
     private MusicTrackJpaController musicTrackJpaController;
     private int totalPiceNetValue;
-     private int totalPiceGrossValue;
+    private int totalPiceGrossValue;
     private int toalNumberOfSales;
     private int totalNumberOfDownloads;
     private String reportCategory;
+    private String specifiedSearch;
+    private List<Invoicedetail> invoicedetails;
+    private List<Client> clients;
+    private List<MusicTrack> tracks;
+    private List<Album> albums;
+    private boolean gettingSales;
     public ReportManagementController() {
 
     }
-    public String getReportCategory(){
+    public boolean isGettingSales(){
+        return gettingSales;
+    }
+    public List<Invoicedetail> getInvoicedetails(){
+        return invoicedetails;
+    }
+     public void setInvoicedetails(List<Invoicedetail> invoicedetails){
+         this.invoicedetails=invoicedetails;
+    }
+     public List<Client> getClients(){
+        return clients;
+    }
+     public void setClients(List<Client> clients){
+         this.clients=clients;
+    }
+     public List<MusicTrack> getTracks(){
+        return tracks;
+    }
+     public void setTracks(List<MusicTrack> tracks){
+         this.tracks=tracks;
+    }
+     public List<Album> getAlbums(){
+        return albums;
+    }
+     public void setAlbums(List<Album> albums){
+         this.albums=albums;
+    }
+    public String getSpecifiedSearch() {
+        return specifiedSearch;
+    }
+
+    public void setSpecifiedSearch(String specifiedSearch) {
+        this.specifiedSearch = specifiedSearch;
+    }
+
+    public String getReportCategory() {
         return reportCategory;
     }
-    public void setReportCategory(String reportCategory){
-        this.reportCategory=reportCategory;
+
+    public void setReportCategory(String reportCategory) {
+        this.reportCategory = reportCategory;
     }
+
     public int getTotalPiceNetValue() {
         return totalPiceNetValue;
     }
-     public void setTotalPiceNetValue(int totalPiceNetValue) {
-        this.totalPiceNetValue= totalPiceNetValue;
+
+    public void setTotalPiceNetValue(int totalPiceNetValue) {
+        this.totalPiceNetValue = totalPiceNetValue;
     }
-     public int getTotalPiceGrossValue() {
+
+    public int getTotalPiceGrossValue() {
         return totalPiceGrossValue;
     }
-     public void setTotalPiceGrossValue(int totalPiceGrossValue) {
-        this.totalPiceGrossValue= totalPiceGrossValue;
+
+    public void setTotalPiceGrossValue(int totalPiceGrossValue) {
+        this.totalPiceGrossValue = totalPiceGrossValue;
     }
+
     public int getToalNumberOfSales() {
         return toalNumberOfSales;
     }
+
     public void setToalNumberOfSales(int toalNumberOfSales) {
-        this.toalNumberOfSales= toalNumberOfSales;
+        this.toalNumberOfSales = toalNumberOfSales;
     }
-    public int getTotalNumberOfDownloads(){
+
+    public int getTotalNumberOfDownloads() {
         return totalNumberOfDownloads;
     }
+
     public void setTotalNumberOfDownloads(int totalNumberOfDownloads) {
-        this.totalNumberOfDownloads= totalNumberOfDownloads;
+        this.totalNumberOfDownloads = totalNumberOfDownloads;
     }
+
     public Date getToDate() {
         return toDate;
     }
@@ -123,6 +174,57 @@ public class ReportManagementController implements Serializable {
 
     public void setFromDate(Date fromDate) {
         this.fromDate = fromDate;
+    }
+
+    public String reportSearch() {
+        gettingSales=false;
+        invoicedetails = new ArrayList<>();
+        clients = new ArrayList<>();
+        tracks = new ArrayList<>();
+        albums = new ArrayList<>();
+        if(this.reportCategory.equals(ReportCategory.TotalSales.toString())){
+            gettingSales=true;
+            invoicedetails = this.getTotalSales();
+        }
+        else if(this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())){
+            gettingSales=true;
+            invoicedetails = this.getSaleByAlbum(this.getAlbum(this.specifiedSearch).getAlbumid());
+        }
+        else if(this.reportCategory.equals(ReportCategory.SalesByArtist.toString())){
+            gettingSales=true;
+            invoicedetails = this.getSaleByArtist(this.specifiedSearch);
+        }
+        else if(this.reportCategory.equals(ReportCategory.SalesByClient.toString())){
+            gettingSales=true;
+            invoicedetails = this.getSalesByClient(this.getUser(this.specifiedSearch));
+        }
+         else if(this.reportCategory.equals(ReportCategory.SalesByTrack.toString())){
+             gettingSales=true;
+            invoicedetails = this.getSaleByTrack(this.getTrack(specifiedSearch).getInventoryid());
+        }
+        else if(this.reportCategory.equals(ReportCategory.TopSellers.toString())){
+            tracks = this.getTopTarcks();
+            albums = this.getTopAlbums();
+        }
+        else if(this.reportCategory.equals(ReportCategory.TopClients.toString())){
+            clients = this.getTopClients();
+        }
+        else if(this.reportCategory.equals(ReportCategory.ZeroClients.toString())){
+            clients = this.getUnsoldClients();
+        }
+        else if(this.reportCategory.equals(ReportCategory.ZeroTracks.toString())){
+            tracks = this.getUnsoldTarcks();
+        }
+        return "adminreport";
+    }
+
+    public String toReportPage() {
+        gettingSales=false;
+        invoicedetails = new ArrayList<>();
+        clients = new ArrayList<>();
+        tracks = new ArrayList<>();
+        albums = new ArrayList<>();
+        return "adminreport";
     }
 
     private List<Client> getUnsoldClients() {
@@ -223,14 +325,15 @@ public class ReportManagementController implements Serializable {
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-        this.toalNumberOfSales=invoicedetails.size();
-        for(Invoicedetail selectedInvoicedetail:invoicedetails){
-            this.totalPiceGrossValue+=selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue+=selectedInvoicedetail.getTotalgrossvalue();
-            this.totalNumberOfDownloads+=selectedInvoicedetail.getProductdownloaded();
+        this.toalNumberOfSales = invoicedetails.size();
+        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
+            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
+            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
     }
+
     private List<Invoicedetail> getSaleByAlbum(int albumid) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
@@ -240,14 +343,15 @@ public class ReportManagementController implements Serializable {
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-        this.toalNumberOfSales=invoicedetails.size();
-        for(Invoicedetail selectedInvoicedetail:invoicedetails){
-            this.totalPiceGrossValue+=selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue+=selectedInvoicedetail.getTotalgrossvalue();
-            this.totalNumberOfDownloads+=selectedInvoicedetail.getProductdownloaded();
+        this.toalNumberOfSales = invoicedetails.size();
+        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
+            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
+            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
     }
+
     private List<Invoicedetail> getSaleByArtist(String artist) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
@@ -257,26 +361,26 @@ public class ReportManagementController implements Serializable {
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-        
-         cb = entityManager.getCriteriaBuilder();
-         cq = cb.createQuery(Invoicedetail.class);
+
+        cb = entityManager.getCriteriaBuilder();
+        cq = cb.createQuery(Invoicedetail.class);
         Root<Album> album = cq.from(Album.class);
         invoicedetail = album.join("invoicedetailList");
         cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("artist"), artist));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         query = entityManager.createQuery(cq);
-         invoicedetails.addAll(query.getResultList());
-        
-        
-        this.toalNumberOfSales=invoicedetails.size();
-        for(Invoicedetail selectedInvoicedetail:invoicedetails){
-            this.totalPiceGrossValue+=selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue+=selectedInvoicedetail.getTotalgrossvalue();
-            this.totalNumberOfDownloads+=selectedInvoicedetail.getProductdownloaded();
+        invoicedetails.addAll(query.getResultList());
+
+        this.toalNumberOfSales = invoicedetails.size();
+        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
+            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
+            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
     }
-    private List<Invoicedetail> getTotalSales(){
+
+    private List<Invoicedetail> getTotalSales() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Invoicedetail> invoicedetail = cq.from(Invoicedetail.class);
@@ -284,17 +388,18 @@ public class ReportManagementController implements Serializable {
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-        
-        this.toalNumberOfSales=invoicedetails.size();
-        for(Invoicedetail selectedInvoicedetail:invoicedetails){
-            this.totalPiceGrossValue+=selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue+=selectedInvoicedetail.getTotalgrossvalue();
-            this.totalNumberOfDownloads+=selectedInvoicedetail.getProductdownloaded();
+
+        this.toalNumberOfSales = invoicedetails.size();
+        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
+            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
+            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
     }
-    public List<Invoicedetail> getSalesByClient(Client chosenClient){
-  
+
+    public List<Invoicedetail> getSalesByClient(Client chosenClient) {
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Client> client = cq.from(Client.class);
@@ -304,12 +409,157 @@ public class ReportManagementController implements Serializable {
         cq.multiselect(invoicedetail.get("totalgrossvalue"));
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoiceDetails = query.getResultList();
-        this.toalNumberOfSales=invoiceDetails.size();
-        for(Invoicedetail selectedInvoicedetail:invoiceDetails){
-            this.totalPiceGrossValue+=selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue+=selectedInvoicedetail.getTotalgrossvalue();
-            this.totalNumberOfDownloads+=selectedInvoicedetail.getProductdownloaded();
+        this.toalNumberOfSales = invoiceDetails.size();
+        for (Invoicedetail selectedInvoicedetail : invoiceDetails) {
+            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
+            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoiceDetails;
+    }
+
+    public void validateSpecificSearch(FacesContext context, UIComponent component,
+            Object value) {
+        
+            if (this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())&&(!checkAlbum(value.toString()))) {
+                
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "specificAlbumError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }
+            if (this.reportCategory.equals(ReportCategory.SalesByClient.toString())&&(!checkUser(value.toString()))) {
+                
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "specificClientError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }
+            if (this.reportCategory.equals(ReportCategory.SalesByTrack.toString())&&(!checkTrack(value.toString()))) {
+                
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "specificTrackError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }
+            if (this.reportCategory.equals(ReportCategory.SalesByArtist.toString())&&(!checkArtists(value.toString()))) {
+                
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "specificArtistError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }
+        
+    }
+    private boolean checkArtists(String artist){
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+        cq.select(musicTrack);
+        cq.where(cb.equal(musicTrack.get("artist"), artist));
+        TypedQuery<MusicTrack> queryTrack = entityManager.createQuery(cq);
+        List<MusicTrack> musicTracks= queryTrack.getResultList();
+        if(musicTracks!=null&&musicTracks.size()>0){
+            return true;
+        }
+         cb = entityManager.getCriteriaBuilder();
+         cq = cb.createQuery();
+        Root<Album> album = cq.from(Album.class);
+        cq.select(album);
+        cq.where(cb.equal(album.get("artist"), artist));
+        TypedQuery<Album> queryAlbum = entityManager.createQuery(cq);
+        List<Album> albums= queryAlbum.getResultList();
+        if(albums!=null&&albums.size()>0){
+            return true;
+        }
+        return false;
+        
+    }
+    private boolean checkAlbum(String Album) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Album> album = cq.from(Album.class);
+        cq.select(album);
+        cq.where(cb.equal(album.get("albumtitle"), album));
+        TypedQuery<Album> query = entityManager.createQuery(cq);
+        List<Album> albums = query.getResultList();
+        if(albums==null ||albums.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+    private boolean checkUser(String userName) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Client> client = cq.from(Client.class);
+        cq.select(client);
+        cq.where(cb.equal(client.get("username"), userName));
+        TypedQuery<Client> query = entityManager.createQuery(cq);
+        try {
+             query.getSingleResult();
+             return true;
+        } catch (javax.persistence.NoResultException NoResultException) {
+            return false;
+        }
+    }
+    private boolean checkTrack(String trackname) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+        cq.select(musicTrack);
+        cq.where(cb.equal(musicTrack.get("tracktitle"), trackname));
+        TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
+        List<MusicTrack> tracks = query.getResultList();
+        if(tracks==null ||tracks.isEmpty()){
+            return false;
+        }
+        return true;
+    }
+    private MusicTrack getTrack(String trackname) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+        cq.select(musicTrack);
+        cq.where(cb.equal(musicTrack.get("tracktitle"), trackname));
+        TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
+        try {
+             return query.getSingleResult();
+          
+        } catch (javax.persistence.NoResultException NoResultException) {
+            return null;
+        }
+    }
+    private Album getAlbum(String albumName) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Album> album = cq.from(Album.class);
+        cq.select(album);
+        cq.where(cb.equal(album.get("albumtitle"), albumName));
+        TypedQuery<Album> query = entityManager.createQuery(cq);
+      
+         try {
+             return query.getSingleResult();
+          
+        } catch (javax.persistence.NoResultException NoResultException) {
+            return null;
+        }
+    }
+    private Client getUser(String userName) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        Root<Client> client = cq.from(Client.class);
+        cq.select(client);
+        cq.where(cb.equal(client.get("username"), userName));
+        TypedQuery<Client> query = entityManager.createQuery(cq);
+          try {
+             return query.getSingleResult();
+          
+        } catch (javax.persistence.NoResultException NoResultException) {
+            return null;
+        }
     }
 }

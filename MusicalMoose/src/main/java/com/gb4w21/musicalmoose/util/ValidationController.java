@@ -8,6 +8,7 @@ package com.gb4w21.musicalmoose.util;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.enterprise.context.SessionScoped;
@@ -55,15 +56,7 @@ public class ValidationController implements Serializable{
     public void validateUserNameError(FacesContext context, UIComponent component,
             Object value) {
         String username = value.toString();
-        LOG.info("user error");
-        LOG.info("user error");
-        LOG.info("user error");
-        LOG.info("user error");
         if (!checkUserName(username)) {
-            LOG.info("user error!");
-            LOG.info("user error!");
-            LOG.info("user error!");
-            LOG.info("user error!");
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "usernameTakenError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -77,18 +70,12 @@ public class ValidationController implements Serializable{
         Root<Client> client = cq.from(Client.class);
         cq.select(client);
         LOG.info("user error"+username);
-        LOG.info("user error"+username);
-        LOG.info("user error"+username);
-        LOG.info("user error"+username);
         // Use String to refernce a field
         cq.where(cb.equal(client.get("username"), username));
 
         TypedQuery<Client> query = entityManager.createQuery(cq);
 
         if (query.getResultList().isEmpty()) {
-            LOG.info("user error empty");
-            LOG.info("user error empty");
-            LOG.info("user error empty");
             LOG.info("user error empty");
             return true;
         }
@@ -108,5 +95,29 @@ public class ValidationController implements Serializable{
 
             throw new ValidatorException(message);
         }
+    }
+     public void validateDateFrom(FacesContext context, UIComponent component,Object value) {
+        if (value != null && compareDate((Date) value)) {
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "dateErrorFrom", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+    }
+
+    public void validateDateTo(FacesContext context, UIComponent component, Object value) {
+        if (value != null && compareDate((Date) value)) {
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "dateErrorTo", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+    }
+     private boolean compareDate(Date chosenDate) {
+        Date currentDate = new Date();
+        LOG.info("Date:" + chosenDate.toString());
+        return chosenDate.compareTo(currentDate) > 0;
     }
 }
