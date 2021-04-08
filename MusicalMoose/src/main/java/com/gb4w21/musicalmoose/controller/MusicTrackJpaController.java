@@ -15,28 +15,20 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
-import javax.servlet.http.Cookie;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -65,8 +57,7 @@ public class MusicTrackJpaController implements Serializable {
     private List<MusicTrack> tracks;
     private MusicTrack selectedTrack;
     private List<MusicTrack> selectedTracks;
-    //When the cancel button is clicked, we want the selectedTrack to be the same as the trackCopy
-    private MusicTrack trackCopy;
+
     private PreRenderViewBean preRenderViewBean = new PreRenderViewBean();
 
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
@@ -203,7 +194,8 @@ public class MusicTrackJpaController implements Serializable {
 
         CriteriaQuery cq = cb.createQuery();
         Root e = cq.from(MusicTrack.class);
-        cq.orderBy(cb.asc(e.get("dateentered")));
+        cq.orderBy(cb.asc(e.get("dateentered"))).where(cb.equal(e.get("available"), 1));
+
         Query q = em.createQuery(cq);
 
         List<MusicTrack> originalList = q.getResultList();
@@ -244,7 +236,7 @@ public class MusicTrackJpaController implements Serializable {
             Join albumsTracks = musicTrack.join("albumid");
 
             //We want all the tracks from this album that isn't the selected track
-            cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()));
+            cq.where(cb.equal(albumsTracks.get("albumid"), track.getAlbumid().getAlbumid()), cb.notEqual(musicTrack.get("tracktitle"), track.getTracktitle()), cb.equal(musicTrack.get("available"), 1));
 
             Query q = em.createQuery(cq);
 
@@ -253,7 +245,7 @@ public class MusicTrackJpaController implements Serializable {
             return new ArrayList<MusicTrack>();
         }
     }
-    
+
     /**
      * Set the selected track and display the trackpage.xhtml
      *
@@ -263,9 +255,6 @@ public class MusicTrackJpaController implements Serializable {
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
         LOG.info("" + track.getTracktitle());
-
-        
-  
 
         LOG.info("" + track.getTracktitle());
 
@@ -327,7 +316,7 @@ public class MusicTrackJpaController implements Serializable {
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         cq.select(musicTrack);
 
-        cq.where(cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")),cb.equal(musicTrack.get("available"), 1));
+        cq.where(cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")), cb.equal(musicTrack.get("available"), 1));
         cq.orderBy(cb.desc(musicTrack.get("saleprice")));
         TypedQuery<MusicTrack> query = em.createQuery(cq);
         List<MusicTrack> tracks = query.getResultList();
@@ -341,6 +330,30 @@ public class MusicTrackJpaController implements Serializable {
             return specialList;
         } else {
             return tracks;
+        }
+    }
+
+    /**
+     * Return all the tracks that have not been assigned an album yet.
+     *
+     * @return list of tracks with no album field
+     */
+    public List<MusicTrack> getNonAlbumTracks() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
+
+        //cq.where(cb.equal(musicTrack.get("albumid").get(ma), null));
+        cq.where(cb.isNull(musicTrack.get("albumid")));
+
+        Query q = em.createQuery(cq);
+
+        return q.getResultList();
+    }
+    
+    public void setAlbumidToNull(){
+        if(!this.selectedTrack.getPartofalbum()){
+            this.selectedTrack.setAlbumid(null);
         }
     }
 
@@ -417,6 +430,18 @@ public class MusicTrackJpaController implements Serializable {
         this.selectedTracks = selectedTracks;
     }
 
+    public MusicTrack getTrack(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("no id provided");
+        }
+        for (MusicTrack m : tracks) {
+            if (id.equals(m.getInventoryid())) {
+                return m;
+            }
+        }
+        return null;
+    }
+
     /**
      * When a user clicks on the create button, the selected track initializes a
      * new object
@@ -435,13 +460,60 @@ public class MusicTrackJpaController implements Serializable {
     }
 
     /**
+     * Set the available table field for each selected track to false.
+     *
+     * @throws Exception
+     */
+    public void removeSelectedTracks() throws Exception {
+        for (MusicTrack track : this.selectedTracks) {
+            track.setAvailable(Boolean.FALSE);
+            track.setRemovaldate(new Date());
+            edit(track);
+        }
+
+        this.selectedTracks = null;
+        FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", "productSetUnavailable", null));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
+    }
+
+    /**
+     * Set the selected track's available field to false.
+     *
+     * @throws Exception
+     */
+    public void removeTrack() throws Exception {
+        this.selectedTrack.setAvailable(Boolean.FALSE);
+        setRemovalDate();
+        edit(this.selectedTrack);
+        this.selectedTrack = null;
+        FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", "productSetUnavailable", null));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    /**
      * Update the selected track and display a message for the user.
      *
      * @throws Exception
      */
-    public void updateProduct() throws Exception {
-        edit(this.selectedTrack);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Product Updated"));
+    public void saveProduct() throws Exception {
+        //If this is a new track
+        if (this.selectedTrack.getInventoryid() == null) {
+            //The new track was entered at the current date and time
+            this.selectedTrack.setDateentered(new Date());
+            create(this.selectedTrack);
+            this.tracks.add(this.selectedTrack);
+            FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "trackCreated", null));
+            //A currently existing track that was edited.
+        } else {
+            setRemovalDate();
+            edit(this.selectedTrack);
+            FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "trackUpdated", null));
+        }
 
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
@@ -471,6 +543,5 @@ public class MusicTrackJpaController implements Serializable {
         }
         this.selectedTrack.setRemovaldate(new Date());
     }
-    
 
 }

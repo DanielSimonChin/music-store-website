@@ -51,7 +51,7 @@ public class AlbumJpaController implements Serializable {
     private EntityManager em;
 
     private Album selectedAlbum;
-//    private String recentGenre;
+
     private PreRenderViewBean preRenderViewBean = new PreRenderViewBean();
 
     public void create(Album album) throws RollbackFailureException {
@@ -60,8 +60,6 @@ public class AlbumJpaController implements Serializable {
         }
         try {
             utx.begin();
-
-            em.getTransaction().begin();
             List<MusicTrack> attachedMusicTrackList = new ArrayList<MusicTrack>();
             for (MusicTrack musicTrackListMusicTrackToAttach : album.getMusicTrackList()) {
                 musicTrackListMusicTrackToAttach = em.getReference(musicTrackListMusicTrackToAttach.getClass(), musicTrackListMusicTrackToAttach.getInventoryid());
@@ -206,21 +204,20 @@ public class AlbumJpaController implements Serializable {
         this.selectedAlbum = findAlbum(id);
 
         validateGenreCookie();
-        LOG.info("album id:"+id);
+        LOG.info("album id:" + id);
         return "searchAlbum";
     }
-    
+
     public String selectSingleTrack(int id) {
         try {
             this.selectedAlbum = findAlbumById(id);
-        }
-        catch (NonexistentEntityException e) {
+        } catch (NonexistentEntityException e) {
             return null;
         }
         validateGenreCookie();
         return "detailAlbum";
     }
-    
+
     public Album findAlbumById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -229,7 +226,7 @@ public class AlbumJpaController implements Serializable {
         Root<Album> album = cq.from(Album.class);
 
         cq.select(album);
-        
+
         cq.where(cb.equal(album.get("albumid"), id));
 
         Query q = em.createQuery(cq);
@@ -261,11 +258,17 @@ public class AlbumJpaController implements Serializable {
 
         Join albumsTracks = album.join("musicTrackList");
 
-        cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid())).distinct(true);
+        cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid()), cb.equal(album.get("available"), 1)).distinct(true);
 
         Query q = em.createQuery(cq);
 
-        return q.getResultList().subList(0, 3);
+        List<Album> results = q.getResultList();
+
+        if (results.size() >= 3) {
+            return results.subList(0, 3);
+        }
+
+        return results;
     }
 
     /**
@@ -284,11 +287,17 @@ public class AlbumJpaController implements Serializable {
         Join albumsTracks = albums.join("musicTrackList");
 
         cq.where(cb.equal(albumsTracks.get("musiccategory"), album.getMusicTrackList().get(0).getMusiccategory()), cb.notEqual(albums.get("albumid"), album.getAlbumid()),
-                cb.notEqual(albums.get("artist"), album.getArtist())).distinct(true);
+                cb.notEqual(albums.get("artist"), album.getArtist()), cb.equal(albums.get("available"), 1)).distinct(true);
 
         Query q = em.createQuery(cq);
 
-        return q.getResultList().subList(0, 3);
+        List<Album> results = q.getResultList();
+
+        if (results.size() >= 3) {
+            return results.subList(0, 3);
+        }
+
+        return results;
     }
 
     public List<Album> getRecentGenreAlbums() {
@@ -302,7 +311,7 @@ public class AlbumJpaController implements Serializable {
 
         Join albumsTracks = albums.join("musicTrackList");
 
-        cq.where(cb.equal(albumsTracks.get("musiccategory"), recentGenre)).distinct(true);
+        cq.where(cb.equal(albumsTracks.get("musiccategory"), recentGenre), cb.equal(albums.get("available"), 1)).distinct(true);
 
         Query q = em.createQuery(cq);
 
@@ -377,19 +386,18 @@ public class AlbumJpaController implements Serializable {
         Root<Album> album = cq.from(Album.class);
         cq.select(album);
 
-        cq.where(cb.lessThan(album.get("saleprice"), album.get("listprice")),cb.equal(album.get("available"), 1));
+        cq.where(cb.lessThan(album.get("saleprice"), album.get("listprice")), cb.equal(album.get("available"), 1));
         cq.orderBy(cb.desc(album.get("saleprice")));
         TypedQuery<Album> query = em.createQuery(cq);
         List<Album> albums = query.getResultList();
         final int specialsLimt = 3;
         List<Album> specialList = new ArrayList<>();
-        if (albums.size()>specialsLimt) {
+        if (albums.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
                 specialList.add(albums.get(i));
             }
             return specialList;
-        }
-        else{
+        } else {
             return albums;
         }
     }
@@ -411,7 +419,7 @@ public class AlbumJpaController implements Serializable {
         Join albumTracks = track.join("albumid");
 
         //We want all the tracks from this album that isn't the selected track
-        cq.where(cb.equal(albumTracks.get("albumid"), albumId));
+        cq.where(cb.equal(albumTracks.get("albumid"), albumId), cb.equal(albumTracks.get("available"), 1));
 
         Query q = em.createQuery(cq);
 
