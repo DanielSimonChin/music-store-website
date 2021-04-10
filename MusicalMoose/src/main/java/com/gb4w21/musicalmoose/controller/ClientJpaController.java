@@ -19,6 +19,7 @@ import com.gb4w21.musicalmoose.entities.Sale;
 import com.gb4w21.musicalmoose.entities.Review;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -223,36 +224,29 @@ public class ClientJpaController implements Serializable {
     }
 
     private List<Client> findClientEntities(boolean all, int maxResults, int firstResult) {
-        
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            cq.select(cq.from(Client.class));
-            Query q = em.createQuery(cq);
-            if (!all) {
-                q.setMaxResults(maxResults);
-                q.setFirstResult(firstResult);
-            }
-            return q.getResultList();
-       
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        cq.select(cq.from(Client.class));
+        Query q = em.createQuery(cq);
+        if (!all) {
+            q.setMaxResults(maxResults);
+            q.setFirstResult(firstResult);
+        }
+        return q.getResultList();
     }
 
     public Client findClient(Integer id) {
-       
-            return em.find(Client.class, id);
-        
+        return em.find(Client.class, id);
     }
 
     public int getClientCount() {
-       
-            CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-            Root<Client> rt = cq.from(Client.class);
-            cq.select(em.getCriteriaBuilder().count(rt));
-            Query q = em.createQuery(cq);
-            return ((Long) q.getSingleResult()).intValue();
-        
+        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
+        Root<Client> rt = cq.from(Client.class);
+        cq.select(em.getCriteriaBuilder().count(rt));
+        Query q = em.createQuery(cq);
+        return ((Long) q.getSingleResult()).intValue();
     }
     
-    
-     public Client findUser(String userName, String password){
+    public Client findUser(String userName, String password){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<Client> client = cq.from(Client.class);
@@ -262,9 +256,8 @@ public class ClientJpaController implements Serializable {
         try{
             return query.getSingleResult();
         }
-        catch(javax.persistence.NoResultException NoResultException){
+        catch(javax.persistence.NoResultException NoResultException) {
             return null;
         }
     }
-
 }

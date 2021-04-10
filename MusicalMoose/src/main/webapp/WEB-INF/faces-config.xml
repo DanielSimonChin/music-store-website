@@ -169,6 +169,13 @@
             <to-view-id>cart.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>download.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     
     <navigation-rule>
         <from-view-id>cart.xhtml</from-view-id>

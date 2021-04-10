@@ -2,9 +2,18 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.beans.ProvinceBean;
+import com.gb4w21.musicalmoose.beans.ShoppingCartItem;
+import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.entities.Album;
+import com.gb4w21.musicalmoose.entities.Invoicedetail;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
+import com.gb4w21.musicalmoose.entities.Sale;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -26,9 +35,21 @@ public class CheckoutController implements Serializable {
     private final static Logger LOG = LoggerFactory.getLogger(CheckoutController.class);
     
     @Inject
+    private AlbumJpaController albumJpaController;
+    @Inject
+    private MusicTrackJpaController musicTrackJpaController;
+    @Inject
     private ShoppingCartController shoppingCartController;
     @Inject
     private LoginController loginController;
+    @Inject
+    private SaleJpaController saleJpaController;
+    @Inject
+    private InvoicedetailJpaController invoicedetailJpaController;
+    @Inject
+    private ClientJpaController clientJpaController;
+    
+    private Sale saleBean;
     private ProvinceBean provinceBean = new ProvinceBean();
     private BigDecimal GST;
     private BigDecimal HST;
@@ -52,13 +73,22 @@ public class CheckoutController implements Serializable {
     public BigDecimal getHST() {
         return this.HST;
     }
-                
+    
     public BigDecimal getPST() {
         return this.PST;
     }
     
+    public Sale getSaleBean() {
+        return this.saleBean;
+    }
+    
+    public void setSaleBean(Sale saleBean) {
+        this.saleBean = saleBean;
+    }
+    
     public String toCheckout() {
         if (loginController.getLoginBean().isLoggedIn()) {
+            this.saleBean = new Sale();
             return "checkout";
         }
         else {
@@ -67,14 +97,8 @@ public class CheckoutController implements Serializable {
     }
     
     public BigDecimal getShippingHandlingPrice() {
-        return this.shoppingCartController.calculateTotal().multiply(new BigDecimal("0.14")).setScale(2, RoundingMode.HALF_UP);
+        return this.shoppingCartController.calculateTotal().multiply(new BigDecimal("0.08")).setScale(2, RoundingMode.HALF_UP);
     }
-    
-//    private BigDecimal getValueTwoDecimal(double value) {
-//        BigDecimal bd = BigDecimal.valueOf(value);
-//        bd = bd.setScale(2, RoundingMode.HALF_UP);
-//        return bd.doubleValue();
-//    }
     
     public BigDecimal getGSTHSTPrice() {
         if (this.provinceBean.getSelectedItem().equals("valueOntario")) {
@@ -140,9 +164,17 @@ public class CheckoutController implements Serializable {
     
     public BigDecimal getTotalPrice() {
         return this.shoppingCartController.calculateTotal()
-                .add(this.getShippingHandlingPrice())
-                .add(this.getGSTHSTPrice())
-                .add(this.getPSTPrice())
+                .add(getShippingHandlingPrice())
+                .add(GST)
+                .add(HST)
+                .add(PST)
+                .setScale(2, RoundingMode.HALF_UP);
+    }
+    
+    public BigDecimal calculateTotalNetValue() {
+        // TO DO
+        return this.shoppingCartController.getTotalCost()
+                .subtract(GST)
                 .setScale(2, RoundingMode.HALF_UP);
     }
     
@@ -176,43 +208,50 @@ public class CheckoutController implements Serializable {
                 sum += d;
             }
         }
-
         return sum % 10 == 0;
     }
     
-    public String toInvoice() {
+    public String toInvoice() throws RollbackFailureException {
+        createSale();
+        createInvoiceDetails();
         this.shoppingCartController.clearCart();
         return "invoice";
     }
     
-    
-    
-    
-    
-    
-    
-    
-    // DELETE
-    public void validateExpireDate(FacesContext fc, UIComponent c, Object value) {
-        
-        String date = (String) value;
-        if (date.length() != 7 || checkDate(date)) {
-            throw new ValidatorException(new FacesMessage("Expiry date format is invalid (MM/YYYY)"));
-        }
+    private void createSale() throws RollbackFailureException {
+        this.saleBean.setClientid(clientJpaController.findClient(this.loginController.getLoginBean().getId()));
+        this.saleBean.setSaledate(new Date());
+        this.saleBean.setSaleremoved(false);
+        this.saleJpaController.create(saleBean);
     }
-    private boolean checkDate(String date) {
-        for (int i = 0; i < date.length(); i++) {
-            if (i == 2) {
-                if (date.charAt(i) != '/') {
-                    return false;
-                }
+    
+    private void createInvoiceDetails() throws RollbackFailureException {
+        List<ShoppingCartItem> shoppingCartList = this.shoppingCartController.getShoppingCartList();
+        for (int i = 0; i < shoppingCartList.size(); i++) {
+            Invoicedetail invoiceDetailBean = new Invoicedetail();
+            invoiceDetailBean.setSaleid(saleBean);
+            invoiceDetailBean.setSaledate(new Date());
+            invoiceDetailBean.setInvoicedetailremoved(false);
+            if (shoppingCartList.get(i).getIsAlbum()) {
+                Album album = this.albumJpaController.findAlbum(shoppingCartList.get(i).getId());
+                invoiceDetailBean.setCurrentcost(this.albumJpaController.findAlbum(shoppingCartList.get(i).getId()).getCostprice());
+                invoiceDetailBean.setAlbumid(album);
+                
+                // TO DO
+                invoiceDetailBean.setProfit(album.getCostprice() - 1);
+                
+                invoicedetailJpaController.create(invoiceDetailBean);
             }
             else {
-                if (!Character.isDigit(date.charAt(i))) {
-                    return false;
-                }
+                MusicTrack musicTrack = this.musicTrackJpaController.findMusicTrack(shoppingCartList.get(i).getId());
+                invoiceDetailBean.setCurrentcost(musicTrack.getCostprice());
+                invoiceDetailBean.setInventoryid(musicTrack);
+                
+                // TO DO
+                invoiceDetailBean.setProfit(musicTrack.getCostprice() - 1);
+                
+                invoicedetailJpaController.create(invoiceDetailBean);
             }
         }
-        return true;
     }
 }
