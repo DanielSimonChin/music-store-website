@@ -35,7 +35,7 @@
                         <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">
                             <h:form>
                                 <ui:fragment rendered="#{cartItems.isAlbum}">
-                                    <h:commandLink value="Album: #{cartItems.title} - #{cartItems.artiste} $#{cartItems.price}" action="#{albumJpaController.searchSingleAlbum(cartItems.id)}">
+                                    <h:commandLink value="Album: #{cartItems.title} - #{cartItems.artiste} $#{cartItems.price}" action="#{albumJpaController.selectSingleAlbum(cartItems.id)}">
                                         <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
                                     </h:commandLink>
                                     <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >

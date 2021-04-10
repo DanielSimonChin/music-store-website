@@ -31,13 +31,10 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Invoicedetail.findAll", query = "SELECT i FROM Invoicedetail i"),
     @NamedQuery(name = "Invoicedetail.findByInvoiceid", query = "SELECT i FROM Invoicedetail i WHERE i.invoiceid = :invoiceid"),
     @NamedQuery(name = "Invoicedetail.findBySaledate", query = "SELECT i FROM Invoicedetail i WHERE i.saledate = :saledate"),
-    @NamedQuery(name = "Invoicedetail.findByTotalnetvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalnetvalue = :totalnetvalue"),
-    @NamedQuery(name = "Invoicedetail.findByPst", query = "SELECT i FROM Invoicedetail i WHERE i.pst = :pst"),
-    @NamedQuery(name = "Invoicedetail.findByGst", query = "SELECT i FROM Invoicedetail i WHERE i.gst = :gst"),
-    @NamedQuery(name = "Invoicedetail.findByProductdownloaded", query = "SELECT i FROM Invoicedetail i WHERE i.productdownloaded = :productdownloaded"),
-    @NamedQuery(name = "Invoicedetail.findByHst", query = "SELECT i FROM Invoicedetail i WHERE i.hst = :hst"),
-    @NamedQuery(name = "Invoicedetail.findByTotalgrossvalue", query = "SELECT i FROM Invoicedetail i WHERE i.totalgrossvalue = :totalgrossvalue"),
-    @NamedQuery(name = "Invoicedetail.findByInvoicedetailremoved", query = "SELECT i FROM Invoicedetail i WHERE i.invoicedetailremoved = :invoicedetailremoved")})
+    @NamedQuery(name = "Invoicedetail.findByCurrentcost", query = "SELECT i FROM Invoicedetail i WHERE i.currentcost = :currentcost"),
+    @NamedQuery(name = "Invoicedetail.findByProfit", query = "SELECT i FROM Invoicedetail i WHERE i.profit = :profit"),
+    @NamedQuery(name = "Invoicedetail.findByInvoicedetailremoved", query = "SELECT i FROM Invoicedetail i WHERE i.invoicedetailremoved = :invoicedetailremoved"),
+    @NamedQuery(name = "Invoicedetail.findByProductdownloaded", query = "SELECT i FROM Invoicedetail i WHERE i.productdownloaded = :productdownloaded")})
 public class Invoicedetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,18 +47,12 @@ public class Invoicedetail implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date saledate;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "TOTALNETVALUE")
-    private Float totalnetvalue;
-    @Column(name = "PST")
-    private Float pst;
-    @Column(name = "GST")
-    private Float gst;
-    @Column(name = "HST")
-    private Float hst;
-    @Column(name = "PRODUCTDOWNLOADED")
-    private int productdownloaded;
-    @Column(name = "TOTALGROSSVALUE")
-    private Float totalgrossvalue;
+
+    @Column(name = "CURRENTCOST")
+    private Float currentcost;
+    @Column(name = "PROFIT")
+    private Float profit;
+
     @Column(name = "INVOICEDETAILREMOVED")
     private Boolean invoicedetailremoved;
     @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
@@ -73,6 +64,8 @@ public class Invoicedetail implements Serializable {
     @JoinColumn(name = "SALEID", referencedColumnName = "SALEID")
     @ManyToOne
     private Sale saleid;
+    @Column(name = "PRODUCTDOWNLOADED")
+    private int productdownloaded;
 
     public Invoicedetail() {
     }
@@ -102,44 +95,20 @@ public class Invoicedetail implements Serializable {
         this.saledate = saledate;
     }
 
-    public Float getTotalnetvalue() {
-        return totalnetvalue;
+    public Float getCurrentcost() {
+        return currentcost;
     }
 
-    public void setTotalnetvalue(Float totalnetvalue) {
-        this.totalnetvalue = totalnetvalue;
+    public void setCurrentcost(Float currentcost) {
+        this.currentcost = currentcost;
     }
 
-    public Float getPst() {
-        return pst;
+    public Float getProfit() {
+        return profit;
     }
 
-    public void setPst(Float pst) {
-        this.pst = pst;
-    }
-
-    public Float getGst() {
-        return gst;
-    }
-
-    public void setGst(Float gst) {
-        this.gst = gst;
-    }
-
-    public Float getHst() {
-        return hst;
-    }
-
-    public void setHst(Float hst) {
-        this.hst = hst;
-    }
-
-    public Float getTotalgrossvalue() {
-        return totalgrossvalue;
-    }
-
-    public void setTotalgrossvalue(Float totalgrossvalue) {
-        this.totalgrossvalue = totalgrossvalue;
+    public void setProfit(Float profit) {
+        this.profit = profit;
     }
 
     public Boolean getInvoicedetailremoved() {

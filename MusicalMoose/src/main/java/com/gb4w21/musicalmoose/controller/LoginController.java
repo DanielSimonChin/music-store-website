@@ -39,6 +39,8 @@ public class LoginController  implements Serializable{
     @Inject
     private ClientJpaController clientJpaController;
     @Inject
+    private CheckoutController checkoutController;
+    @Inject
     RegistrationController registrationController;
     public LoginController(){
         
@@ -54,7 +56,7 @@ public class LoginController  implements Serializable{
         this.loginBean=loginBean;
     }
     public String toLoginPage(){
-        loginBean=new  LoginBean();
+        loginBean = new LoginBean();
         FacesContext context=FacesContext.getCurrentInstance();
         loginLastPage=context.getViewRoot().getViewId();
         loginLastPage=loginLastPage.substring(1, loginLastPage.length() - 6);
@@ -67,18 +69,11 @@ public class LoginController  implements Serializable{
         return loginLastPage;
     }
     public String signOut(){
-        Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
-       
         loginBean = new LoginBean();
         loginBean.setLoggedIn(false);
-        if(registeredClient.getIsmanager()){
-            return "index";
-        }
-        else{
-            return null;
-        }
-
+        return toLoginPage();
     }
+    
     public void validateUser(FacesContext context, UIComponent component,
             Object value) {
         // These values have not yet been added to the bean
@@ -93,11 +88,9 @@ public class LoginController  implements Serializable{
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
             loginBean.setLoggedIn(false);
             throw new ValidatorException(message);
-            
         }
-        
-        
     }
+    
     public String loggIn(){
         LOG.info("username:"+loginBean.getUsername());
         LOG.info("password:"+loginBean.getPassword());
@@ -105,21 +98,15 @@ public class LoginController  implements Serializable{
         loginBean.setId(registeredClient.getClientid());
         loginBean.setLoggedIn(true);
         LOG.info("Is manager:"+registeredClient.getIsmanager());
-        if(registeredClient.getIsmanager()){
-            return "adminfront";
+        
+        if (loginLastPage.equals("cart")){
+            return checkoutController.toCheckout();
         }
-        else if(loginLastPage.equals("cart")){
-           
-            return "checkout";
-       
+        else if (registeredClient.getIsmanager()){
+            return "adminfront";
         }
         else{
             return loginLastPage;
         }
-
-        
-        
-
     }
-   
 }
