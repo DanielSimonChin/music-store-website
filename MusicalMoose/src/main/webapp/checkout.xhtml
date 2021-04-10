@@ -17,6 +17,7 @@
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="cart.css"/>
+                <ui:param name="registrationBean" value="#{checkoutController.saleBean}" />
                 
                 <h1 id="title">#{msgs.checkout}</h1>
                 <h:form>
@@ -35,19 +36,7 @@
                     <div id="infobox">
                         <h3>#{msgs.payment}</h3>
                         <label for="fname">Select Card</label>
-                        
-                            <!--<h:panelGrid columns="4">-->
                                 <div class="icon-container">
-<!--                                    <label for="mastercardcheck">
-                                        <img class="card" src="./icons/cc-mastercard-brands.svg"/>
-                                    </label>
-                                    <label for="visacheck">
-                                        <img class="card" src="./icons/cc-visa-brands.svg"/>
-                                    </label>
-                                    <br></br>
-                                    <input type="radio" id="mastercardcheck" name="cardcheck" value="mastercard" />
-                                    <input type="radio" id="visacheck" name="cardcheck" value="visa"/>-->
-                                    
                                     <h:selectOneRadio 
                                         id="cardSelect"
                                         value="selectCard"
@@ -68,7 +57,6 @@
                                              required="true"
                                              requiredMessage="#{msgs.required}">
                                     <f:validateLength minimum="3"/>
-                                    <!--<f:ajax event="blur" render="creditNameError"/>-->
                                 </h:inputText>
                                 <h:messages id="creditNameError" for="cname" style="color: red"/>
 
@@ -77,8 +65,6 @@
                                              required="true"
                                              requiredMessage="#{msgs.required}"
                                              validator="#{checkoutController.validateCreditCard}">
-                                    <!--<f:validateLength minimum="16" maximum="20" />-->
-                                    <!--<f:ajax event="blur" render="creditCardError"/>-->
                                 </h:inputText>
                                 <h:messages id="creditCardError" for="ccnum" style="color: red"/>
 
@@ -89,7 +75,6 @@
                                              required="true"
                                              requiredMessage="#{msgs.required}">
                                     <f:convertDateTime pattern="MM/yyyy" />
-                                    <!--<f:ajax event="blur" render="expDateError"/>-->
                                 </h:inputText>
                                 <h:messages id="expDateError" for="expmonth" style="color: red"/>
 
@@ -97,22 +82,7 @@
                                 <h:selectOneMenu id="province" value="#{checkoutController.provinceBean.selectedItem}"> 
                                     <f:selectItems value="#{checkoutController.provinceBean.selectItems}" />
                                     <p:ajax event="change" update="gsthstText pstText totalText" />
-<!--                                    <f:selectItem itemValue="Alberta" itemLabel="Alberta" /> 
-                                    <f:selectItem itemValue="British Columbia" itemLabel="British Columbia" /> 
-                                    <f:selectItem itemValue="Manitoba" itemLabel="Manitoba" /> 
-                                    <f:selectItem itemValue="New Brunswick" itemLabel="New Brunswick" /> 
-                                    <f:selectItem itemValue="Newfoundland and Labrador" itemLabel="Newfoundland and Labrador" /> 
-                                    <f:selectItem itemValue="Northwest Territories" itemLabel="Northwest Territories" /> 
-                                    <f:selectItem itemValue="Nove Scotia" itemLabel="Nove Scotia" /> 
-                                    <f:selectItem itemValue="Nunavut" itemLabel="Nunavut" /> 
-                                    <f:selectItem itemValue="Ontario" itemLabel="Ontario" /> 
-                                    <f:selectItem itemValue="Prince Edward Island" itemLabel="Prince Edward Island" /> 
-                                    <f:selectItem itemValue="Quebec" itemLabel="Quebec" /> 
-                                    <f:selectItem itemValue="Saskatchewan" itemLabel="Saskatchewan" /> 
-                                    <f:selectItem itemValue="Yukon" itemLabel="Yukon" /> -->
-                                </h:selectOneMenu> 
-                            <!--</h:panelGrid>-->
-                        
+                                </h:selectOneMenu> ]
                         </div>
 
                         <div id="summary">

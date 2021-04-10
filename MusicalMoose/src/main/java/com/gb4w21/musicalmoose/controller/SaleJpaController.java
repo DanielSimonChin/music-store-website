@@ -248,7 +248,7 @@ public class SaleJpaController implements Serializable {
         Float totalSales = 0.0f;
 
         for (Invoicedetail i : invoices) {
-            totalSales += i.getTotalgrossvalue();
+            totalSales += i.getCurrentcost();
         }
         return totalSales.doubleValue();
     }
@@ -276,9 +276,12 @@ public class SaleJpaController implements Serializable {
         Float totalSales = 0.0f;
 
         for (Invoicedetail i : invoices) {
-            totalSales += i.getTotalgrossvalue();
+            totalSales += i.getCurrentcost();
         }
         return totalSales.doubleValue();
     }
 
+    public void createSale() {
+        
+    }
 }
