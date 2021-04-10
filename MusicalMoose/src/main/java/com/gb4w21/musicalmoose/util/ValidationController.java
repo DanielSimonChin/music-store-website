@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
@@ -24,22 +25,26 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import org.primefaces.component.calendar.Calendar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Named
 @SessionScoped
-public class ValidationController implements Serializable{
-     private final static Logger LOG = LoggerFactory.getLogger(ValidationController.class);
+public class ValidationController implements Serializable {
+
+    private final static Logger LOG = LoggerFactory.getLogger(ValidationController.class);
     @PersistenceContext
     private EntityManager entityManager;
     @Inject
     private ClientJpaController clientJpaController;
     private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$", Pattern.CASE_INSENSITIVE);
-    public ValidationController(){
-        
+
+    public ValidationController() {
+
     }
+
     public void validateEmailError(FacesContext context, UIComponent component,
             Object value) {
         String email = value.toString();
@@ -64,12 +69,13 @@ public class ValidationController implements Serializable{
             throw new ValidatorException(message);
         }
     }
-      private boolean checkUserName(String username) {
+
+    private boolean checkUserName(String username) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
         cq.select(client);
-        LOG.info("user error"+username);
+        LOG.info("user error" + username);
         // Use String to refernce a field
         cq.where(cb.equal(client.get("username"), username));
 
@@ -82,8 +88,7 @@ public class ValidationController implements Serializable{
         return false;
 
     }
-      
-   
+
     public void validateHomePhoneNumber(FacesContext context, UIComponent component,
             Object value) {
         String phoneNumber = value.toString();
@@ -96,7 +101,14 @@ public class ValidationController implements Serializable{
             throw new ValidatorException(message);
         }
     }
-     public void validateDateFrom(FacesContext context, UIComponent component,Object value) {
+
+    public void validateDateFrom(FacesContext context, UIComponent component, Object value) {
+        UIInput dateInput = (UIInput) component.findComponent("toSearch");
+        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
+        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
+        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
+        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
+
         if (value != null && compareDate((Date) value)) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "dateErrorFrom", null);
@@ -107,6 +119,16 @@ public class ValidationController implements Serializable{
     }
 
     public void validateDateTo(FacesContext context, UIComponent component, Object value) {
+        UIInput dateInput = (UIInput) component.findComponent("fromSearch");
+        LOG.info("DATE INPUT:"+ (Calendar)dateInput);
+        LOG.info("DATE INPUT:"+ dateInput);
+        LOG.info("DATE INPUT:"+ dateInput);
+        LOG.info("DATE INPUT:"+ dateInput);
+        LOG.info("DATE INPUT:"+ dateInput.getSubmittedValue());
+        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
+        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
+        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
+        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
         if (value != null && compareDate((Date) value)) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "dateErrorTo", null);
@@ -114,8 +136,10 @@ public class ValidationController implements Serializable{
 
             throw new ValidatorException(message);
         }
+
     }
-     private boolean compareDate(Date chosenDate) {
+
+    private boolean compareDate(Date chosenDate) {
         Date currentDate = new Date();
         LOG.info("Date:" + chosenDate.toString());
         return chosenDate.compareTo(currentDate) > 0;

@@ -78,40 +78,82 @@ public class ReportManagementController implements Serializable {
     private String reportCategory;
     private String specifiedSearch;
     private List<Invoicedetail> invoicedetails;
+
+    private List<Invoicedetail> selectedInvoicedetails;
+    private Invoicedetail selectedInvoicedetail;
+
+    private List<Invoicedetail> manyInvoiceDetails;
+
     private List<Client> clients;
     private List<MusicTrack> tracks;
     private List<Album> albums;
     private boolean gettingSales;
+
     public ReportManagementController() {
 
     }
-    public boolean isGettingSales(){
+
+    public Invoicedetail getSelectedInvoicedetail() {
+        return selectedInvoicedetail;
+    }
+
+    public void setSelectedInvoicedetail(Invoicedetail selectedInvoicedetail) {
+        this.selectedInvoicedetail = selectedInvoicedetail;
+    }
+
+    public boolean isGettingSales() {
+        LOG.debug("getting sales:" + this.gettingSales);
         return gettingSales;
     }
-    public List<Invoicedetail> getInvoicedetails(){
+
+    public List<Invoicedetail> getInvoicedetails() {
         return invoicedetails;
     }
-     public void setInvoicedetails(List<Invoicedetail> invoicedetails){
-         this.invoicedetails=invoicedetails;
+
+    public void setInvoicedetails(List<Invoicedetail> invoicedetails) {
+        this.invoicedetails = invoicedetails;
     }
-     public List<Client> getClients(){
+
+    public List<Invoicedetail> getSelectedInvoicedetails() {
+        return selectedInvoicedetails;
+    }
+
+    public void setSelectedInvoicedetails(List<Invoicedetail> selectedInvoicedetails) {
+        this.selectedInvoicedetails = selectedInvoicedetails;
+    }
+
+    public List<Client> getClients() {
         return clients;
     }
-     public void setClients(List<Client> clients){
-         this.clients=clients;
+
+    public void setClients(List<Client> clients) {
+        this.clients = clients;
     }
-     public List<MusicTrack> getTracks(){
+
+    public List<MusicTrack> getTracks() {
         return tracks;
     }
-     public void setTracks(List<MusicTrack> tracks){
-         this.tracks=tracks;
+
+    public void setTracks(List<MusicTrack> tracks) {
+        this.tracks = tracks;
     }
-     public List<Album> getAlbums(){
+
+    public List<Invoicedetail> getManyInvoiceDetails() {
+        return this.manyInvoiceDetails;
+    }
+
+    public void setManyInvoiceDetails(List<Invoicedetail> manyInvoiceDetails) {
+        this.manyInvoiceDetails = manyInvoiceDetails;
+    }
+
+    public List<Album> getAlbums() {
         return albums;
     }
-     public void setAlbums(List<Album> albums){
-         this.albums=albums;
+
+    public void setAlbums(List<Album> albums) {
+        this.albums = albums;
     }
+
     public String getSpecifiedSearch() {
         return specifiedSearch;
     }
@@ -176,54 +218,97 @@ public class ReportManagementController implements Serializable {
         this.fromDate = fromDate;
     }
 
+    public void save() {
+
+    }
+
     public String reportSearch() {
-        gettingSales=false;
+        gettingSales = false;
         invoicedetails = new ArrayList<>();
         clients = new ArrayList<>();
         tracks = new ArrayList<>();
         albums = new ArrayList<>();
-        if(this.reportCategory.equals(ReportCategory.TotalSales.toString())){
-            gettingSales=true;
+        totalPiceNetValue=0;
+        totalPiceGrossValue=0;
+        toalNumberOfSales=0;
+        totalNumberOfDownloads=0;
+        selectedInvoicedetails = new ArrayList<>();
+       
+        if (this.reportCategory.equals(ReportCategory.TotalSales.toString())) {
+            LOG.debug("TOTAL SALES");
+            LOG.debug("TOTAL SALES");
+            LOG.debug("TOTAL SALES");
+            LOG.debug("TOTAL SALES");
+            gettingSales = true;
             invoicedetails = this.getTotalSales();
-        }
-        else if(this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())){
-            gettingSales=true;
+            LOG.debug("INVOICE DETAILS:" + invoicedetails.size());
+
+            LOG.debug("TOTAL SALES" + totalPiceNetValue);
+            LOG.debug("TOTAL SALES" + totalPiceGrossValue);
+            LOG.debug("TOTAL SALES" + toalNumberOfSales);
+            LOG.debug("TOTAL SALES" + totalNumberOfDownloads);
+        } else if (this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())) {
+            gettingSales = true;
             invoicedetails = this.getSaleByAlbum(this.getAlbum(this.specifiedSearch).getAlbumid());
-        }
-        else if(this.reportCategory.equals(ReportCategory.SalesByArtist.toString())){
-            gettingSales=true;
+        } else if (this.reportCategory.equals(ReportCategory.SalesByArtist.toString())) {
+            gettingSales = true;
             invoicedetails = this.getSaleByArtist(this.specifiedSearch);
-        }
-        else if(this.reportCategory.equals(ReportCategory.SalesByClient.toString())){
-            gettingSales=true;
+        } else if (this.reportCategory.equals(ReportCategory.SalesByClient.toString())) {
+            gettingSales = true;
             invoicedetails = this.getSalesByClient(this.getUser(this.specifiedSearch));
-        }
-         else if(this.reportCategory.equals(ReportCategory.SalesByTrack.toString())){
-             gettingSales=true;
+        } else if (this.reportCategory.equals(ReportCategory.SalesByTrack.toString())) {
+            gettingSales = true;
             invoicedetails = this.getSaleByTrack(this.getTrack(specifiedSearch).getInventoryid());
-        }
-        else if(this.reportCategory.equals(ReportCategory.TopSellers.toString())){
+        } else if (this.reportCategory.equals(ReportCategory.TopSellers.toString())) {
+           
             tracks = this.getTopTarcks();
             albums = this.getTopAlbums();
-        }
-        else if(this.reportCategory.equals(ReportCategory.TopClients.toString())){
+        } else if (this.reportCategory.equals(ReportCategory.TopClients.toString())) {
             clients = this.getTopClients();
-        }
-        else if(this.reportCategory.equals(ReportCategory.ZeroClients.toString())){
+            LOG.debug("clients:"+clients.size());
+            LOG.debug("clients:"+clients.size());
+            LOG.debug("clients:"+clients.size());
+            LOG.debug("clients:"+clients.size());
+            LOG.debug("clients:"+clients.size());
+            LOG.debug("clients:"+clients.size());
+            LOG.debug("clients:"+clients.size());
+            LOG.debug("clients:"+clients.size());
+        } else if (this.reportCategory.equals(ReportCategory.ZeroClients.toString())) {
             clients = this.getUnsoldClients();
-        }
-        else if(this.reportCategory.equals(ReportCategory.ZeroTracks.toString())){
+            LOG.debug("clientsW:"+clients.size());
+            LOG.debug("clientsW:"+clients.size());
+            LOG.debug("clientsW:"+clients.size());
+            LOG.debug("clientsW:"+clients.size());
+            LOG.debug("clientsW:"+clients.size());
+            LOG.debug("clientsW:"+clients.size());
+            LOG.debug("clientsW:"+clients.size());
+            LOG.debug("clientsW:"+clients.size());
+        } else if (this.reportCategory.equals(ReportCategory.ZeroTracks.toString())) {
             tracks = this.getUnsoldTarcks();
         }
+        LOG.debug("TOTAL SALES1" + gettingSales);
+        LOG.debug("TOTAL SALES1" + invoicedetails.size());
+        for (Invoicedetail iD : invoicedetails) {
+            LOG.debug("ids" + iD.getInvoiceid());
+        }
+        LOG.debug("TOTAL SALES1" + totalPiceNetValue);
+        LOG.debug("TOTAL SALES1" + totalPiceGrossValue);
+        LOG.debug("TOTAL SALES1" + toalNumberOfSales);
+        LOG.debug("TOTAL SALES1" + totalNumberOfDownloads);
         return "adminreport";
     }
 
     public String toReportPage() {
-        gettingSales=false;
+        LOG.info("TOREPORTPAGE!!!!!!!!!!!!!!!!!!!!");
+        gettingSales = false;
+        manyInvoiceDetails = null;
+
         invoicedetails = new ArrayList<>();
+        this.reportCategory = ReportCategory.TotalSales.toString();
         clients = new ArrayList<>();
         tracks = new ArrayList<>();
         albums = new ArrayList<>();
+        selectedInvoicedetails = new ArrayList<>();
         return "adminreport";
     }
 
@@ -233,9 +318,9 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
         Join sale = client.join("saleList");
-
-        cq.where(cb.between(sale.get("saledate"), fromDate, toDate));
-
+        cq.where(cb.equal(sale.get("saleremoved"), 0),cb.between(sale.get("saledate"), fromDate, toDate));
+        cq.distinct(true);
+        cq.select(client);
         TypedQuery<Client> query = entityManager.createQuery(cq);
         List<Client> clientsWhoPurhase = query.getResultList();
         for (Client selectedClient : clientsWhoPurhase) {
@@ -251,10 +336,11 @@ public class ReportManagementController implements Serializable {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
-        Join sale = musicTrack.join("invoicedetailList");
-
-        cq.where(cb.between(sale.get("saledate"), fromDate, toDate));
-
+        Join invoicedetail = musicTrack.join("invoicedetailList");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        cq.distinct(true);
+        cq.select(musicTrack);
+        
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
         List<MusicTrack> musicTracksThatSold = query.getResultList();
         for (MusicTrack selectedTrack : musicTracksThatSold) {
@@ -270,9 +356,12 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
         Join sale = client.join("saleList");
-        cq.where(cb.between(sale.get("saledate"), fromDate, toDate));
+        cq.where(cb.equal(sale.get("saleremoved"), 0),cb.between(sale.get("saledate"), fromDate, toDate));
         cq.orderBy(cb.desc(cb.size(client.get("saleList"))));
+        cq.distinct(true);
+        cq.select(client);
         TypedQuery<Client> query = entityManager.createQuery(cq);
+     
         List<Client> clients = query.getResultList();
         for (Client selectedClient : clients) {
             if (selectedClient.getSaleList() == null || selectedClient.getSaleList().isEmpty()) {
@@ -287,8 +376,11 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         Join invoicedetail = musicTrack.join("invoicedetailList");
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate));
         cq.orderBy(cb.desc(cb.size(musicTrack.get("invoicedetailList"))));
+        cq.distinct(true);
+        cq.select(musicTrack);
+        
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
         List<MusicTrack> musicTracks = query.getResultList();
         for (MusicTrack selectedmusicTrack : musicTracks) {
@@ -304,8 +396,10 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
         Root<Album> album = cq.from(Album.class);
         Join invoicedetail = album.join("invoicedetailList");
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate));
         cq.orderBy(cb.desc(cb.size(album.get("invoicedetailList"))));
+        cq.distinct(true);
+        cq.select(album);
         TypedQuery<Album> query = entityManager.createQuery(cq);
         List<Album> albums = query.getResultList();
         for (Album selectedAlbum : albums) {
@@ -321,8 +415,10 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         Join invoicedetail = musicTrack.join("invoicedetailList");
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("inventoryid"), trackid));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("inventoryid"), trackid));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
+        cq.distinct(true);
+        cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
         this.toalNumberOfSales = invoicedetails.size();
@@ -339,8 +435,10 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Album> album = cq.from(Album.class);
         Join invoicedetail = album.join("invoicedetailList");
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("albumid"), albumid));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("albumid"), albumid));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
+        cq.distinct(true);
+        cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
         this.toalNumberOfSales = invoicedetails.size();
@@ -357,8 +455,10 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         Join invoicedetail = musicTrack.join("invoicedetailList");
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("artist"), artist));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("artist"), artist));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
+        cq.distinct(true);
+        cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
 
@@ -366,8 +466,10 @@ public class ReportManagementController implements Serializable {
         cq = cb.createQuery(Invoicedetail.class);
         Root<Album> album = cq.from(Album.class);
         invoicedetail = album.join("invoicedetailList");
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("artist"), artist));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("artist"), artist));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
+        cq.distinct(true);
+        cq.select(invoicedetail);
         query = entityManager.createQuery(cq);
         invoicedetails.addAll(query.getResultList());
 
@@ -384,8 +486,10 @@ public class ReportManagementController implements Serializable {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Invoicedetail> invoicedetail = cq.from(Invoicedetail.class);
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0),cb.between(invoicedetail.get("saledate"), fromDate, toDate));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
+        cq.distinct(true);
+        cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
 
@@ -398,15 +502,16 @@ public class ReportManagementController implements Serializable {
         return invoicedetails;
     }
 
-    public List<Invoicedetail> getSalesByClient(Client chosenClient) {
+    private List<Invoicedetail> getSalesByClient(Client chosenClient) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Client> client = cq.from(Client.class);
         Join sale = client.join("saleList");
         Join invoicedetail = sale.join("invoicedetailList");
-        cq.where(cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(client.get("clientid"), chosenClient.getClientid()));
-        cq.multiselect(invoicedetail.get("totalgrossvalue"));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(client.get("clientid"), chosenClient.getClientid()));
+        cq.distinct(true);
+        cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoiceDetails = query.getResultList();
         this.toalNumberOfSales = invoiceDetails.size();
@@ -420,78 +525,85 @@ public class ReportManagementController implements Serializable {
 
     public void validateSpecificSearch(FacesContext context, UIComponent component,
             Object value) {
-        
-            if (this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())&&(!checkAlbum(value.toString()))) {
-                
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "specificAlbumError", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+        UIInput selectInput = (UIInput) component.findComponent("criteria");
 
-                throw new ValidatorException(message);
-            }
-            if (this.reportCategory.equals(ReportCategory.SalesByClient.toString())&&(!checkUser(value.toString()))) {
-                
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "specificClientError", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+        if (selectInput.getLocalValue().equals(ReportCategory.SalesByAlbum.toString()) && (!checkAlbum(value.toString()))) {
 
-                throw new ValidatorException(message);
-            }
-            if (this.reportCategory.equals(ReportCategory.SalesByTrack.toString())&&(!checkTrack(value.toString()))) {
-                
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "specificTrackError", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "specificAlbumError", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
-                throw new ValidatorException(message);
-            }
-            if (this.reportCategory.equals(ReportCategory.SalesByArtist.toString())&&(!checkArtists(value.toString()))) {
-                
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "specificArtistError", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+            throw new ValidatorException(message);
+        }
+        if (selectInput.getLocalValue().equals(ReportCategory.SalesByClient.toString()) && (!checkUser(value.toString()))) {
 
-                throw new ValidatorException(message);
-            }
-        
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "specificClientError", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+        if (selectInput.getLocalValue().equals(ReportCategory.SalesByTrack.toString()) && (!checkTrack(value.toString()))) {
+
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "specificTrackError", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+        if (selectInput.getLocalValue().equals(ReportCategory.SalesByArtist.toString()) && (!checkArtists(value.toString()))) {
+
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "specificArtistError", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+            throw new ValidatorException(message);
+        }
+
     }
-    private boolean checkArtists(String artist){
+
+    private boolean checkArtists(String artist) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         cq.select(musicTrack);
         cq.where(cb.equal(musicTrack.get("artist"), artist));
         TypedQuery<MusicTrack> queryTrack = entityManager.createQuery(cq);
-        List<MusicTrack> musicTracks= queryTrack.getResultList();
-        if(musicTracks!=null&&musicTracks.size()>0){
+        List<MusicTrack> musicTracks = queryTrack.getResultList();
+        if (musicTracks != null && musicTracks.size() > 0) {
             return true;
         }
-         cb = entityManager.getCriteriaBuilder();
-         cq = cb.createQuery();
+        cb = entityManager.getCriteriaBuilder();
+        cq = cb.createQuery();
         Root<Album> album = cq.from(Album.class);
         cq.select(album);
         cq.where(cb.equal(album.get("artist"), artist));
         TypedQuery<Album> queryAlbum = entityManager.createQuery(cq);
-        List<Album> albums= queryAlbum.getResultList();
-        if(albums!=null&&albums.size()>0){
+        List<Album> albums = queryAlbum.getResultList();
+        if (albums != null && albums.size() > 0) {
             return true;
         }
         return false;
-        
+
     }
-    private boolean checkAlbum(String Album) {
+
+    private boolean checkAlbum(String albumTitle) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery cq = cb.createQuery();
+        CriteriaQuery<Album> cq = cb.createQuery(Album.class);
         Root<Album> album = cq.from(Album.class);
         cq.select(album);
-        cq.where(cb.equal(album.get("albumtitle"), album));
+        // Use String to refernce a field
+        cq.where(cb.equal(album.get("albumtitle"), albumTitle));
         TypedQuery<Album> query = entityManager.createQuery(cq);
         List<Album> albums = query.getResultList();
-        if(albums==null ||albums.isEmpty()){
+        if (albums == null || albums.isEmpty()) {
+
             return false;
         }
+       
         return true;
     }
+
     private boolean checkUser(String userName) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -500,12 +612,13 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(client.get("username"), userName));
         TypedQuery<Client> query = entityManager.createQuery(cq);
         try {
-             query.getSingleResult();
-             return true;
+            query.getSingleResult();
+            return true;
         } catch (javax.persistence.NoResultException NoResultException) {
             return false;
         }
     }
+
     private boolean checkTrack(String trackname) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -514,11 +627,12 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(musicTrack.get("tracktitle"), trackname));
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
         List<MusicTrack> tracks = query.getResultList();
-        if(tracks==null ||tracks.isEmpty()){
+        if (tracks == null || tracks.isEmpty()) {
             return false;
         }
         return true;
     }
+
     private MusicTrack getTrack(String trackname) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -527,12 +641,13 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(musicTrack.get("tracktitle"), trackname));
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
         try {
-             return query.getSingleResult();
-          
+            return query.getSingleResult();
+
         } catch (javax.persistence.NoResultException NoResultException) {
             return null;
         }
     }
+
     private Album getAlbum(String albumName) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -540,14 +655,15 @@ public class ReportManagementController implements Serializable {
         cq.select(album);
         cq.where(cb.equal(album.get("albumtitle"), albumName));
         TypedQuery<Album> query = entityManager.createQuery(cq);
-      
-         try {
-             return query.getSingleResult();
-          
+
+        try {
+            return query.getSingleResult();
+
         } catch (javax.persistence.NoResultException NoResultException) {
             return null;
         }
     }
+
     private Client getUser(String userName) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -555,9 +671,9 @@ public class ReportManagementController implements Serializable {
         cq.select(client);
         cq.where(cb.equal(client.get("username"), userName));
         TypedQuery<Client> query = entityManager.createQuery(cq);
-          try {
-             return query.getSingleResult();
-          
+        try {
+            return query.getSingleResult();
+
         } catch (javax.persistence.NoResultException NoResultException) {
             return null;
         }

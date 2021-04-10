@@ -83,13 +83,13 @@ public class SurveyManagerController implements Serializable {
 //    public Survey getSelectedSurvey() {
     //       return this.selectedSurvey;
 //    }
-    public List<Survey> getSurveys() {
+   public List<Survey> getSurveys() {
         return this.surveys;
     }
 
     public List<Survey> getSelectedSurveys() {
         return this.selectedSurveys;
-    }
+    } 
 
     public void createNewSurvey() {
 
@@ -99,7 +99,6 @@ public class SurveyManagerController implements Serializable {
 
     public String toSurveryManagement() {
         surveys = surveyJpaController.findSurveyEntities();
-        bigSurvey = null;
         bigSurvey = null;
         selectedSurveys = new ArrayList<>();
         return "adminsurvey";

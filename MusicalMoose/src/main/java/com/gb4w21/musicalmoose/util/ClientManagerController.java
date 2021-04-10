@@ -116,7 +116,7 @@ public class ClientManagerController implements Serializable {
     public String searchAllClients() {
         selectedClient = null;
         selectedClients = new ArrayList<>();
-        clients = clients = clientJpaController.findClientEntities();
+        clients = clientJpaController.findClientEntities();
      
         return "adminclient";
     }
