@@ -45,63 +45,63 @@ public class GenreController implements Serializable {
 
     public String searchPop() throws Exception {
       
-        searchGener(Pop);
+        searchGenre(Pop);
    
         return "searchPage";
     }
 
     public String searchRB() throws Exception {
     
-        searchGener(RB);
+        searchGenre(RB);
       
         return "searchPage";
     }
 
     public String searchRock() throws Exception {
       
-        searchGener(Rock);
+        searchGenre(Rock);
    
         return "searchPage";
     }
 
     public String searchHipHop() throws Exception {
   
-        searchGener(Hip_hop);
+        searchGenre(Hip_hop);
        
         return "searchPage";
     }
 
     public String searchAnime() throws Exception {
         
-        searchGener(Anime);
+        searchGenre(Anime);
      
         return "searchPage";
     }
 
-    private void searchGener(String gener) throws Exception {
+    private void searchGenre(String genre) throws Exception {
         searchController.setSearchResultsAlbum(new ArrayList<SearchResult>());
         searchController.setSearchResultsTrack(new ArrayList<SearchResult>());
-        searchResultsGener(gener);
+        searchResultsGenre(genre);
         searchController.setSearchText("");
         searchController.setSearchError(false);
 
     }
 
-    private void searchResultsGener(String musicGener) {
+    private void searchResultsGenre(String musicGenre) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<SearchResult> cq = cb.createQuery(SearchResult.class);
 
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener),cb.equal(album.get("available"), 1));
+        cq.where(cb.like(musicTrack.get("musiccategory"), musicGenre),cb.equal(album.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"),  album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchController.setSearchResultsAlbum(query.getResultList());
 
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("musiccategory"), musicGener), cb.equal(musicTrack.get("available"), 1));
+        cq.where(cb.like(musicTrack.get("musiccategory"), musicGenre), cb.equal(musicTrack.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchController.setSearchResultsTrack(query.getResultList());

@@ -22,86 +22,86 @@ and open the template in the editor.
                 <br/>
                 <h1 id="title"> #{msgs.downloadSongs}</h1> 
                 <br/>
-                <div class="downloadableSong">
-                    <a class="cover" href="">
-                        <img src="album_covers/my_turn_big.jpg" alt="" />
-                    </a>
-                    <table class="albumInfo">
-                        <tr>
-                            <th>#{msgs.trackInfo}</th>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackTitle}</u> #{detailTrack.tracktitle}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackArtist}</u> #{detailTrack.artist}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackSongwriter}</u> #{detailTrack.songwriter}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackPlayLength}</u> #{detailTrack.playlength}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackCategory}</u> #{detailTrack.musiccategory}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackPrice}</u> $#{detailTrack.listprice}</td>
-                        </tr>
-                        <tr>
-                            <td><h:outputText value="&#160;" /></td>
-                        </tr>
-                        <tr>
-                            <td><h:outputText value="&#160;" /></td>
-                        </tr>
-                    </table>
-                    <audio controls="">
-                        <source src="./audio/goat.mp3" type="audio/mp3"/>
-                    </audio>
-                    <a class="downloadButton" href="./audio/goat.mp3" download="./audio/goat.mp3">#{msgs.download}</a> 
-                    <hr/>
-                </div>
-                <div class="downloadableSong">
-                    <br>
-                    </br>
-                    <a class="cover" href="">
-                        <img src="album_covers/my_turn_big.jpg" alt="" />
-                    </a>
-                    <table class="albumInfo">
-                        <tr>
-                            <th>#{msgs.trackInfo}</th>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackTitle}</u> #{detailTrack.tracktitle}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackArtist}</u> #{detailTrack.artist}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackSongwriter}</u> #{detailTrack.songwriter}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackPlayLength}</u> #{detailTrack.playlength}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackCategory}</u> #{detailTrack.musiccategory}</td>
-                        </tr>
-                        <tr>
-                            <td><u>#{msgs.trackPrice}</u> $#{detailTrack.listprice}</td>
-                        </tr>
-                        <tr>
-                            <td><h:outputText value="&#160;" /></td>
-                        </tr>
-                        <tr>
-                            <td><h:outputText value="&#160;" /></td>
-                        </tr>
-                    </table>
-                    <audio controls="">
-                        <source src="./audio/goat.mp3" type="audio/mp3"/>
-                    </audio>
-                    <a class="downloadButton" href="./audio/goat.mp3" download="./audio/goat.mp3">#{msgs.download}</a> 
-                    <hr/>
-                </div>
+                
+                <ui:repeat value="#{downloadController.findDownloads()}" var="downloads">
+                    <h:form>
+                        <div class="downloadableSong">
+                            <ui:fragment rendered="#{downloads.isAlbum}">
+                                <a class="cover" href="">
+                                    <h:commandLink action="#{albumJpaController.selectSingleAlbum(downloads.id)}">
+                                        <h:graphicImage value="album_covers/#{downloads.imgNameBig}" />
+                                    </h:commandLink>
+                                </a>
+                                <table class="albumInfo">
+                                    <tr>
+                                        <th>#{msgs.albumInfo}</th>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.albumPageTitle}</u> #{downloads.title}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.trackArtist}</u> #{downloads.artiste}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.numberOfTracks}</u> #{downloads.numberOfTracks}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.trackCategory}</u> #{downloads.genre}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.albumPrice}</u> $#{downloads.price}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><h:outputText value="&#160;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h:outputText value="&#160;" /></td>
+                                    </tr>
+                                </table>
+                            </ui:fragment>
+                            
+                            <ui:fragment rendered="#{not downloads.isAlbum}">
+                                <a class="cover" href="">
+                                    <h:commandLink action="#{musicTrackJpaController.selectSingleTrack(downloads.id)}">
+                                        <h:graphicImage value="album_covers/#{downloads.imgNameBig}" />
+                                    </h:commandLink>
+                                </a>
+                                <table class="albumInfo">
+                                    <tr>
+                                        <th>#{msgs.trackInfo}</th>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.trackTitle}</u> #{downloads.title}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.trackArtist}</u> #{downloads.artiste}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.trackPlayLength}</u> #{downloads.songLength}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.trackCategory}</u> #{downloads.genre}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><u>#{msgs.trackPrice}</u> $#{downloads.price}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><h:outputText value="&#160;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><h:outputText value="&#160;" /></td>
+                                    </tr>
+                                </table>
+                            </ui:fragment>
+                            
+                            <audio controls="">
+                                <source src="./audio/goat.mp3" type="audio/mp3"/>
+                            </audio>
+                            <a class="downloadButton" href="./audio/goat.mp3" download="./audio/goat.mp3">#{msgs.download}</a> 
+                            <hr/>
+                        </div>
+                    </h:form>
+                </ui:repeat>
             </ui:define>
         </ui:composition>
     </body>

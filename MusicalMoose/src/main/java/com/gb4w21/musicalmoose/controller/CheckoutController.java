@@ -2,7 +2,7 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.beans.ProvinceBean;
-import com.gb4w21.musicalmoose.beans.ShoppingCartItem;
+import com.gb4w21.musicalmoose.beans.MusicItem;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
@@ -10,6 +10,7 @@ import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Sale;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -54,6 +55,7 @@ public class CheckoutController implements Serializable {
     private BigDecimal GST;
     private BigDecimal HST;
     private BigDecimal PST;
+    private Float totalProfit;
     
     public CheckoutController() {
     }
@@ -172,10 +174,15 @@ public class CheckoutController implements Serializable {
     }
     
     public BigDecimal calculateTotalNetValue() {
-        // TO DO
-        return this.shoppingCartController.getTotalCost()
-                .subtract(GST)
+        return new BigDecimal(Float.toString(totalProfit))
                 .setScale(2, RoundingMode.HALF_UP);
+    }
+    
+    public String toInvoice() throws RollbackFailureException {
+        createSale();
+        createInvoiceDetails();
+        this.shoppingCartController.clearCart();
+        return "invoice";
     }
     
     /**
@@ -211,13 +218,6 @@ public class CheckoutController implements Serializable {
         return sum % 10 == 0;
     }
     
-    public String toInvoice() throws RollbackFailureException {
-        createSale();
-        createInvoiceDetails();
-        this.shoppingCartController.clearCart();
-        return "invoice";
-    }
-    
     private void createSale() throws RollbackFailureException {
         this.saleBean.setClientid(clientJpaController.findClient(this.loginController.getLoginBean().getId()));
         this.saleBean.setSaledate(new Date());
@@ -226,7 +226,8 @@ public class CheckoutController implements Serializable {
     }
     
     private void createInvoiceDetails() throws RollbackFailureException {
-        List<ShoppingCartItem> shoppingCartList = this.shoppingCartController.getShoppingCartList();
+        List<MusicItem> shoppingCartList = this.shoppingCartController.getShoppingCartList();
+        this.totalProfit = (float)0;
         for (int i = 0; i < shoppingCartList.size(); i++) {
             Invoicedetail invoiceDetailBean = new Invoicedetail();
             invoiceDetailBean.setSaleid(saleBean);
@@ -234,24 +235,35 @@ public class CheckoutController implements Serializable {
             invoiceDetailBean.setInvoicedetailremoved(false);
             if (shoppingCartList.get(i).getIsAlbum()) {
                 Album album = this.albumJpaController.findAlbum(shoppingCartList.get(i).getId());
-                invoiceDetailBean.setCurrentcost(this.albumJpaController.findAlbum(shoppingCartList.get(i).getId()).getCostprice());
                 invoiceDetailBean.setAlbumid(album);
                 
-                // TO DO
-                invoiceDetailBean.setProfit(album.getCostprice() - 1);
-                
-                invoicedetailJpaController.create(invoiceDetailBean);
+                if (album.getSaleprice() == 0) {
+                    invoiceDetailBean.setCurrentcost(album.getListprice());
+                    invoiceDetailBean.setProfit(album.getListprice() - album.getCostprice());
+                    totalProfit += album.getListprice() - album.getCostprice();
+                }
+                else {
+                    invoiceDetailBean.setCurrentcost(album.getSaleprice());
+                    invoiceDetailBean.setProfit(album.getSaleprice() - album.getCostprice());
+                    totalProfit += album.getSaleprice() - album.getCostprice();
+                }
             }
             else {
                 MusicTrack musicTrack = this.musicTrackJpaController.findMusicTrack(shoppingCartList.get(i).getId());
-                invoiceDetailBean.setCurrentcost(musicTrack.getCostprice());
                 invoiceDetailBean.setInventoryid(musicTrack);
                 
-                // TO DO
-                invoiceDetailBean.setProfit(musicTrack.getCostprice() - 1);
-                
-                invoicedetailJpaController.create(invoiceDetailBean);
+                if (musicTrack.getSaleprice() == 0) {
+                    invoiceDetailBean.setCurrentcost(musicTrack.getListprice());
+                    invoiceDetailBean.setProfit(musicTrack.getListprice() - musicTrack.getCostprice());
+                    totalProfit += musicTrack.getListprice() - musicTrack.getCostprice();
+                }
+                else {
+                    invoiceDetailBean.setCurrentcost(musicTrack.getSaleprice());
+                    invoiceDetailBean.setProfit(musicTrack.getSaleprice() - musicTrack.getCostprice());
+                    totalProfit += musicTrack.getSaleprice() - musicTrack.getCostprice();
+                }
             }
+            invoicedetailJpaController.create(invoiceDetailBean);
         }
     }
 }

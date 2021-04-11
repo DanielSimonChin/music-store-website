@@ -340,7 +340,9 @@ INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, CO
 (17, "IamIronMan88", "jsbf29YY", "Rev", "Kildale", "Francisco", "Mayer LLC", "85 Vera Road", "360 Schiller Terrace", "Maskinongé", "Québec", "Canada", "T7A", "3692271272", "8946119827", "fkildaleg@answers.com", "R&B",1,1),
 (18, "Miss23Earth", "wwh283S", "Dr", "Poulett", "Delly", "Pollich, Jacobson and Block", "217 Annamark Point", "71 Lotheville Park", "Parrsboro", "Nova Scotia", "Canada", "L2A", "4471914490", "1529172744", "dpouletth@businesswire.com", "R&B",1,1),
 (19, "PizzaMan12", "dddnhd22", "Dr", "Sacker", "Belle", "Schulist-Blanda", "6 Huxley Hill", "58 Bowman Avenue", "Saint Louis","Missouri", "United States", "63136", "3147308600", "3817116947", "bsackeri@europa.eu", "R&B",1,1),
-(20, "One1Two2", "0033ththt", "Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "gcanbyj@creativecommons.org", "R&B",1,1);
+(20, "One1Two2", "0033ththt", "Mr", "Canby", "Grover", "Bergstrom, Schinner and Hagenes", "986 Norway Maple Hill", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "gcanbyj@creativecommons.org", "R&B",1,1),
+(21, "DawsonConsumer", "dawsoncollege", "Mr", "Bob", "Orr", "Dawson", "23 Rue Catherine", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "cst.send@gmail.com", "R&B", 0, 1),
+(22, "DawsonManager", "collegedawson", "Mr", "Bob", "Orr", "Dawson", "23 Rue Catherine", "0 Clove Center", "Mobile", "Alabama", "United States", "36670", "2519196520", "1782694487", "cst.receive@gmail.com", "R&B", 1, 1);
 
 
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
