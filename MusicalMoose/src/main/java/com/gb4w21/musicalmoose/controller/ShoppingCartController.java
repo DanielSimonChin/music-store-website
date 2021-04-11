@@ -3,7 +3,6 @@ package com.gb4w21.musicalmoose.controller;
 import com.gb4w21.musicalmoose.beans.ShoppingCartItem;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
-import com.gb4w21.musicalmoose.controller.BanneradJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Album;
@@ -12,14 +11,12 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.http.Cookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,9 +39,14 @@ public class ShoppingCartController implements Serializable {
     
     private List<ShoppingCartItem> shoppingCart;
     private String prevPage;
+    private BigDecimal totalCost;
     
     public ShoppingCartController() {
         this.shoppingCart = new ArrayList<ShoppingCartItem>();
+    }
+    
+    public BigDecimal getTotalCost() {
+        return this.totalCost;
     }
     
     public void findAlbumById(int id) {
@@ -53,7 +55,7 @@ public class ShoppingCartController implements Serializable {
             shoppingCart.add(convertAlbumToShoppingCartItem(album));
         }
         catch (NonexistentEntityException e) {
-            LOG.error("Album not found in database with id: " + id);
+            java.util.logging.Logger.getLogger(ShoppingCartController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
@@ -63,7 +65,7 @@ public class ShoppingCartController implements Serializable {
             shoppingCart.add(convertMusicTrackToShoppingCartItem(musicTrack));
         }
         catch (NonexistentEntityException e) {
-            LOG.error("MusicTrack not found in database with id: " + id);
+            java.util.logging.Logger.getLogger(ShoppingCartController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
@@ -130,7 +132,8 @@ public class ShoppingCartController implements Serializable {
         for (int i = 0; i < shoppingCart.size(); i++) {
             totalAmount += shoppingCart.get(i).getPrice();
         }
-        return new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
+        totalCost = new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
+        return totalCost;
     }
     
     public String toShoppingCart() {
@@ -145,8 +148,6 @@ public class ShoppingCartController implements Serializable {
     }
     
     public String backPage() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().addResponseCookie("BACKPAGE", prevPage, null);
         return prevPage;
     }
     

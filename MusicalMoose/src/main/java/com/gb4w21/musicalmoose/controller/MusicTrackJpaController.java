@@ -257,6 +257,10 @@ public class MusicTrackJpaController implements Serializable {
         LOG.info("" + track.getTracktitle());
 
         LOG.info("" + track.getTracktitle());
+        
+        if (searchedTrack != null) {
+            this.preRenderViewBean.writeGenreTrackingCookie(searchedTrack.getMusiccategory());
+        }
 
         return "detailTrack";
     }
@@ -275,11 +279,13 @@ public class MusicTrackJpaController implements Serializable {
     }
 
     public String selectSingleTrack(int id) {
-        try {
-            this.searchedTrack = findTrackById(id);
-        } catch (NonexistentEntityException e) {
-            return null;
-        }
+//        try {
+//            this.searchedTrack = findTrackById(id);
+//        } catch (NonexistentEntityException e) {
+//            return null;
+//        }
+        this.searchedTrack = findMusicTrack(id);
+        
         if (searchedTrack != null) {
             this.preRenderViewBean.writeGenreTrackingCookie(searchedTrack.getMusiccategory());
         }

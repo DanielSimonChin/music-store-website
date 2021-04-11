@@ -208,12 +208,13 @@ public class AlbumJpaController implements Serializable {
         return "searchAlbum";
     }
 
-    public String selectSingleTrack(int id) {
-        try {
-            this.selectedAlbum = findAlbumById(id);
-        } catch (NonexistentEntityException e) {
-            return null;
-        }
+    public String selectSingleAlbum(int id) {
+//        try {
+//            this.selectedAlbum = findAlbumById(id);
+//        } catch (NonexistentEntityException e) {
+//            return null;
+//        }
+        this.selectedAlbum = findAlbum(id);
         validateGenreCookie();
         return "detailAlbum";
     }
