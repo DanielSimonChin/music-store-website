@@ -13,6 +13,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -70,6 +71,12 @@ public class ReviewManagerController implements Serializable {
     }
     public void setSelectedReview(Review selectedReview){
         this.selectedReview=selectedReview;
+    }
+     @PostConstruct
+    public void init() {
+        reviews = new ArrayList<>();
+        selectedReviews = new ArrayList<>();
+        this.selectedReview = null;
     }
     public String toReviewPage(){
         reviews = new ArrayList<>();

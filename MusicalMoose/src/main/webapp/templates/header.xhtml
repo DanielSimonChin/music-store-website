@@ -32,21 +32,22 @@
 
                     <div><h:form >
                             <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}" required="true" requiredMessage="#{msgs.required}" />
-                        
+                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
+                            <p:calendar id="fromSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateFrom}" >
+                                <f:ajax event="blur" render="fromError" /> 
+                            </p:calendar>  
                             <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
-                            <p:calendar id="toSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}" pattern="MM/dd/yyyy" validator="#{searchController.validateDateTo}" >
+                            <p:calendar id="toSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateTo}" >
                                  <f:ajax event="blur" render="toError" />
                             </p:calendar>     
                             
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
-                            <p:calendar id="fromSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}" pattern="MM/dd/yyyy" validator="#{searchController.validateDateFrom}" >
-                                <f:ajax event="blur" render="fromError" /> 
-                            </p:calendar>  
+                            
                             
                             <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
                             <br></br>
-                            <h:message id="toError" for="toSearch" style="color:red" />
+                            
                             <h:message id="fromError" for="fromSearch" style="color:red" />
+                            <h:message id="toError" for="toSearch" style="color:red" />
                             <h:outputText rendered="#{searchController.searchError}" value="#{msgs.noResults}"/>
                             
                             
