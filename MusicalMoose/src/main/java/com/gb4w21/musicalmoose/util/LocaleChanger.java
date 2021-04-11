@@ -29,7 +29,6 @@ public class LocaleChanger {
      * @return null to stay on the current page
      */
     public String changeLocale() {
-        LOG.info("IN LOCALE CHANGER");
         FacesContext context = FacesContext.getCurrentInstance();
 
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
@@ -51,7 +50,6 @@ public class LocaleChanger {
         //Set a cookie so the site remembers the selected languagew
         preRenderViewBean.writeLocaleCookie(languageCode);
         context.getViewRoot().setLocale(aLocale);
-        LOG.info("LOCALE CHANGED");
         return null;
     }
 }

@@ -226,10 +226,10 @@ public class SaleJpaController implements Serializable {
     }
 
     /**
-     * Retrieve the total gross value of a track's sales
+     * Retrieve the total value of a track's sales
      *
      * @param inventoryid
-     * @return the total gross sales of a track
+     * @return the total sales of a track
      */
     public Double getTotalTrackSales(int inventoryid) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -254,10 +254,10 @@ public class SaleJpaController implements Serializable {
     }
 
     /**
-     * Retrieve the total gross value of an album's sales
+     * Retrieve the total value of an album's sales
      *
      * @param albumid
-     * @return the total gross sales of an album
+     * @return the total sales of an album
      */
     public Double getTotalAlbumSales(int albumid) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
