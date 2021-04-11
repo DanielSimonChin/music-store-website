@@ -45,7 +45,6 @@
 
                                 <ui:fragment rendered="#{not cartItems.isAlbum}">
                                     <h:commandLink value="Track: #{cartItems.title} - #{cartItems.artiste} $#{cartItems.price}" action="#{musicTrackJpaController.selectSingleTrack(cartItems.id)}">
-                                        <!--<h:graphicImage value="album_covers/# {cartItems.imgNameSmall}" />-->
                                     </h:commandLink>
                                     <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
                                         <h:graphicImage value="icons/delete-cart.png" />
@@ -56,7 +55,6 @@
                     </div>
 
                     <p>#{msgs.total} <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
-                    <!--<f:convertNumber minFractionDigits="2" />-->
                     
                     <h:form>
                         <h:commandButton 

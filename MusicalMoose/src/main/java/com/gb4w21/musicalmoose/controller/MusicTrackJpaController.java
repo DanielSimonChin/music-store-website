@@ -279,11 +279,6 @@ public class MusicTrackJpaController implements Serializable {
     }
 
     public String selectSingleTrack(int id) {
-//        try {
-//            this.searchedTrack = findTrackById(id);
-//        } catch (NonexistentEntityException e) {
-//            return null;
-//        }
         this.searchedTrack = findMusicTrack(id);
         
         if (searchedTrack != null) {

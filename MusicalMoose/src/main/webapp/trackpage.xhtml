@@ -85,7 +85,12 @@
                                         <td><u>#{msgs.trackCategory}</u> #{detailTrack.musiccategory}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>#{msgs.trackPrice}</u> $#{detailTrack.listprice}</td>
+                                        <ui:fragment rendered="#{detailTrack.saleprice eq 0}">
+                                            <td><u>#{msgs.trackPrice}</u> $#{detailTrack.listprice}</td>
+                                        </ui:fragment>
+                                        <ui:fragment rendered="#{detailTrack.saleprice ne 0}">
+                                            <td><u>#{msgs.trackPrice}</u> $#{detailTrack.saleprice}</td>
+                                        </ui:fragment>
                                     </tr>
                                     <tr>
                                         <td><u>#{msgs.dateEntered}</u> #{detailTrack.dateentered}</td>

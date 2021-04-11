@@ -7,6 +7,7 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -21,6 +22,9 @@ import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Join;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -169,4 +173,40 @@ public class InvoicedetailJpaController implements Serializable {
 
     }
 
+    public List<Invoicedetail> findInvoiceDetailsBySaleId(int saleId) throws NonexistentEntityException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
+
+        Root<Invoicedetail> invoiceDetail = cq.from(Invoicedetail.class);
+
+        cq.where(cb.equal(invoiceDetail.get("saleid").get("saleid"), saleId));
+//        cq.where(cb.equal(invoiceDetail.get("clientid"), clientId));
+        cq.distinct(true);
+
+        Query q = em.createQuery(cq);
+        return q.getResultList();
+        
+//        TypedQuery<Invoicedetail> q = em.createQuery(cq);
+
+
+
+//        CriteriaBuilder cb = em.getCriteriaBuilder();
+//
+//        CriteriaQuery<Sale> cq = cb.createQuery(Sale.class);
+//
+//        Root<Sale> sale = cq.from(Sale.class);
+//        
+//        sale.join("invoicedetailList");
+//
+////        cq.where(cb.equal(sales.get("saleid"), saleId));
+//        cq.where(cb.equal(sale.get("clientid"), clientId));
+//
+//        Query q = em.createQuery(cq);
+////        TypedQuery<Invoicedetail> q = em.createQuery(cq);
+//
+//        List<Invoicedetail> invoiceDetails = q.getResultList();
+
+//        return invoiceDetails;
+    }
 }
