@@ -24,6 +24,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -71,8 +72,8 @@ public class ReportManagementController implements Serializable {
     private ClientJpaController clientJpaController;
     @Inject
     private MusicTrackJpaController musicTrackJpaController;
-    private int totalPiceNetValue;
-    private int totalPiceGrossValue;
+ 
+    private int totalProfit;
     private int toalNumberOfSales;
     private int totalNumberOfDownloads;
     private String reportCategory;
@@ -92,7 +93,18 @@ public class ReportManagementController implements Serializable {
     public ReportManagementController() {
 
     }
+    @PostConstruct
+    public void init() {
+        gettingSales = false;
+        manyInvoiceDetails = null;
 
+        invoicedetails = new ArrayList<>();
+        this.reportCategory = ReportCategory.TotalSales.toString();
+        clients = new ArrayList<>();
+        tracks = new ArrayList<>();
+        albums = new ArrayList<>();
+        selectedInvoicedetails = new ArrayList<>();
+    }
     public Invoicedetail getSelectedInvoicedetail() {
         return selectedInvoicedetail;
     }
@@ -170,20 +182,14 @@ public class ReportManagementController implements Serializable {
         this.reportCategory = reportCategory;
     }
 
-    public int getTotalPiceNetValue() {
-        return totalPiceNetValue;
+   
+
+    public int getTotalProfit() {
+        return totalProfit;
     }
 
-    public void setTotalPiceNetValue(int totalPiceNetValue) {
-        this.totalPiceNetValue = totalPiceNetValue;
-    }
-
-    public int getTotalPiceGrossValue() {
-        return totalPiceGrossValue;
-    }
-
-    public void setTotalPiceGrossValue(int totalPiceGrossValue) {
-        this.totalPiceGrossValue = totalPiceGrossValue;
+    public void setTotalProfit(int totalProfit) {
+        this.totalProfit = totalProfit;
     }
 
     public int getToalNumberOfSales() {
@@ -228,8 +234,8 @@ public class ReportManagementController implements Serializable {
         clients = new ArrayList<>();
         tracks = new ArrayList<>();
         albums = new ArrayList<>();
-        totalPiceNetValue=0;
-        totalPiceGrossValue=0;
+       
+        totalProfit=0;
         toalNumberOfSales=0;
         totalNumberOfDownloads=0;
         selectedInvoicedetails = new ArrayList<>();
@@ -243,8 +249,8 @@ public class ReportManagementController implements Serializable {
             invoicedetails = this.getTotalSales();
             LOG.debug("INVOICE DETAILS:" + invoicedetails.size());
 
-            LOG.debug("TOTAL SALES" + totalPiceNetValue);
-            LOG.debug("TOTAL SALES" + totalPiceGrossValue);
+            LOG.debug("TOTAL SALES" + totalProfit);
+        
             LOG.debug("TOTAL SALES" + toalNumberOfSales);
             LOG.debug("TOTAL SALES" + totalNumberOfDownloads);
         } else if (this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())) {
@@ -291,15 +297,14 @@ public class ReportManagementController implements Serializable {
         for (Invoicedetail iD : invoicedetails) {
             LOG.debug("ids" + iD.getInvoiceid());
         }
-        LOG.debug("TOTAL SALES1" + totalPiceNetValue);
-        LOG.debug("TOTAL SALES1" + totalPiceGrossValue);
+        LOG.debug("TOTAL SALES1" + totalProfit);
         LOG.debug("TOTAL SALES1" + toalNumberOfSales);
         LOG.debug("TOTAL SALES1" + totalNumberOfDownloads);
         return "adminreport";
     }
 
     public String toReportPage() {
-        LOG.info("TOREPORTPAGE!!!!!!!!!!!!!!!!!!!!");
+    
         gettingSales = false;
         manyInvoiceDetails = null;
 
@@ -423,8 +428,8 @@ public class ReportManagementController implements Serializable {
         List<Invoicedetail> invoicedetails = query.getResultList();
         this.toalNumberOfSales = invoicedetails.size();
         for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalProfit += selectedInvoicedetail.getProfit();
+            
             this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
@@ -443,8 +448,7 @@ public class ReportManagementController implements Serializable {
         List<Invoicedetail> invoicedetails = query.getResultList();
         this.toalNumberOfSales = invoicedetails.size();
         for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalProfit += selectedInvoicedetail.getProfit();
             this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
@@ -475,8 +479,7 @@ public class ReportManagementController implements Serializable {
 
         this.toalNumberOfSales = invoicedetails.size();
         for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalProfit += selectedInvoicedetail.getProfit();
             this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
@@ -495,8 +498,7 @@ public class ReportManagementController implements Serializable {
 
         this.toalNumberOfSales = invoicedetails.size();
         for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalProfit += selectedInvoicedetail.getProfit();
             this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
         }
         return invoicedetails;
@@ -516,9 +518,10 @@ public class ReportManagementController implements Serializable {
         List<Invoicedetail> invoiceDetails = query.getResultList();
         this.toalNumberOfSales = invoiceDetails.size();
         for (Invoicedetail selectedInvoicedetail : invoiceDetails) {
-            this.totalPiceGrossValue += selectedInvoicedetail.getTotalnetvalue();
-            this.totalPiceNetValue += selectedInvoicedetail.getTotalgrossvalue();
+            this.totalProfit += selectedInvoicedetail.getProfit();
+            
             this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
+          
         }
         return invoiceDetails;
     }

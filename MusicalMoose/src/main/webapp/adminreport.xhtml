@@ -24,7 +24,10 @@
                             <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
                             <a href="/MusicalMoose/adminads.xhtml">Ads</a>
                             <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
-                            <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
+                            <a href="/MusicalMoose/adminclient.xhtml">Client</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
+                            <a class="active">Report</a>
                         </div>   
                         <h:form id="form">
                             <div class="card crud-demo">
@@ -77,12 +80,11 @@
                                             <span style="font-weight: bold">#{msgs.report}</span>
                                             <br> </br>
                                             <span class="filter-container ui-input-icon-left">
-                                                <h:outputText rendered="#{reportManagementController.gettingSales}" value="#{msgs.totalPiceNetValue}  #{reportManagementController.totalPiceNetValue}"/>
+                                                <h:outputText rendered="#{reportManagementController.gettingSales}" value="#{msgs.totalPiceNetValue}  #{reportManagementController.totalProfit}" style="font-weight: 700" >
+                                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                                </h:outputText>
                                             </span>
-                                            <br> </br>
-                                            <span class="filter-container ui-input-icon-left">
-                                                <h:outputText rendered="#{reportManagementController.gettingSales}" value="#{msgs.totalPiceGrossValue} #{reportManagementController.totalPiceGrossValue}"/>
-                                            </span>
+
                                             <br> </br>
                                             <span class="filter-container ui-input-icon-left">
                                                 <h:outputText rendered="#{reportManagementController.gettingSales}" value="#{msgs.toalNumberOfSales} #{reportManagementController.toalNumberOfSales}"/>
@@ -99,31 +101,18 @@
                                     </p:column>
 
                                     <p:column headerText="#{msgs.totalnetvalue}" >
-                                        <h:outputText value="#{manyInvoiceDetail.totalnetvalue}" style="font-weight: 700" >
+                                        <h:outputText value="#{manyInvoiceDetail.currentcost}" style="font-weight: 700" >
                                             <f:convertNumber currencySymbol="$" type="currency"/>
                                         </h:outputText>
 
                                     </p:column>
 
                                     <p:column headerText="#{msgs.totalgrossvalue}" >
-                                        <h:outputText value="#{manyInvoiceDetail.totalgrossvalue}" style="font-weight: 700" >
+                                        <h:outputText value="#{manyInvoiceDetail.profit}" style="font-weight: 700" >
                                             <f:convertNumber currencySymbol="$" type="currency"/>
                                         </h:outputText>
 
                                     </p:column>
-
-                                    <p:column headerText="#{msgs.formGST}" >
-                                        <h:outputText value="#{manyInvoiceDetail.gst}"/>
-                                    </p:column>
-
-                                    <p:column headerText="#{msgs.formPST}" >
-                                        <h:outputText value="#{manyInvoiceDetail.pst}"/>
-                                    </p:column>
-
-                                    <p:column headerText="#{msgs.formHST}" >
-                                        <h:outputText value="#{manyInvoiceDetail.hst}"/>
-                                    </p:column>
-
                                     <p:column headerText="#{msgs.albumIdHeader}">
                                         <h:outputText value="#{manyInvoiceDetail.albumid.albumid}"/>
                                     </p:column>

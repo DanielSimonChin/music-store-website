@@ -1,4 +1,3 @@
-
 package com.gb4w21.musicalmoose.util;
 
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
@@ -19,6 +18,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -83,18 +83,25 @@ public class SurveyManagerController implements Serializable {
 //    public Survey getSelectedSurvey() {
     //       return this.selectedSurvey;
 //    }
-   public List<Survey> getSurveys() {
+    public List<Survey> getSurveys() {
         return this.surveys;
     }
 
     public List<Survey> getSelectedSurveys() {
         return this.selectedSurveys;
-    } 
+    }
 
     public void createNewSurvey() {
 
         this.bigSurvey = new Survey();
         this.bigSurvey.setDatesurveyrcreated(new Date());
+    }
+
+    @PostConstruct
+    public void init() {
+        surveys = surveyJpaController.findSurveyEntities();
+        bigSurvey = null;
+        selectedSurveys = new ArrayList<>();
     }
 
     public String toSurveryManagement() {
@@ -163,48 +170,50 @@ public class SurveyManagerController implements Serializable {
     }
 
     private void setAnswerVotesCreate() {
-        if (this.bigSurvey.getAnserw1()!=null&&(!this.bigSurvey.getAnserw1().isEmpty())) {
+        if (this.bigSurvey.getAnserw1() != null && (!this.bigSurvey.getAnserw1().isEmpty())) {
             this.bigSurvey.setAnserw1votes(0);
         }
-        if (this.bigSurvey.getAnserw2()!=null&&(!this.bigSurvey.getAnserw2().isEmpty())) {
+        if (this.bigSurvey.getAnserw2() != null && (!this.bigSurvey.getAnserw2().isEmpty())) {
             this.bigSurvey.setAnserw2votes(0);
         }
-        if (this.bigSurvey.getAnserw3()!=null&&(!this.bigSurvey.getAnserw3().isEmpty())) {
+        if (this.bigSurvey.getAnserw3() != null && (!this.bigSurvey.getAnserw3().isEmpty())) {
             this.bigSurvey.setAnserw3votes(0);
         }
-        if (this.bigSurvey.getAnserw4()!=null&&(!this.bigSurvey.getAnserw4().isEmpty())) {
+        if (this.bigSurvey.getAnserw4() != null && (!this.bigSurvey.getAnserw4().isEmpty())) {
             this.bigSurvey.setAnserw4votes(0);
         }
     }
-     private void setAnswerVotesEdit() {
-        Survey currentSurvey= this.surveyJpaController.findSurvey(this.bigSurvey.getSurveyid());
-        if (this.bigSurvey.getAnserw1()==null&&(this.bigSurvey.getAnserw1().isEmpty())) {
+
+    private void setAnswerVotesEdit() {
+        Survey currentSurvey = this.surveyJpaController.findSurvey(this.bigSurvey.getSurveyid());
+        if (this.bigSurvey.getAnserw1() == null && (this.bigSurvey.getAnserw1().isEmpty())) {
             this.bigSurvey.setAnserw1votes(0);
         }
-        if (this.bigSurvey.getAnserw2()==null&&(this.bigSurvey.getAnserw2().isEmpty())) {
+        if (this.bigSurvey.getAnserw2() == null && (this.bigSurvey.getAnserw2().isEmpty())) {
             this.bigSurvey.setAnserw2votes(0);
         }
-        if (this.bigSurvey.getAnserw3()==null&&(this.bigSurvey.getAnserw3().isEmpty())) {
+        if (this.bigSurvey.getAnserw3() == null && (this.bigSurvey.getAnserw3().isEmpty())) {
             this.bigSurvey.setAnserw3votes(0);
         }
-        if (this.bigSurvey.getAnserw4()==null&&(this.bigSurvey.getAnserw4().isEmpty())) {
+        if (this.bigSurvey.getAnserw4() == null && (this.bigSurvey.getAnserw4().isEmpty())) {
             this.bigSurvey.setAnserw4votes(0);
         }
-        
-        if (this.bigSurvey.getAnserw1()!=null&&currentSurvey.getAnserw1()!=null&&(!currentSurvey.getAnserw1().equals(this.bigSurvey.getAnserw1()))) {
+
+        if (this.bigSurvey.getAnserw1() != null && currentSurvey.getAnserw1() != null && (!currentSurvey.getAnserw1().equals(this.bigSurvey.getAnserw1()))) {
             this.bigSurvey.setAnserw1votes(0);
         }
-        if (this.bigSurvey.getAnserw2()!=null&&currentSurvey.getAnserw2()!=null&&(!currentSurvey.getAnserw2().equals(this.bigSurvey.getAnserw2()))) {
+        if (this.bigSurvey.getAnserw2() != null && currentSurvey.getAnserw2() != null && (!currentSurvey.getAnserw2().equals(this.bigSurvey.getAnserw2()))) {
             this.bigSurvey.setAnserw2votes(0);
         }
-        if (this.bigSurvey.getAnserw3()!=null&&currentSurvey.getAnserw3()!=null&&(!currentSurvey.getAnserw3().equals(this.bigSurvey.getAnserw3()))) {
+        if (this.bigSurvey.getAnserw3() != null && currentSurvey.getAnserw3() != null && (!currentSurvey.getAnserw3().equals(this.bigSurvey.getAnserw3()))) {
             this.bigSurvey.setAnserw3votes(0);
         }
-        if (this.bigSurvey.getAnserw4()!=null&&currentSurvey.getAnserw4()!=null&&(!currentSurvey.getAnserw4().equals(this.bigSurvey.getAnserw4()))) {
+        if (this.bigSurvey.getAnserw4() != null && currentSurvey.getAnserw4() != null && (!currentSurvey.getAnserw4().equals(this.bigSurvey.getAnserw4()))) {
             this.bigSurvey.setAnserw4votes(0);
         }
-        
+
     }
+
     private boolean surveyExists(int id) {
         if (this.surveyJpaController.findSurvey(id) != null) {
             return true;

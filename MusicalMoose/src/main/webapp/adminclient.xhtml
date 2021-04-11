@@ -25,7 +25,10 @@
                             <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
                             <a href="/MusicalMoose/adminads.xhtml">Ads</a>
                             <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
-                            <a href="/MusicalMoose/adminclients.xhtml">Clients</a>
+                            <a class="active">Client</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
+                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
                         </div>
                         <h:form id="form">
                             <div class="card crud-demo">
@@ -41,9 +44,9 @@
                                             <br></br>
                                             <p:message id="searchError" for="navsearch" style="color:red" />
                                         </h:form>
-                                      
+
                                     </p:toolbarGroup>
-                                   
+
                                 </p:toolbar>
 
 
@@ -51,7 +54,7 @@
                                              reflow="true" styleClass="products-table"
                                              selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
                                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
-                                 
+
 
 
                                     <p:column selectionMode="multiple" exportable="false"></p:column>
@@ -59,11 +62,11 @@
                                     <p:column  headerText="#{msgs.id}" sortBy="#{client.clientid}" filterBy="#{client.clientid}">
                                         <h:outputText  value="#{client.clientid}"/>
                                     </p:column>
-                                   
+
                                     <p:column headerText="#{msgs.username}" sortBy="#{client.username}" filterBy="#{client.username}">
                                         <h:outputText value="#{client.username}"/>
                                     </p:column>
-                                     <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
+                                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
                                         <h:outputText  value="#{client.email}"/>
                                     </p:column>
                                     <p:column headerText="#{msgs.password}" sortBy="#{client.password}" filterBy="#{client.password}">
@@ -129,22 +132,22 @@
                                     <p:column headerText="#{msgs.totalSaleValue}" sortBy="#{clientManagerController.getTotalSales(client)}">
                                         <h:outputText value="#{clientManagerController.getTotalSales(client)}" style="font-weight: 700" >
                                             <f:convertNumber currencySymbol="$" type="currency"/>
-                                         </h:outputText>
+                                        </h:outputText>
                                     </p:column>
                                     <p:column exportable="false">
                                         <p:commandButton  icon="pi pi-pencil" update=":form:manage-product-content"
-                                                         oncomplete="PF('manageProductDialog').show()"
-                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                                          oncomplete="PF('manageProductDialog').show()"
+                                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
                                             <f:setPropertyActionListener value="#{client}" target="#{clientManagerController.selectedClient}"/>
                                             <p:resetInput target=":form:manage-product-content"/>
                                         </p:commandButton>
-                                        
+
                                     </p:column>
 
                                 </p:dataTable>
 
                                 <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
-                                        width="860" height="540" widgetVar="manageProductDialog" responsive="true">
+                                          width="860" height="540" widgetVar="manageProductDialog" responsive="true">
                                     <p:outputPanel id="manage-product-content" class="ui-fluid">
                                         <p:outputPanel rendered="#{not empty clientManagerController.selectedClient}">
                                             <div class="p-field">

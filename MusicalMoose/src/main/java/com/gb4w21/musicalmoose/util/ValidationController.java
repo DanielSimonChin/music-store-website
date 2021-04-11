@@ -8,6 +8,7 @@ package com.gb4w21.musicalmoose.util;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
+
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -26,6 +27,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.primefaces.component.calendar.Calendar;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,37 +106,62 @@ public class ValidationController implements Serializable {
 
     public void validateDateFrom(FacesContext context, UIComponent component, Object value) {
         UIInput dateInput = (UIInput) component.findComponent("toSearch");
-        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
-        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
-        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
-        LOG.info("DATE INPUT:" + dateInput.getLocalValue().getClass());
+        Calendar calendar = (Calendar) dateInput;
 
-        if (value != null && compareDate((Date) value)) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "dateErrorFrom", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+        if (value != null) {
+            Date fromDate = (Date) value;
+            if (compareDate(fromDate)) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "dateErrorFrom", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
-            throw new ValidatorException(message);
+                throw new ValidatorException(message);
+            }
+            if (calendar.getValue() != null) {
+                Date toDate = (Date) calendar.getValue();
+                LOG.debug("DATE INPUT:"+(fromDate.compareTo(toDate)>=0));
+                LOG.debug("DATE INPUT:"+(fromDate.compareTo(toDate)>=0));
+                LOG.debug("DATE INPUT:"+(fromDate.compareTo(toDate)>=0));
+                LOG.debug("DATE INPUT:"+(fromDate.compareTo(toDate)>=0));
+                if (fromDate.compareTo(toDate)>=0) {
+                    FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "dateAfterError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+                }
+            }
         }
     }
 
     public void validateDateTo(FacesContext context, UIComponent component, Object value) {
         UIInput dateInput = (UIInput) component.findComponent("fromSearch");
-        LOG.info("DATE INPUT:"+ (Calendar)dateInput);
-        LOG.info("DATE INPUT:"+ dateInput);
-        LOG.info("DATE INPUT:"+ dateInput);
-        LOG.info("DATE INPUT:"+ dateInput);
-        LOG.info("DATE INPUT:"+ dateInput.getSubmittedValue());
-        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
-        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
-        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
-        LOG.info("DATE INPUT:" + dateInput.getSubmittedValue());
-        if (value != null && compareDate((Date) value)) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+        Calendar calendar = (Calendar) dateInput;
+        //calendar.getAttributes()
+
+         if (value != null) {
+            Date toDate = (Date) value;
+            if (compareDate(toDate)) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "dateErrorTo", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(message);
+            }
+            if (calendar.getValue() != null) {
+                Date fromDate = (Date) calendar.getValue();
+                LOG.debug("DATE INPUT:"+(toDate.compareTo(fromDate)<=0));
+                LOG.debug("DATE INPUT:"+(toDate.compareTo(fromDate)<=0));
+                LOG.debug("DATE INPUT:"+(toDate.compareTo(fromDate)<=0));
+                LOG.debug("DATE INPUT:"+(toDate.compareTo(fromDate)<=0));
+                if (toDate.compareTo(fromDate)<=0) {
+                    FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "dateBeforeError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+                }
+            }
         }
 
     }

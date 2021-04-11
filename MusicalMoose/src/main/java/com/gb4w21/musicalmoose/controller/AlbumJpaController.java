@@ -387,7 +387,7 @@ public class AlbumJpaController implements Serializable {
         Root<Album> album = cq.from(Album.class);
         cq.select(album);
 
-        cq.where(cb.lessThan(album.get("saleprice"), album.get("listprice")), cb.equal(album.get("available"), 1));
+        cq.where(cb.notEqual(album.get("saleprice"), 0),cb.lessThan(album.get("saleprice"), album.get("listprice")), cb.equal(album.get("available"), 1));
         cq.orderBy(cb.desc(album.get("saleprice")));
         TypedQuery<Album> query = em.createQuery(cq);
         List<Album> albums = query.getResultList();

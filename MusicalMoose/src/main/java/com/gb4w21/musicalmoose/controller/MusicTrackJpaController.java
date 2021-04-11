@@ -322,8 +322,8 @@ public class MusicTrackJpaController implements Serializable {
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         cq.select(musicTrack);
 
-        cq.where(cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")), cb.equal(musicTrack.get("available"), 1));
-        cq.orderBy(cb.desc(musicTrack.get("saleprice")));
+        cq.where(cb.notEqual(musicTrack.get("saleprice"), 0),cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")), cb.equal(musicTrack.get("available"), 1));
+        cq.orderBy(cb.asc(musicTrack.get("saleprice")));
         TypedQuery<MusicTrack> query = em.createQuery(cq);
         List<MusicTrack> tracks = query.getResultList();
         final int specialsLimt = 3;
