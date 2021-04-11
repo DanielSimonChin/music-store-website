@@ -6,8 +6,10 @@
 package com.gb4w21.musicalmoose.util;
 
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
+import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Album;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +37,8 @@ public class AlbumManagerController implements Serializable {
 
     @Inject
     private AlbumJpaController albumController;
+    @Inject
+    private MusicTrackJpaController trackController;
 
     private List<Album> albums;
     private Album selectedAlbum;
@@ -148,6 +152,7 @@ public class AlbumManagerController implements Serializable {
      * @throws Exception
      */
     public void saveProduct() throws Exception {
+        
         //If this is a new track
         if (this.selectedAlbum.getAlbumid() == null) {
             LOG.info("CREATING A NEW ALBUM ENTITY");
@@ -166,6 +171,16 @@ public class AlbumManagerController implements Serializable {
             this.albumController.edit(this.selectedAlbum);
             FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "albumUpdated", null));
+        }
+        
+        for (MusicTrack track : this.trackController.findMusicTrackEntities()) {
+            if (track.getAlbumid() == null) {
+                track.setPartofalbum(false);
+                this.trackController.edit(track);
+            } else {
+                track.setPartofalbum(true);
+                this.trackController.edit(track);
+            }
         }
 
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");

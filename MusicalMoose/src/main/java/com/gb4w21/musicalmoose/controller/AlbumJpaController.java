@@ -258,7 +258,15 @@ public class AlbumJpaController implements Serializable {
 
         Join albumsTracks = album.join("musicTrackList");
 
-        cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid()), cb.equal(album.get("available"), 1)).distinct(true);
+        //If the track is a single, then we cant get the first three related albums
+        if (track.getAlbumid() == null) {
+            cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.equal(album.get("available"), 1)).distinct(true);
+
+         //If the track is part of an album, then we do not want albums is the same as the current track's album
+        } else {
+            cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid()), cb.equal(album.get("available"), 1)).distinct(true);
+
+        }
 
         Query q = em.createQuery(cq);
 

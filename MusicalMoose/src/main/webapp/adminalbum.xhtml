@@ -251,10 +251,19 @@
                                             </div>
 
                                             <div class="p-field">
-                                                <p:outputLabel rendered="#{musicTrackJpaController.getNonAlbumTracks().size() > 0}" for="trackselection">#{msgs.selectAlbumTracks}</p:outputLabel>
-                                                <p:selectCheckboxMenu rendered="#{musicTrackJpaController.getNonAlbumTracks().size() > 0}" id="trackselection" value="#{albumManagerController.selectedAlbum.musicTrackList}" label="#{msgs.checkBoxMenuTracks}" style="width: 15rem"
+<!--                                                <p:outputLabel rendered="#{musicTrackJpaController.getTrackSelections(albumManagerController.selectedAlbum.albumid).size() > 0}" for="trackselection">#{msgs.selectAlbumTracks}</p:outputLabel>
+                                                <p:selectCheckboxMenu rendered="#{musicTrackJpaController.getTrackSelections(albumManagerController.selectedAlbum.albumid).size() > 0}" id="trackselection" value="#{albumManagerController.selectedAlbum.musicTrackList}" label="#{msgs.checkBoxMenuTracks}" style="width: 15rem"
                                                                       filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
-                                                    <f:selectItems value="#{musicTrackJpaController.getNonAlbumTracks()}" var="track" itemLabel="#{track.tracktitle}"/>
+                                                    <f:selectItems value="#{musicTrackJpaController.getTrackSelections(albumManagerController.selectedAlbum.albumid)}" var="track" itemLabel="#{track.tracktitle}"/>
+                                                    <p:ajax event="change" listener="#{track.setPartofalbum(true)}"/>
+                                                </p:selectCheckboxMenu>-->
+                                                
+                                                
+                                                <p:outputLabel for="trackselection">#{msgs.selectAlbumTracks}</p:outputLabel>
+                                                <p:selectCheckboxMenu id="trackselection" value="#{albumManagerController.selectedAlbum.musicTrackList}" label="#{msgs.checkBoxMenuTracks}" style="width: 15rem"
+                                                                      filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
+                                                    <f:selectItems value="#{musicTrackJpaController.findMusicTrackEntities()}" var="track" itemLabel="#{track.tracktitle}"/>
+<!--                                                    <p:ajax event="change" listener="#{track.setPartofalbum(true)}"/>-->
                                                 </p:selectCheckboxMenu>
 
                                             </div>

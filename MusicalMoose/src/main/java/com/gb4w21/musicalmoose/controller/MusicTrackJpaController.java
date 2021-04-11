@@ -338,21 +338,25 @@ public class MusicTrackJpaController implements Serializable {
      *
      * @return list of tracks with no album field
      */
-    public List<MusicTrack> getNonAlbumTracks() {
+    public List<MusicTrack> getTrackSelections(int albumid) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
 
         //cq.where(cb.equal(musicTrack.get("albumid").get(ma), null));
-        cq.where(cb.isNull(musicTrack.get("albumid")));
+        if (musicTrack.get("albumid") == null) {
+            cq.where(cb.isNull(musicTrack.get("albumid")));
+        } else {
+            cq.where(cb.isNull(musicTrack.get("albumid")), cb.equal(musicTrack.get("albumid").get("albumid"), albumid));
+        }
 
         Query q = em.createQuery(cq);
 
         return q.getResultList();
     }
-    
-    public void setAlbumidToNull(){
-        if(!this.selectedTrack.getPartofalbum()){
+
+    public void setAlbumidToNull() {
+        if (!this.selectedTrack.getPartofalbum()) {
             this.selectedTrack.setAlbumid(null);
         }
     }
