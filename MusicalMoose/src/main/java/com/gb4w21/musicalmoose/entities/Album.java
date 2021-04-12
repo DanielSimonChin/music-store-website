@@ -316,5 +316,30 @@ public class Album implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Album[ albumid=" + albumid + " ]";
     }
+    
+    /**
+     * @return a specific string message depending on if the sale price is 0.
+     */
+    public String isOnSale() {
+        if (this.saleprice == 0) {
+            return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "regularPrice", null).getDetail();
+        }
+        return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", "onSale", null).getDetail();
+    }
+    
+    /**
+     * If the saleprice is 0, then we display the list price. Otherwise, we
+     * return the sale price.
+     *
+     * @return the saleprice if it is not equal to 0
+     */
+    public Float getSellingPrice() {
+        if (this.saleprice == 0) {
+            return this.listprice;
+        }
+        return this.saleprice;
+    }
 
 }

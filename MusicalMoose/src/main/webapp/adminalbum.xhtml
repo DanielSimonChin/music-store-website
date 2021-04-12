@@ -9,10 +9,7 @@
       xmlns:p="http://primefaces.org/ui">
 
     <head>
-
         <title>Musical Moose</title>
-        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-
     </head>
 
     <h:body>
@@ -34,7 +31,7 @@
                             <a href="/MusicalMoose/adminreview.xhtml">Review</a>
                             <a href="/MusicalMoose/adminreport.xhtml">Report</a>
                             <a href="/MusicalMoose/admintracksales.xhtml">Set Track Sales</a>
-
+                            <a href="/MusicalMoose/adminalbumsales.xhtml">Set Album Sales</a>
                         </div>
 
 
@@ -81,7 +78,7 @@
 
                                             <span class="filter-container ui-input-icon-left">
                                                 <i class="pi pi-search"></i>
-                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="#{msgs.search}"/>
                                             </span>
 
                                         </div>
@@ -261,7 +258,7 @@
                                     </p:outputPanel>
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{albumManagerController.saveProduct()}"
+                                        <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{albumManagerController.saveProduct()}"
                                                          update="manage-product-content" process="manage-product-content @this"/>
                                         <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
                                                          class="ui-button-secondary" actionListener="#{albumManagerController.cancelAlbumForm()}"/>
