@@ -58,7 +58,12 @@ enum ReportCategory {
     ZeroTracks,
     ZeroClients
 }
-
+/**
+ * Controller for report manager allows a manager can get reports in the form of a list of sales, 
+ * clients, tracks or album that a user can specify to keep track of current sales
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @Named
 @SessionScoped
 public class ReportManagementController implements Serializable {
@@ -89,10 +94,15 @@ public class ReportManagementController implements Serializable {
     private List<MusicTrack> tracks;
     private List<Album> albums;
     private boolean gettingSales;
-
+    /**
+     * Default constructor
+     */
     public ReportManagementController() {
 
     }
+    /**
+     * Constructor that resets all page values
+     */
     @PostConstruct
     public void init() {
         gettingSales = false;
@@ -224,10 +234,11 @@ public class ReportManagementController implements Serializable {
         this.fromDate = fromDate;
     }
 
-    public void save() {
-
-    }
-
+  
+    /**
+     * searches and displays the list of chosen sales, tracks, albums etc that is requested for the report
+     * @return String report page
+     */
     public String reportSearch() {
         gettingSales = false;
         invoicedetails = new ArrayList<>();
@@ -241,18 +252,10 @@ public class ReportManagementController implements Serializable {
         selectedInvoicedetails = new ArrayList<>();
        
         if (this.reportCategory.equals(ReportCategory.TotalSales.toString())) {
-            LOG.debug("TOTAL SALES");
-            LOG.debug("TOTAL SALES");
-            LOG.debug("TOTAL SALES");
-            LOG.debug("TOTAL SALES");
+
             gettingSales = true;
             invoicedetails = this.getTotalSales();
-            LOG.debug("INVOICE DETAILS:" + invoicedetails.size());
 
-            LOG.debug("TOTAL SALES" + totalProfit);
-        
-            LOG.debug("TOTAL SALES" + toalNumberOfSales);
-            LOG.debug("TOTAL SALES" + totalNumberOfDownloads);
         } else if (this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())) {
             gettingSales = true;
             invoicedetails = this.getSaleByAlbum(this.getAlbum(this.specifiedSearch).getAlbumid());
@@ -271,38 +274,24 @@ public class ReportManagementController implements Serializable {
             albums = this.getTopAlbums();
         } else if (this.reportCategory.equals(ReportCategory.TopClients.toString())) {
             clients = this.getTopClients();
-            LOG.debug("clients:"+clients.size());
-            LOG.debug("clients:"+clients.size());
-            LOG.debug("clients:"+clients.size());
-            LOG.debug("clients:"+clients.size());
-            LOG.debug("clients:"+clients.size());
-            LOG.debug("clients:"+clients.size());
-            LOG.debug("clients:"+clients.size());
-            LOG.debug("clients:"+clients.size());
+ 
         } else if (this.reportCategory.equals(ReportCategory.ZeroClients.toString())) {
             clients = this.getUnsoldClients();
-            LOG.debug("clientsW:"+clients.size());
-            LOG.debug("clientsW:"+clients.size());
-            LOG.debug("clientsW:"+clients.size());
-            LOG.debug("clientsW:"+clients.size());
-            LOG.debug("clientsW:"+clients.size());
-            LOG.debug("clientsW:"+clients.size());
-            LOG.debug("clientsW:"+clients.size());
-            LOG.debug("clientsW:"+clients.size());
+ 
         } else if (this.reportCategory.equals(ReportCategory.ZeroTracks.toString())) {
             tracks = this.getUnsoldTarcks();
         }
-        LOG.debug("TOTAL SALES1" + gettingSales);
-        LOG.debug("TOTAL SALES1" + invoicedetails.size());
+  
         for (Invoicedetail iD : invoicedetails) {
             LOG.debug("ids" + iD.getInvoiceid());
         }
-        LOG.debug("TOTAL SALES1" + totalProfit);
-        LOG.debug("TOTAL SALES1" + toalNumberOfSales);
-        LOG.debug("TOTAL SALES1" + totalNumberOfDownloads);
+     
         return "adminreport";
     }
-
+   /**
+    * Takes user to report page constructor that resets all page values
+    * @return String report page
+    */
     public String toReportPage() {
     
         gettingSales = false;
@@ -316,7 +305,10 @@ public class ReportManagementController implements Serializable {
         selectedInvoicedetails = new ArrayList<>();
         return "adminreport";
     }
-
+    /**
+     * Returns a list of clients who hadn't made a purchase in a specified date range
+     * @return List<Client> list of clients
+     */
     private List<Client> getUnsoldClients() {
         List<Client> clients = this.clientJpaController.findClientEntities();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -335,7 +327,10 @@ public class ReportManagementController implements Serializable {
         }
         return clients;
     }
-
+    /**
+     * Returns a list of music tracks that haven't sold in the specified date range
+     * @return List<MusicTrack> list of music tracks
+     */
     private List<MusicTrack> getUnsoldTarcks() {
         List<MusicTrack> tracks = this.musicTrackJpaController.findMusicTrackEntities();
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -355,7 +350,10 @@ public class ReportManagementController implements Serializable {
         }
         return tracks;
     }
-
+    /**
+     * Returns a list of clients ordered by total sale that have made a purchase in the specified date range
+     * @return List<Client> client list
+     */
     private List<Client> getTopClients() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
@@ -375,7 +373,10 @@ public class ReportManagementController implements Serializable {
         }
         return clients;
     }
-
+    /**
+     * Returns a list of tracks ordered by total sale that have been purchased in the specified date range
+     * @return List<MusicTrack> track list
+     */
     private List<MusicTrack> getTopTarcks() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
@@ -395,7 +396,10 @@ public class ReportManagementController implements Serializable {
         }
         return musicTracks;
     }
-
+     /**
+     * Returns a list of albums ordered by total sale that have been purchased in the specified date range
+     * @return List<Album> album list
+     */
     private List<Album> getTopAlbums() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
@@ -414,7 +418,11 @@ public class ReportManagementController implements Serializable {
         }
         return albums;
     }
-
+    /**
+     * Gets all sales of the given track made in the specified date range
+     * @param trackid int
+     * @return List<Invoicedetail> sale list
+     */
     private List<Invoicedetail> getSaleByTrack(int trackid) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
@@ -434,7 +442,11 @@ public class ReportManagementController implements Serializable {
         }
         return invoicedetails;
     }
-
+    /**
+     *  Gets all sales of the given album made in the specified date range
+     * @param albumid int
+     * @return List<Invoicedetail> sale list
+     */
     private List<Invoicedetail> getSaleByAlbum(int albumid) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
@@ -453,7 +465,11 @@ public class ReportManagementController implements Serializable {
         }
         return invoicedetails;
     }
-
+    /**
+     * Gets a sale list of all sale form a certain artist in the specified date range
+     * @param artist String
+     * @return List<Invoicedetail> sale list
+     */
     private List<Invoicedetail> getSaleByArtist(String artist) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
@@ -484,7 +500,10 @@ public class ReportManagementController implements Serializable {
         }
         return invoicedetails;
     }
-
+    /**
+     * get a list of all sale made in a certain date range
+     * @return List<Invoicedetail> sale list
+     */
     private List<Invoicedetail> getTotalSales() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
@@ -503,7 +522,11 @@ public class ReportManagementController implements Serializable {
         }
         return invoicedetails;
     }
-
+    /**
+     * get all sales that where made by a chosen client in the specified date range
+     * @param chosenClient
+     * @return  List<Invoicedetail> the list of sale
+     */
     private List<Invoicedetail> getSalesByClient(Client chosenClient) {
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -525,11 +548,23 @@ public class ReportManagementController implements Serializable {
         }
         return invoiceDetails;
     }
-
+    /**
+     * Checks to see if the track, album, artists , or client exists before doing a specified search
+     * if it does it throws an error
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value Object
+     */
     public void validateSpecificSearch(FacesContext context, UIComponent component,
             Object value) {
         UIInput selectInput = (UIInput) component.findComponent("criteria");
+        if(value==null ||value.toString().isEmpty()||value.toString().isBlank()){
+            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "specificNotNullError", null);
+            message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
+            throw new ValidatorException(message);
+        }
         if (selectInput.getLocalValue().equals(ReportCategory.SalesByAlbum.toString()) && (!checkAlbum(value.toString()))) {
 
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -564,7 +599,11 @@ public class ReportManagementController implements Serializable {
         }
 
     }
-
+    /**
+     * checks if track or album with specified artist exists
+     * @param artist String
+     * @return true if it exists false if not
+     */
     private boolean checkArtists(String artist) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -589,7 +628,11 @@ public class ReportManagementController implements Serializable {
         return false;
 
     }
-
+    /**
+     * checks if album with specified name exists
+     * @param albumTitle String
+     * @return true if it exists false if not
+     */
     private boolean checkAlbum(String albumTitle) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
@@ -606,7 +649,11 @@ public class ReportManagementController implements Serializable {
        
         return true;
     }
-
+    /**
+     * checks if client with specified name exists
+     * @param userName String
+     * @return true if it exists false if not
+     */
     private boolean checkUser(String userName) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -621,7 +668,11 @@ public class ReportManagementController implements Serializable {
             return false;
         }
     }
-
+    /**
+     * checks if track with specified name exists
+     * @param trackname String
+     * @return true if it exists false if not
+     */
     private boolean checkTrack(String trackname) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -635,7 +686,11 @@ public class ReportManagementController implements Serializable {
         }
         return true;
     }
-
+    /**
+     * gets track with specified track name
+     * @param trackname String
+     * @return MusicTrack specified track
+     */
     private MusicTrack getTrack(String trackname) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -650,7 +705,11 @@ public class ReportManagementController implements Serializable {
             return null;
         }
     }
-
+    /**
+     * gets album with specified album title
+     * @param albumName String
+     * @return Album album with specified title
+     */
     private Album getAlbum(String albumName) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -666,7 +725,11 @@ public class ReportManagementController implements Serializable {
             return null;
         }
     }
-
+    /**
+     * get client with specified username
+     * @param userName String
+     * @return Client client with username
+     */
     private Client getUser(String userName) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();

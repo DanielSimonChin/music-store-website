@@ -6,6 +6,10 @@
 package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.MusicItem;
+import com.gb4w21.musicalmoose.controller.AlbumJpaController;
+import com.gb4w21.musicalmoose.controller.InvoicedetailJpaController;
+import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
+import com.gb4w21.musicalmoose.controller.SaleJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
