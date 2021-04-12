@@ -1,6 +1,6 @@
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.beans.ShoppingCartItem;
+import com.gb4w21.musicalmoose.beans.MusicItem;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
@@ -37,12 +37,12 @@ public class ShoppingCartController implements Serializable {
     @Inject
     private PreRenderViewBean preRenderViewBean;
     
-    private List<ShoppingCartItem> shoppingCart;
+    private List<MusicItem> shoppingCart;
     private String prevPage;
     private BigDecimal totalCost;
     
     public ShoppingCartController() {
-        this.shoppingCart = new ArrayList<ShoppingCartItem>();
+        this.shoppingCart = new ArrayList<MusicItem>();
     }
     
     public BigDecimal getTotalCost() {
@@ -52,7 +52,7 @@ public class ShoppingCartController implements Serializable {
     public void findAlbumById(int id) {
         try {
             Album album = this.albumJpaController.findAlbumById(id);
-            shoppingCart.add(convertAlbumToShoppingCartItem(album));
+            shoppingCart.add(convertAlbumToMusicItem(album));
         }
         catch (NonexistentEntityException e) {
             java.util.logging.Logger.getLogger(ShoppingCartController.class.getName()).log(Level.SEVERE, null, e);
@@ -62,40 +62,54 @@ public class ShoppingCartController implements Serializable {
     public void findMusicTrackById(int id) {
         try {
             MusicTrack musicTrack = this.musicTrackJpaController.findTrackById(id);
-            shoppingCart.add(convertMusicTrackToShoppingCartItem(musicTrack));
+            shoppingCart.add(convertMusicTrackToMusicItem(musicTrack));
         }
         catch (NonexistentEntityException e) {
             java.util.logging.Logger.getLogger(ShoppingCartController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
     
-    private ShoppingCartItem convertAlbumToShoppingCartItem(Album album) {
-        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-        shoppingCartItem.setId(album.getAlbumid());
-        shoppingCartItem.setTitle(album.getAlbumtitle());
-        shoppingCartItem.setArtist(album.getArtist());
-        shoppingCartItem.setPrice(album.getCostprice());
-        shoppingCartItem.setIsAlbum(true);
-        shoppingCartItem.setImgNameSmall(album.getAlbumimagefilenamesmall());
+    public MusicItem convertAlbumToMusicItem(Album album) {
+        MusicItem musicItem = new MusicItem();
+        musicItem.setId(album.getAlbumid());
+        musicItem.setTitle(album.getAlbumtitle());
+        musicItem.setArtist(album.getArtist());
+        if (album.getSaleprice() == 0) {
+            musicItem.setPrice(album.getListprice());
+        }
+        else {
+            musicItem.setPrice(album.getSaleprice());
+        }
+        musicItem.setIsAlbum(true);
+        musicItem.setImgNameBig(album.getAlbumimagefilenamebig());
+        musicItem.setGenre(albumJpaController.findGenreAlbumId(album.getAlbumid()));
+        musicItem.setNumberOfTracks(album.getNumberoftracks());
         
-        return shoppingCartItem;
+        return musicItem;
     }
     
-    private ShoppingCartItem convertMusicTrackToShoppingCartItem(MusicTrack musicTrack) {
-        ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
-        shoppingCartItem.setId(musicTrack.getInventoryid());
-        shoppingCartItem.setTitle(musicTrack.getTracktitle());
-        shoppingCartItem.setArtist(musicTrack.getArtist());
-        shoppingCartItem.setPrice(musicTrack.getCostprice());
-        shoppingCartItem.setIsAlbum(false);
-        shoppingCartItem.setImgNameSmall(musicTrack.getAlbumimagefilenamesmall());
+    public MusicItem convertMusicTrackToMusicItem(MusicTrack musicTrack) {
+        MusicItem musicItem = new MusicItem();
+        musicItem.setId(musicTrack.getInventoryid());
+        musicItem.setTitle(musicTrack.getTracktitle());
+        musicItem.setArtist(musicTrack.getArtist());
+        if (musicTrack.getSaleprice() == 0) {
+            musicItem.setPrice(musicTrack.getListprice());
+        }
+        else {
+            musicItem.setPrice(musicTrack.getSaleprice());
+        }
+        musicItem.setIsAlbum(false);
+        musicItem.setImgNameBig(musicTrack.getAlbumimagefilenamebig());
+        musicItem.setGenre(musicTrack.getMusiccategory());
+        musicItem.setSongLength(musicTrack.getPlaylength());
         
-        return shoppingCartItem;
+        return musicItem;
     }
     
     public void addShoppingCartAlbum(Album addedAlbum) {
-        ShoppingCartItem shoppingCartItem = convertAlbumToShoppingCartItem(addedAlbum);
-        shoppingCart.add(shoppingCartItem);
+        MusicItem musicItem = convertAlbumToMusicItem(addedAlbum);
+        shoppingCart.add(musicItem);
         
         preRenderViewBean.writeCartCookie(addedAlbum.getAlbumid(), "cart_album");
                 
@@ -103,20 +117,20 @@ public class ShoppingCartController implements Serializable {
     }
     
     public void addShoppingCartTrack(MusicTrack addedTrack) {
-        ShoppingCartItem shoppingCartItem = convertMusicTrackToShoppingCartItem(addedTrack);
-        shoppingCart.add(shoppingCartItem);
+        MusicItem musicItem = convertMusicTrackToMusicItem(addedTrack);
+        shoppingCart.add(musicItem);
         
         preRenderViewBean.writeCartCookie(addedTrack.getInventoryid(), "cart_track");
         
         LOG.info("Shopping Cart Track Added: " + addedTrack.getTracktitle());
     }
     
-    public List<ShoppingCartItem> getShoppingCartList() {
+    public List<MusicItem> getShoppingCartList() {
         LOG.info("Find shopping cart list");
         return this.shoppingCart;
     }
     
-    public String deleteCartItem(ShoppingCartItem deleteItem) {
+    public String deleteCartItem(MusicItem deleteItem) {
         shoppingCart.remove(deleteItem);
         if (deleteItem.getIsAlbum()) {
             preRenderViewBean.removeCartCookie(deleteItem.getId(), "cart_album");
@@ -134,6 +148,7 @@ public class ShoppingCartController implements Serializable {
         }
         totalCost = new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
         return totalCost;
+//        return new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
     }
     
     public String toShoppingCart() {

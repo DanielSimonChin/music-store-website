@@ -18,7 +18,7 @@ import javax.inject.Named;
  */
 @Named(value = "shoppingCart")
 @Dependent
-public class ShoppingCartItem {
+public class MusicItem {
 //    private List<MusicTrack> cartMusicTracks;
 //    private List<Album> cartAlbums;
 //    private int totalPrice;
@@ -28,24 +28,33 @@ public class ShoppingCartItem {
     private String artist;
     private float price;
     private boolean isAlbum;
-    private String imgNameSmall;
+    private String imgNameBig;
+    private String genre;
+    private Float songLength;
+    private int numberOfTracks;
     
-    public ShoppingCartItem() {
+    public MusicItem() {
         this.id = -1;
         this.title = "";
         this.artist = "";
         this.price = -1;
         this.isAlbum = false;
-        this.imgNameSmall = "";
+        this.imgNameBig = "";
+        this.genre = "";
+        this.songLength = 0f;
+        this.numberOfTracks = 0;
     }
     
-    public ShoppingCartItem(int id, String title, String artist, float price, boolean isAlbum, String imgNameSmall) {
+    public MusicItem(int id, String title, String artist, float price, boolean isAlbum, String imgNameSmall, String genre, Float songLength, int numberOfTracks) {
         this.id = id;
         this.title = title;
         this.artist = artist;
         this.price = price;
         this.isAlbum = isAlbum;
-        this.imgNameSmall = imgNameSmall;
+        this.imgNameBig = imgNameSmall;
+        this.genre = genre;
+        this.songLength = songLength;
+        this.numberOfTracks = numberOfTracks;
     }
     
     public int getId() {
@@ -88,41 +97,35 @@ public class ShoppingCartItem {
         this.isAlbum = isAlbum;
     }
     
-    public String getImgNameSmall() {
-        return this.imgNameSmall;
+    public String getImgNameBig() {
+        return this.imgNameBig;
     }
     
-    public void setImgNameSmall(String imgNameSmall) {
-        this.imgNameSmall = imgNameSmall;
+    public void setImgNameBig(String imgNameBig) {
+        this.imgNameBig = imgNameBig;
     }
     
-//    public ShoppingCart(List<MusicTrack> cartMusicTracks, List<Album> cartAlbums, int totalPrice) {
-//        this.cartMusicTracks = cartMusicTracks;
-//        this.cartAlbums = cartAlbums;
-//        this.totalPrice = totalPrice;
-//    }
+    public String getGenre() {
+        return this.genre;
+    }
     
-//    public List<MusicTrack> getCartMusicTracks() {
-//        return this.cartMusicTracks;
-//    }
-//    
-//    public void setCartMusicTracks(List<MusicTrack> cartMusicTracks) {
-//        this.cartMusicTracks = cartMusicTracks;
-//    }
-//    
-//    public List<Album> getCartAlbums() {
-//        return this.cartAlbums;
-//    }
-//    
-//    public void setCartAlbums(List<Album> cartAlbums) {
-//        this.cartAlbums = cartAlbums;
-//    }
-//    
-//    public int getTotalPrice(){
-//        return this.totalPrice;
-//    }
-//    
-//    public void setTotalPrice(int totalPrice){
-//        this.totalPrice = totalPrice;
-//    }
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+    
+    public Float getSongLength() {
+        return this.songLength;
+    }
+    
+    public void setSongLength(Float songLength) {
+        this.songLength = songLength;
+    }
+    
+    public int getNumberOfTracks() {
+        return this.numberOfTracks;
+    }
+    
+    public void setNumberOfTracks(int numberOfTracks) {
+        this.numberOfTracks = numberOfTracks;
+    }
 }

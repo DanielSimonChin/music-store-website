@@ -9,6 +9,7 @@ import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Album;
+import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -185,6 +186,30 @@ public class AlbumJpaController implements Serializable {
         return q.getResultList();
 
     }
+    
+    public String findGenreAlbumId(int albumId) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+
+        Root<MusicTrack> track = cq.from(MusicTrack.class);
+
+        //Joining the Album table to the MusicTrack table
+        Join albumTracks = track.join("albumid");
+
+        //We want all the tracks from this album that isn't the selected track
+        cq.where(cb.equal(albumTracks.get("albumid"), albumId));
+
+        Query q = em.createQuery(cq);
+        
+        if (q.getResultList().size() < 1) {
+            return null;
+        }
+        
+        MusicTrack musicTrack = (MusicTrack) q.getResultList().get(0);
+
+        return musicTrack.getMusiccategory();
+    }
 
     public Album findAlbum(Integer id) {
         return em.find(Album.class, id);
@@ -209,11 +234,6 @@ public class AlbumJpaController implements Serializable {
     }
 
     public String selectSingleAlbum(int id) {
-//        try {
-//            this.selectedAlbum = findAlbumById(id);
-//        } catch (NonexistentEntityException e) {
-//            return null;
-//        }
         this.selectedAlbum = findAlbum(id);
         validateGenreCookie();
         return "detailAlbum";
@@ -434,6 +454,4 @@ public class AlbumJpaController implements Serializable {
 
         return q.getResultList();
     }
-    
-    
 }

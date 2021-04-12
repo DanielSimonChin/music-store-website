@@ -63,7 +63,21 @@
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
+        <from-view-id>download.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detailTrack</from-outcome>
+            <to-view-id>trackpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
         <from-view-id>cart.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>detailAlbum</from-outcome>
+            <to-view-id>albumpage.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>download.xhtml</from-view-id>
         <navigation-case>
             <from-outcome>detailAlbum</from-outcome>
             <to-view-id>albumpage.xhtml</to-view-id>
@@ -176,6 +190,92 @@
             <to-view-id>cart.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>adminads.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminalbum.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminclient.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminfront.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminmusic.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminpurchases.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminreport.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminreview.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminsurvey.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminpage.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminnews.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>adminfront.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>shoppingcartpage</from-outcome>
+            <to-view-id>cart.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    
     
     <navigation-rule>
         <from-view-id>cart.xhtml</from-view-id>

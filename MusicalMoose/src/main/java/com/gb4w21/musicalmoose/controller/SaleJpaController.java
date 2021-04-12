@@ -206,23 +206,18 @@ public class SaleJpaController implements Serializable {
             q.setFirstResult(firstResult);
         }
         return q.getResultList();
-
     }
 
     public Sale findSale(Integer id) {
-
         return em.find(Sale.class, id);
-
     }
 
     public int getSaleCount() {
-
         CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         Root<Sale> rt = cq.from(Sale.class);
         cq.select(em.getCriteriaBuilder().count(rt));
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-
     }
 
     /**
@@ -280,8 +275,24 @@ public class SaleJpaController implements Serializable {
         }
         return totalSales.doubleValue();
     }
+    
+    public List<Sale> findSaleByClientId(int clientId) throws NonexistentEntityException {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
 
-    public void createSale() {
+        CriteriaQuery<Sale> cq = cb.createQuery(Sale.class);
+
+        Root<Sale> sale = cq.from(Sale.class);
+
+        cq.where(cb.equal(sale.get("clientid").get("clientid"), clientId)); 
+
+        Query q = em.createQuery(cq);
         
+        List<Sale> results = q.getResultList();
+        
+        if (results.size() == 0) {
+            throw new NonexistentEntityException("Cannot find Album with id");
+        }
+
+        return results;
     }
 }

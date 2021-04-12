@@ -125,8 +125,6 @@
 
                         </div>
 
-
-
                         <div class="ratings">
 
                             <h:form >
@@ -148,7 +146,7 @@
                                     <small>#{msgs.reviewDate} #{trackReviews.reviewdate}</small>
                                 </div>
                             </ui:repeat>
-                            
+
                             <h:outputText value="#{msgs.noTrackReviews}" rendered="#{empty reviewJpaController.getTrackReviews(detailTrack)}"></h:outputText>
                         </div>
                     </section>
