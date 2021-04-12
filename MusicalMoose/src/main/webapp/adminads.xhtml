@@ -5,7 +5,8 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <head>
 
@@ -32,29 +33,168 @@
                             <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
                             <a href="/MusicalMoose/adminreview.xhtml">Review</a>
                             <a href="/MusicalMoose/adminreport.xhtml">Report</a>
+                            <a href="/MusicalMoose/adminnews.xhtml">News</a>
                         </div>
-                        <table>
-                            <tr>
-                                <button id="addMusic" class="rowButton">Add ad record</button>
-                                &nbsp;
-                                <input type="text" placeholder="Search"/>
-                            </tr>
-                            <tr>
-                                <td class="rowButton"><img src="./icons/delete-cart.png"/></td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>URL of the ad:</td>
-                                <td><img class="icon" src="./icons/edit-solid.svg"/>Filename:</td>
-                                <td>Displayed: <input type="checkbox"/></td>
-                                <td>
-                                    Page position:
-                                    <select>
-                                        <option>1</option>
-                                        <option>2</option>
-                                    </select>
-                                </td>
+                        
+                        <h:form id="form">
+                            <div>
+                                <p:growl id="messages" showDetail="true"/>
 
+                                <p:toolbar>
+                                    <p:toolbarGroup>
+                                        <p:commandButton value="#{msgs.newBtn}" icon="pi pi-plus" actionListener="#{bannerAdManagerController.openNew()}"
+                                                         update=":form:manage-product-content" oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="ui-button-success" style="margin-right: .5rem">
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
 
-                            </tr>
-                        </table>
+                                        <p:commandButton id="delete-products-button" value="#{msgs.removeBtn}"
+                                                         icon="pi pi-trash" actionListener="#{bannerAdManagerController.removeSelectedBannerAds()}"
+                                                         styleClass="ui-button-danger" disabled="#{!bannerAdManagerController.hasSelectedBannerAds()}"
+                                                         update="@this">
+                                            <p:confirm header="#{msgs.confirmationHeader}" message="#{msgs.deleteProductsMessage}"
+                                                       icon="pi pi-exclamation-triangle"/>
+                                        </p:commandButton>
+
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+
+                                <h:form>
+                                    <p:fileUpload mode="advanced"
+                                                  multiple="false"
+                                                  allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                                  invalidFileMessage="#{msgs.invalidFileMessage}"
+                                                  listener="#{fileUploadController.handleFileAdUpload}"
+                                                  label="#{msgs.import}"/>
+                                </h:form>
+                                
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="bannerAd" value="#{bannerAdManagerController.bannerAds}"
+                                             reflow="true" styleClass="products-table"
+                                             selection="#{bannerAdManagerController.selectedBannerAds}" rowKey="#{bannerAd.banneraddid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.adHeader}</span>
+
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
+
+                                        </div>
+                                    </f:facet>
+
+                                    <p:ajax event="rowSelect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowSelectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="toggleSelect" update=":form:delete-products-button"/>
+
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                                    <p:column headerText="#{msgs.adId}" sortBy="#{bannerAd.banneraddid}" filterBy="#{bannerAd.banneraddid}">
+                                        <h:outputText value="#{bannerAd.banneraddid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.adUrl}" sortBy="#{bannerAd.url}" filterBy="#{bannerAd.url}">
+                                        <h:outputText value="#{bannerAd.url}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.adFileName}" sortBy="#{bannerAd.filename}" filterBy="#{bannerAd.filename}">
+                                        <h:outputText value="#{bannerAd.filename}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msgs.adDisplay}" sortBy="#{bannerAd.displayed}">
+                                        <h:outputText rendered="#{bannerAd.displayed}" value="#{msgs.yes}"/>
+                                        <h:outputText rendered="#{not bannerAd.displayed}" value="#{msgs.no}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msgs.adPosition}" sortBy="#{bannerAd.pageposition}">
+                                        <h:outputText value="#{bannerAd.pageposition}"/>
+                                    </p:column>
+
+                                    <p:column exportable="false">
+                                        <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
+                                                         oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{bannerAd}" target="#{bannerAdManagerController.selectedBannerAd}"/>
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                         oncomplete="PF('deleteProductDialog').show()">
+                                            <f:setPropertyActionListener value="#{bannerAd}" target="#{bannerAdManagerController.selectedBannerAd}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:dialog header="#{msgs.adDetails}" showEffect="fade" modal="true" width="625" height="500"
+                                          widgetVar="manageProductDialog" responsive="true">
+                                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty bannerAdManagerController.selectedBannerAd}">
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="adURL">#{msgs.adUrl}</p:outputLabel>
+                                                <p:inputText id="adURL" value="#{bannerAdManagerController.selectedBannerAd.url}" required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="available" value="#{msgs.adDisplay}"/>
+                                                <p:selectOneMenu id="available" value="#{bannerAdManagerController.selectedBannerAd.displayed}">
+                                                    <f:selectItem itemLabel="#{msgs.yesOption}" itemValue="true"/>
+                                                    <f:selectItem itemLabel="#{msgs.noOption}" itemValue="false"/>
+                                                </p:selectOneMenu>
+                                            </div>
+                                            
+                                            <div class="p-field">
+                                                <p:outputLabel for="adPosition">#{msgs.adPosition}</p:outputLabel>
+                                                <p:inputNumber id="adPosition" value="#{bannerAdManagerController.selectedBannerAd.pageposition}"
+                                                               decimalPlaces="0" required="true"/>
+                                            </div>
+                                            
+                                            <div class="p-field">
+                                                <p:outputLabel for="adfilename">#{msgs.adFileName}</p:outputLabel>
+                                                <p:selectOneMenu id="adfilename" value="#{bannerAdManagerController.selectedBannerAd.filename}" filter="true" filterMatchMode="startsWith"
+                                                                 var="filename" panelStyle="width:180px" >
+                                                    <f:selectItems value="#{fileUploadController.getFileNames('ads')}" var="covers" itemLabel="#{covers}" itemValue="#{covers}"/>
+
+                                                    <p:column>  
+                                                        <p:graphicImage value="/ads/#{filename}" width="50" height="50"/>  
+                                                    </p:column>  
+
+                                                    <p:column>  
+                                                        #{filename}
+                                                    </p:column>  
+                                                </p:selectOneMenu>
+                                            </div>
+
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{bannerAdManagerController.saveBannerAd()}"
+                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                        <p:commandButton value="Cancel" icon="pi pi-times" actionListener="#{bannerAdManagerController.cancelBannerAdForm()}" 
+                                                         class="ui-button-secondary"/>
+                                    </f:facet>
+                                </p:dialog>
+
+                                <p:confirmDialog global="true" widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                                 message="#{msgs.deleteAdsMessage}" header="#{msgs.confirmationHeader}" severity="warn">
+                                    <p:commandButton value="#{msgs.yesOption}" icon="pi pi-check" actionListener="#{bannerAdManagerController.removeBannerAd()}"
+                                                     process="@this" oncomplete="PF('deleteProductDialog').hide()"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                     onclick="PF('deleteProductDialog').hide()"/>
+                                </p:confirmDialog>
+
+                                <p:confirmDialog global="true" showEffect="fade" width="300">
+                                    <p:commandButton value="#{msgs.yesOption}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                     icon="pi pi-times"/>
+                                </p:confirmDialog>
+                            </div>
+                        </h:form>
                     </section>
                 </div>
             </ui:define>
