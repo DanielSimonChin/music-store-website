@@ -122,6 +122,7 @@ CREATE TABLE INVOICEDETAIL(
     INVENTORYID INT, 
     ALBUMID INT,
     INVOICEDETAILREMOVED BIT(1),
+    PRODUCTDOWNLOADED INT,
     CONSTRAINT fkinventoryid3 FOREIGN KEY (INVENTORYID) REFERENCES MUSIC_TRACK (INVENTORYID), 
     CONSTRAINT fkalbumid3 FOREIGN KEY (ALBUMID) REFERENCES ALBUM (ALBUMID),
     CONSTRAINT fksaleid3 FOREIGN KEY (SALEID) REFERENCES SALE (SALEID),
@@ -190,28 +191,28 @@ VALUES
 (4, "Platform of music", "What app or platform do you use to listen to music?", "Radio", 12, "Spotify", 99, "Apple Music", 57, "Other", 23, TIMESTAMP("2021-02-03", "12:24:14"),TIMESTAMP("2021-02-19", "06:13:12"), 0);
 
 INSERT INTO ALBUM (ALBUMID, ALBUMTITLE, RELEASEDATE, ARTIST, RECORDLABEL, NUMBEROFTRACKS, DATEENTERED, ALBUMIMAGEFILENAMEBIG, ALBUMIMAGEFILENAMESMALL, COSTPRICE,  LISTPRICE, SALEPRICE, PST,GST,HST,AVAILABLE, REMOVALDATE ) values
-(1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 19.99, 17.99, 15.99, 0.42, 0.45,0.49, 1, null),
-(2, "DAMN", TIMESTAMP("2017-04-14",  "00:00:00"), "Kendrick Lamar", "Top Dawg Entertainment", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "damn_big.jpg","damn_small.png",21.99, 22.99, 17.99, 0.42, 0.45,0.49, 1, null),
-(3, "THE GOAT", TIMESTAMP("2020-05-15",  "00:00:00"), "Polo G", "Columbia Records", 16, TIMESTAMP("2021-02-13",  "00:00:00"), "the_goat_big.png","the_goat_small.png",15.23, 17.99, 11.01, 0.42, 0.45,0.49, 1, null),
-(4, "Scorpion", TIMESTAMP("2018-06-29",  "00:00:00"), "Drake", "Cash Money", 25, TIMESTAMP("2021-02-13",  "00:00:00"), "scorpion_big.png","scorpion_small.jpg",25.12, 25.00, 18.75, 0.42, 0.45,0.49, 1, null),
-(5, "CASE STUDY 01", TIMESTAMP("2019-06-28",  "00:00:00"), "Daniel Caesar", "Golden Child", 10, TIMESTAMP("2021-02-13",  "00:00:00"), "CaseStudy01-Big.jpg","CaseStudy01-Small.jpg",22.45, 20.00, 16.78, 0.5, 0.35,0.25, 1, null),
-(6, "Ctrl", TIMESTAMP("2017-06-09",  "00:00:00"), "SZA", "Top Dawg", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "Crtl-Big.jpg","Crtl-Small.jpg",12.34, 11.99, 7.65, 0.5, 0.35,0.25, 1, null),
-(7, "IGOR", TIMESTAMP("2019-05-17",  "00:00:00"), "Tyler", "The Creator, A Boy is a Gun", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "IGOR-Tyler-Creator-Big.jpg","IGOR-Tyler-Creator-Small.jpg",18.50, 18.0, 15.21, 0.5, 0.35,0.25, 1, null),
-(8, "BALLADS 1", TIMESTAMP("2018-10-26",  "00:00:00"), "Joji", "88rising", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "Ballads-1-Big.jpg","Ballads-1-Small.jpg",17.50, 18.00, 10.16, 0.54, 0.24,0.17, 1, null),
-(9,  "Night Visions", TIMESTAMP("2012-09-04",  "00:00:00"), "Imagine Dragons", "Interscope", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "nightVisions-Big.jpeg","nightVisions-Small.jpg",12.45, 13.99, 8.99, 0.54, 0.24,0.17, 1, null),
-(10, "Pray for the Wicked", TIMESTAMP("2018-06-22",  "00:00:00"), "Panic at the Disco", "Fueled by Ramen", 11, TIMESTAMP("2021-02-13",  "00:00:00"),"prayToTheWicked-Big.jpg","prayToTheWicked-small.jpg", 14.00, 13.50, 10.50, 0.5, 0.35,0.25, 1, null),
-(11, "American Beauty/American Psycho", TIMESTAMP("2015-01-16",  "00:00:00"), "Fallout Boy", "Island", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "americanBeauty-Psyco-Big.jpg","americanBeauty-Psyco-Small.jpg",17.35, 17.00, 12.13, 0.5, 0.35,0.25, 1, null),
-(12, "Native", TIMESTAMP("2013-03-25",  "00:00:00"), "One Republic", "Mosley", 19, TIMESTAMP("2021-02-13",  "00:00:00"), "nativeBig.jpg","nativeSmall.png",21.33, 22.23, 14.61, 0.54, 0.24,0.17, 1, null),
-(13, "Endgame", TIMESTAMP("2011-03-25",  "00:00:00"), "Rise Against", "DGC", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "endGame-Big.jpg","endGame-small.jpg",19.11, 20.21, 15.95, 0.54, 0.24,0.17, 1, null),
-(14, "Artpop", TIMESTAMP("2013-11-06",  "00:00:00"), "Lady Gaga", "Streamline", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "artPop-Big.jpg","artPop-Small.jpg",16.93, 13.12, 10.13, 0.66, 0.12,0.27, 1, null),
-(15, "Teenage Dream", TIMESTAMP("2010-08-24",  "00:00:00"), "Katy Perry" ,"Capitol", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg",19.00, 17.00, 15.99, 0.66, 0.12,0.27, 1, null),
-(16, "Pink Friday: Roman Reloaded", TIMESTAMP("2012-04-02",  "00:00:00"), "Nicki Minaj", "Young Money", 23, TIMESTAMP("2021-02-13",  "00:00:00"), "Pink Friday Roman Reloaded Big.jpg","Pink Friday Roman Reloaded Small.jpg",23.31, 20.00, 19.35, 0.66, 0.12,0.27, 1, null),
-(17, "Laundry Service", TIMESTAMP("2001-11-13",  "00:00:00"), "Shakira", "Epic", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "landryService-Big.jpg","landryService-Small.jpg",18.99, 17.99, 13.99, 0.66, 0.12,0.27, 1, null),
-(18, "All That We Have Now", TIMESTAMP("2012-08-08",  "00:00:00"),"Fear, and Loathing in Las Vegas", "VAP", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "all-we-have-now-Big.jpg","all-we-have-now-Small.jpg",19.05, 17.95, 15.21, 0.66, 0.12,0.27, 1, null),
-(19, "the WORLD Ruler", TIMESTAMP("2007-02-27",  "00:00:00"), "NIGHTMARE", "VAP", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "the-world-ruler-big.jpg","the-World-Rule-Small.jpg",23.99, 20.99, 21.99, 0.45, 0.32,0.03, 1, null),
-(20, "AREA Z", TIMESTAMP("2016-06-29",  "00:00:00"), "JAM Project", "Lantis", 15, TIMESTAMP("2021-02-13",  "00:00:00"), "areaz-Big.jpeg","area-z-small.jpg",17.00, 18.99, 15.35, 0.45, 0.32,0.03, 1, null),
-(21, "Fixion", TIMESTAMP("2016-01-05",  "00:00:00"), "THE ORAL CIGARETTES", "A-Sketch", 10, TIMESTAMP("2021-02-13",  "00:00:00"), "Fixion-Big.jpg","Fixion-Small.jpg",21.99, 16.99, 17.59, 0.45, 0.32,0.03,  1, null),
-(22, "Shingeki no Kiseki", TIMESTAMP("2017-05-17",  "00:00:00"), "Linked Horizon", "Pony Canyon", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg",15.00, 13.00, 11.00, 0.45, 0.32,0.03, 1, null);
+(1, "My Turn", TIMESTAMP("2020-02-28",  "00:00:00"), "Lil Baby", "Capitol Records", 20, TIMESTAMP("2021-02-13",  "00:00:00"),"my_turn_big.jpg","my_turn_small.png", 7.99, 17.99, 0, 0.42, 0.45,0.49, 1, null),
+(2, "DAMN", TIMESTAMP("2017-04-14",  "00:00:00"), "Kendrick Lamar", "Top Dawg Entertainment", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "damn_big.jpg","damn_small.png",17.99, 22.99, 9.99, 0.42, 0.45,0.49, 1, null),
+(3, "THE GOAT", TIMESTAMP("2020-05-15",  "00:00:00"), "Polo G", "Columbia Records", 16, TIMESTAMP("2021-02-13",  "00:00:00"), "the_goat_big.png","the_goat_small.png",11.23, 17.99, 15.01, 0.42, 0.45,0.49, 1, null),
+(4, "Scorpion", TIMESTAMP("2018-06-29",  "00:00:00"), "Drake", "Cash Money", 25, TIMESTAMP("2021-02-13",  "00:00:00"), "scorpion_big.png","scorpion_small.jpg",10.12, 25.00, 0, 0.42, 0.45,0.49, 1, null),
+(5, "CASE STUDY 01", TIMESTAMP("2019-06-28",  "00:00:00"), "Daniel Caesar", "Golden Child", 10, TIMESTAMP("2021-02-13",  "00:00:00"), "CaseStudy01-Big.jpg","CaseStudy01-Small.jpg",11.45, 20.00, 0, 0.5, 0.35,0.25, 1, null),
+(6, "Ctrl", TIMESTAMP("2017-06-09",  "00:00:00"), "SZA", "Top Dawg", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "Crtl-Big.jpg","Crtl-Small.jpg",1.34, 11.99, 7.65, 0.5, 0.35,0.25, 1, null),
+(7, "IGOR", TIMESTAMP("2019-05-17",  "00:00:00"), "Tyler", "The Creator, A Boy is a Gun", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "IGOR-Tyler-Creator-Big.jpg","IGOR-Tyler-Creator-Small.jpg",8.50, 18.0, 0, 0.5, 0.35,0.25, 1, null),
+(8, "BALLADS 1", TIMESTAMP("2018-10-26",  "00:00:00"), "Joji", "88rising", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "Ballads-1-Big.jpg","Ballads-1-Small.jpg",6.50, 18.00, 10.16, 0.54, 0.24,0.17, 1, null),
+(9,  "Night Visions", TIMESTAMP("2012-09-04",  "00:00:00"), "Imagine Dragons", "Interscope", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "nightVisions-Big.jpeg","nightVisions-Small.jpg",5.45, 13.99, 0, 0.54, 0.24,0.17, 1, null),
+(10, "Pray for the Wicked", TIMESTAMP("2018-06-22",  "00:00:00"), "Panic at the Disco", "Fueled by Ramen", 11, TIMESTAMP("2021-02-13",  "00:00:00"),"prayToTheWicked-Big.jpg","prayToTheWicked-small.jpg", 4.00, 13.50, 0, 0.5, 0.35,0.25, 1, null),
+(11, "American Beauty/American Psycho", TIMESTAMP("2015-01-16",  "00:00:00"), "Fallout Boy", "Island", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "americanBeauty-Psyco-Big.jpg","americanBeauty-Psyco-Small.jpg",8.35, 17.00, 12.13, 0.5, 0.35,0.25, 1, null),
+(12, "Native", TIMESTAMP("2013-03-25",  "00:00:00"), "One Republic", "Mosley", 19, TIMESTAMP("2021-02-13",  "00:00:00"), "nativeBig.jpg","nativeSmall.png",1.33, 22.23, 14.61, 0.54, 0.24,0.17, 1, null),
+(13, "Endgame", TIMESTAMP("2011-03-25",  "00:00:00"), "Rise Against", "DGC", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "endGame-Big.jpg","endGame-small.jpg",9.11, 20.21, 0, 0.54, 0.24,0.17, 1, null),
+(14, "Artpop", TIMESTAMP("2013-11-06",  "00:00:00"), "Lady Gaga", "Streamline", 14, TIMESTAMP("2021-02-13",  "00:00:00"), "artPop-Big.jpg","artPop-Small.jpg",7.93, 13.12, 0, 0.66, 0.12,0.27, 1, null),
+(15, "Teenage Dream", TIMESTAMP("2010-08-24",  "00:00:00"), "Katy Perry" ,"Capitol", 12, TIMESTAMP("2021-02-13",  "00:00:00"), "Teenage_Dream_Big.jpg","Teenage_Dream_Small.jpg",10.00, 17.00, 0, 0.66, 0.12,0.27, 1, null),
+(16, "Pink Friday: Roman Reloaded", TIMESTAMP("2012-04-02",  "00:00:00"), "Nicki Minaj", "Young Money", 23, TIMESTAMP("2021-02-13",  "00:00:00"), "Pink Friday Roman Reloaded Big.jpg","Pink Friday Roman Reloaded Small.jpg",9.31, 20.00, 0, 0.66, 0.12,0.27, 1, null),
+(17, "Laundry Service", TIMESTAMP("2001-11-13",  "00:00:00"), "Shakira", "Epic", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "landryService-Big.jpg","landryService-Small.jpg",7.99, 17.99, 13.99, 0.66, 0.12,0.27, 1, null),
+(18, "All That We Have Now", TIMESTAMP("2012-08-08",  "00:00:00"),"Fear, and Loathing in Las Vegas", "VAP", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "all-we-have-now-Big.jpg","all-we-have-now-Small.jpg",9.05, 17.95, 0, 0.66, 0.12,0.27, 1, null),
+(19, "the WORLD Ruler", TIMESTAMP("2007-02-27",  "00:00:00"), "NIGHTMARE", "VAP", 13, TIMESTAMP("2021-02-13",  "00:00:00"), "the-world-ruler-big.jpg","the-World-Rule-Small.jpg",2.99, 20.99, 0, 0.45, 0.32,0.03, 1, null),
+(20, "AREA Z", TIMESTAMP("2016-06-29",  "00:00:00"), "JAM Project", "Lantis", 15, TIMESTAMP("2021-02-13",  "00:00:00"), "areaz-Big.jpeg","area-z-small.jpg",10.00, 18.99, 0, 0.45, 0.32,0.03, 1, null),
+(21, "Fixion", TIMESTAMP("2016-01-05",  "00:00:00"), "THE ORAL CIGARETTES", "A-Sketch", 10, TIMESTAMP("2021-02-13",  "00:00:00"), "Fixion-Big.jpg","Fixion-Small.jpg",4.99, 16.99, 10.59, 0.45, 0.32,0.03,  1, null),
+(22, "Shingeki no Kiseki", TIMESTAMP("2017-05-17",  "00:00:00"), "Linked Horizon", "Pony Canyon", 11, TIMESTAMP("2021-02-13",  "00:00:00"), "Shingeki_no_Kiseki-Big.jpg","Shingeki_no_Kiseki-Small.jpg",5.00, 13.00, 0, 0.45, 0.32,0.03, 1, null);
 
 
 
@@ -319,6 +320,7 @@ INSERT INTO MUSIC_TRACK (INVENTORYID, ALBUMID, TRACKTITLE, ARTIST, SONGWRITER, P
 
 
 
+
 INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, COMPANYNAME, ADDRESS1, ADDRESS2, CITY, PROVINCE, COUNTRY, POSTALCODE, HOMETELEPHONE, CELLTELEPHONE, EMAIL, GENREOFLASTSEARCH,ISMANAGER,CLIENTACTIVE) VALUES
 (1, "edgeLord12", "tttt2", "Rev", "Burle", "Alli", "Wolf Group", "08957 Rutledge Trail", "495 Sheridan Parkway", "Ponoka", "Alberta", "Canada", "T4J", "1468741332", "7241183761", "aburle0@tinyurl.com", "Pop",0,1),
 (2, "jdTrinity", "9876RRwwe", "Ms", "Aish", "Quincey", "Sauer“O“Connell and Feeney", "5208 Messerschmidt Plaza", "5044 Canary Point", "Greensboro", "North Carolina", "United States", "27415", "3365404602", "4957162459", "qaish1@fema.gov", "Pop",0,1),
@@ -394,6 +396,7 @@ INSERT INTO SALE (SALEID, CLIENTID, SALEDATE,SALEREMOVED) VALUES
 (24, 19,TIMESTAMP("2021-02-13",  "00:00:00"),0),
 (25, 19,TIMESTAMP("2021-02-13",  "00:00:00"),0);
 
+
 INSERT INTO INVOICEDETAIL (INVOICEID, SALEDATE, SALEID, PROFIT, CURRENTCOST, INVENTORYID,INVOICEDETAILREMOVED) VALUES
 (4, TIMESTAMP("2021-02-13",  "00:00:00"),3, 6.45, 10.41, 45,0),
 (5, TIMESTAMP("2021-02-13",  "00:00:00"),3, 6.48, 10.32, 67,0),
@@ -434,6 +437,7 @@ INSERT INTO INVOICEDETAIL (INVOICEID, SALEDATE, SALEID, PROFIT, CURRENTCOST, ALB
 (30, TIMESTAMP("2021-02-13",  "00:00:00"),20, 16.56, 22.55, 1,0),
 (33, TIMESTAMP("2021-02-13",  "00:00:00"),22, 16.43, 19.65, 16,0),
 (34, TIMESTAMP("2021-02-13",  "00:00:00"),23, 19.45, 24.53, 13,0);
+
 
 
 

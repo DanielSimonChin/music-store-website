@@ -33,7 +33,8 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Invoicedetail.findBySaledate", query = "SELECT i FROM Invoicedetail i WHERE i.saledate = :saledate"),
     @NamedQuery(name = "Invoicedetail.findByCurrentcost", query = "SELECT i FROM Invoicedetail i WHERE i.currentcost = :currentcost"),
     @NamedQuery(name = "Invoicedetail.findByProfit", query = "SELECT i FROM Invoicedetail i WHERE i.profit = :profit"),
-    @NamedQuery(name = "Invoicedetail.findByInvoicedetailremoved", query = "SELECT i FROM Invoicedetail i WHERE i.invoicedetailremoved = :invoicedetailremoved")})
+    @NamedQuery(name = "Invoicedetail.findByInvoicedetailremoved", query = "SELECT i FROM Invoicedetail i WHERE i.invoicedetailremoved = :invoicedetailremoved"),
+    @NamedQuery(name = "Invoicedetail.findByProductdownloaded", query = "SELECT i FROM Invoicedetail i WHERE i.productdownloaded = :productdownloaded")})
 public class Invoicedetail implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -46,10 +47,12 @@ public class Invoicedetail implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date saledate;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+
     @Column(name = "CURRENTCOST")
     private Float currentcost;
     @Column(name = "PROFIT")
     private Float profit;
+
     @Column(name = "INVOICEDETAILREMOVED")
     private Boolean invoicedetailremoved;
     @JoinColumn(name = "ALBUMID", referencedColumnName = "ALBUMID")
@@ -61,10 +64,17 @@ public class Invoicedetail implements Serializable {
     @JoinColumn(name = "SALEID", referencedColumnName = "SALEID")
     @ManyToOne
     private Sale saleid;
+    @Column(name = "PRODUCTDOWNLOADED")
+    private int productdownloaded;
 
     public Invoicedetail() {
     }
-
+    public int getProductdownloaded(){
+        return productdownloaded;
+    }
+    public void setProductdownloaded(int productdownloaded){
+        this.productdownloaded=productdownloaded;
+    }
     public Invoicedetail(Integer invoiceid) {
         this.invoiceid = invoiceid;
     }

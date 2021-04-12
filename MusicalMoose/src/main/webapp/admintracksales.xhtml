@@ -22,16 +22,17 @@
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
                         <div class="topnav">
-                            <a class="active">#{msgs.musicInv}</a>
-                            <h:form>
-                                <h:commandButton value="client" action="#{clientManagerController.toClientManagement()}"/> 
-                            </h:form>
+                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
+                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminclient.xhtml">Client</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
+                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
+                            <a class="active">Track Set Sales</a>
+                            
 
-                            <a href="/MusicalMoose/adminalbum.xhtml">#{msgs.albumInventoryTab}</a>
-                            <a href="/MusicalMoose/adminads.xhtml">#{msgs.adsTab}</a>
-                            <a href="/MusicalMoose/adminpurchases.xhtml">#{msgs.purchasesRecordsTabs}</a>
-                            <a href="/MusicalMoose/adminclients.xhtml">#{msgs.clientsTab}</a>
-                            <a class="active">#{msgs.setSalesTab}</a>
                         </div>
                         
 

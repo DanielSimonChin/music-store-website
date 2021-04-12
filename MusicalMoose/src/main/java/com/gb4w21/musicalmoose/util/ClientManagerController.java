@@ -12,7 +12,7 @@ import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
-import com.gb4w21.musicalmoose.entities.Client_;
+import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +21,7 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -80,7 +81,7 @@ public class ClientManagerController implements Serializable {
         if (clients == null) {
             clients = new ArrayList<>();
         }
-       
+
         return clients;
     }
 
@@ -106,6 +107,13 @@ public class ClientManagerController implements Serializable {
 
     }
 
+    @PostConstruct
+    public void init() {
+        clients = new ArrayList<>();
+        selectedClients = new ArrayList<>();
+        this.selectedClient = null;
+    }
+
     public String toClientManagement() {
         clients = new ArrayList<>();
         selectedClients = new ArrayList<>();
@@ -116,8 +124,8 @@ public class ClientManagerController implements Serializable {
     public String searchAllClients() {
         selectedClient = null;
         selectedClients = new ArrayList<>();
-        clients = clients = clientJpaController.findClientEntities();
-     
+        clients = clientJpaController.findClientEntities();
+
         return "adminclient";
     }
 
@@ -125,13 +133,13 @@ public class ClientManagerController implements Serializable {
         selectedClient = null;
         selectedClients = new ArrayList<>();
         clients = getClientFromDatabase(clientSearch);
-     
+
         return "adminclient";
     }
 
     private List<Client> getClientFromDatabase(String clientSearch) {
         String clientSearchText = "%" + clientSearch + "%";
-    
+
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
@@ -139,25 +147,24 @@ public class ClientManagerController implements Serializable {
         cq.where(cb.like(client.get("username"), clientSearchText));
         TypedQuery<Client> query = entityManager.createQuery(cq);
         List<Client> clients = query.getResultList();
-        
+
         return clients;
     }
 
-    public void saveClient()  {
-       try{
-        if (this.selectedClient.getUsername() == null) {
-            LOG.info("Soemone tried editing a nonexsitence client");
-        } else {
-             clientJpaController.edit(selectedClient);
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "clientUpdated", null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        }
-       }
-       catch(RollbackFailureException ex){
-           LOG.info("create exception:"+ex.getLocalizedMessage());
-       } catch (Exception ex) {
-            LOG.info("editing expection:"+ex.getLocalizedMessage());
+    public void saveClient() {
+        try {
+            if (this.selectedClient.getUsername() == null) {
+                LOG.info("Soemone tried editing a nonexsitence client");
+            } else {
+                clientJpaController.edit(selectedClient);
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "clientUpdated", null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            }
+        } catch (RollbackFailureException ex) {
+            LOG.info("create exception:" + ex.getLocalizedMessage());
+        } catch (Exception ex) {
+            LOG.info("editing expection:" + ex.getLocalizedMessage());
         }
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
@@ -201,29 +208,31 @@ public class ClientManagerController implements Serializable {
 
         }
     }
-    public double getTotalSales(Client chosenClient){
+
+    public double getTotalSales(Client chosenClient) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
         Root<Client> client = cq.from(Client.class);
         Join sale = client.join("saleList");
         Join invoicedetail = sale.join("invoicedetailList");
         cq.where(cb.equal(client.get("clientid"), chosenClient.getClientid()));
-        cq.multiselect(invoicedetail.get("totalgrossvalue"));
+        cq.multiselect(invoicedetail.get("profit"));
         TypedQuery<Object[]> query = entityManager.createQuery(cq);
         List<Object[]> prices = query.getResultList();
-        Float totalValue=0.f;
-        for(Object price:prices){
-            totalValue += (Float)price;
-            LOG.info(""+price.toString());
+        Float totalValue = 0.f;
+        for (Object price : prices) {
+            totalValue += (Float) price;
+            LOG.info("" + price.toString());
         }
         return totalValue;
     }
+
     public void validateClientUserNameError(FacesContext context, UIComponent component,
             Object value) {
         String username = value.toString();
-     
+
         if (!this.selectedClient.getUsername().equals(username) && !checkUserName(username)) {
-        
+
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "usernameTakenError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -237,14 +246,14 @@ public class ClientManagerController implements Serializable {
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
         cq.select(client);
-   
+
         // Use String to refernce a field
         cq.where(cb.equal(client.get("username"), username));
 
         TypedQuery<Client> query = entityManager.createQuery(cq);
 
         if (query.getResultList().isEmpty()) {
-   
+
             return true;
         }
         return false;

@@ -48,12 +48,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Client.findByClientremoved", query = "SELECT c FROM Client c WHERE c.clientactive= :clientactive")})
 public class Client implements Serializable {
 
-    private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "CLIENTID")
-    private Integer clientid;
     @Size(max = 50)
     @Column(name = "USERNAME")
     private String username;
@@ -103,6 +97,12 @@ public class Client implements Serializable {
     @Size(max = 255)
     @Column(name = "GENREOFLASTSEARCH")
     private String genreoflastsearch;
+    private static final long serialVersionUID = 1L;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "CLIENTID")
+    private Integer clientid;
     @Column(name = "ISMANAGER")
     private Boolean ismanager;
     @Column(name = "CLIENTACTIVE")
@@ -139,6 +139,40 @@ public class Client implements Serializable {
 
     public void setClientid(Integer clientid) {
         this.clientid = clientid;
+    }
+    public Boolean getIsmanager() {
+        return ismanager;
+    }
+    public void setIsmanager(Boolean ismanager) {
+        this.ismanager = ismanager;
+    }
+    public Boolean getClientactive() {
+        return clientactive;
+    }
+    public void setClientactive(Boolean clientactive) {
+        this.clientactive = clientactive;
+    }
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (clientid != null ? clientid.hashCode() : 0);
+        return hash;
+    }
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Client)) {
+            return false;
+        }
+        Client other = (Client) object;
+        if ((this.clientid == null && other.clientid != null) || (this.clientid != null && !this.clientid.equals(other.clientid))) {
+            return false;
+        }
+        return true;
+    }
+    @Override
+    public String toString() {
+        return "com.gb4w21.musicalmoose.entities.Client[ clientid=" + clientid + " ]";
     }
 
     public String getUsername() {
@@ -257,6 +291,9 @@ public class Client implements Serializable {
         return email;
     }
 
+   
+
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -267,50 +304,6 @@ public class Client implements Serializable {
 
     public void setGenreoflastsearch(String genreoflastsearch) {
         this.genreoflastsearch = genreoflastsearch;
-    }
-
-    public Boolean getIsmanager() {
-        return ismanager;
-    }
-
-    public void setIsmanager(Boolean ismanager) {
-        this.ismanager = ismanager;
-    }
-
-    public Boolean getClientactive() {
-        return clientactive;
-    }
-
-    public void setClientactive(Boolean clientactive) {
-        this.clientactive = clientactive;
-    }
-
-   
-
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (clientid != null ? clientid.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Client)) {
-            return false;
-        }
-        Client other = (Client) object;
-        if ((this.clientid == null && other.clientid != null) || (this.clientid != null && !this.clientid.equals(other.clientid))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "com.gb4w21.musicalmoose.entities.Client[ clientid=" + clientid + " ]";
     }
     
 }

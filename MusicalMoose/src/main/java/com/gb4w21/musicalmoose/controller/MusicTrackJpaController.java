@@ -322,8 +322,8 @@ public class MusicTrackJpaController implements Serializable {
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         cq.select(musicTrack);
 
-        cq.where(cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")), cb.equal(musicTrack.get("available"), 1));
-        cq.orderBy(cb.desc(musicTrack.get("saleprice")));
+        cq.where(cb.notEqual(musicTrack.get("saleprice"), 0),cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")), cb.equal(musicTrack.get("available"), 1));
+        cq.orderBy(cb.asc(musicTrack.get("saleprice")));
         TypedQuery<MusicTrack> query = em.createQuery(cq);
         List<MusicTrack> tracks = query.getResultList();
         final int specialsLimt = 3;
@@ -337,28 +337,6 @@ public class MusicTrackJpaController implements Serializable {
         } else {
             return tracks;
         }
-    }
-
-    /**
-     * Return all the tracks that have not been assigned an album yet.
-     *
-     * @return list of tracks with no album field
-     */
-    public List<MusicTrack> getTrackSelections(int albumid) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
-        Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
-
-        //cq.where(cb.equal(musicTrack.get("albumid").get(ma), null));
-        if (musicTrack.get("albumid") == null) {
-            cq.where(cb.isNull(musicTrack.get("albumid")));
-        } else {
-            cq.where(cb.isNull(musicTrack.get("albumid")), cb.equal(musicTrack.get("albumid").get("albumid"), albumid));
-        }
-
-        Query q = em.createQuery(cq);
-
-        return q.getResultList();
     }
 
     public void setAlbumidToNull() {
@@ -552,6 +530,6 @@ public class MusicTrackJpaController implements Serializable {
             return;
         }
         this.selectedTrack.setRemovaldate(new Date());
-
     }
+
 }
