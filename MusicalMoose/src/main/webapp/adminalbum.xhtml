@@ -9,10 +9,7 @@
       xmlns:p="http://primefaces.org/ui">
 
     <head>
-
         <title>Musical Moose</title>
-        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-
     </head>
 
     <h:body>
@@ -33,6 +30,8 @@
                             <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
                             <a href="/MusicalMoose/adminreview.xhtml">Review</a>
                             <a href="/MusicalMoose/adminreport.xhtml">Report</a>
+                            <a href="/MusicalMoose/admintracksales.xhtml">Set Track Sales</a>
+                            <a href="/MusicalMoose/adminalbumsales.xhtml">Set Album Sales</a>
                             <a href="/MusicalMoose/adminnews.xhtml">News</a>
                         </div>
 
@@ -80,7 +79,7 @@
 
                                             <span class="filter-container ui-input-icon-left">
                                                 <i class="pi pi-search"></i>
-                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="#{msgs.search}"/>
                                             </span>
 
                                         </div>
@@ -201,13 +200,6 @@
                                             </div>
 
                                             <div class="p-field">
-                                                <p:outputLabel for="saleprice">#{msgs.formSalePrice}</p:outputLabel>
-                                                <p:inputNumber id="saleprice" value="#{albumManagerController.selectedAlbum.saleprice}"
-                                                               symbol=" CAD" symbolPosition="s"
-                                                               decimalSeparator="." thousandSeparator="," required="true"/>
-                                            </div>
-
-                                            <div class="p-field">
                                                 <p:outputLabel for="pstinput">#{msgs.formPST}</p:outputLabel>
                                                 <p:inputNumber id="pstinput" value="#{albumManagerController.selectedAlbum.pst}" modifyValueOnWheel="false" required="true" />
                                             </div>
@@ -255,10 +247,10 @@
                                             </div>
 
                                             <div class="p-field">
-                                                <p:outputLabel rendered="#{musicTrackJpaController.getNonAlbumTracks().size() > 0}" for="trackselection">#{msgs.selectAlbumTracks}</p:outputLabel>
-                                                <p:selectCheckboxMenu rendered="#{musicTrackJpaController.getNonAlbumTracks().size() > 0}" id="trackselection" value="#{albumManagerController.selectedAlbum.musicTrackList}" label="#{msgs.checkBoxMenuTracks}" style="width: 15rem"
+                                                <p:outputLabel for="trackselection">#{msgs.selectAlbumTracks}</p:outputLabel>
+                                                <p:selectCheckboxMenu id="trackselection" value="#{albumManagerController.selectedAlbum.musicTrackList}" label="#{msgs.checkBoxMenuTracks}" style="width: 15rem"
                                                                       filter="true" filterMatchMode="startsWith" panelStyle="width: 15rem" scrollHeight="250">
-                                                    <f:selectItems value="#{musicTrackJpaController.getNonAlbumTracks()}" var="track" itemLabel="#{track.tracktitle}"/>
+                                                    <f:selectItems value="#{musicTrackJpaController.findMusicTrackEntities()}" var="track" itemLabel="#{track.tracktitle}"/>
                                                 </p:selectCheckboxMenu>
 
                                             </div>
@@ -267,10 +259,10 @@
                                     </p:outputPanel>
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="Save" icon="pi pi-check" actionListener="#{albumManagerController.saveProduct()}"
+                                        <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{albumManagerController.saveProduct()}"
                                                          update="manage-product-content" process="manage-product-content @this"/>
-                                        <p:commandButton value="Cancel" icon="pi pi-times" actionListener="#{albumManagerController.cancelAlbumForm()}" 
-                                                         class="ui-button-secondary"/>
+                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                                         class="ui-button-secondary" actionListener="#{albumManagerController.cancelAlbumForm()}"/>
                                     </f:facet>
 
                                 </p:dialog>
