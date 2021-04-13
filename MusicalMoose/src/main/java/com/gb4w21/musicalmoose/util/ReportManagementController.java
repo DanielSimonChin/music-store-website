@@ -93,7 +93,6 @@ public class ReportManagementController implements Serializable {
     private List<Invoicedetail> selectedInvoicedetails;
     private Invoicedetail selectedInvoicedetail;
 
-    private List<Invoicedetail> manyInvoiceDetails;
 
     private List<Client> clients;
     private List<MusicTrack> tracks;
@@ -113,7 +112,7 @@ public class ReportManagementController implements Serializable {
     @PostConstruct
     public void init() {
         gettingSales = false;
-        manyInvoiceDetails = null;
+      
 
         invoicedetails = new ArrayList<>();
         this.reportCategory = ReportCategory.TotalSales.toString();
@@ -168,13 +167,7 @@ public class ReportManagementController implements Serializable {
         this.tracks = tracks;
     }
 
-    public List<Invoicedetail> getManyInvoiceDetails() {
-        return this.manyInvoiceDetails;
-    }
-
-    public void setManyInvoiceDetails(List<Invoicedetail> manyInvoiceDetails) {
-        this.manyInvoiceDetails = manyInvoiceDetails;
-    }
+  
 
     public List<Album> getAlbums() {
         return albums;
@@ -319,7 +312,7 @@ public class ReportManagementController implements Serializable {
     public String toReportPage() {
 
         gettingSales = false;
-        manyInvoiceDetails = null;
+    
 
         invoicedetails = new ArrayList<>();
         this.reportCategory = ReportCategory.TotalSales.toString();

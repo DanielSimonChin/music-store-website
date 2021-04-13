@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <title>Manage Client</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <h:body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <div class="wrapper">
+                    <br/>
+                    <br/>
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+                        <div class="topnav">
+                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
+                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a class="active">Client</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
+                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
+                            <a href="/MusicalMoose/admintracksales.xhtml">Set Track Sales</a>
+                            <a href="/MusicalMoose/adminalbumsales.xhtml">Set Album Sales</a>
+                            <a href="/MusicalMoose/adminnews.xhtml">News</a>
+                        </div>
+                        <h:form id="form">
+                            <div class="card crud-demo">
+                                <p:growl id="messages" showDetail="true"/>
+                                
+                                
+                            </div>
+                        </h:form>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
