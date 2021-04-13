@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
     <head>
 
@@ -54,10 +55,6 @@
                                                 <p>#{msgs.addToCart}</p> 
                                             </h:commandLink>
                                         </h:form>
-<!--                                        <button>
-                                            <img src="icons/shopping-cart.png"/>
-                                            <p>{msgs.addToCart}</p>  
-                                        </button>-->
                                     </div>
                                 </table>
 
@@ -85,7 +82,13 @@
                                         <td><u>#{msgs.albumRecordingLabel}</u> #{detailAlbum.recordlabel}</td>
                                     </tr>
                                     <tr>
-                                        <td><u>#{msgs.albumPrice}</u> $#{detailAlbum.listprice}</td>
+                                        <td>
+                                            <u>#{msgs.albumPrice}</u>
+                                            <h:outputText id="price" value="#{detailAlbum.getSellingPrice()}" style="font-weight: 700">
+                                                <f:convertNumber currencySymbol="$" type="currency"/>
+                                            </h:outputText> 
+                                            <p:outputLabel for="price" rendered="#{detailAlbum.saleprice > 0}" style="color:red"> (#{msgs.onSale})</p:outputLabel> 
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td><u>#{msgs.dateEntered}</u> #{detailAlbum.dateentered}</td>
@@ -138,7 +141,7 @@
                             </div> 
 
                             <!-- Display all the reviews for an album's tracks -->
-                            <ui:repeat value="#{reviewJpaController.getAlbumTrackReviews(detailAlbum)}" var="albumTrackReviews">
+                            <ui:repeat value="#{reviewJpaController.getAlbumTrackReviews(detailAlbum)}" var="albumTrackReviews" rendered="#{not empty reviewJpaController.getAlbumTrackReviews(detailAlbum)}">
                                 <div class="rating">
                                     <hr/>
 
@@ -152,6 +155,8 @@
                                     <small>#{msgs.reviewDate} #{albumTrackReviews.reviewdate}</small>
                                 </div>
                             </ui:repeat>
+                            
+                            <h:outputText value="#{msgs.noAlbumReviews}" rendered="#{empty reviewJpaController.getAlbumTrackReviews(detailAlbum)}"></h:outputText>
                         </div>
                     </section>
                 </div>
