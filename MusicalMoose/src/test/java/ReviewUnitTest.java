@@ -4,13 +4,18 @@
  * and open the template in the editor.
  */
 
+import com.gb4w21.musicalmoose.beans.LoginBean;
+import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
 import com.gb4w21.musicalmoose.controller.ReviewJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
+import com.gb4w21.musicalmoose.converters.AlbumConverter;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Review;
+import com.gb4w21.musicalmoose.resources.JavaEE8Resource;
+import com.gb4w21.musicalmoose.util.LocaleChanger;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +80,11 @@ public class ReviewUnitTest {
         // The SQL script to create the database is in src/test/resources
         final WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "test.war")
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
+                .addPackage(LoginBean.class.getPackage())
+                .addPackage(PreRenderViewBean.class.getPackage())
+                .addPackage(AlbumConverter.class.getPackage())
+                .addPackage(JavaEE8Resource.class.getPackage())
+                .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ReviewJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Review.class.getPackage())

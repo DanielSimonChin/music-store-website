@@ -5,7 +5,9 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
+import com.gb4w21.musicalmoose.controller.CheckoutController;
 import com.gb4w21.musicalmoose.beans.LoginBean;
+import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;

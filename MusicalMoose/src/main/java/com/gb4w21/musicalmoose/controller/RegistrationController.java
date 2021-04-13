@@ -5,6 +5,8 @@
  */
 package com.gb4w21.musicalmoose.controller;
 
+import com.gb4w21.musicalmoose.controller.LoginController;
+import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Client;
