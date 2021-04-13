@@ -91,12 +91,10 @@ public class MusicTrack implements Serializable {
     @Column(name = "AVAILABLE")
     private Boolean available;
 
-    
     @OneToMany(mappedBy = "inventoryid")
     private List<Review> reviewList;
 
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-  
     @Column(name = "COSTPRICE")
     private Float costprice;
     @Column(name = "LISTPRICE")
@@ -363,10 +361,29 @@ public class MusicTrack implements Serializable {
         return "com.gb4w21.musicalmoose.entities.MusicTrack[ inventoryid=" + inventoryid + " ]";
     }
 
-  
- 
+    /**
+     * @return a specific string message depending on if the sale price is 0.
+     */
+    public String isOnSale() {
+        if (this.saleprice == 0) {
+            return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                    "com.gb4w21.musicalmoose.bundles.messages", "regularPrice", null).getDetail();
+        }
+        return com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", "onSale", null).getDetail();
+    }
 
-  
+    /**
+     * If the saleprice is 0, then we display the list price. Otherwise, we
+     * return the sale price.
+     *
+     * @return the saleprice if it is not equal to 0
+     */
+    public Float getSellingPrice() {
+        if (this.saleprice == 0) {
+            return this.listprice;
+        }
+        return this.saleprice;
+    }
 
-  
 }

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <head>
+        <title>Musical Moose</title>
+    </head>
+
+    <h:body>
+        <ui:composition template="/templates/common.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <div class="wrapper">
+                    <br/>
+                    <br/>
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+                        <div class="topnav">
+                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
+                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
+                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminclient.xhtml">Client</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
+                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
+                            <a href="/MusicalMoose/admintracksales.xhtml">Set Track Sales</a>
+                            <a class="active">Set Album Sales</a>
+                            <a href="/MusicalMoose/adminnews.xhtml">News</a>
+                        </div>
+
+
+                        <h:form id="form">
+                            <p:growl id="messages" showDetail="true"/>
+                            <p:dataTable id="dt-products" widgetVar="dtProducts" var="product" value="#{albumSetSalesManagerController.albums}"
+                                         reflow="true" styleClass="products-table"
+                                         rowKey="#{product.albumid}" paginator="true"
+                                         rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+
+
+                                <f:facet name="header">
+                                    <div class="products-table-header">
+                                        <span style="font-weight: bold">#{msgs.albumsHeader}</span>
+                                        <span class="filter-container ui-input-icon-left">
+                                            <i class="pi pi-search"></i>
+                                            <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="#{msgs.search}"/>
+                                        </span>
+                                    </div>
+                                </f:facet>
+
+                                <p:column headerText="#{msgs.albumIdHeader}" sortBy="#{product.albumid}" filterBy="#{product.albumid}">
+                                    <h:outputText value="#{product.albumid}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.albumTitleHeader}" sortBy="#{product.albumtitle}" filterBy="#{product.albumtitle}">
+                                    <h:outputText value="#{product.albumtitle}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.artist}" sortBy="#{product.artist}" filterBy="#{product.artist}">
+                                    <h:outputText value="#{product.artist}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.tableListPriceHeader}" sortBy="#{product.listprice}">
+                                    <h:outputText value="#{product.listprice}" style="font-weight: 700">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.tableSalePriceHeader}" sortBy="#{product.saleprice}">
+                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700">
+                                        <f:convertNumber currencySymbol="$" type="currency"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msgs.tablePriceStatusHeader}" sortBy="#{product.isOnSale()}">
+                                    <h:outputText value="#{product.isOnSale()}"/>
+                                </p:column>
+
+                                <p:column exportable="false">
+                                    <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
+                                                     oncomplete="PF('manageProductDialog').show()"
+                                                     styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                        <f:setPropertyActionListener value="#{product}" target="#{albumSetSalesManagerController.selectedAlbum}"/>
+                                        <p:resetInput target=":form:manage-product-content"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+
+                            <p:dialog header="#{msgs.modifySalePriceHeader}" showEffect="fade" modal="true" 
+                                      widgetVar="manageProductDialog" responsive="true">
+                                <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                    <p:outputPanel rendered="#{not empty albumSetSalesManagerController.selectedAlbum}">
+                                        <div class="p-field">
+                                            <p:inputNumber id="saleprice" value="#{albumSetSalesManagerController.selectedAlbum.saleprice}"
+                                                           symbol=" CAD" symbolPosition="s"
+                                                           decimalSeparator="." thousandSeparator="," required="true" requiredMessage="#{msgs.required}" minValue="0"
+                                                           validator="#{albumSetSalesManagerController.validateSaleInput}">
+                                                <f:ajax event="blur" render="saleInputError" />
+                                            </p:inputNumber>
+                                            <p:message id="saleInputError" for="saleprice" style="color:red" />
+                                        </div>
+                                    </p:outputPanel>
+                                </p:outputPanel>
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{albumSetSalesManagerController.saveProduct()}"
+                                                     update="manage-product-content" process="manage-product-content @this"/>
+                                    <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()" actionListener="#{albumSetSalesManagerController.cancelSalesEditForm()}" 
+                                                     class="ui-button-secondary"/>
+                                </f:facet>
+
+                            </p:dialog>
+                        </h:form>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
+
+    </h:body>
+</html>
