@@ -6,6 +6,10 @@
 package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.MusicItem;
+import com.gb4w21.musicalmoose.controller.AlbumJpaController;
+import com.gb4w21.musicalmoose.controller.InvoicedetailJpaController;
+import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
+import com.gb4w21.musicalmoose.controller.SaleJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
@@ -13,6 +17,7 @@ import com.gb4w21.musicalmoose.entities.Sale;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -61,12 +66,15 @@ public class DownloadController implements Serializable {
             }
 
             for (int i = 0; i < invoiceDetails.size(); i++) {
+                MusicItem musicItem=new MusicItem();
                 if (invoiceDetails.get(i).getInventoryid() != null) {
-                    downloadMusicItems.add(shoppingCartController.convertMusicTrackToMusicItem(musicTrackJpaController.findMusicTrack(invoiceDetails.get(i).getInventoryid().getInventoryid())));
+                    musicItem=shoppingCartController.convertMusicTrackToMusicItem(musicTrackJpaController.findMusicTrack(invoiceDetails.get(i).getInventoryid().getInventoryid()));
                 }
                 else if (invoiceDetails.get(i).getAlbumid() != null) {
-                    downloadMusicItems.add(shoppingCartController.convertAlbumToMusicItem(albumJpaController.findAlbum(invoiceDetails.get(i).getAlbumid().getAlbumid())));
+                    musicItem=shoppingCartController.convertAlbumToMusicItem(albumJpaController.findAlbum(invoiceDetails.get(i).getAlbumid().getAlbumid()));
                 }
+                musicItem.setInvoiceId(invoiceDetails.get(i).getInvoiceid());
+                downloadMusicItems.add(musicItem);
             }
             return downloadMusicItems;
 ////            List<Sale> saleList = saleJpaController.findSaleByClientId(clientId);
@@ -78,5 +86,21 @@ public class DownloadController implements Serializable {
             // return nothing if Client does not have any downloadable tracks/albums
             return null;
         }
+    }
+    public String addDownload(MusicItem musicItem){
+        Invoicedetail invoicedetail=invoiceDetailJpaController.findInvoicedetail(musicItem.getInvoiceId());
+        LOG.debug("NUMBER OF DOWNLOADS:"+invoicedetail.getProductdownloaded());
+        LOG.debug("NUMBER OF DOWNLOADS:"+(invoicedetail.getProductdownloaded()+1));
+        invoicedetail.setProductdownloaded(invoicedetail.getProductdownloaded()+1);
+        LOG.debug("NUMBER OF DOWNLOADS:"+invoicedetail.getProductdownloaded());
+        try {
+            invoiceDetailJpaController.edit(invoicedetail);
+        } catch (Exception ex) {
+            LOG.error("Error failed to add download:"+ex.getLocalizedMessage());
+        }
+        invoicedetail=invoiceDetailJpaController.findInvoicedetail(musicItem.getInvoiceId());
+        LOG.debug("NUMBER OF DOWNLOADS:"+invoicedetail.getProductdownloaded());
+
+     return null;
     }
 }

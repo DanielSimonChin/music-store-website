@@ -97,7 +97,7 @@ and open the template in the editor.
                             <audio controls="">
                                 <source src="./audio/goat.mp3" type="audio/mp3"/>
                             </audio>
-                            <a class="downloadButton" href="./audio/goat.mp3" download="./audio/goat.mp3">#{msgs.download}</a> 
+                            <a class="downloadButton" action="#{downloadController.addDownload(downloads)}" href="./audio/goat.mp3" download="./audio/goat.mp3">#{msgs.download}</a> 
                             <hr/>
                         </div>
                     </h:form>

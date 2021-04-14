@@ -7,7 +7,10 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.SearchResult;
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
+import com.gb4w21.musicalmoose.controller.AlbumJpaController;
 import com.gb4w21.musicalmoose.controller.BanneradJpaController;
+import com.gb4w21.musicalmoose.controller.BanneradJpaController;
+import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;

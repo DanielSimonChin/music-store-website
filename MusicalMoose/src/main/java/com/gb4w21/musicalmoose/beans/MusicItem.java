@@ -32,7 +32,7 @@ public class MusicItem {
     private String genre;
     private Float songLength;
     private int numberOfTracks;
-    
+    private int invoiceId;
     public MusicItem() {
         this.id = -1;
         this.title = "";
@@ -43,6 +43,7 @@ public class MusicItem {
         this.genre = "";
         this.songLength = 0f;
         this.numberOfTracks = 0;
+        this.invoiceId=-1;
     }
     
     public MusicItem(int id, String title, String artist, float price, boolean isAlbum, String imgNameSmall, String genre, Float songLength, int numberOfTracks) {
@@ -55,6 +56,7 @@ public class MusicItem {
         this.genre = genre;
         this.songLength = songLength;
         this.numberOfTracks = numberOfTracks;
+        this.invoiceId=-1;
     }
     
     public int getId() {
@@ -127,5 +129,11 @@ public class MusicItem {
     
     public void setNumberOfTracks(int numberOfTracks) {
         this.numberOfTracks = numberOfTracks;
+    }
+    public int getInvoiceId(){
+        return this.invoiceId;
+    }
+    public void setInvoiceId(int invoiceId){
+        this.invoiceId=invoiceId;
     }
 }
