@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -116,6 +117,10 @@ public class ShoppingCartController implements Serializable {
         preRenderViewBean.writeCartCookie(addedAlbum.getAlbumid(), "cart_album");
                 
         LOG.info("Shopping Cart Album Added: " + addedAlbum.getAlbumtitle());
+        
+        FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "albumAdded"));
+        
+//        addMessage(FacesMessage.SEVERITY_INFO, "Success", "Album added to cart");
     }
     
     public void addShoppingCartTrack(MusicTrack addedTrack) {
@@ -125,6 +130,23 @@ public class ShoppingCartController implements Serializable {
         preRenderViewBean.writeCartCookie(addedTrack.getInventoryid(), "cart_track");
         
         LOG.info("Shopping Cart Track Added: " + addedTrack.getTracktitle());
+        
+        FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "trackAdded"));
+//        addMessage(FacesMessage.SEVERITY_INFO, "Success", "Music track added to cart");
+    }
+    
+    private FacesMessage createMsg(String summary, String detail) {
+        FacesMessage facesMsgDets = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", summary, null);
+        FacesMessage facesMsgSummary = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", detail, null);
+        facesMsgDets.setDetail(facesMsgSummary.getSummary());
+        return facesMsgDets;
+    }
+    
+    public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
+        FacesContext.getCurrentInstance().
+                addMessage(null, new FacesMessage(severity, summary, detail));
     }
     
     public List<MusicItem> getShoppingCartList() {
@@ -166,6 +188,11 @@ public class ShoppingCartController implements Serializable {
     
     public String backPage() {
         return prevPage;
+    }
+    
+    public BigDecimal floatToBigDec(Float price) {
+        return new BigDecimal(Float.toString(price))
+                .setScale(2, RoundingMode.HALF_UP);
     }
     
     public boolean checkCartEmpty() {

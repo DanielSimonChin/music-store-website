@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -84,22 +85,30 @@ public class NewsManagerController implements Serializable {
         return this.selectedNewsList != null && !this.selectedNewsList.isEmpty();
     }
 
+    private FacesMessage createMsg(String summary, String detail) {
+        FacesMessage facesMsgDets = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", summary, null);
+        FacesMessage facesMsgSummary = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", detail, null);
+        facesMsgDets.setDetail(facesMsgSummary.getSummary());
+        return facesMsgDets;
+    }
+    
     /**
      * Set the available table field for each selected bannerAd to false.
      *
      * @throws Exception
      */
     public void removeSelectedNewsList() throws Exception {
-//        for (News news : this.selectedNewsList) {
-//            news.setDisplayed(Boolean.FALSE);
-//            this.bannerAdJpaController.edit(bannerAd);
-//        }
-//
-//        this.selectedBannerAds = null;
-//        FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-//                "com.gb4w21.musicalmoose.bundles.messages", "adSetNotDisplayed", null));
-//        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-//        PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
+        for (News news : this.selectedNewsList) {
+            news.setDisplayed(Boolean.FALSE);
+            this.newsJpaController.edit(news);
+        }
+
+        this.selectedNewsList = null;
+        FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsSetNotDisplayed"));
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
     }
 //
 //    /**
@@ -111,8 +120,7 @@ public class NewsManagerController implements Serializable {
         this.selectedNews.setDisplayed(Boolean.FALSE);
         this.newsJpaController.edit(this.selectedNews);
         this.selectedNews = null;
-        FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                "com.gb4w21.musicalmoose.bundles.messages", "adSetNotDisplayed", null));
+        FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 //
@@ -128,20 +136,17 @@ public class NewsManagerController implements Serializable {
                 LOG.info("CREATING A NEW NEWS ENTITY");
                 this.newsJpaController.create(this.selectedNews);
                 this.newsList.add(this.selectedNews);
-                FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "newsCreated", null));
+                FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsCreated"));
                 //A currently existing ad that was edited.
             } else {
                 LOG.info("EDITING AN AD");
                 this.newsJpaController.edit(this.selectedNews);
-                FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "newsUpdated", null));
+                FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsUpdated"));
             }
         }
         else {
             this.selectedNews.setDisplayed(Boolean.FALSE);
-            FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "newsInvalid", null));
+            FacesContext.getCurrentInstance().addMessage(null, createMsg("invalid", "newsInvalid"));
         }
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");

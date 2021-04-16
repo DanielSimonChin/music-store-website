@@ -195,7 +195,13 @@ public class CheckoutController implements Serializable {
         createSale();
         createInvoiceDetails();
         this.shoppingCartController.clearCart();
+        addMessage("Processing purchase & email", "This may take a few seconds.");
         return "invoice";
+    }
+    
+    public void addMessage(String summary, String detail) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     /**
