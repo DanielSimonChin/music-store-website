@@ -19,19 +19,8 @@ and open the template in the editor.
         <ui:composition template="/templates/commonadmin.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
-                <h1>Manager front page</h1>
-                <h:form>
-                    <h:commandButton value="client" action="#{clientManagerController.toClientManagement()}"/> 
-                </h:form>
-                <h:form>
-                    <h:commandButton value="review" action="#{reviewManagerController.toReviewPage()}"/> 
-                </h:form>
-                <h:form>
-                    <h:commandButton value="survey" action="#{surveyManagerController.toSurveryManagement()}"/> 
-                </h:form>
-                <h:form>
-                    <h:commandButton value="report" action="#{reportManagementController.toReportPage()}"/> 
-                </h:form>
+                <h1 class="welcomeAdmin">Manager front page</h1>
+                <p class="welcomeAdmin">You can select a category from one of the tab buttons above</p>
             </ui:define>
         </ui:composition>
 

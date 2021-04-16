@@ -3,6 +3,9 @@
     margin-top:10px;
     margin-bottom:10px;
 }
+.welcomeAdmin{
+    text-align:center;
+}
 
 .icon{
     display:inline-block;
@@ -51,6 +54,9 @@ tr:nth-child(even) {
 .topnav {
     overflow: hidden;
     background-color: #333;
+    text-align: center;
+    width: fit-content;
+    margin: auto;
 }
 
 .topnav a {
