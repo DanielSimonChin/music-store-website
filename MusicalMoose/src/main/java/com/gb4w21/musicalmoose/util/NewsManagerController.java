@@ -77,16 +77,16 @@ public class NewsManagerController implements Serializable {
      *
      * @return true if it is not empty
      */
-    public boolean hasSelectedBannerAds() {
+    public boolean hasSelectedNewsList() {
         return this.selectedNewsList != null && !this.selectedNewsList.isEmpty();
     }
 
-//    /**
-//     * Set the available table field for each selected bannerAd to false.
-//     *
-//     * @throws Exception
-//     */
-//    public void removeSelectedBannerAds() throws Exception {
+    /**
+     * Set the available table field for each selected bannerAd to false.
+     *
+     * @throws Exception
+     */
+    public void removeSelectedNewsList() throws Exception {
 //        for (News news : this.selectedNewsList) {
 //            news.setDisplayed(Boolean.FALSE);
 //            this.bannerAdJpaController.edit(bannerAd);
@@ -97,28 +97,28 @@ public class NewsManagerController implements Serializable {
 //                "com.gb4w21.musicalmoose.bundles.messages", "adSetNotDisplayed", null));
 //        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
 //        PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
-//    }
+    }
 //
 //    /**
 //     * Set the selected ad's available field to false.
 //     *
 //     * @throws Exception
 //     */
-//    public void removeBannerAd() throws Exception {
+    public void removeNews() throws Exception {
 //        this.selectedBannerAd.setDisplayed(Boolean.FALSE);
 //        this.bannerAdJpaController.edit(this.selectedBannerAd);
 //        this.selectedBannerAd = null;
 //        FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
 //                "com.gb4w21.musicalmoose.bundles.messages", "adSetNotDisplayed", null));
 //        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-//    }
+    }
 //
 //    /**
 //     * Update the selected ad and display a message for the user.
 //     *
 //     * @throws Exception
 //     */
-//    public void saveBannerAd() throws Exception {
+    public void saveNews() throws Exception {
 //        if (checkValidAd()) {
 //            // If this is a new track
 //            if (this.selectedBannerAd.getBanneraddid() == null) {
@@ -141,22 +141,22 @@ public class NewsManagerController implements Serializable {
 //        }
 //        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
 //        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-//    }
+    }
 //    
 //    /**
 //     * Checks if the ad created/update is valid with the other ads
 //     * 
 //     * @return boolean
 //     */
-//    private boolean checkValidAd() {
+    private boolean checkValidNews() {
 //        if (selectedBannerAd.getDisplayed() && selectedBannerAd.getPageposition() > 0)
 //        for (int i = 0; i < bannerAds.size(); i++) {
 //            if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
 //                return false;
 //            }
 //        }
-//        return true;
-//    }
+        return true;
+    }
 //
 //    /**
 //     * When the cancel button is clicked for the management form, all changes
@@ -165,9 +165,9 @@ public class NewsManagerController implements Serializable {
 //     *
 //     * @throws NonexistentEntityException
 //     */
-//    public void cancelBannerAdForm() throws NonexistentEntityException {
+    public void cancelNewsForm() throws NonexistentEntityException {
 //        this.bannerAds = this.bannerAdJpaController.findBanneradEntities();
 //        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
 //        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-//    }
+    }
 }

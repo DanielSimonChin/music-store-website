@@ -365,11 +365,11 @@ VALUE
 (15, TIMESTAMP("2020-03-05", "04:13:55"), "Quincey", 9, "AMAZING! Highly recommend taking a listen", 1, 2, 13);
 
 INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL, DISPLAYED, PAGEPOSITION) VALUES
-(1, "walmartbanner.jpg", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4", 0, 0),
-(2, "amazonbanner.jpg", "https://www.amazon.com/", 0, 0),
+(1, "walmartbanner.jpg", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4", 0, 1),
+(2, "amazonbanner.jpg", "https://www.amazon.com/", 0, 1),
 (3, "hmbanner.jpg", "https://www2.hm.com/en_ca/index.html", 1, 1),
 (4, "logitechbanner.jpg", "https://www.logitech.com/en-ca", 1, 2),
-(5, "disneybanner.jpg", "https://disneyparks.disney.go.com/ca/",0, 0);
+(5, "disneybanner.jpg", "https://disneyparks.disney.go.com/ca/",0, 2);
 
 INSERT INTO SALE (SALEID, CLIENTID, SALEDATE,SALEREMOVED) VALUES
 (1, 1,TIMESTAMP("2020-02-13",  "00:00:00"),0),

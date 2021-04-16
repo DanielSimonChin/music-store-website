@@ -139,6 +139,7 @@ public class BannerAdManagerController implements Serializable {
             }
         }
         else {
+            selectedBannerAd.setDisplayed(Boolean.FALSE);
             FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "adInvalid", null));
         }
@@ -152,10 +153,12 @@ public class BannerAdManagerController implements Serializable {
      * @return boolean
      */
     private boolean checkValidAd() {
-        if (selectedBannerAd.getDisplayed() && selectedBannerAd.getPageposition() > 0)
+        if (selectedBannerAd.getDisplayed())
         for (int i = 0; i < bannerAds.size(); i++) {
-            if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
-                return false;
+            if (bannerAds.get(i).getBanneraddid() != selectedBannerAd.getBanneraddid()) {
+                if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
+                    return false;
+                }
             }
         }
         return true;
