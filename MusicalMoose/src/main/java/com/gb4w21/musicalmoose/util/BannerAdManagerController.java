@@ -154,13 +154,13 @@ public class BannerAdManagerController implements Serializable {
      */
     private boolean checkValidAd() {
         if (selectedBannerAd.getDisplayed())
-        for (int i = 0; i < bannerAds.size(); i++) {
-            if (bannerAds.get(i).getBanneraddid() != selectedBannerAd.getBanneraddid()) {
-                if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
-                    return false;
+            for (int i = 0; i < bannerAds.size(); i++) {
+                if (bannerAds.get(i).getBanneraddid() != selectedBannerAd.getBanneraddid()) {
+                    if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
+                        return false;
+                    }
                 }
             }
-        }
         return true;
     }
 

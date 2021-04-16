@@ -15,6 +15,8 @@ public class LoginBean {
     private String username;
     private int id;
     private boolean loggedIn;
+    private String emailAddress;
+    
     public LoginBean(){
         
     }
@@ -30,6 +32,9 @@ public class LoginBean {
        public boolean isLoggedIn(){
         return loggedIn;
     }
+       public String getEmailAddress() {
+        return this.emailAddress;
+    }
        public void setPassword(String password){
          this.password=password;
     }
@@ -41,5 +46,8 @@ public class LoginBean {
     }
        public void setLoggedIn(boolean loggedIn){
          this.loggedIn=loggedIn;
+    }
+       public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
     }
 }

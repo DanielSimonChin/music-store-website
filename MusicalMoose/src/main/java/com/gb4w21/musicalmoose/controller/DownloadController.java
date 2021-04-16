@@ -55,11 +55,6 @@ public class DownloadController implements Serializable {
             this.downloadMusicItems = new ArrayList<MusicItem>();
 
             List<Sale> saleList = saleJpaController.findSaleByClientId(loginController.getLoginBean().getId());
-
-
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().addResponseCookie("A1", saleList.size() + "", null);
-            
             List<Invoicedetail> invoiceDetails = new ArrayList<Invoicedetail>();
             for (int i = 0; i < saleList.size(); i++) {
                 invoiceDetails.addAll(invoiceDetailJpaController.findInvoiceDetailsBySaleId(saleList.get(i).getSaleid()));
@@ -77,10 +72,6 @@ public class DownloadController implements Serializable {
                 downloadMusicItems.add(musicItem);
             }
             return downloadMusicItems;
-////            List<Sale> saleList = saleJpaController.findSaleByClientId(clientId);
-        
-            
-            
         }
         catch (NonexistentEntityException e) {
             // return nothing if Client does not have any downloadable tracks/albums

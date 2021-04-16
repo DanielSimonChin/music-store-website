@@ -330,7 +330,7 @@ public class AlbumJpaController implements Serializable {
     }
 
     public List<Album> getRecentGenreAlbums() {
-        String recentGenre = findRecentGenreCookie();
+        String recentGenre = this.preRenderViewBean.findRecentGenreCookie();
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -345,17 +345,6 @@ public class AlbumJpaController implements Serializable {
         Query q = em.createQuery(cq);
 
         return q.getResultList();
-    }
-
-    private String findRecentGenreCookie() {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        // Retrieve a GenreTracking cookie
-        Object genreTrackingCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
-        if (genreTrackingCookie == null || ((Cookie) genreTrackingCookie).getValue().isEmpty()) {
-            return null;
-        }
-        return ((Cookie) genreTrackingCookie).getValue();
     }
 
     /**

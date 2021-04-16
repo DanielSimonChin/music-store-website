@@ -37,7 +37,7 @@
 
                                         <p:commandButton id="delete-products-button" value="#{msgs.removeBtn}"
                                                          icon="pi pi-trash" actionListener="#{newsManagerController.removeSelectedNewsList()}"
-                                                         styleClass="ui-button-danger" disabled="#{!newsManagerController.hasSelectedNewsList}"
+                                                         styleClass="ui-button-danger" disabled="#{!newsManagerController.hasSelectedNewsList()}"
                                                          update="@this">
                                             <p:confirm header="#{msgs.confirmationHeader}" message="#{msgs.deleteProductsMessage}"
                                                        icon="pi pi-exclamation-triangle"/>
@@ -46,14 +46,14 @@
                                     </p:toolbarGroup>
                                 </p:toolbar>
                                 
-                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="bannerAd" value="#{newsManagerController.selectedNewsList}"
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="news" value="#{newsManagerController.newsList}"
                                              reflow="true" styleClass="products-table"
-                                             selection="#{bannerAdManagerController.selectedBannerAds}" rowKey="#{bannerAd.banneraddid}" paginator="true"
+                                             selection="#{newsManagerController.selectedNewsList}" rowKey="#{news.newsid}" paginator="true"
                                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
 
                                     <f:facet name="header">
                                         <div class="products-table-header">
-                                            <span style="font-weight: bold">#{msgs.adHeader}</span>
+                                            <span style="font-weight: bold">#{msgs.newsHeader}</span>
 
                                             <span class="filter-container ui-input-icon-left">
                                                 <i class="pi pi-search"></i>
@@ -71,81 +71,71 @@
 
                                     <p:column selectionMode="multiple" exportable="false"></p:column>
 
-                                    <p:column headerText="#{msgs.adId}" sortBy="#{bannerAd.banneraddid}" filterBy="#{bannerAd.banneraddid}">
-                                        <h:outputText value="#{bannerAd.banneraddid}"/>
+                                    <p:column headerText="#{msgs.newsId}" sortBy="#{news.newsid}" filterBy="#{news.newsid}">
+                                        <h:outputText value="#{news.newsid}"/>
                                     </p:column>
 
-                                    <p:column headerText="#{msgs.adUrl}" sortBy="#{bannerAd.url}" filterBy="#{bannerAd.url}">
-                                        <h:outputText value="#{bannerAd.url}"/>
+                                    <p:column headerText="#{msgs.newsTitle}" sortBy="#{news.newtitle}" filterBy="#{news.newtitle}">
+                                        <h:outputText value="#{news.newtitle}"/>
                                     </p:column>
 
-                                    <p:column headerText="#{msgs.adFileName}" sortBy="#{bannerAd.filename}" filterBy="#{bannerAd.filename}">
-                                        <h:outputText value="#{bannerAd.filename}"/>
+                                    <p:column headerText="#{msgs.newsText}" sortBy="#{news.newstext}" filterBy="#{news.newstext}">
+                                        <h:outputText value="#{news.newstext}"/>
                                     </p:column>
                                     
-                                    <p:column headerText="#{msgs.adDisplay}" sortBy="#{bannerAd.displayed}">
-                                        <h:outputText rendered="#{bannerAd.displayed}" value="#{msgs.yes}"/>
-                                        <h:outputText rendered="#{not bannerAd.displayed}" value="#{msgs.no}"/>
+                                    <p:column headerText="#{msgs.newsURL}" sortBy="#{news.url}" filterBy="#{news.url}">
+                                        <h:outputText value="#{news.url}"/>
                                     </p:column>
                                     
-                                    <p:column headerText="#{msgs.adPosition}" sortBy="#{bannerAd.pageposition}">
-                                        <h:outputText value="#{bannerAd.pageposition}"/>
+                                    <p:column headerText="#{msgs.newsCreateDate}" sortBy="#{news.createddate}" filterBy="#{news.createddate}">
+                                        <h:outputText value="#{news.createddate}"/>
                                     </p:column>
-
+                                    
+                                    <p:column headerText="#{msgs.newsDisplayed}" sortBy="#{news.displayed}">
+                                        <h:outputText rendered="#{news.displayed}" value="#{msgs.yes}"/>
+                                        <h:outputText rendered="#{not news.displayed}" value="#{msgs.no}"/>
+                                    </p:column>
+                                    
                                     <p:column exportable="false">
                                         <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
                                                          oncomplete="PF('manageProductDialog').show()"
                                                          styleClass="edit-button rounded-button ui-button-success" process="@this">
-                                            <f:setPropertyActionListener value="#{bannerAd}" target="#{bannerAdManagerController.selectedBannerAd}"/>
+                                            <f:setPropertyActionListener value="#{news}" target="#{newsManagerController.selectedNews}"/>
                                             <p:resetInput target=":form:manage-product-content"/>
                                         </p:commandButton>
 
                                         <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
                                                          oncomplete="PF('deleteProductDialog').show()">
-                                            <f:setPropertyActionListener value="#{bannerAd}" target="#{bannerAdManagerController.selectedBannerAd}"/>
+                                            <f:setPropertyActionListener value="#{news}" target="#{newsManagerController.selectedNews}"/>
                                         </p:commandButton>
                                     </p:column>
                                 </p:dataTable>
 
-                                <p:dialog header="#{msgs.adDetails}" showEffect="fade" modal="true" width="625" height="500"
+                                <p:dialog header="#{msgs.newsDetails}" showEffect="fade" modal="true" width="625" height="500"
                                           widgetVar="manageProductDialog" responsive="true">
                                     <p:outputPanel id="manage-product-content" class="ui-fluid">
-                                        <p:outputPanel rendered="#{not empty bannerAdManagerController.selectedBannerAd}">
+                                        <p:outputPanel rendered="#{not empty newsManagerController.selectedNews}">
 
                                             <div class="p-field">
-                                                <p:outputLabel for="adURL">#{msgs.adUrl}</p:outputLabel>
-                                                <p:inputText id="adURL" value="#{bannerAdManagerController.selectedBannerAd.url}" required="true"/>
+                                                <p:outputLabel for="newsTitle">#{msgs.newsTitle}</p:outputLabel>
+                                                <p:inputText id="newsTitle" value="#{newsManagerController.selectedNews.newtitle}" required="true"/>
+                                            </div>
+                                            
+                                            <div class="p-field">
+                                                <p:outputLabel for="newsText">#{msgs.newsText}</p:outputLabel>
+                                                <p:inputText id="newsText" value="#{newsManagerController.selectedNews.newstext}" required="true"/>
+                                            </div>
+                                            
+                                            <div class="p-field">
+                                                <p:outputLabel for="newsURL">#{msgs.newsURL}</p:outputLabel>
+                                                <p:inputText id="newsURL" value="#{newsManagerController.selectedNews.url}" required="true"/>
                                             </div>
 
                                             <div class="p-field">
-                                                <p:outputLabel for="available" value="#{msgs.adDisplay}"/>
-                                                <p:selectOneMenu id="available" value="#{bannerAdManagerController.selectedBannerAd.displayed}">
+                                                <p:outputLabel for="displayed" value="#{msgs.newsDisplayed}"/>
+                                                <p:selectOneMenu id="displayed" value="#{newsManagerController.selectedNews.displayed}">
                                                     <f:selectItem itemLabel="#{msgs.yesOption}" itemValue="true"/>
                                                     <f:selectItem itemLabel="#{msgs.noOption}" itemValue="false"/>
-                                                </p:selectOneMenu>
-                                            </div>
-                                            
-                                            <div class="p-field">
-                                                <p:outputLabel for="adPosition">#{msgs.adPosition}</p:outputLabel>
-                                                <p:selectOneMenu id="adPosition" value="#{bannerAdManagerController.selectedBannerAd.pageposition}">
-                                                    <f:selectItem itemLabel="1" itemValue="1"/>
-                                                    <f:selectItem itemLabel="2" itemValue="2"/>
-                                                </p:selectOneMenu>
-                                            </div>
-                                            
-                                            <div class="p-field">
-                                                <p:outputLabel for="adfilename">#{msgs.adFileName}</p:outputLabel>
-                                                <p:selectOneMenu id="adfilename" value="#{bannerAdManagerController.selectedBannerAd.filename}" filter="true" filterMatchMode="startsWith"
-                                                                 var="filename" panelStyle="width:180px" >
-                                                    <f:selectItems value="#{fileUploadController.getFileNames('ads')}" var="covers" itemLabel="#{covers}" itemValue="#{covers}"/>
-
-                                                    <p:column>  
-                                                        <p:graphicImage value="/ads/#{filename}" width="50" height="50"/>  
-                                                    </p:column>  
-
-                                                    <p:column>  
-                                                        #{filename}
-                                                    </p:column>  
                                                 </p:selectOneMenu>
                                             </div>
 
@@ -153,16 +143,16 @@
                                     </p:outputPanel>
 
                                     <f:facet name="footer">
-                                        <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{bannerAdManagerController.saveBannerAd()}"
+                                        <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{newsManagerController.saveNews()}"
                                                          update="manage-product-content" process="manage-product-content @this"/>
-                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" actionListener="#{bannerAdManagerController.cancelBannerAdForm()}" 
+                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" actionListener="#{newsManagerController.cancelNewsForm()}" 
                                                          class="ui-button-secondary"/>
                                     </f:facet>
                                 </p:dialog>
 
                                 <p:confirmDialog global="true" widgetVar="deleteProductDialog" showEffect="fade" width="300"
-                                                 message="#{msgs.deleteAdsMessage}" header="#{msgs.confirmationHeader}" severity="warn">
-                                    <p:commandButton value="#{msgs.yesOption}" icon="pi pi-check" actionListener="#{bannerAdManagerController.removeBannerAd()}"
+                                                 message="#{msgs.deleteNewsMessage}" header="#{msgs.confirmationHeader}" severity="warn">
+                                    <p:commandButton value="#{msgs.yesOption}" icon="pi pi-check" actionListener="#{newsManagerController.removeNews()}"
                                                      process="@this" oncomplete="PF('deleteProductDialog').hide()"/>
                                     <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
                                                      onclick="PF('deleteProductDialog').hide()"/>

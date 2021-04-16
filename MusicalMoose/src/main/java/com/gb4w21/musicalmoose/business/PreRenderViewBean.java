@@ -74,6 +74,17 @@ public class PreRenderViewBean implements Serializable {
         }
     }
 
+    public String findRecentGenreCookie() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        // Retrieve a GenreTracking cookie
+        Object genreTrackingCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
+        if (genreTrackingCookie == null || ((Cookie) genreTrackingCookie).getValue().isEmpty()) {
+            return null;
+        }
+        return ((Cookie) genreTrackingCookie).getValue();
+    }
+
     private void addAlbumCookiesToShoppingCart() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartAlbumCookie = context.getExternalContext().getRequestCookieMap().get("cart_album");
