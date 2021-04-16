@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class LoginController  implements Serializable{
+  //  private final static String[] adminPages;
     private final static Logger LOG = LoggerFactory.getLogger(LoginController.class);
     private LoginBean loginBean;
     private String loginLastPage;
@@ -44,6 +45,7 @@ public class LoginController  implements Serializable{
     private CheckoutController checkoutController;
     @Inject
     RegistrationController registrationController;
+    private boolean cameFromManagerPage=false;
     public LoginController(){
         
     }
@@ -60,11 +62,20 @@ public class LoginController  implements Serializable{
     public String toLoginPage(){
         loginBean = new LoginBean();
         FacesContext context=FacesContext.getCurrentInstance();
+       
         loginLastPage=context.getViewRoot().getViewId();
         loginLastPage=loginLastPage.substring(1, loginLastPage.length() - 6);
         if(loginLastPage.equals("register")||loginLastPage.equals("login")){
+            LOG.debug("LOGIN 1");
             loginLastPage=registrationController.getLastPageRegister();
+             LOG.debug("LOGIN 2"+loginLastPage);
         }
+        if(cameFromManagerPage){
+            cameFromManagerPage=false;
+             LOG.debug("LOGIN 3");
+            return "index";
+        }
+         LOG.debug("LOGIN 4");
         return "login";
     }
     public String getLoginLastPage(){
@@ -73,7 +84,15 @@ public class LoginController  implements Serializable{
     public String signOut(){
         loginBean = new LoginBean();
         loginBean.setLoggedIn(false);
-        return toLoginPage();
+         FacesContext context=FacesContext.getCurrentInstance();
+        loginLastPage=context.getViewRoot().getViewId();
+        loginLastPage=loginLastPage.substring(1, loginLastPage.length() - 6);
+         if(cameFromManagerPage){
+            cameFromManagerPage=false;
+             LOG.debug("LOGIN 3");
+            return "index";
+        }
+        return loginLastPage;
     }
     
     public void validateUser(FacesContext context, UIComponent component,
@@ -103,12 +122,19 @@ public class LoginController  implements Serializable{
         LOG.info("Is manager:"+registeredClient.getIsmanager());
         
         if (loginLastPage.equals("cart")){
+            cameFromManagerPage=false;
             return checkoutController.toCheckout();
         }
         else if (registeredClient.getIsmanager()){
+            cameFromManagerPage=true;
             return "adminfront";
         }
+        else if(cameFromManagerPage){
+            cameFromManagerPage=false;
+            return "index";
+        }
         else{
+            cameFromManagerPage=false;
             return loginLastPage;
         }
     }

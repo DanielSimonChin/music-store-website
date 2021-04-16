@@ -109,7 +109,7 @@ public class ClientManagerController implements Serializable {
      */
     @PostConstruct
     public void init() {
-        clients = new ArrayList<>();
+        clients = clientJpaController.findClientEntities();
         selectedClients = new ArrayList<>();
         this.selectedClient = null;
     }
@@ -120,7 +120,7 @@ public class ClientManagerController implements Serializable {
      * @return String the search page
      */
     public String toClientManagement() {
-        clients = new ArrayList<>();
+        clients = clientJpaController.findClientEntities();
         selectedClients = new ArrayList<>();
         this.selectedClient = null;
         return "adminclient";
@@ -258,8 +258,8 @@ public class ClientManagerController implements Serializable {
         Root<Client> client = cq.from(Client.class);
         Join sale = client.join("saleList");
         Join invoicedetail = sale.join("invoicedetailList");
-        cq.where(cb.equal(client.get("clientid"), chosenClient.getClientid()));
-        cq.multiselect(invoicedetail.get("profit"));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0),cb.equal(client.get("clientid"), chosenClient.getClientid()));
+        cq.multiselect(invoicedetail.get("currentcost"));
         TypedQuery<Object[]> query = entityManager.createQuery(cq);
         List<Object[]> prices = query.getResultList();
         Float totalValue = 0.f;

@@ -125,7 +125,7 @@ public class SurveyManagerController implements Serializable {
     public void saveSurvey() {
        
         if (bigSurvey.getSurveryinuse()) {
-            
+            surveyJpaController.setIsSurveyUsed(false);
             takeDonwCurrentSurvey();
             
         }
