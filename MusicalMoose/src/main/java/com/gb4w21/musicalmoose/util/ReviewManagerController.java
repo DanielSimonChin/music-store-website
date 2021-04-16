@@ -30,7 +30,11 @@ import javax.faces.validator.ValidatorException;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-
+/**
+ * Controller for review manager allows the editing of existing reviews which determines if there permitted or not
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @Named
 @SessionScoped
 public class ReviewManagerController implements Serializable {
@@ -47,7 +51,9 @@ public class ReviewManagerController implements Serializable {
     private Review selectedReview;
 
     private List<Review> selectedReviews;
-
+    /**
+     * Default constructor
+     */
     public ReviewManagerController() {
 
     }
@@ -72,6 +78,9 @@ public class ReviewManagerController implements Serializable {
     public void setSelectedReview(Review selectedReview){
         this.selectedReview=selectedReview;
     }
+    /**
+     * Takes the user to the review page and resets page values
+     */
      @PostConstruct
     public void init() {
         //reviews = new ArrayList<>();
@@ -79,12 +88,19 @@ public class ReviewManagerController implements Serializable {
         selectedReviews = new ArrayList<>();
         this.selectedReview = null;
     }
+    /**
+     * Takes the user to the review page and resets page values
+     * @return String admin review page
+     */
     public String toReviewPage(){
         reviews = new ArrayList<>();
         selectedReviews = new ArrayList<>();
         this.selectedReview = null;
         return "adminreview";
     }
+    /**
+     * save changes to a review if a review is changed to approved it will be displayed
+     */
      public void saveReview() {
        try{
         if (this.selectedReview.getClientid()== null) {

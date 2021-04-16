@@ -32,6 +32,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
+/**
+ * Controller for client manager allows the editing of client registration 
+ * information can also deactivate an account or promote a client to manager
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @Named
 @SessionScoped
 public class ClientManagerController implements Serializable {
@@ -49,14 +55,14 @@ public class ClientManagerController implements Serializable {
     private String clientSearch;
     private List<Client> selectedClients;
 
+    /**
+     * Default constructor
+     */
     public ClientManagerController() {
 
     }
 
     public List<Client> getSelectedClients() {
-        if (selectedClients == null) {
-            selectedClients = new ArrayList<>();
-        }
         return selectedClients;
     }
 
@@ -69,15 +75,10 @@ public class ClientManagerController implements Serializable {
     }
 
     public List<Client> getClients() {
-        if (clients == null) {
-            clients = new ArrayList<>();
-        }
-
         return clients;
     }
 
     public Client getSelectedClient() {
-
         return selectedClient;
     }
 
@@ -93,11 +94,19 @@ public class ClientManagerController implements Serializable {
         this.selectedClient = selectedClient;
     }
 
+    /**
+     * creates a new client
+     */
     public void createNewClient() {
         this.selectedClient = new Client();
 
     }
 
+    /**
+     * takes use to the search page and resets all values
+     *
+     * @return String the search page
+     */
     @PostConstruct
     public void init() {
         clients = new ArrayList<>();
@@ -105,6 +114,11 @@ public class ClientManagerController implements Serializable {
         this.selectedClient = null;
     }
 
+    /**
+     * takes use to the search page and resets all values
+     *
+     * @return String the search page
+     */
     public String toClientManagement() {
         clients = new ArrayList<>();
         selectedClients = new ArrayList<>();
@@ -112,6 +126,11 @@ public class ClientManagerController implements Serializable {
         return "adminclient";
     }
 
+    /**
+     * gives a list of all clients in the database
+     *
+     * @return String the search page
+     */
     public String searchAllClients() {
         selectedClient = null;
         selectedClients = new ArrayList<>();
@@ -120,6 +139,11 @@ public class ClientManagerController implements Serializable {
         return "adminclient";
     }
 
+    /**
+     * searches the database for specified clients
+     *
+     * @return String the search page
+     */
     public String searchClients() {
         selectedClient = null;
         selectedClients = new ArrayList<>();
@@ -128,6 +152,12 @@ public class ClientManagerController implements Serializable {
         return "adminclient";
     }
 
+    /**
+     * gets all clients that have the specified username
+     *
+     * @param clientSearch String
+     * @return List<Client>
+     */
     private List<Client> getClientFromDatabase(String clientSearch) {
         String clientSearchText = "%" + clientSearch + "%";
 
@@ -142,6 +172,9 @@ public class ClientManagerController implements Serializable {
         return clients;
     }
 
+    /**
+     * saves changes to client information
+     */
     public void saveClient() {
         try {
             if (this.selectedClient.getUsername() == null) {
@@ -161,10 +194,14 @@ public class ClientManagerController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 
-    public boolean hasSelectedClients() {
-        return this.selectedClients != null && !this.selectedClients.isEmpty();
-    }
-
+    /**
+     * Validates the cellphone number to see if it matches the correct format
+     * and doesn't match the home phone if either it throws an error
+     *
+     * @param context
+     * @param component
+     * @param value
+     */
     public void validateCellPhoneNumber(FacesContext context, UIComponent component,
             Object value) {
         String cellPhoneNumber = value.toString();
@@ -186,6 +223,14 @@ public class ClientManagerController implements Serializable {
         }
     }
 
+    /**
+     * Validates the search to see if it returns no results if not it throws and
+     * error
+     *
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value Object
+     */
     public void validateClientSearch(FacesContext context, UIComponent component,
             Object value) {
 
@@ -200,6 +245,13 @@ public class ClientManagerController implements Serializable {
         }
     }
 
+    /**
+     * calculates the total profit a given client has spent in the current date
+     * range
+     *
+     * @param chosenClient Client
+     * @return double total profit form client
+     */
     public double getTotalSales(Client chosenClient) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
@@ -218,6 +270,14 @@ public class ClientManagerController implements Serializable {
         return totalValue;
     }
 
+    /**
+     * Checks to make sure the username given is unique and not used by another
+     * users if not it returns false
+     *
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value Object
+     */
     public void validateClientUserNameError(FacesContext context, UIComponent component,
             Object value) {
         String username = value.toString();
@@ -232,6 +292,12 @@ public class ClientManagerController implements Serializable {
         }
     }
 
+    /**
+     * Check in the database if specified user name was chosen
+     *
+     * @param username String
+     * @return boolean true if the doesn't match false if not
+     */
     private boolean checkUserName(String username) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
@@ -251,6 +317,14 @@ public class ClientManagerController implements Serializable {
 
     }
 
+    /**
+     * Validates the address to make sure the second address doesn't match the
+     * first
+     *
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value Object
+     */
     public void validateAddress(FacesContext context, UIComponent component,
             Object value) {
         String address1 = selectedClient.getAddress1();

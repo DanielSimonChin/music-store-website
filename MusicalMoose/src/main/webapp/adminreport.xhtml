@@ -93,7 +93,7 @@
                                             </span>
                                             <br> </br>
                                             <span class="filter-container ui-input-icon-left">
-                                                <h:outputText rendered="#{reportManagementController.reportCategory eq 'SalesByArtist' and reportManagementController.reportCategory eq 'SalesByTrack' }" value="#{msgs.totalNumberOfDownloads} #{reportManagementController.totalNumberOfDownloads}    "/>
+                                                <h:outputText rendered="#{reportManagementController.reportCategory eq 'SalesByAlbum' or reportManagementController.reportCategory eq 'SalesByTrack' }" value="#{msgs.totalNumberOfDownloads} #{reportManagementController.totalNumberOfDownloads}    "/>
                                             </span>
                                         </div>
                                     </f:facet>

@@ -135,6 +135,9 @@ header {
     padding: 0; 
 }
 
+.errorText{
+    text-align: center;
+}
 
 .main-nav {
     display: flex;
@@ -394,9 +397,4 @@ footer {
     #form{
         float:left;
     }
-
-
-
-
-
 }
