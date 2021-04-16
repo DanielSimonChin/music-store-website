@@ -95,6 +95,7 @@ public class RegistrationController implements Serializable {
         loginController.getLoginBean().setId(clientJpaController.findUser(registrationBean.getUsername(), registrationBean.getPassword()).getClientid());
         loginController.getLoginBean().setPassword(registrationBean.getPassword());
         loginController.getLoginBean().setUsername(registrationBean.getUsername());
+        loginController.getLoginBean().setEmailAddress(registrationBean.getEmail());
         return lastPageRegister;
     }
 

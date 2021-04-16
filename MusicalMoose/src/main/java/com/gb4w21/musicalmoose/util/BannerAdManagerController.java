@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -83,6 +84,15 @@ public class BannerAdManagerController implements Serializable {
     public boolean hasSelectedBannerAds() {
         return this.selectedBannerAds != null && !this.selectedBannerAds.isEmpty();
     }
+    
+    private FacesMessage createMsg(String summary, String detail) {
+        FacesMessage facesMsgDets = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", summary, null);
+        FacesMessage facesMsgSummary = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                "com.gb4w21.musicalmoose.bundles.messages", detail, null);
+        facesMsgDets.setDetail(facesMsgSummary.getSummary());
+        return facesMsgDets;
+    }
 
     /**
      * Set the available table field for each selected bannerAd to false.
@@ -96,8 +106,7 @@ public class BannerAdManagerController implements Serializable {
         }
 
         this.selectedBannerAds = null;
-        FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                "com.gb4w21.musicalmoose.bundles.messages", "adSetNotDisplayed", null));
+        FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "adSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
     }
@@ -111,8 +120,7 @@ public class BannerAdManagerController implements Serializable {
         this.selectedBannerAd.setDisplayed(Boolean.FALSE);
         this.bannerAdJpaController.edit(this.selectedBannerAd);
         this.selectedBannerAd = null;
-        FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                "com.gb4w21.musicalmoose.bundles.messages", "adSetNotDisplayed", null));
+        FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "adSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 
@@ -128,19 +136,17 @@ public class BannerAdManagerController implements Serializable {
                 LOG.info("CREATING A NEW BANNER AD ENTITY");
                 this.bannerAdJpaController.create(this.selectedBannerAd);
                 this.bannerAds.add(this.selectedBannerAd);
-                FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "adCreated", null));
+                FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "adCreated"));
                 //A currently existing ad that was edited.
             } else {
                 LOG.info("EDITING AN AD");
                 this.bannerAdJpaController.edit(this.selectedBannerAd);
-                FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "adUpdated", null));
+                FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "adUpdated"));
             }
         }
         else {
-            FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "adInvalid", null));
+            selectedBannerAd.setDisplayed(Boolean.FALSE);
+            FacesContext.getCurrentInstance().addMessage(null, createMsg("invalid", "adInvalid"));
         }
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
@@ -152,12 +158,14 @@ public class BannerAdManagerController implements Serializable {
      * @return boolean
      */
     private boolean checkValidAd() {
-        if (selectedBannerAd.getDisplayed() && selectedBannerAd.getPageposition() > 0)
-        for (int i = 0; i < bannerAds.size(); i++) {
-            if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
-                return false;
+        if (selectedBannerAd.getDisplayed())
+            for (int i = 0; i < bannerAds.size(); i++) {
+                if (bannerAds.get(i).getBanneraddid() != selectedBannerAd.getBanneraddid()) {
+                    if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
+                        return false;
+                    }
+                }
             }
-        }
         return true;
     }
 

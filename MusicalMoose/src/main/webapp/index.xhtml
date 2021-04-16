@@ -27,10 +27,6 @@
                                 <h1 id="home">#{msgs.musicSpecials}</h1>
 
                                 <div class="box">
-
-
-
-
                                     <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
                                         <h:form >
                                             <h:commandLink value="#{specialTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specialTracks)}">
@@ -60,6 +56,11 @@
                                         </h:commandLink>
                                     </ui:repeat>
 
+                                    <ui:repeat value="#{musicTrackJpaController.recentGenreTracks}" var="recentGenreTracks">
+                                        <h:commandLink value="#{recentGenreTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(recentGenreTracks)}">
+                                            <h:graphicImage value="album_covers/#{recentGenreTracks.albumimagefilenamebig}" />
+                                        </h:commandLink>
+                                    </ui:repeat>
                                 </div>
                             </h:form>
 

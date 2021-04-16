@@ -49,11 +49,14 @@
                                     </ui:repeat>
 
                                     <div id="shopCart">
+                                        
                                         <h:form>
-                                            <h:commandLink action="#{shoppingCartController.addShoppingCartAlbum(detailAlbum)}">
+                                            <p:growl id="growl" showDetail="true" />
+                                            <p:commandLink actionListener="#{shoppingCartController.addShoppingCartAlbum(detailAlbum)}" 
+                                                        update="growl" styleClass="p-mr-2">
                                                 <h:graphicImage value="icons/shopping-cart.png" />
-                                                <p>#{msgs.addToCart}</p> 
-                                            </h:commandLink>
+                                                <p style="color: white;">#{msgs.addToCart}</p> 
+                                            </p:commandLink>
                                         </h:form>
                                     </div>
                                 </table>

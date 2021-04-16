@@ -118,6 +118,7 @@ public class LoginController  implements Serializable{
         Client registeredClient= clientJpaController.findUser(loginBean.getUsername(), loginBean.getPassword());
         loginBean.setId(registeredClient.getClientid());
         loginBean.setLoggedIn(true);
+        loginBean.setEmailAddress(this.clientJpaController.findClient(loginBean.getId()).getEmail());
         LOG.info("Is manager:"+registeredClient.getIsmanager());
         
         if (loginLastPage.equals("cart")){

@@ -10,6 +10,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
+import com.gb4w21.musicalmoose.entities.Sale;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -323,6 +324,33 @@ public class MusicTrackJpaController implements Serializable {
         }
     }
 
+    public List<MusicTrack> getRecentGenreTracks() {
+        String recentGenre = this.preRenderViewBean.findRecentGenreCookie();
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+
+        CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
+
+        Root<MusicTrack> musicTracks = cq.from(MusicTrack.class);
+        
+        cq.where(cb.equal(musicTracks.get("musiccategory"), recentGenre));
+
+        Query q = em.createQuery(cq);
+        
+        List<MusicTrack> results = q.getResultList();
+        List<MusicTrack> genreRelatedResults = new ArrayList<MusicTrack>();
+        
+        for (int i = 0; i < results.size(); i++) {
+            if (i == 0) {
+                genreRelatedResults.add(results.get(i));
+            }
+            else if (!results.get(i).getArtist().equals(genreRelatedResults.get(0).getArtist())) {
+                genreRelatedResults.add(results.get(i));
+                break;
+            }
+        }
+        return genreRelatedResults;
+    }
 
     /**
      * Simple getter so the track page can access the selected track

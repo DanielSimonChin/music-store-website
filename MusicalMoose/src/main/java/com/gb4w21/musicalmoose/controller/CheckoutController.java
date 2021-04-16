@@ -13,11 +13,14 @@ import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Sale;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -29,6 +32,11 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import jodd.mail.Email;
+import jodd.mail.MailServer;
+import jodd.mail.RFC2822AddressParser;
+import jodd.mail.SendMailSession;
+import jodd.mail.SmtpServer;
 
 /**
  *
@@ -187,7 +195,13 @@ public class CheckoutController implements Serializable {
         createSale();
         createInvoiceDetails();
         this.shoppingCartController.clearCart();
+        addMessage("Processing purchase & email", "This may take a few seconds.");
         return "invoice";
+    }
+    
+    public void addMessage(String summary, String detail) {
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, summary, detail);
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
     
     /**
@@ -271,4 +285,99 @@ public class CheckoutController implements Serializable {
             invoicedetailJpaController.create(invoiceDetailBean);
         }
     }
+    
+    /**
+     * Standard send routine for Jodd using SmtpServer
+     * 
+     * @return the Email object if all checks and validations are correct, 
+     *         null if SendMailSessionsession session error
+     */
+    public boolean sendInvoiceEmail() {
+        String toEmailAddress = this.loginController.getLoginBean().getEmailAddress();
+        SmtpServer smtpServer = createSmtpServer();
+
+        Email email = Email.create().from("project.username01@gmail.com");
+        if (checkEmailAddress(toEmailAddress)) {
+            String emailSubject = "Invoice for your MusicalMoose purchase";
+            createEmailSubMsg(emailSubject, createHTMLInvoiceMsg(), email);
+            email.to(toEmailAddress);
+        
+            try (SendMailSession session = smtpServer.createSession()) {
+                session.open();
+                // Set date/time right before sending to get most accurate time
+                email.currentSentDate();
+                session.sendMail(email);
+                LOG.info("Email sent");
+            }
+            catch (Exception e) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().addResponseCookie("errone", "1", null);
+                return false;
+            }
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().addResponseCookie("errtwo", "2", null);
+            return true;
+        }
+        
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.getExternalContext().addResponseCookie("errthre", toEmailAddress, null);
+        return false;
+    }
+    
+    private String createHTMLInvoiceMsg() {
+        return "<p>Thank you for your purchase " + loginController.getLoginBean().getUsername() + ". Looking forward to next time! See invoice below.</p><br/><br/>"
+                + "<div>"
+                + "<h1><u>INVOICE</u></h1>"
+                + "<p><b>Sale #: " + this.saleBean.getSaleid() + "</b></p>"
+                + "<p><b>Date: " + this.saleBean.getSaledate()+ "</b></p>"
+                + "<p>---</p>"
+                + "<p><b>Total Gross Value Of Sale: " + this.shoppingCartController.getTotalCost() + "</b></p>"
+                + "<p><b>GST: " + this.GST + "</b></p>"
+                + "<p><b>HST: " + this.HST + "</b></p>"
+                + "<p><b>PST: " + this.PST + "</b></p>"
+                + "<p><b>Total Net Value Of Sale: " + this.calculateTotalNetValue() + "</b></p>"
+                + "</div>";
+    }
+        
+    /**
+     * Creates and returns StmpServer
+     * Use this email and user as a base admin email
+     * 
+     * @return the SmtpServer
+     */
+    private SmtpServer createSmtpServer() {
+        return MailServer.create()
+                .ssl(true)
+                .host("smtp.gmail.com")
+                .auth("project.username01@gmail.com", "simplepass01")
+                .buildSmtpMailServer();
+    }
+    
+    /**
+     * Assign subject and calls method to assign messages to null
+     *
+     * @param email
+     * @param subject
+     * @param textMsg
+     */
+    private void createEmailSubMsg(String subject, String htmlMsg, Email email) {
+        if (subject != null) {
+            email.subject(subject);
+        }
+        if (htmlMsg != null) {
+            email.htmlMessage(htmlMsg);
+        }
+    }
+        
+    /**
+     * Checks if emailAddress is not null and valid
+     * 
+     * @param emailAddress
+     * @return true if emailAddress not null and 
+     *         RFC2822AddressParser is not null, false if so
+     */
+    private boolean checkEmailAddress(String emailAddress) {
+        return emailAddress != null && RFC2822AddressParser.STRICT.parseToEmailAddress(emailAddress) != null;
+    }
+    
 }

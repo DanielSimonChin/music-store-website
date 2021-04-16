@@ -133,8 +133,10 @@
                                             
                                             <div class="p-field">
                                                 <p:outputLabel for="adPosition">#{msgs.adPosition}</p:outputLabel>
-                                                <p:inputNumber id="adPosition" value="#{bannerAdManagerController.selectedBannerAd.pageposition}"
-                                                               decimalPlaces="0" required="true"/>
+                                                <p:selectOneMenu id="adPosition" value="#{bannerAdManagerController.selectedBannerAd.pageposition}">
+                                                    <f:selectItem itemLabel="1" itemValue="1"/>
+                                                    <f:selectItem itemLabel="2" itemValue="2"/>
+                                                </p:selectOneMenu>
                                             </div>
                                             
                                             <div class="p-field">

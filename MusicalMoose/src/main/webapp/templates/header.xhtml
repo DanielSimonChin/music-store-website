@@ -18,19 +18,16 @@
                         <a id="logo" href="/MusicalMoose/"><b class="left-logo">Musical Moose</b></a>
                     </div>
                     <nav class="main-nav">
-                        <a href="/MusicalMoose/#home">#{msgs.headerHome}</a>
+                        <a href="/MusicalMoose/#home" style="margin-right: 25px">#{msgs.headerHome}</a>
 
-                        <h:form id="shopcartlink">
-                            <h:commandLink value="#{msgs.headerCart}" action="#{shoppingCartController.toShoppingCart()}" />
-                        </h:form>
 
                         <ui:fragment rendered="#{loginController.loginBean.loggedIn}">
-                            <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
+                            <a href="/MusicalMoose/download.xhtml" style="margin-right: 25px">#{msgs.downloadSongs}</a>
                         </ui:fragment>
                         <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
 
                         <div><h:form >
-                                <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}" required="true" requiredMessage="#{msgs.required}" />
+                                <h:inputText style="margin-left: 25px; width: 200px" id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}" required="true" requiredMessage="#{msgs.required}" />
                                 <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
                                 <p:calendar id="fromSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateFrom}" >
                                     <f:ajax event="blur" render="fromError" /> 
@@ -42,7 +39,8 @@
 
 
 
-                                <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
+                                <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}" style="width: 90px; height: 30px; border-radius: 15px; margin-right: 15px;  margin-left: 10px; 
+                                                 "/> 
                                 <br></br>
 
                                 <h:message id="fromError" for="fromSearch" style="color:red" />
@@ -54,7 +52,7 @@
                         </div>
                         <div>
                             <h:form >
-                                <h:selectOneMenu   value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> 
+                                <h:selectOneMenu   value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true" style="width: 100px; height: 28px"> 
                                     <f:selectItem itemValue = "TrackName"  itemLabel = "#{msgs.trackName}" /> 
                                     <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
                                     <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
@@ -63,7 +61,17 @@
                                 </h:selectOneMenu> 
                             </h:form>
                         </div>
+                        
+                        <div style="padding-left: 20px">
+                            <h:form>
+                                <h:commandLink action="#{shoppingCartController.toShoppingCart()}">
+                                    <h:graphicImage value="icons/shopping-cart.png" height="40px" width="48px"/>
+                                </h:commandLink>
+                            </h:form>
+                        </div>
                     </nav>
+                    
+                            
                     <nav class="sub-nav">
                         <h:form id="loginButton" rendered="#{not loginController.loginBean.loggedIn}">
                             <h:commandButton value="#{msgs.loginAndRegister}" action="#{loginController.toLoginPage()}"/>

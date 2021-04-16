@@ -36,66 +36,65 @@
                     <div id="infobox">
                         <h3>#{msgs.payment}</h3>
                         <label for="fname">Select Card</label>
-                                <div class="icon-container">
-                                    <h:selectOneRadio 
-                                        id="cardSelect"
-                                        value="selectCard"
-                                        required="true"
-                                        requiredMessage="#{msgs.required}">
-                                        <f:selectItem itemValue="Mastercard">
-                                            <img class="card" src="./icons/cc-mastercard-brands.svg"/>
-                                        </f:selectItem>
-                                        <f:selectItem itemValue="Visa"> 
-                                            <img class="card" src="./icons/cc-visa-brands.svg"/>
-                                        </f:selectItem>
-                                    </h:selectOneRadio>
-                                    <h:messages id="cardSelectError" for="cardSelect" style="color: red"/>
-                                </div>
+                            <div class="icon-container">
+                                <h:selectOneRadio 
+                                    id="cardSelect"
+                                    required="true"
+                                    requiredMessage="#{msgs.required}">
+                                    <f:selectItem itemValue="Mastercard">
+                                        <img class="card" src="./icons/cc-mastercard-brands.svg"/>
+                                    </f:selectItem>
+                                    <f:selectItem itemValue="Visa"> 
+                                        <img class="card" src="./icons/cc-visa-brands.svg"/>
+                                    </f:selectItem>
+                                </h:selectOneRadio>
+                                <h:messages id="cardSelectError" for="cardSelect" style="color: red;"/>
+                            </div>
 
-                                <h:outputLabel for="cname" value="#{msgs.nameOnCard}"/>
-                                <h:inputText id="cname"
-                                             required="true"
-                                             requiredMessage="#{msgs.required}">
-                                    <f:validateLength minimum="3"/>
-                                </h:inputText>
-                                <h:messages id="creditNameError" for="cname" style="color: red"/>
+                            <h:outputLabel for="cname" value="#{msgs.nameOnCard}"/>
+                            <h:inputText id="cname"
+                                         required="true"
+                                         requiredMessage="#{msgs.required}">
+                                <f:validateLength minimum="3"/>
+                            </h:inputText>
+                            <h:messages id="creditNameError" for="cname" style="color: red"/>
 
-                                <h:outputLabel for="ccnum" value="#{msgs.creditCardNumber}"/>
-                                <h:inputText id="ccnum"
-                                             required="true"
-                                             requiredMessage="#{msgs.required}"
-                                             validator="#{checkoutController.validateCreditCard}">
-                                </h:inputText>
-                                <h:messages id="creditCardError" for="ccnum" style="color: red"/>
+                            <h:outputLabel for="ccnum" value="#{msgs.creditCardNumber}"/>
+                            <h:inputText id="ccnum"
+                                         required="true"
+                                         requiredMessage="#{msgs.required}"
+                                         validator="#{checkoutController.validateCreditCard}">
+                            </h:inputText>
+                            <h:messages id="creditCardError" for="ccnum" style="color: red"/>
 
 
-                                <h:outputLabel for="expmonth" value="Expiration Month/Year"/>
-                                <h:inputText id="expmonth" 
-                                             a:placeholder="MM/YYYY"
-                                             required="true"
-                                             requiredMessage="#{msgs.required}">
-                                    <f:convertDateTime pattern="MM/yyyy" />
-                                </h:inputText>
-                                <h:messages id="expDateError" for="expmonth" style="color: red"/>
+                            <h:outputLabel for="expmonth" value="#{msgs.expirationMonthYr}"/>
+                            <h:inputText id="expmonth" 
+                                         a:placeholder="MM/YYYY"
+                                         required="true"
+                                         requiredMessage="#{msgs.required}">
+                                <f:convertDateTime pattern="MM/yyyy" />
+                            </h:inputText>
+                            <h:messages id="expDateError" for="expmonth" style="color: red"/>
 
-                                <h:outputLabel for="province" value="Province"/>
-                                <h:selectOneMenu id="province" value="#{checkoutController.provinceBean.selectedItem}"> 
-                                    <f:selectItems value="#{checkoutController.provinceBean.selectItems}" />
-                                    <p:ajax event="change" update="gsthstText pstText totalText" />
-                                </h:selectOneMenu> ]
+                            <h:outputLabel for="province" value="Province"/>
+                            <h:selectOneMenu id="province" value="#{checkoutController.provinceBean.selectedItem}"> 
+                                <f:selectItems value="#{checkoutController.provinceBean.selectItems}" />
+                                <p:ajax event="change" update="gsthstText pstText totalText" />
+                            </h:selectOneMenu>
                         </div>
 
                         <div id="summary">
                         <h3>Order Summary</h3>
-                        <h:outputText value="Items: $#{shoppingCartController.calculateTotal()}" />
+                        <h:outputText value="#{msgs.itemsFind} $#{shoppingCartController.calculateTotal()}" />
                         <br></br>
-                        <h:outputText value="Shipping and Handling: $#{checkoutController.shippingHandlingPrice}" />
+                        <h:outputText value=" $#{checkoutController.shippingHandlingPrice}" />
                         <br></br>
-                        <h:outputText id="gsthstText" value="Estimated GST/HST: $#{checkoutController.GSTHSTPrice}" />
+                        <h:outputText id="gsthstText" value="#{msgs.estGST} $#{checkoutController.GSTHSTPrice}" />
                         <br></br>
-                        <h:outputText id="pstText" value="Estimated PST: $#{checkoutController.PSTPrice}" />
+                        <h:outputText id="pstText" value="#{msgs.estPST} $#{checkoutController.PSTPrice}" />
                         <br></br>
-                        <h:outputText id="totalText" value="Order Total: $#{checkoutController.totalPrice}" />
+                        <h:outputText id="totalText" value="#{msgs.orderTotal} $#{checkoutController.totalPrice}" />
                         <br></br><br></br>
 
                         <h:commandButton value="#{msgs.purchase}" styleClass="btn-sub" action="#{checkoutController.toInvoice()}"

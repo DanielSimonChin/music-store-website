@@ -51,10 +51,12 @@
 
                                     <div id="shopCart">
                                         <h:form>
-                                            <h:commandLink action="#{shoppingCartController.addShoppingCartTrack(musicTrackJpaController.getMusicTrack())}">
+                                            <p:growl id="growl" showDetail="true" />
+                                            <p:commandLink actionListener="#{shoppingCartController.addShoppingCartTrack(musicTrackJpaController.getMusicTrack())}" 
+                                                        update="growl" styleClass="p-mr-2">
                                                 <h:graphicImage value="icons/shopping-cart.png" />
-                                                <p>#{msgs.addToCart}</p> 
-                                            </h:commandLink>
+                                                <p style="color: white;">#{msgs.addToCart}</p> 
+                                            </p:commandLink>
                                         </h:form>
                                     </div>
                                 </table>
@@ -156,7 +158,6 @@
     </h:body>
 
 </html>
-
 
 
 

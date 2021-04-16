@@ -23,8 +23,148 @@
 
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
+                        <h:form id="form">
+                            <div>
+                                <p:growl id="messages" showDetail="true"/>
 
-                        
+                                <p:toolbar>
+                                    <p:toolbarGroup>
+                                        <p:commandButton value="#{msgs.newBtn}" icon="pi pi-plus" actionListener="#{newsManagerController.openNew()}"
+                                                         update=":form:manage-product-content" oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="ui-button-success" style="margin-right: .5rem">
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton id="delete-products-button" value="#{msgs.removeBtn}"
+                                                         icon="pi pi-trash" actionListener="#{newsManagerController.removeSelectedNewsList()}"
+                                                         styleClass="ui-button-danger" disabled="#{!newsManagerController.hasSelectedNewsList()}"
+                                                         update="@this">
+                                            <p:confirm header="#{msgs.confirmationHeader}" message="#{msgs.deleteProductsMessage}"
+                                                       icon="pi pi-exclamation-triangle"/>
+                                        </p:commandButton>
+
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                                
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="news" value="#{newsManagerController.newsList}"
+                                             reflow="true" styleClass="products-table"
+                                             selection="#{newsManagerController.selectedNewsList}" rowKey="#{news.newsid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.newsHeader}</span>
+
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
+
+                                        </div>
+                                    </f:facet>
+
+                                    <p:ajax event="rowSelect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselect" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowSelectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="rowUnselectCheckbox" update=":form:delete-products-button"/>
+                                    <p:ajax event="toggleSelect" update=":form:delete-products-button"/>
+
+                                    <p:column selectionMode="multiple" exportable="false"></p:column>
+
+                                    <p:column headerText="#{msgs.newsId}" sortBy="#{news.newsid}" filterBy="#{news.newsid}">
+                                        <h:outputText value="#{news.newsid}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.newsTitle}" sortBy="#{news.newtitle}" filterBy="#{news.newtitle}">
+                                        <h:outputText value="#{news.newtitle}"/>
+                                    </p:column>
+
+                                    <p:column headerText="#{msgs.newsText}" sortBy="#{news.newstext}" filterBy="#{news.newstext}">
+                                        <h:outputText value="#{news.newstext}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msgs.newsURL}" sortBy="#{news.url}" filterBy="#{news.url}">
+                                        <h:outputText value="#{news.url}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msgs.newsCreateDate}" sortBy="#{news.createddate}" filterBy="#{news.createddate}">
+                                        <h:outputText value="#{news.createddate}"/>
+                                    </p:column>
+                                    
+                                    <p:column headerText="#{msgs.newsDisplayed}" sortBy="#{news.displayed}">
+                                        <h:outputText rendered="#{news.displayed}" value="#{msgs.yes}"/>
+                                        <h:outputText rendered="#{not news.displayed}" value="#{msgs.no}"/>
+                                    </p:column>
+                                    
+                                    <p:column exportable="false">
+                                        <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
+                                                         oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{news}" target="#{newsManagerController.selectedNews}"/>
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                        <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                                         oncomplete="PF('deleteProductDialog').show()">
+                                            <f:setPropertyActionListener value="#{news}" target="#{newsManagerController.selectedNews}"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <p:dialog header="#{msgs.newsDetails}" showEffect="fade" modal="true" width="625" height="500"
+                                          widgetVar="manageProductDialog" responsive="true">
+                                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty newsManagerController.selectedNews}">
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="newsTitle">#{msgs.newsTitle}</p:outputLabel>
+                                                <p:inputText id="newsTitle" value="#{newsManagerController.selectedNews.newtitle}" required="true"/>
+                                            </div>
+                                            
+                                            <div class="p-field">
+                                                <p:outputLabel for="newsText">#{msgs.newsText}</p:outputLabel>
+                                                <p:inputText id="newsText" value="#{newsManagerController.selectedNews.newstext}" required="true"/>
+                                            </div>
+                                            
+                                            <div class="p-field">
+                                                <p:outputLabel for="newsURL">#{msgs.newsURL}</p:outputLabel>
+                                                <p:inputText id="newsURL" value="#{newsManagerController.selectedNews.url}" required="true"/>
+                                            </div>
+
+                                            <div class="p-field">
+                                                <p:outputLabel for="displayed" value="#{msgs.newsDisplayed}"/>
+                                                <p:selectOneMenu id="displayed" value="#{newsManagerController.selectedNews.displayed}">
+                                                    <f:selectItem itemLabel="#{msgs.yesOption}" itemValue="true"/>
+                                                    <f:selectItem itemLabel="#{msgs.noOption}" itemValue="false"/>
+                                                </p:selectOneMenu>
+                                            </div>
+
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{newsManagerController.saveNews()}"
+                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" actionListener="#{newsManagerController.cancelNewsForm()}" 
+                                                         class="ui-button-secondary"/>
+                                    </f:facet>
+                                </p:dialog>
+
+                                <p:confirmDialog global="true" widgetVar="deleteProductDialog" showEffect="fade" width="300"
+                                                 message="#{msgs.deleteNewsMessage}" header="#{msgs.confirmationHeader}" severity="warn">
+                                    <p:commandButton value="#{msgs.yesOption}" icon="pi pi-check" actionListener="#{newsManagerController.removeNews()}"
+                                                     process="@this" oncomplete="PF('deleteProductDialog').hide()"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                                     onclick="PF('deleteProductDialog').hide()"/>
+                                </p:confirmDialog>
+
+                                <p:confirmDialog global="true" showEffect="fade" width="300">
+                                    <p:commandButton value="#{msgs.yesOption}" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check"/>
+                                    <p:commandButton value="#{msgs.noOption}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                     icon="pi pi-times"/>
+                                </p:confirmDialog>
+                            </div>
+                        </h:form>
                     </section>
                 </div>
             </ui:define>
