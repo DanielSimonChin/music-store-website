@@ -11,86 +11,77 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
     <h:body>
-        <ui:composition>
-            <header>
-                <div class="weblogo">
-                    <a id="logo" href="/MusicalMoose/"><b class="left-logo">Musical Moose</b></a>
-                </div>
-                <nav class="main-nav">
-                    <a href="/MusicalMoose/#home">#{msgs.headerHome}</a>
-                    
-                    <!--<a href="/MusicalMoose/cart.xhtml">#{msgs.headerCart}</a>-->
-                    <h:form id="shopcartlink">
-                        <h:commandLink value="#{msgs.headerCart}" action="#{shoppingCartController.toShoppingCart()}" />
-                    </h:form>
-                    
-                    <ui:fragment rendered="#{loginController.loginBean.loggedIn}">
-                        <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
-                    </ui:fragment>
-                    <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
-                    <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.admin}</a>
+        <f:view locale="#{localeChanger.localeCode}">
+            <ui:composition>
+                <header>
+                    <div class="weblogo">
+                        <a id="logo" href="/MusicalMoose/"><b class="left-logo">Musical Moose</b></a>
+                    </div>
+                    <nav class="main-nav">
+                        <a href="/MusicalMoose/#home">#{msgs.headerHome}</a>
 
-                    <div><h:form >
-                            <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}" required="true" requiredMessage="#{msgs.required}" />
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
-                            <p:calendar id="fromSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateFrom}" >
-                                <f:ajax event="blur" render="fromError" /> 
-                            </p:calendar>  
-                            <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
-                            <p:calendar id="toSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateTo}" >
-                                 <f:ajax event="blur" render="toError" />
-                            </p:calendar>     
-                            
-                            
-                            
-                            <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
-                            <br></br>
-                            
-                            <h:message id="fromError" for="fromSearch" style="color:red" />
-                            <h:message id="toError" for="toSearch" style="color:red" />
-                            <h:outputText rendered="#{searchController.searchError}" value="#{msgs.noResults}"/>
-                            
-                            
+                        <h:form id="shopcartlink">
+                            <h:commandLink value="#{msgs.headerCart}" action="#{shoppingCartController.toShoppingCart()}" />
                         </h:form>
+
+                        <ui:fragment rendered="#{loginController.loginBean.loggedIn}">
+                            <a href="/MusicalMoose/download.xhtml">#{msgs.downloadSongs}</a>
+                        </ui:fragment>
+                        <a href="/MusicalMoose/help.xhtml">#{msgs.help}</a>
+                        <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.admin}</a>
+
+                        <div><h:form >
+                                <h:inputText id="navsearch" rendered="#{'Date' ne searchController.category}" a:placeholder="#{msgs.search}" value="#{searchController.searchText}" required="true" requiredMessage="#{msgs.required}" />
+                                <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.from}"/>
+                                <p:calendar id="fromSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.fromDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateFrom}" >
+                                    <f:ajax event="blur" render="fromError" /> 
+                                </p:calendar>  
+                                <h:outputLabel rendered="#{'Date' eq searchController.category}" value="#{msgs.to}"/>
+                                <p:calendar id="toSearch" rendered="#{'Date' eq searchController.category}" value="#{searchController.toDate}" pattern="MM/dd/yyyy" validator="#{validationController.validateDateTo}" >
+                                    <f:ajax event="blur" render="toError" />
+                                </p:calendar>     
+
+
+
+                                <h:commandButton value="#{msgs.search}" action="#{searchController.searchForPage()}"/> 
+                                <br></br>
+
+                                <h:message id="fromError" for="fromSearch" style="color:red" />
+                                <h:message id="toError" for="toSearch" style="color:red" />
+                                <h:outputText rendered="#{searchController.searchError}" value="#{msgs.noResults}"/>
+
+
+                            </h:form>
                         </div>
-                    <div>
-                    <h:form >
-                        <h:selectOneMenu   value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> 
-                                <f:selectItem itemValue = "TrackName"  itemLabel = "#{msgs.trackName}" /> 
-                                <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
-                                <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
-                                <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
+                        <div>
+                            <h:form >
+                                <h:selectOneMenu   value="#{searchController.category}" id="criteria" onchange="submit()"   immediate="true"> 
+                                    <f:selectItem itemValue = "TrackName"  itemLabel = "#{msgs.trackName}" /> 
+                                    <f:selectItem itemValue = "AlbumTitle" itemLabel = "#{msgs.albumTitle}" /> 
+                                    <f:selectItem itemValue = "Date" itemLabel = "#{msgs.date}" /> 
+                                    <f:selectItem itemValue = "Artist" itemLabel = "#{msgs.artist}" /> 
 
-                            </h:selectOneMenu> 
-                    </h:form>
+                                </h:selectOneMenu> 
+                            </h:form>
                         </div>
-                </nav>
-                <nav class="sub-nav">
-
-                    <h:form rendered="#{not loginController.loginBean.loggedIn}">
-                        <h:commandButton value="#{msgs.loginAndRegister}" action="#{loginController.toLoginPage()}"/>
-                    </h:form>
-                    <h:form rendered="#{loginController.loginBean.loggedIn}">
-                       <h:commandButton value="#{msgs.singOut}" action="#{loginController.signOut()}"/>
-                    </h:form>
-
-
-                    <h:form>
-                        <h:commandLink immediate="true"
-                                       action="#{localeChanger.changeLocale()}">
-                            <f:param name="languageCode" value="fr_CA" />
-                            <h:graphicImage value="icons/ca_flag.gif" />
-                        </h:commandLink>
-
-                        <h:commandLink immediate="true"
-                        action="#{localeChanger.changeLocale()}">
-                        <f:param name="languageCode" value="en_CA" />
-                        <h:graphicImage value="icons/en_flag.gif" />
-                        </h:commandLink>
-                    </h:form>
-
-                </nav>
-            </header>
-        </ui:composition>
+                    </nav>
+                    <nav class="sub-nav">
+                        <h:form id="loginButton" rendered="#{not loginController.loginBean.loggedIn}">
+                            <h:commandButton value="#{msgs.loginAndRegister}" action="#{loginController.toLoginPage()}"/>
+                        </h:form>
+                        <h:form rendered="#{loginController.loginBean.loggedIn}">
+                            <h:commandButton value="#{msgs.singOut}" action="#{loginController.signOut()}"/>
+                        </h:form>
+                        
+                        <h:form>
+                                <h:selectOneMenu value = "#{localeChanger.localeCode}" onchange = "submit()"
+                                                 valueChangeListener = "#{localeChanger.localCodeChanged}">
+                                    <f:selectItems value = "#{localeChanger.getLanguages()}" /> 
+                                </h:selectOneMenu>    
+                        </h:form>
+                    </nav>
+                </header>
+            </ui:composition>
+        </f:view>
     </h:body>
 </html>

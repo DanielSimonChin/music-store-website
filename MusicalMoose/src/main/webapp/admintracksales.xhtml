@@ -23,16 +23,15 @@
                     <section class="main-container">
                         <div class="topnav">
                             <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
-                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
-                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
-                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
-                            <a href="/MusicalMoose/adminclient.xhtml">Client</a>
-                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
-                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
-                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
-                            <a class="active">Set Track Sales</a>
-                            <a href="/MusicalMoose/adminalbumsales.xhtml">Set Album Sales</a>
-                            <a href="/MusicalMoose/adminnews.xhtml">News</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">#{msgs.albumInventoryTab}</a>
+                            <a href="/MusicalMoose/adminads.xhtml">#{msgs.adsTab}</a>
+                            <a href="/MusicalMoose/adminclient.xhtml">#{msgs.clientsTab}</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">#{msgs.surveyTab}</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">#{msgs.reviewTab}</a>
+                            <a href="/MusicalMoose/adminreport.xhtml">#{msgs.reportTab}</a>
+                            <a class="active">#{msgs.setTrackSalesTab}</a>
+                            <a href="/MusicalMoose/adminalbumsales.xhtml">#{msgs.setAlbumSalesTab}</a>
+                            <a href="/MusicalMoose/adminnews.xhtml">#{msgs.newsTab}</a>
                         </div>
 
 
@@ -72,9 +71,12 @@
                                 </p:column>
 
                                 <p:column headerText="#{msgs.tableSalePriceHeader}" sortBy="#{product.saleprice}">
-                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700">
+                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700" >
                                         <f:convertNumber currencySymbol="$" type="currency"/>
                                     </h:outputText>
+                                    
+<!--                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700" rendered="#{product.saleprice != null}">
+                                    </h:outputText>-->
                                 </p:column>
 
                                 <p:column headerText="#{msgs.tablePriceStatusHeader}" sortBy="#{product.isOnSale()}">

@@ -23,16 +23,15 @@
                     <section class="main-container">
                         <div class="topnav">
                             <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
-                            <a class="active" >Album Inventory</a>
-                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
-                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
-                            <a href="/MusicalMoose/adminclient.xhtml">Client</a>
-                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
-                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
-                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
-                            <a href="/MusicalMoose/admintracksales.xhtml">Set Track Sales</a>
-                            <a href="/MusicalMoose/adminalbumsales.xhtml">Set Album Sales</a>
-                            <a href="/MusicalMoose/adminnews.xhtml">News</a>
+                            <a class="active">#{msgs.albumInventoryTab}</a>
+                            <a href="/MusicalMoose/adminads.xhtml">#{msgs.adsTab}</a>
+                            <a href="/MusicalMoose/adminclient.xhtml">#{msgs.clientsTab}</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">#{msgs.surveyTab}</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">#{msgs.reviewTab}</a>
+                            <a href="/MusicalMoose/adminreport.xhtml">#{msgs.reportTab}</a>
+                            <a href="/MusicalMoose/admintracksales.xhtml">#{msgs.setTrackSalesTab}</a>
+                            <a href="/MusicalMoose/adminalbumsales.xhtml">#{msgs.setAlbumSalesTab}</a>
+                            <a href="/MusicalMoose/adminnews.xhtml">#{msgs.newsTab}</a>
                         </div>
 
 
@@ -189,29 +188,29 @@
                                                 <p:outputLabel for="costprice">#{msgs.formCostPrice}</p:outputLabel>
                                                 <p:inputNumber id="costprice" value="#{albumManagerController.selectedAlbum.costprice}"
                                                                symbol=" CAD" symbolPosition="s"
-                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                                               decimalSeparator="." thousandSeparator="," required="true" minValue="0"/>
                                             </div>
 
                                             <div class="p-field">
                                                 <p:outputLabel for="listprice">#{msgs.formListPrice}</p:outputLabel>
                                                 <p:inputNumber id="listprice" value="#{albumManagerController.selectedAlbum.listprice}"
                                                                symbol=" CAD" symbolPosition="s"
-                                                               decimalSeparator="." thousandSeparator="," required="true"/>
+                                                               decimalSeparator="." thousandSeparator="," required="true" minValue="0"/>
                                             </div>
 
                                             <div class="p-field">
                                                 <p:outputLabel for="pstinput">#{msgs.formPST}</p:outputLabel>
-                                                <p:inputNumber id="pstinput" value="#{albumManagerController.selectedAlbum.pst}" modifyValueOnWheel="false" required="true" />
+                                                <p:inputNumber id="pstinput" value="#{albumManagerController.selectedAlbum.pst}" modifyValueOnWheel="false" required="true" minValue="0" />
                                             </div>
 
                                             <div class="p-field">
                                                 <p:outputLabel for="gstinput">#{msgs.formGST}</p:outputLabel>
-                                                <p:inputNumber id="gstinput" value="#{albumManagerController.selectedAlbum.gst}" modifyValueOnWheel="false" required="true" />
+                                                <p:inputNumber id="gstinput" value="#{albumManagerController.selectedAlbum.gst}" modifyValueOnWheel="false" required="true" minValue="0"/>
                                             </div>
 
                                             <div class="p-field">
                                                 <p:outputLabel for="hstinput">#{msgs.formHST}</p:outputLabel>
-                                                <p:inputNumber id="hstinput" value="#{albumManagerController.selectedAlbum.hst}" modifyValueOnWheel="false" required="true" />
+                                                <p:inputNumber id="hstinput" value="#{albumManagerController.selectedAlbum.hst}" modifyValueOnWheel="false" required="true" minValue="0" />
                                             </div>
 
                                             <div class="p-field">

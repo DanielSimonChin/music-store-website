@@ -66,6 +66,7 @@ public class TrackManagerController implements Serializable {
      * @return the list of all tracks displayed in the data table
      */
     public List<MusicTrack> getTracks() {
+        init();
         return this.tracks;
     }
 
@@ -172,6 +173,8 @@ public class TrackManagerController implements Serializable {
     public void saveProduct() throws Exception {
         //If this is a new track
         if (this.selectedTrack.getInventoryid() == null) {
+            //The default sale price will be 0 and can be changed in the set sales tab for tracks
+            this.selectedTrack.setSaleprice(0.0f);
             //The new track was entered at the current date and time
             this.selectedTrack.setDateentered(new Date());
             trackController.create(this.selectedTrack);

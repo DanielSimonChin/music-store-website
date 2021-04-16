@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -61,6 +60,7 @@ public class AlbumManagerController implements Serializable {
      * @return the list of all tracks displayed in the data table
      */
     public List<Album> getAlbums() {
+        init();
         return this.albums;
     }
 
@@ -152,11 +152,10 @@ public class AlbumManagerController implements Serializable {
      * @throws Exception
      */
     public void saveProduct() throws Exception {
-        
-        //If this is a new track
+        //If this is a new album
         if (this.selectedAlbum.getAlbumid() == null) {
-            LOG.info("CREATING A NEW ALBUM ENTITY");
-            //this.selectedAlbum.setAlbumid(this.albumController.getAlbumCount() + 1);
+            //The default sale price will be 0 and can be changed in the set sales tab for albums
+            this.selectedAlbum.setSaleprice(0.0f);
             //The new track was entered at the current date and time
             this.selectedAlbum.setDateentered(new Date());
             this.selectedAlbum.setReleasedate(new Date());
@@ -166,13 +165,12 @@ public class AlbumManagerController implements Serializable {
                     "com.gb4w21.musicalmoose.bundles.messages", "albumCreated", null));
             //A currently existing track that was edited.
         } else {
-            LOG.info("EDITING AN ALBUM");
             setRemovalDate();
             this.albumController.edit(this.selectedAlbum);
             FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "albumUpdated", null));
         }
-        
+
         for (MusicTrack track : this.trackController.findMusicTrackEntities()) {
             if (track.getAlbumid() == null) {
                 track.setPartofalbum(false);

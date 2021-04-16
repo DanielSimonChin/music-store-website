@@ -6,13 +6,10 @@
 package com.gb4w21.musicalmoose.business;
 
 import com.gb4w21.musicalmoose.controller.ShoppingCartController;
+import com.gb4w21.musicalmoose.util.LocaleChanger;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -23,17 +20,21 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author victo
+ *
+ * @author victor and daniel
  */
 @Named
 @SessionScoped
-public class PreRenderViewBean implements Serializable  {
+public class PreRenderViewBean implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(PreRenderViewBean.class);
-    
+
     @Inject
     private ShoppingCartController shoppingCartController;
-    
+
+    @Inject
+    private LocaleChanger localeChanger;
+
     private boolean checkedCookies = false;
 
     /**
@@ -43,7 +44,7 @@ public class PreRenderViewBean implements Serializable  {
         if (!checkedCookies) {
             this.addAlbumCookiesToShoppingCart();
             this.addTrackCookiesToShoppingCart();
-            
+
             this.checkedCookies = true;
         }
         this.shoppingCartController.toShoppingCart();
@@ -61,7 +62,7 @@ public class PreRenderViewBean implements Serializable  {
             context.getExternalContext().addResponseCookie("GenreTracking", genre, properties);
         }
     }
-    
+
     public boolean hasGenreCookie() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object genreCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
@@ -72,71 +73,68 @@ public class PreRenderViewBean implements Serializable  {
             return true;
         }
     }
-    
+
     private void addAlbumCookiesToShoppingCart() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartAlbumCookie = context.getExternalContext().getRequestCookieMap().get("cart_album");
-        if (cartAlbumCookie != null && !((Cookie)cartAlbumCookie).getValue().isEmpty()) {
-            String albumIdsString = ((Cookie)cartAlbumCookie).getValue();
+        if (cartAlbumCookie != null && !((Cookie) cartAlbumCookie).getValue().isEmpty()) {
+            String albumIdsString = ((Cookie) cartAlbumCookie).getValue();
             String[] albumIds = albumIdsString.split(",");
-            
+
             for (int i = 0; i < albumIds.length; i++) {
                 shoppingCartController.findAlbumById(Integer.parseInt(albumIds[i]));
             }
         }
     }
-    
+
     private void addTrackCookiesToShoppingCart() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartTrackCookie = context.getExternalContext().getRequestCookieMap().get("cart_track");
-        if (cartTrackCookie != null && !((Cookie)cartTrackCookie).getValue().isEmpty()) {
-            String trackIdsString = ((Cookie)cartTrackCookie).getValue();
+        if (cartTrackCookie != null && !((Cookie) cartTrackCookie).getValue().isEmpty()) {
+            String trackIdsString = ((Cookie) cartTrackCookie).getValue();
             String[] trackIds = trackIdsString.split(",");
-            
+
             for (int i = 0; i < trackIds.length; i++) {
                 shoppingCartController.findMusicTrackById(Integer.parseInt(trackIds[i]));
             }
         }
     }
-    
+
     public void writeCartCookie(int id, String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartCookie = context.getExternalContext().getRequestCookieMap().get(cookieName);
-        
+
         Map<String, Object> properties = new HashMap<>();
         properties.put("maxAge", 60 * 60 * 24 * 365 * 10);
-        
-        if (cartCookie == null || ((Cookie)cartCookie).getValue().isEmpty()) {
+
+        if (cartCookie == null || ((Cookie) cartCookie).getValue().isEmpty()) {
             context.getExternalContext().addResponseCookie(cookieName, Integer.toString(id), properties);
-        }
-        else {
-            String cartCookiesIds = ((Cookie)cartCookie).getValue() + "," + Integer.toString(id);
+        } else {
+            String cartCookiesIds = ((Cookie) cartCookie).getValue() + "," + Integer.toString(id);
             context.getExternalContext().addResponseCookie(cookieName, cartCookiesIds, properties);
         }
     }
-    
+
     public void removeCartCookie(int id, String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartCookie = context.getExternalContext().getRequestCookieMap().get(cookieName);
-        
+
         if (cartCookie != null) {
-            String cartCookiesIds = ((Cookie)cartCookie).getValue();
+            String cartCookiesIds = ((Cookie) cartCookie).getValue();
             String idString = Integer.toString(id);
             int idIndex = cartCookiesIds.indexOf(idString);
-            
+
             if (idIndex == 0 && cartCookiesIds.length() > idString.length()) {
                 cartCookiesIds = cartCookiesIds.replace(idString + ",", "");
-            }
-            else if (idIndex == 0) {
+            } else if (idIndex == 0) {
                 cartCookiesIds = cartCookiesIds.replace(idString, "");
-            }
-            else {
+            } else {
                 cartCookiesIds = cartCookiesIds.replace("," + idString, "");
             }
             context.getExternalContext().addResponseCookie(cookieName, cartCookiesIds, null);
         }
     }
-    
+
     public void removeCookie(String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().addResponseCookie(cookieName, "", null);
@@ -144,26 +142,28 @@ public class PreRenderViewBean implements Serializable  {
 
     /**
      * Checks for an existing cookie which contains the last selected locale
-     * from the last session and calls a helper method to set the locale.
+     * from the last session.
+     *
+     * return the string representing the language code
      */
     public String checkLocaleCookie() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         // Retrieve a specific cookie
-        Object localeCookie = context.getExternalContext().getRequestCookieMap().get("LocaleCookie");
+        Cookie localeCookie = (Cookie) context.getExternalContext().getRequestCookieMap().get("LocaleCookie");
         if (localeCookie != null) {
             LOG.info(((Cookie) localeCookie).getName());
             LOG.info(((Cookie) localeCookie).getValue());
 
-            //Set the locale using the retrieved cookie
-            setLocale((Cookie) localeCookie);
+            return localeCookie.getValue();
+
         }
         return null;
     }
 
     /**
      * Whenever a user switches language, create a new cookie with its value set
-     * as the language code (en_CA, fr_CA)
+     * as the language code (en, fr)
      *
      * @param languageCode
      */
@@ -175,30 +175,5 @@ public class PreRenderViewBean implements Serializable  {
 
         //Create a new cookie with the new value and give it a very long time to live
         context.getExternalContext().addResponseCookie("LocaleCookie", languageCode, properties);
-
-    }
-
-    /**
-     * Given a cookie with a value, set the locale with that value.
-     *
-     * @param cookie
-     */
-    private void setLocale(Cookie cookie) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Locale aLocale;
-
-        String languageCode = cookie.getValue();
-
-        switch (languageCode) {
-            case "en_CA":
-                aLocale = Locale.CANADA;
-                break;
-            case "fr_CA":
-                aLocale = Locale.CANADA_FRENCH;
-                break;
-            default:
-                aLocale = Locale.getDefault();
-        }
-        context.getViewRoot().setLocale(aLocale);
     }
 }
