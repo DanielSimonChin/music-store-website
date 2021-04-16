@@ -15,12 +15,7 @@ and open the template in the editor.
     </h:head>
     <h:body>
 
-        <f:view>
-            <!--<f:metadata>-->
-                <f:event type="preRenderView"
-                         listener="#{preRenderViewBean.checkLocaleCookie()}" />
-            <!--</f:metadata>-->
-
+        <f:view locale="#{localeChanger.localeCode}">
             <ui:insert name="header">
                 <ui:include src="header.xhtml"/>
             </ui:insert>

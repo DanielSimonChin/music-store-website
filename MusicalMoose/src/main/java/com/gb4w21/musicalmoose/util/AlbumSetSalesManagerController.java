@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Controller methods and variables that allow an admin to set the sale prices
+ * of an album
  *
  * @author Daniel
  */
@@ -55,6 +57,7 @@ public class AlbumSetSalesManagerController implements Serializable {
      * @return the list of all tracks displayed in the data table
      */
     public List<Album> getAlbums() {
+        init();
         return this.albums;
     }
 
