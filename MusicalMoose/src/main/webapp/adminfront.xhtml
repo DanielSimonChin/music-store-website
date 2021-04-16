@@ -12,23 +12,29 @@ and open the template in the editor.
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:p="http://primefaces.org/ui">
     <head>
-        <title>TODO supply a title</title>
+        <title>Manager</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <body>
-        <h1>Manager front page</h1>
-        <h:form>
-            <h:commandButton value="client" action="#{clientManagerController.toClientManagement()}"/> 
-        </h:form>
-         <h:form>
-             <h:commandButton value="review" action="#{reviewManagerController.toReviewPage()}"/> 
-        </h:form>
-         <h:form>
-             <h:commandButton value="survey" action="#{surveyManagerController.toSurveryManagement()}"/> 
-        </h:form>
-        <h:form>
-             <h:commandButton value="report" action="#{reportManagementController.toReportPage()}"/> 
-        </h:form>
+        <ui:composition template="/templates/commonadmin.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <h1>Manager front page</h1>
+                <h:form>
+                    <h:commandButton value="client" action="#{clientManagerController.toClientManagement()}"/> 
+                </h:form>
+                <h:form>
+                    <h:commandButton value="review" action="#{reviewManagerController.toReviewPage()}"/> 
+                </h:form>
+                <h:form>
+                    <h:commandButton value="survey" action="#{surveyManagerController.toSurveryManagement()}"/> 
+                </h:form>
+                <h:form>
+                    <h:commandButton value="report" action="#{reportManagementController.toReportPage()}"/> 
+                </h:form>
+            </ui:define>
+        </ui:composition>
+
     </body>
 </html>
 
