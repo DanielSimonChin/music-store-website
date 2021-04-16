@@ -24,7 +24,7 @@
                             <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
                             <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
                             <a href="/MusicalMoose/adminads.xhtml">Ads</a>
-                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminsale.xhtml">Purchases Records</a>
                             <a class="active">Client</a>
                             <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
                             <a href="/MusicalMoose/adminreview.xhtml">Review</a>
@@ -39,16 +39,7 @@
 
                                 <p:toolbar>
 
-                                    <p:toolbarGroup align="right">                                         
-                                        <h:form >
-                                            <p:inputText id="navsearch"  value="#{clientManagerController.clientSearch}" validator="#{clientManagerController.validateClientSearch}" required="true" requiredMessage="#{msgs.required}" />
-                                            <h:commandButton value="#{msgs.search}" action="#{clientManagerController.searchClients()}"/> 
-
-                                            <br></br>
-                                            <p:message id="searchError" for="navsearch" style="color:red" />
-                                        </h:form>
-
-                                    </p:toolbarGroup>
+                                   
 
                                 </p:toolbar>
 
@@ -57,65 +48,75 @@
                                              reflow="true" styleClass="products-table"
                                              selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
                                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.clients}</span>
 
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
+
+                                        </div>
+                                    </f:facet>
 
 
                                     <p:column selectionMode="multiple" exportable="false"></p:column>
 
-                                    <p:column  headerText="#{msgs.id}" sortBy="#{client.clientid}" filterBy="#{client.clientid}">
+                                    <p:column  headerText="#{msgs.id}"  sortBy="#{client.clientid}">
                                         <h:outputText  value="#{client.clientid}"/>
                                     </p:column>
 
-                                    <p:column headerText="#{msgs.username}" sortBy="#{client.username}" filterBy="#{client.username}">
+                                    <p:column headerText="#{msgs.username}" sortBy="#{client.username}" >
                                         <h:outputText value="#{client.username}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" filterBy="#{client.email}">
+                                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" >
                                         <h:outputText  value="#{client.email}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.password}" sortBy="#{client.password}" filterBy="#{client.password}">
+                                    <p:column headerText="#{msgs.password}" sortBy="#{client.password}" >
                                         <h:outputText  value="#{client.password}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.title}" sortBy="#{client.title}" filterBy="#{client.title}">
+                                    <p:column headerText="#{msgs.title}" sortBy="#{client.title}" >
                                         <h:outputText value="#{client.title}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.firstName}" sortBy="#{client.firstname}" filterBy="#{client.firstname}">
+                                    <p:column headerText="#{msgs.firstName}" sortBy="#{client.firstname}" >
                                         <h:outputText value="#{client.firstname}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.lastName}" sortBy="#{client.lastname}" filterBy="#{client.lastname}">
+                                    <p:column headerText="#{msgs.lastName}" sortBy="#{client.lastname}" >
                                         <h:outputText value="#{client.lastname}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.companyName}" sortBy="#{client.companyname}" filterBy="#{client.companyname}">
+                                    <p:column headerText="#{msgs.companyName}" sortBy="#{client.companyname}" >
                                         <h:outputText rendered="#{empty client.companyname}" value="#{msgs.nullMs}"/>
                                         <h:outputText rendered="#{not empty client.companyname}" value="#{client.companyname}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.city}" sortBy="#{client.city}" filterBy="#{client.city}">
+                                    <p:column headerText="#{msgs.city}" sortBy="#{client.city}" >
                                         <h:outputText value="#{client.city}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.province}" sortBy="#{client.province}" filterBy="#{client.province}">
+                                    <p:column headerText="#{msgs.province}" sortBy="#{client.province}" >
                                         <h:outputText value="#{client.province}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.country}" sortBy="#{client.country}" filterBy="#{client.country}">
+                                    <p:column headerText="#{msgs.country}" sortBy="#{client.country}" >
                                         <h:outputText value="#{client.country}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.address1}" sortBy="#{client.address1}" filterBy="#{client.address1}">
+                                    <p:column headerText="#{msgs.address1}" sortBy="#{client.address1}" >
                                         <h:outputText value="#{client.address1}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.address2}" sortBy="#{client.address2}" filterBy="#{client.address2}">
+                                    <p:column headerText="#{msgs.address2}" sortBy="#{client.address2}" >
                                         <h:outputText rendered="#{empty client.address2}" value="#{msgs.nullMs}"/>
                                         <h:outputText rendered="#{not empty client.address2}" value="#{client.address2}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.postalCode}" sortBy="#{client.postalcode}" filterBy="#{client.postalcode}">
+                                    <p:column headerText="#{msgs.postalCode}" sortBy="#{client.postalcode}" >
                                         <h:outputText value="#{client.postalcode}"/>
                                     </p:column>
 
-                                    <p:column headerText="#{msgs.homeTelephone}" sortBy="#{client.hometelephone}" filterBy="#{client.hometelephone}">
+                                    <p:column headerText="#{msgs.homeTelephone}" sortBy="#{client.hometelephone}" >
                                         <h:outputText value="#{client.hometelephone}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.cellphone}" sortBy="#{client.celltelephone}" filterBy="#{client.celltelephone}">
+                                    <p:column headerText="#{msgs.cellphone}" sortBy="#{client.celltelephone}" >
                                         <h:outputText rendered="#{empty client.celltelephone}" value="#{msgs.nullMs}"/>
                                         <h:outputText rendered="#{not empty client.celltelephone}" value="#{client.celltelephone}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.genreOfLastSearch}" sortBy="#{client.genreoflastsearch}" filterBy="#{client.genreoflastsearch}">
+                                    <p:column headerText="#{msgs.genreOfLastSearch}" sortBy="#{client.genreoflastsearch}" >
                                         <h:outputText value="#{client.genreoflastsearch}"/>
                                     </p:column>
                                     <p:column headerText="#{msgs.isManager}" sortBy="#{client.ismanager}" >
@@ -149,7 +150,7 @@
 
                                 </p:dataTable>
 
-                                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
+                                <p:dialog header="#{msgs.clientDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
                                           width="860" height="540" widgetVar="manageProductDialog" responsive="true">
                                     <p:outputPanel id="manage-product-content" class="ui-fluid">
                                         <p:outputPanel rendered="#{not empty clientManagerController.selectedClient}">
@@ -166,7 +167,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="password" value="#{msgs.password}"/>
                                                 <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}" requiredMessage="#{msgs.required}"   required="true">
-                                                    <f:validateLength minimum="6" maximum="27" />
+                                                    <f:validateLength minimum="4" maximum="27" />
                                                     <f:ajax event="blur" render="password1Error" />
                                                 </p:inputText>
                                                 <p:message id="passwordError" for="password" style="color:red" />
@@ -266,7 +267,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="pcode" value="#{msgs.postalCode}"/>
                                                 <p:inputText id="pcode" label="#{msgs.postalCode}" value="#{clientManagerController.selectedClient.postalcode}" required="true" requiredMessage="#{msgs.required}" >
-                                                    <f:validateLength minimum="5" maximum="9" />
+                                                    <f:validateLength minimum="3" maximum="9" />
                                                     <f:ajax event="blur" render="pcodeError" />
                                                 </p:inputText>
                                                 <p:message id="pcodeError" for="pcode" style="color:red" />

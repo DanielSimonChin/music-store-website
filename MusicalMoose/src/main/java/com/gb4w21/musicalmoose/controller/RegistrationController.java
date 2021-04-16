@@ -49,6 +49,7 @@ public class RegistrationController implements Serializable {
     private String lastPageRegister;
     private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$", Pattern.CASE_INSENSITIVE);
+
     public RegistrationController() {
 
     }
@@ -192,24 +193,27 @@ public class RegistrationController implements Serializable {
             throw new ValidatorException(message);
         }
     }
+
     public void validateCellPhoneNumber(FacesContext context, UIComponent component,
             Object value) {
         String cellPhoneNumber = value.toString();
-        String homePhoneNumber = ""+registrationBean.getHometelephone();
+        String homePhoneNumber = "" + registrationBean.getHometelephone();
         Matcher matcher = VALID_PHONE_NUMBER_PATTERN.matcher(cellPhoneNumber);
-        if (!matcher.find()) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "phoneNumberFormatError", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+        if (cellPhoneNumber!=null &&(!cellPhoneNumber.isEmpty())) {
+            if (!matcher.find()) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "phoneNumberFormatError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
-            throw new ValidatorException(message);
-        }
-        if(cellPhoneNumber!=null&&(!cellPhoneNumber.equals(""))&&homePhoneNumber.equals(cellPhoneNumber)){
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "phoneNumberIdenticalError", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
+                throw new ValidatorException(message);
+            }
+            if (cellPhoneNumber != null && (!cellPhoneNumber.equals("")) && homePhoneNumber.equals(cellPhoneNumber)) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "phoneNumberIdenticalError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
-            throw new ValidatorException(message);
+                throw new ValidatorException(message);
+            }
         }
     }
 }

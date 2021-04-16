@@ -58,24 +58,27 @@ public class ReviewManagerController implements Serializable {
 
     }
     public List<Review> getReviews(){
-        if(reviews==null||reviews.isEmpty()){
-            reviews=reviewJpaController.findReviewEntities();
-        }
+    
         return reviews;
     }
     public void setReviews(List<Review> reviews){
+        
          this.reviews=reviews;
     }
     public List<Review> getSelectedReviews(){
+       
         return selectedReviews;
     }
     public void setSelectedReviews(List<Review> selectedReviews){
+      
          this.selectedReviews=selectedReviews;
     }
     public Review getSelectedReview(){
+       
         return selectedReview;
     }
     public void setSelectedReview(Review selectedReview){
+      
         this.selectedReview=selectedReview;
     }
     /**
@@ -83,38 +86,60 @@ public class ReviewManagerController implements Serializable {
      */
      @PostConstruct
     public void init() {
-        reviews = new ArrayList<>();
+       
+        reviews=reviewJpaController.findReviewEntities();
+       
         selectedReviews = new ArrayList<>();
+     
         this.selectedReview = null;
+    
     }
     /**
      * Takes the user to the review page and resets page values
      * @return String admin review page
      */
     public String toReviewPage(){
+       
         reviews = new ArrayList<>();
+      
         selectedReviews = new ArrayList<>();
+       
         this.selectedReview = null;
+        
         return "adminreview";
     }
     /**
      * save changes to a review if a review is changed to approved it will be displayed
      */
      public void saveReview() {
+         
        try{
         if (this.selectedReview.getClientid()== null) {
+          
                LOG.info("Some one tried to edit a non exsitent review");
+               
         } else {
+           
             reviewJpaController.edit(selectedReview);
+         
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "reviewUpdated", null);
+           
             FacesContext.getCurrentInstance().addMessage(null, message);
+            
         }
        } catch (Exception ex) {
+           
             LOG.info("Error with editing:"+ex.getLocalizedMessage());
+          
         }
-      
+       
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+        
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        
+    }
+      public void doNothing(){
+        
     }
 }

@@ -51,6 +51,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import org.primefaces.component.calendar.Calendar;
 
 @Named
 @SessionScoped
@@ -65,15 +66,51 @@ public class OrderManagementController implements Serializable {
     private EntityManager entityManager;
     private Sale selectedSale;
     private List<Sale> sales;
+    private boolean addRemoved;
 
     public OrderManagementController() {
 
     }
-     @PostConstruct
+
+    @PostConstruct
     public void init() {
-        selectedSale=null;
+        this.addRemoved = true;
+        selectedSale = null;
         sales = saleJpaController.findSaleEntities();
+        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
+        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
+        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
+        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
+        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
     }
+
+    public boolean isAddRemoved() {
+        return addRemoved;
+    }
+
+    public String changeTable() {
+        sales = saleJpaController.findSaleEntities();
+        if (addRemoved) {
+            addRemoved = false;
+            removeAdded();
+        } else {
+            addRemoved = true;
+        }
+
+        return "adminsale";
+    }
+
+    private void removeAdded() {
+        List<Sale> removedSale = new ArrayList<>();
+        for (Sale sale : this.sales) {
+            if (sale.getSaleremoved()) {
+                removedSale.add(sale);
+
+            }
+        }
+        this.sales.removeAll(removedSale);
+    }
+
     public Sale getSelectedSale() {
         return this.selectedSale;
     }
@@ -90,11 +127,20 @@ public class OrderManagementController implements Serializable {
         this.sales = sales;
     }
 
+    public boolean isAblum(Invoicedetail invoicedetail) {
+        return invoicedetail.getAlbumid() != null;
+    }
+
     public float totalProfit(Sale sale) {
         float totalProfit = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
-            if (!invoicedetail.getInvoicedetailremoved()) {
+            if (addRemoved) {
                 totalProfit += invoicedetail.getProfit();
+            } else {
+                if (!invoicedetail.getInvoicedetailremoved()) {
+                    totalProfit += invoicedetail.getProfit();
+                }
+
             }
         }
         return totalProfit;
@@ -103,8 +149,12 @@ public class OrderManagementController implements Serializable {
     public float totalCurrentCost(Sale sale) {
         float totalCurrentCost = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
-            if (!invoicedetail.getInvoicedetailremoved()) {
+            if (addRemoved) {
                 totalCurrentCost += invoicedetail.getCurrentcost();
+            } else {
+                if (!invoicedetail.getInvoicedetailremoved()) {
+                    totalCurrentCost += invoicedetail.getCurrentcost();
+                }
             }
         }
         return totalCurrentCost;
@@ -113,8 +163,12 @@ public class OrderManagementController implements Serializable {
     public int totalNumberOfTracks(Sale sale) {
         int trackNumber = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
-            if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getInventoryid() != null) {
-                trackNumber++;
+            if (addRemoved) {
+                trackNumber += invoicedetail.getProfit();
+            } else {
+                if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getInventoryid() != null) {
+                    trackNumber++;
+                }
             }
         }
         return trackNumber;
@@ -123,10 +177,103 @@ public class OrderManagementController implements Serializable {
     public int totalNumberOfAlbums(Sale sale) {
         int albumNumber = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
-            if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getAlbumid() != null) {
-                albumNumber++;
+            if (addRemoved) {
+                albumNumber += invoicedetail.getProfit();
+            } else {
+                if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getAlbumid() != null) {
+                    albumNumber++;
+                }
             }
         }
         return albumNumber;
+    }
+
+    public void saveSale() {
+
+        try {
+
+            if (this.selectedSale.getSaleid() != null) {
+
+                for (Invoicedetail invoicedetail : selectedSale.getInvoicedetailList()) {
+                    invoicedetailJpaController.edit(invoicedetail);
+                }
+                saleJpaController.edit(selectedSale);
+
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "saleEdited", null);
+
+                FacesContext.getCurrentInstance().addMessage(null, message);
+
+            } else {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "noSaleSelected", null);
+
+                FacesContext.getCurrentInstance().addMessage(null, message);
+            }
+            Sale s = saleJpaController.findSale(selectedSale.getSaleid());
+
+        } catch (Exception ex) {
+
+            LOG.info("Trouble editing sale" + ex.getLocalizedMessage());
+        }
+
+        sales = this.saleJpaController.findSaleEntities();
+        if (!this.addRemoved) {
+            this.removeAdded();
+        }
+        PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
+
+        PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+    }
+
+    public void validateSaleDate(FacesContext context, UIComponent component, Object value) {
+      
+       
+        if (value != null) {
+            Date saleDate = (Date) value;
+            if (checkDateInFutre(saleDate)) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "saleDateError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }
+        }
+    }
+
+    public void validateInvoiceDate(FacesContext context, UIComponent component, Object value) {
+
+        if (value != null) {
+            Date invoiceDate = (Date) value;
+            if (checkDateInFutre(invoiceDate)) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "saleDateError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }
+            /**
+            if (invoiceDate.compareTo(this.selectedSale.getSaledate()) > 0) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "invoiceDateError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }*/
+
+        }
+    }
+
+    /**
+     * checks to see if the chosen date is in the future
+     *
+     * @param chosenDate Date
+     * @return boolean true if the date is in the future false if not
+     */
+    private boolean checkDateInFutre(Date chosenDate) {
+        Date currentDate = new Date();
+        LOG.info("Date:" + chosenDate.toString());
+        return chosenDate.compareTo(currentDate) > 0;
+
     }
 }

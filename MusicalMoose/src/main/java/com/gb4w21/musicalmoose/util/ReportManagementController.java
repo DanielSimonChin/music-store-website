@@ -84,6 +84,8 @@ public class ReportManagementController implements Serializable {
     private MusicTrackJpaController musicTrackJpaController;
 
     private float totalProfit;
+    private float totalCost;
+    private float totalSales;
     private int toalNumberOfSales;
     private int totalNumberOfDownloads;
     private String reportCategory;
@@ -92,7 +94,6 @@ public class ReportManagementController implements Serializable {
 
     private List<Invoicedetail> selectedInvoicedetails;
     private Invoicedetail selectedInvoicedetail;
-
 
     private List<Client> clients;
     private List<MusicTrack> tracks;
@@ -112,7 +113,6 @@ public class ReportManagementController implements Serializable {
     @PostConstruct
     public void init() {
         gettingSales = false;
-      
 
         invoicedetails = new ArrayList<>();
         this.reportCategory = ReportCategory.TotalSales.toString();
@@ -167,8 +167,6 @@ public class ReportManagementController implements Serializable {
         this.tracks = tracks;
     }
 
-  
-
     public List<Album> getAlbums() {
         return albums;
     }
@@ -199,6 +197,22 @@ public class ReportManagementController implements Serializable {
 
     public void setTotalProfit(float totalProfit) {
         this.totalProfit = totalProfit;
+    }
+
+    public float getTotalCost() {
+        return this.totalCost;
+    }
+
+    public void setTotalCost(float totalCost) {
+        this.totalCost = totalCost;
+    }
+
+   public float getTotalSales() {
+        return this.totalSales;
+   }
+
+    public void setTotalSales(float totalSales) {
+        this.totalSales = totalSales;
     }
 
     public int getToalNumberOfSales() {
@@ -245,7 +259,8 @@ public class ReportManagementController implements Serializable {
         clients = new ArrayList<>();
         tracks = new ArrayList<>();
         albums = new ArrayList<>();
-
+        totalCost=0;
+        totalSales=0;
         totalProfit = 0;
         toalNumberOfSales = 0;
         totalNumberOfDownloads = 0;
@@ -256,12 +271,13 @@ public class ReportManagementController implements Serializable {
         if ((this.reportCategory.equals(ReportCategory.SalesByAlbum.toString()) || this.reportCategory.equals(ReportCategory.SalesByArtist.toString())
                 || this.reportCategory.equals(ReportCategory.SalesByClient.toString()) || this.reportCategory.equals(ReportCategory.SalesByTrack.toString()))
                 && this.specifiedSearch == null) {
+
             throw new NullSearchValueException("This category requires a specified search field");
         }
         if (this.reportCategory.equals(ReportCategory.TotalSales.toString())) {
 
             gettingSales = true;
-            invoicedetails = this.getTotalSales();
+            invoicedetails = this.getAllSales();
 
         } else if (this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())) {
 
@@ -312,7 +328,6 @@ public class ReportManagementController implements Serializable {
     public String toReportPage() {
 
         gettingSales = false;
-    
 
         invoicedetails = new ArrayList<>();
         this.reportCategory = ReportCategory.TotalSales.toString();
@@ -360,7 +375,8 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         Join invoicedetail = musicTrack.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        Join sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
         cq.distinct(true);
         cq.select(musicTrack);
 
@@ -411,7 +427,8 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         Join invoicedetail = musicTrack.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        Join sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
         cq.orderBy(cb.desc(cb.size(musicTrack.get("invoicedetailList"))));
         cq.distinct(true);
         cq.select(musicTrack);
@@ -437,7 +454,8 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
         Root<Album> album = cq.from(Album.class);
         Join invoicedetail = album.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        Join sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
         cq.orderBy(cb.desc(cb.size(album.get("invoicedetailList"))));
         cq.distinct(true);
         cq.select(album);
@@ -462,18 +480,15 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         Join invoicedetail = musicTrack.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("inventoryid"), trackid));
+        Join sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("inventoryid"), trackid));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         cq.distinct(true);
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-        this.toalNumberOfSales = invoicedetails.size();
-        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalProfit += selectedInvoicedetail.getProfit();
 
-            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
-        }
+        setTotals(invoicedetails);
         return invoicedetails;
     }
 
@@ -488,17 +503,15 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Album> album = cq.from(Album.class);
         Join invoicedetail = album.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("albumid"), albumid));
+        Join sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("albumid"), albumid));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         cq.distinct(true);
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-        this.toalNumberOfSales = invoicedetails.size();
-        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalProfit += selectedInvoicedetail.getProfit();
-            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
-        }
+
+        setTotals(invoicedetails);
         return invoicedetails;
     }
 
@@ -514,7 +527,8 @@ public class ReportManagementController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         Join invoicedetail = musicTrack.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("artist"), artist));
+        Join sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(musicTrack.get("artist"), artist));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         cq.distinct(true);
         cq.select(invoicedetail);
@@ -525,18 +539,15 @@ public class ReportManagementController implements Serializable {
         cq = cb.createQuery(Invoicedetail.class);
         Root<Album> album = cq.from(Album.class);
         invoicedetail = album.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("artist"), artist));
+        sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(album.get("artist"), artist));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         cq.distinct(true);
         cq.select(invoicedetail);
         query = entityManager.createQuery(cq);
         invoicedetails.addAll(query.getResultList());
 
-        this.toalNumberOfSales = invoicedetails.size();
-        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalProfit += selectedInvoicedetail.getProfit();
-            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
-        }
+        setTotals(invoicedetails);
         return invoicedetails;
     }
 
@@ -545,22 +556,19 @@ public class ReportManagementController implements Serializable {
      *
      * @return List<Invoicedetail> sale list
      */
-    private List<Invoicedetail> getTotalSales() {
+    private List<Invoicedetail> getAllSales() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Invoicedetail> invoicedetail = cq.from(Invoicedetail.class);
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
+        Join sale = invoicedetail.join("saleid");
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate));
         cq.orderBy(cb.desc(invoicedetail.get("saledate")));
         cq.distinct(true);
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
 
-        this.toalNumberOfSales = invoicedetails.size();
-        for (Invoicedetail selectedInvoicedetail : invoicedetails) {
-            this.totalProfit += selectedInvoicedetail.getProfit();
-            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
-        }
+        setTotals(invoicedetails);
         return invoicedetails;
     }
 
@@ -578,19 +586,28 @@ public class ReportManagementController implements Serializable {
         Root<Client> client = cq.from(Client.class);
         Join sale = client.join("saleList");
         Join invoicedetail = sale.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(client.get("clientid"), chosenClient.getClientid()));
+
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.between(invoicedetail.get("saledate"), fromDate, toDate), cb.equal(client.get("clientid"), chosenClient.getClientid()));
         cq.distinct(true);
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoiceDetails = query.getResultList();
+        setTotals(invoiceDetails);
+        return invoiceDetails;
+    }
+    private void setTotals( List<Invoicedetail> invoiceDetails){
         this.toalNumberOfSales = invoiceDetails.size();
         for (Invoicedetail selectedInvoicedetail : invoiceDetails) {
             this.totalProfit += selectedInvoicedetail.getProfit();
-
+            totalSales +=selectedInvoicedetail.getCurrentcost();
             this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
-
+            if(selectedInvoicedetail.getInventoryid()!=null){
+                this.totalCost+=selectedInvoicedetail.getInventoryid().getCostprice();
+            }
+            if(selectedInvoicedetail.getAlbumid()!=null){
+                this.totalCost+=selectedInvoicedetail.getAlbumid().getCostprice();
+            }
         }
-        return invoiceDetails;
     }
 
     /**
@@ -604,7 +621,12 @@ public class ReportManagementController implements Serializable {
     public void validateSpecificSearch(FacesContext context, UIComponent component,
             Object value) {
         UIInput selectInput = (UIInput) component.findComponent("criteria");
-        if (this.gettingSales && !selectInput.getLocalValue().equals(ReportCategory.TotalSales.toString())) {
+      
+        if (selectInput.getValue().equals(ReportCategory.SalesByAlbum.toString())
+                || selectInput.getValue().equals(ReportCategory.SalesByArtist.toString())
+                || selectInput.getValue().equals(ReportCategory.SalesByClient.toString())
+                || selectInput.getValue().equals(ReportCategory.SalesByTrack.toString())) {
+      
             if (value == null || value.toString().isEmpty() || value.toString().isBlank()) {
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                         "com.gb4w21.musicalmoose.bundles.messages", "specificNotNullError", null);
@@ -805,4 +827,5 @@ public class ReportManagementController implements Serializable {
             return null;
         }
     }
+
 }

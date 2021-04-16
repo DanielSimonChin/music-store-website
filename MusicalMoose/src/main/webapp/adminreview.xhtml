@@ -23,7 +23,7 @@
                             <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
                             <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
                             <a href="/MusicalMoose/adminads.xhtml">Ads</a>
-                            <a href="/MusicalMoose/adminpurchases.xhtml">Purchases Records</a>
+                            <a href="/MusicalMoose/adminsale.xhtml">Purchases Records</a>
                             <a href="/MusicalMoose/adminclient.xhtml">Client</a>
                             <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
                             <a class="active">Review</a>
@@ -36,14 +36,9 @@
                             <div class="card crud-demo">
                                 <p:growl id="messages" showDetail="true"/>
 
-                                <p:toolbar>
-                                    <p:toolbarGroup align="right">
-                                        <p:fileUpload mode="simple" skinSimple="true" label="#{msgs.import}" />
-                                        <p:commandButton value="#{msgs.export}"  styleClass="ui-button-help" ajax="false">
-                                            <p:dataExporter type="pdf" target="dt-products" fileName="products"/>
-                                        </p:commandButton>
-                                    </p:toolbarGroup>
-                                </p:toolbar>
+                                <p:toolbarGroup align="right">
+                                   
+                                </p:toolbarGroup>
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="review" value="#{reviewManagerController.reviews}"
                                              reflow="true" styleClass="products-table"
                                              selection="#{reviewManagerController.selectedReviews}" rowKey="#{review.reviewid}" paginator="true"
@@ -97,10 +92,14 @@
 
 
                                 </p:dataTable>
-                                <p:dialog header="#{msgs.productDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
+                                <p:dialog header="#{msgs.reviewDetails}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
                                           width="460" height="250" widgetVar="manageProductDialog" responsive="true">
                                     <p:outputPanel id="manage-product-content" class="ui-fluid">
                                         <p:outputPanel rendered="#{not empty reviewManagerController.selectedReview}">
+                                            <div class="p-field">
+                                                <p:outputLabel  value="#{msgs.invoiceId}"/>
+                                                <p:outputLabel  value="#{reviewManagerController.selectedReview.reviewid}"/>
+                                            </div>
                                             <div class="p-field">
 
                                                 <p:outputLabel for="reviewapproved">#{msgs.approvalStatus}</p:outputLabel>
@@ -115,7 +114,7 @@
                                     </p:outputPanel>
                                     <f:facet name="footer">
                                         <p:commandButton value="#{msgs.save}"  actionListener="#{reviewManagerController.saveReview()}"
-                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                                             update="manage-product-content" process="manage-product-content @this"/>
                                         <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
                                                          class="ui-button-secondary"/>
                                     </f:facet>
