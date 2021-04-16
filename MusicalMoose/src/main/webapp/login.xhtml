@@ -23,7 +23,7 @@ and open the template in the editor.
 
                 <div class="container-info">
                     <ui:param name="loginBean" value="#{loginController.loginBean}" />
-                    <h:form>
+                    <h:form id="loginForm">
 
                         <div class="row">
                             <br/>
@@ -40,7 +40,7 @@ and open the template in the editor.
                         <br></br>
                         
                         <h:messages styleClass="errorMessage" showSummary="false" showDetail="true" />
-                        <h:commandButton value="#{msgs.login}" class="btn-sub" action="#{loginController.loggIn()}"/>
+                        <h:commandButton id="formLogin" value="#{msgs.login}" class="btn-sub" action="#{loginController.loggIn()}"/>
                         
                        
                     </h:form>

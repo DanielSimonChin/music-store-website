@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Controller methods and variables that allow an admin to set the sale prices of
+ * a track
  *
  * @author Daniel
  */
@@ -55,6 +57,7 @@ public class TrackSetSalesManagerController implements Serializable {
      * @return the list of all tracks displayed in the data table
      */
     public List<MusicTrack> getTracks() {
+        init();
         return this.tracks;
     }
 
@@ -100,7 +103,7 @@ public class TrackSetSalesManagerController implements Serializable {
     /**
      * Ensure that the sale price is less than the list price.
      *
-             * @param context
+     * @param context
      * @param component
      * @param value
      */

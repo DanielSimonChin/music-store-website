@@ -8,183 +8,179 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <head>
-
         <title>Musical Moose</title>
-        <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-
     </head>
 
+
     <h:body>
-        <ui:composition template="/templates/common.xhtml">
-            <ui:define name="content">
-                <link rel="stylesheet" href="frontdoor.css"/>
+        <f:view locale="#{localeChanger.localeCode}">
+            <ui:composition template="/templates/common.xhtml">
+                <ui:define name="content">
+                    <link rel="stylesheet" href="frontdoor.css"/>
+
+                    <div class="wrapper">
+                        <!-- MAIN CONTAINER -->
+                        <section class="main-container">
+                            <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
+                            <div class="location" id="home">
+
+                                <h1 id="home">#{msgs.musicSpecials}</h1>
+
+                                <div class="box">
 
 
 
 
-                <div class="wrapper">
-                    <!-- MAIN CONTAINER -->
-                    <section class="main-container">
-                        <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
-                        <div class="location" id="home">
+                                    <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
+                                        <h:form >
+                                            <h:commandLink value="#{specialTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specialTracks)}">
+                                                <h:graphicImage value="album_covers/#{specialTracks.albumimagefilenamebig}" />
+                                            </h:commandLink>
+                                        </h:form>
+                                    </ui:repeat>
 
-                            <h1 id="home">#{msgs.musicSpecials}</h1>
+                                    <ui:repeat value="#{albumJpaController.specialAlbums}" var="specialAlbums">
+                                        <h:form >
+                                            <h:commandLink value="#{specialAlbums.albumtitle}" action="#{albumJpaController.toAlbum(specialAlbums)}">
+                                                <h:graphicImage value="album_covers/#{specialAlbums.albumimagefilenamebig}" />
+                                            </h:commandLink>
+                                        </h:form>
+                                    </ui:repeat>
+                                </div>
+                            </div>
 
-                            <div class="box">
+                            <!--Only if has cookie-->
+                            <h:form rendered="#{preRenderViewBean.hasGenreCookie()}">
+                                <h1 id="home">#{msgs.lastSearchedGenre}</h1>
+                                <div class="box">
 
+                                    <ui:repeat value="#{albumJpaController.recentGenreAlbums}" var="recentGenreAlbums">
+                                        <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums)}">
+                                            <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
+                                        </h:commandLink>
+                                    </ui:repeat>
 
+                                </div>
+                            </h:form>
 
+                            <h1 id="myList">#{msgs.newsHighlights}</h1>
 
-                                <ui:repeat value="#{musicTrackJpaController.specialTracks}" var="specialTracks">
-                                    <h:form >
-                                        <h:commandLink value="#{specialTracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(specialTracks)}">
-                                            <h:graphicImage value="album_covers/#{specialTracks.albumimagefilenamebig}" />
+                            <div class="box news">
+
+                                <!-- The news section that brings the user to a new window with the news highlight -->
+                                <ui:repeat value="#{newsJpaController.getDisplayedNews()}" var="news">
+                                    <h:form target="_blank">
+                                        <h:commandLink actionListener="#{newsJpaController.redirectToWebsite(news)}">
+                                            <h1>#{news.newtitle}</h1>
+                                            <p>#{news.getTruncatedNewsText()}</p>
                                         </h:commandLink>
                                     </h:form>
                                 </ui:repeat>
 
-                                <ui:repeat value="#{albumJpaController.specialAlbums}" var="specialAlbums">
-                                    <h:form >
-                                        <h:commandLink value="#{specialAlbums.albumtitle}" action="#{albumJpaController.toAlbum(specialAlbums)}">
-                                            <h:graphicImage value="album_covers/#{specialAlbums.albumimagefilenamebig}" />
+                            </div>
+                            <h:form id="surveyForm">
+                                <div id="surveyDiv" class="box">
+                                    <h:panelGrid id="surveyGrid" columns="1">
+                                        <h3 id="myList">#{survey.question}</h3>
+
+
+                                        <h:panelGroup id="surveyPanel1">
+                                            <h:commandButton id="answer1Button" rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
+                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" id="voteOutput1" value="#{survey.anserw1votes}"/>
+                                            <h:commandButton id="anserbtn" rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
+                                        </h:panelGroup>
+
+
+                                        <h:panelGroup>
+                                            <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" id="voteOutput2" value="#{survey.anserw2votes}"/>
+                                            <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+                                            <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" id="voteOutput3" value="#{survey.anserw3votes}"/>
+                                            <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
+                                        </h:panelGroup>
+
+                                        <h:panelGroup>
+                                            <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                            <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
+                                            <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" id="voteOutput4" value="#{survey.anserw4votes}"/>
+                                        </h:panelGroup>
+
+                                    </h:panelGrid>
+                                </div>
+
+                                <br/>
+                            </h:form>
+
+                            <!-- Display the first running ad -->
+                            <ui:param name="ad1" value="#{banneradJpaController.getRunningAd(1)}"/>
+                            <!-- Will only display the commmandLink if the returned Bannerad object is not empty. Also want the external link to open a new tab -->
+                            <h:form target="_blank">
+                                <h:commandLink actionListener="#{banneradJpaController.redirectToWebsite(ad1)}" rendered="#{not empty ad1}" >
+                                    <h:graphicImage class="ad" value="ads/#{ad1.filename}" />
+                                </h:commandLink>
+                            </h:form>
+
+
+
+                            <h1 id="genres">#{msgs.browseGenres}</h1>
+
+                            <div class="box">
+                                <h:form class="form">
+                                    <h:commandLink value="Pop" action="#{genreController.searchPop()}"> 
+                                        <h:graphicImage value="genre_covers/pop_cover.jpg" />  
+                                    </h:commandLink>
+                                </h:form>
+                                <h:form class="form">
+                                    <h:commandLink value="Rock" action="#{genreController.searchRock()}"> 
+                                        <h:graphicImage value="genre_covers/rock_cover.jpg" />  
+                                    </h:commandLink>
+                                </h:form>
+                                <h:form class="form">
+                                    <h:commandLink value="Anime" action="#{genreController.searchAnime()}"> 
+                                        <h:graphicImage value="genre_covers/anime_cover.jpg" />  
+                                    </h:commandLink>
+                                </h:form>
+                                <h:form class="form">
+                                    <h:commandLink value="Hip Hop" action="#{genreController.searchHipHop()}"> 
+                                        <h:graphicImage value="genre_covers/hip_hop_cover.jpg" />  
+                                    </h:commandLink>
+                                </h:form>
+                                <h:form class="form">
+                                    <h:commandLink value="R and B" action="#{genreController.searchRB()}"> 
+                                        <h:graphicImage value="genre_covers/r&amp;b_cover.jpg" />  
+                                    </h:commandLink>
+                                </h:form>
+                            </div>
+
+                            <h1 id="recent">#{msgs.recentlyAdded}</h1>
+
+                            <div class="box">
+                                <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
+                                    <h:form id="form">
+                                        <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
+                                            <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
                                         </h:commandLink>
                                     </h:form>
                                 </ui:repeat>
                             </div>
-                        </div>
 
-                        <!--Only if has cookie-->
-                        <h:form rendered="#{preRenderViewBean.hasGenreCookie()}">
-                            <h1 id="home">#{msgs.lastSearchedGenre}</h1>
-                            <div class="box">
-
-                                <ui:repeat value="#{albumJpaController.recentGenreAlbums}" var="recentGenreAlbums">
-                                    <h:commandLink value="#{recentGenreAlbums.albumtitle}" action="#{albumJpaController.toAlbum(recentGenreAlbums)}">
-                                        <h:graphicImage value="album_covers/#{recentGenreAlbums.albumimagefilenamebig}" />
-                                    </h:commandLink>
-                                </ui:repeat>
-
-                            </div>
-                        </h:form>
-
-                        <h1 id="myList">#{msgs.newsHighlights}</h1>
-
-                        <div class="box news">
-
-                            <!-- The news section that brings the user to a new window with the news highlight -->
-                            <ui:repeat value="#{newsJpaController.getDisplayedNews()}" var="news">
-                                <h:form target="_blank">
-                                    <h:commandLink actionListener="#{newsJpaController.redirectToWebsite(news)}">
-                                        <h1>#{news.newtitle}</h1>
-                                        <p>#{news.getTruncatedNewsText()}</p>
-                                    </h:commandLink>
-                                </h:form>
-                            </ui:repeat>
-
-                        </div>
-                        <h:form>
-                            <div class="box">
-                                <h:panelGrid columns="1">
-                                    <h3 id="myList">#{survey.question}</h3>
-
-
-                                    <h:panelGroup>
-                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
-                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" id="voteOutput1" value="#{survey.anserw1votes}"/>
-                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
-                                    </h:panelGroup>
-
-
-                                    <h:panelGroup>
-                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" disabled="true" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" id="voteOutput2" value="#{survey.anserw2votes}"/>
-                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw2)}" value="#{survey.anserw2}" action="#{surveyJpaController.incearseVote2()}" />
-                                    </h:panelGroup>
-
-                                    <h:panelGroup>
-                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" disabled="true" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" id="voteOutput3" value="#{survey.anserw3votes}"/>
-                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw3)}" value="#{survey.anserw3}" action="#{surveyJpaController.incearseVote3()}" />
-                                    </h:panelGroup>
-
-                                    <h:panelGroup>
-                                        <h:commandButton rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                        <h:commandButton rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" disabled="true" value="#{survey.anserw4}" action="#{surveyJpaController.incearseVote4()}" />
-                                        <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw4)}" id="voteOutput4" value="#{survey.anserw4votes}"/>
-                                    </h:panelGroup>
-
-                                </h:panelGrid>
-                            </div>
-
-                            <br/>
-                        </h:form>
-
-                        <!-- Display the first running ad -->
-                        <ui:param name="ad1" value="#{banneradJpaController.getRunningAd(1)}"/>
-                        <!-- Will only display the commmandLink if the returned Bannerad object is not empty. Also want the external link to open a new tab -->
-                        <h:form target="_blank">
-                            <h:commandLink actionListener="#{banneradJpaController.redirectToWebsite(ad1)}" rendered="#{not empty ad1}" >
-                                <h:graphicImage class="ad" value="ads/#{ad1.filename}" />
-                            </h:commandLink>
-                        </h:form>
-
-
-
-                        <h1 id="genres">#{msgs.browseGenres}</h1>
-
-                        <div class="box">
-                            <h:form class="form">
-                                <h:commandLink value="Pop" action="#{genreController.searchPop()}"> 
-                                    <h:graphicImage value="genre_covers/pop_cover.jpg" />  
+                            <!-- Display the second running ad -->
+                            <ui:param name="ad2" value="#{banneradJpaController.getRunningAd(2)}"/>
+                            <!-- Will only display the commmandLink if the returned Bannerad object is not empty. Also want the external link to open a new tab -->
+                            <h:form target="_blank">
+                                <h:commandLink actionListener="#{banneradJpaController.redirectToWebsite(ad2)}" rendered="#{not empty ad2}" >
+                                    <h:graphicImage class="ad2" value="ads/#{ad2.filename}" />
                                 </h:commandLink>
                             </h:form>
-                            <h:form class="form">
-                                <h:commandLink value="Rock" action="#{genreController.searchRock()}"> 
-                                    <h:graphicImage value="genre_covers/rock_cover.jpg" />  
-                                </h:commandLink>
-                            </h:form>
-                            <h:form class="form">
-                                <h:commandLink value="Anime" action="#{genreController.searchAnime()}"> 
-                                    <h:graphicImage value="genre_covers/anime_cover.jpg" />  
-                                </h:commandLink>
-                            </h:form>
-                            <h:form class="form">
-                                <h:commandLink value="Hip Hop" action="#{genreController.searchHipHop()}"> 
-                                    <h:graphicImage value="genre_covers/hip_hop_cover.jpg" />  
-                                </h:commandLink>
-                            </h:form>
-                            <h:form class="form">
-                                <h:commandLink value="R and B" action="#{genreController.searchRB()}"> 
-                                    <h:graphicImage value="genre_covers/r&amp;b_cover.jpg" />  
-                                </h:commandLink>
-                            </h:form>
-                        </div>
-
-                        <h1 id="recent">#{msgs.recentlyAdded}</h1>
-
-                        <div class="box">
-                            <ui:repeat value="#{musicTrackJpaController.findMostRecentTracks()}" var="tracks">
-                                <h:form id="form">
-                                    <h:commandLink value="#{tracks.tracktitle}" action="#{musicTrackJpaController.searchTrack(tracks)}">
-                                        <h:graphicImage value="album_covers/#{tracks.albumimagefilenamebig}" />
-                                    </h:commandLink>
-                                </h:form>
-                            </ui:repeat>
-                        </div>
-
-                        <!-- Display the second running ad -->
-                        <ui:param name="ad2" value="#{banneradJpaController.getRunningAd(2)}"/>
-                        <!-- Will only display the commmandLink if the returned Bannerad object is not empty. Also want the external link to open a new tab -->
-                        <h:form target="_blank">
-                            <h:commandLink actionListener="#{banneradJpaController.redirectToWebsite(ad2)}" rendered="#{not empty ad2}" >
-                                <h:graphicImage class="ad2" value="ads/#{ad2.filename}" />
-                            </h:commandLink>
-                        </h:form>
-                    </section>
-                </div>
-            </ui:define>
-        </ui:composition>
-
+                        </section>
+                    </div>
+                </ui:define>
+            </ui:composition>
+        </f:view>
     </h:body>
 </html>
 

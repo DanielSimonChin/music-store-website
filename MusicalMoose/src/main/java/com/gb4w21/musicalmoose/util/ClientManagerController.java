@@ -5,20 +5,12 @@
  */
 package com.gb4w21.musicalmoose.util;
 
-import com.gb4w21.musicalmoose.beans.SearchResult;
-import javax.faces.application.Application;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.entities.Album;
-import com.gb4w21.musicalmoose.entities.Client;
-import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.UUID;
-import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
@@ -32,7 +24,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.persistence.TypedQuery;
