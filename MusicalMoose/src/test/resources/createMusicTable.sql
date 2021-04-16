@@ -348,21 +348,21 @@ INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, CO
 
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
 VALUE 
-(1, TIMESTAMP("2020-01-01", "11:03:11"), "Alli", 9, "Great product! This Music works extremely well. It wetly improves my tennis by a lot.", 0, 1, 1),
-(2, TIMESTAMP("2020-03-05", "08:16:34"), "Alli", 6, "Song isn’t that good to be honest", 1, 1, 1),
-(3, TIMESTAMP("2020-11-13", "04:13:55"), "Quincey", 4, "Definitely not a great song", 1, 2, 2),
-(4, TIMESTAMP("2021-01-09", "10:30:31"), "Alli", 5, "Heard better music in my day but its alright", 1, 1, 2),
-(5, TIMESTAMP("2017-02-18", "04:20:00"), "Amara", 9, "one of my hobbies is programming. and when i'm programming this music works great", 1, 3, 3),
-(6, TIMESTAMP("2019-04-16", "11:03:11"), "Lucien", 8, "Song isn’t that good to be honest", 0, 4, 4),
-(7, TIMESTAMP("2018-06-22", "10:30:31"), "Andy", 7, "This Music works excessively well. It speedily improves my baseball by a lot. talk about surprise!!!", 1, 5, 5),
-(8, TIMESTAMP("2018-04-14", "04:20:00"), "Andy", 9, "This Music works so well. It delightedly improves my football by a lot.", 0, 5, 6),
-(9, TIMESTAMP("2020-08-22", "08:16:34"), "Andy", 9, "Song isn’t that good to be honest", 1, 5, 7),
-(10, TIMESTAMP("2016-12-07", "10:30:31"), "Quincey", 8, "Song is so good. You must take a listen, you will not regret it I am sure", 1, 2, 8),
-(11, TIMESTAMP("2020-03-08", "11:03:11"), "Alli", 9, "this Music is hyper.", 0, 1, 9),
-(12, TIMESTAMP("2019-05-01", "04:13:55"), "Quincey",7 , "My coworker told me about this song. It is pretty good", 1, 2, 10),
-(13, TIMESTAMP("2020-06-03", "08:16:34"), "Amara", 9, "Solid song. I put this on replay", 0, 3, 11),
-(14, TIMESTAMP("2020-03-05", "11:03:11"), "Amara", 8, "A replay type of song wow", 1, 3, 12),
-(15, TIMESTAMP("2020-03-05", "04:13:55"), "Quincey", 9, "AMAZING! Highly recommend taking a listen", 1, 2, 13);
+(1, TIMESTAMP("2020-01-01", "11:03:11"), "Alli", 5, "Great product! This Music works extremely well. It wetly improves my tennis by a lot.", 0, 1, 1),
+(2, TIMESTAMP("2020-03-05", "08:16:34"), "Alli", 1, "Song isn’t that good to be honest", 1, 1, 1),
+(3, TIMESTAMP("2020-11-13", "04:13:55"), "Quincey", 2, "Definitely not a great song", 1, 2, 2),
+(4, TIMESTAMP("2021-01-09", "10:30:31"), "Alli", 3, "Heard better music in my day but its alright", 1, 1, 2),
+(5, TIMESTAMP("2017-02-18", "04:20:00"), "Amara", 4, "one of my hobbies is programming. and when i'm programming this music works great", 1, 3, 3),
+(6, TIMESTAMP("2019-04-16", "11:03:11"), "Lucien", 1, "Song isn’t that good to be honest", 0, 4, 4),
+(7, TIMESTAMP("2018-06-22", "10:30:31"), "Andy", 5, "This Music works excessively well. It speedily improves my baseball by a lot. talk about surprise!!!", 1, 5, 5),
+(8, TIMESTAMP("2018-04-14", "04:20:00"), "Andy", 5, "This Music works so well. It delightedly improves my football by a lot.", 0, 5, 6),
+(9, TIMESTAMP("2020-08-22", "08:16:34"), "Andy", 1, "Song isn’t that good to be honest", 1, 5, 7),
+(10, TIMESTAMP("2016-12-07", "10:30:31"), "Quincey", 3, "Song is so good. You must take a listen, you will not regret it I am sure", 1, 2, 8),
+(11, TIMESTAMP("2020-03-08", "11:03:11"), "Alli", 4, "this Music is hyper.", 0, 1, 9),
+(12, TIMESTAMP("2019-05-01", "04:13:55"), "Quincey",4 , "My coworker told me about this song. It is pretty good", 1, 2, 10),
+(13, TIMESTAMP("2020-06-03", "08:16:34"), "Amara", 5, "Solid song. I put this on replay", 0, 3, 11),
+(14, TIMESTAMP("2020-03-05", "11:03:11"), "Amara", 3, "A replay type of song wow", 1, 3, 12),
+(15, TIMESTAMP("2020-03-05", "04:13:55"), "Quincey", 5, "AMAZING! Highly recommend taking a listen", 1, 2, 13);
 
 INSERT INTO BANNERAD (BANNERADDID, FILENAME, URL, DISPLAYED, PAGEPOSITION) VALUES
 (1, "walmartbanner.jpg", "https://www.walmart.com/browse/home/personalized-doormats/4044_133224_9107110_2596420?adid=22222222224428692885&wmlspartner=wmtlabs&wl0=b&wl1=s&wl2=c&wl3=74492020453699&wl4=kwd-74492109399488&wl5=5433&wl6=&wl7=&wl14=walmart&veh=sem&msclkid=dc49902e8f93102a4985f00051104fc4", 0, 1),
