@@ -13,27 +13,12 @@
     </head>
 
     <h:body>
-        <ui:composition template="/templates/common.xhtml">
+        <ui:composition template="/templates/commonadmin.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <div class="wrapper">
-                    <br/>
-                    <br/>
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
-                        <div class="topnav">
-                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
-                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
-                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
-                            <a href="/MusicalMoose/adminsale.xhtml">Purchases Records</a>
-                            <a href="/MusicalMoose/adminclient.xhtml">Client</a>
-                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
-                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
-                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
-                            <a class="active">Set Track Sales</a>
-                            <a href="/MusicalMoose/adminalbumsales.xhtml">Set Album Sales</a>
-                            <a href="/MusicalMoose/adminnews.xhtml">News</a>
-                        </div>
 
 
                         <h:form id="form">
@@ -72,9 +57,12 @@
                                 </p:column>
 
                                 <p:column headerText="#{msgs.tableSalePriceHeader}" sortBy="#{product.saleprice}">
-                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700">
+                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700" >
                                         <f:convertNumber currencySymbol="$" type="currency"/>
                                     </h:outputText>
+                                    
+<!--                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700" rendered="#{product.saleprice != null}">
+                                    </h:outputText>-->
                                 </p:column>
 
                                 <p:column headerText="#{msgs.tablePriceStatusHeader}" sortBy="#{product.isOnSale()}">

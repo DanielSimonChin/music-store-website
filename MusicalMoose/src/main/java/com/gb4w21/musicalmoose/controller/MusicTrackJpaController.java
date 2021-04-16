@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
@@ -188,7 +183,7 @@ public class MusicTrackJpaController implements Serializable {
 
         CriteriaQuery cq = cb.createQuery();
         Root e = cq.from(MusicTrack.class);
-        cq.orderBy(cb.asc(e.get("dateentered"))).where(cb.equal(e.get("available"), 1));
+        cq.orderBy(cb.desc(e.get("dateentered"))).where(cb.equal(e.get("available"), 1));
 
         Query q = em.createQuery(cq);
 

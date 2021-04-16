@@ -86,9 +86,9 @@ public class ReviewManagerController implements Serializable {
      */
      @PostConstruct
     public void init() {
-       
+   
         reviews=reviewJpaController.findReviewEntities();
-       
+
         selectedReviews = new ArrayList<>();
      
         this.selectedReview = null;

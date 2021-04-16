@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Musical Moose</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+        <f:view locale="#{localeChanger.localeCode}">
+            <ui:composition>
+                <header>
+                    <div class="weblogo">
+                        <a id="logo"><b class="left-logo">Musical Moose</b></a>
+                    </div>
+                    <nav class="sub-nav">
+                        <h:form id="loginButton" rendered="#{not loginController.loginBean.loggedIn}">
+                            <h:commandButton value="#{msgs.loginAndRegister}" action="#{loginController.toLoginPage()}"/>
+                        </h:form>
+                        <h:form rendered="#{loginController.loginBean.loggedIn}">
+                            <h:commandButton value="#{msgs.singOut}" action="#{loginController.signOut()}"/>
+                        </h:form>
+                        
+                        <h:form>
+                                <h:selectOneMenu value = "#{localeChanger.localeCode}" onchange = "submit()"
+                                                 valueChangeListener = "#{localeChanger.localCodeChanged}">
+                                    <f:selectItems value = "#{localeChanger.getLanguages()}" /> 
+                                </h:selectOneMenu>    
+                        </h:form>
+                    </nav>
+                   
+                </header>
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                 <div class="topnav">
+                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
+                            <a href="/MusicalMoose/adminalbum.xhtml">#{msgs.albumInventoryTab}</a>
+                            <a href="/MusicalMoose/adminads.xhtml">#{msgs.adsTab}</a>
+                            <a href="/MusicalMoose/adminclient.xhtml">#{msgs.clientsTab}</a>
+                            <a href="/MusicalMoose/adminsurvey.xhtml">#{msgs.surveyTab}</a>
+                            <a href="/MusicalMoose/adminreview.xhtml">#{msgs.reviewTab}</a>
+                            <a href="/MusicalMoose/adminreport.xhtml">#{msgs.reportTab}</a>
+                            <a href="/MusicalMoose/admintracksales.xhtml">#{msgs.setTrackSalesTab}</a>
+                            <a href="/MusicalMoose/adminalbumsales.xhtml">#{msgs.setAlbumSalesTab}</a>
+                            <a href="/MusicalMoose/adminnews.xhtml">#{msgs.newsTab}</a>
+                        </div>
+            </ui:composition>
+        </f:view>
+    </h:body>
+</html>
+

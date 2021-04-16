@@ -12,7 +12,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </head>
     <h:body>
-        <ui:composition template="/templates/common.xhtml">
+        <ui:composition template="/templates/commonadmin.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <div class="wrapper">
@@ -20,19 +20,7 @@
                     <br/>
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
-                        <div class="topnav">
-                            <a href="/MusicalMoose/adminmusic.xhtml">#{msgs.musicInv}</a>
-                            <a href="/MusicalMoose/adminalbum.xhtml">Album Inventory</a>
-                            <a href="/MusicalMoose/adminads.xhtml">Ads</a>
-                            <a class="active">Purchases Records</a>
-                            <a href="/MusicalMoose/adminclient.xhtml">Client</a>
-                            <a href="/MusicalMoose/adminsurvey.xhtml">Survey</a>
-                            <a href="/MusicalMoose/adminreview.xhtml">Review</a>
-                            <a href="/MusicalMoose/adminreport.xhtml">Report</a>
-                            <a href="/MusicalMoose/admintracksales.xhtml">Set Track Sales</a>
-                            <a href="/MusicalMoose/adminalbumsales.xhtml">Set Album Sales</a>
-                            <a href="/MusicalMoose/adminnews.xhtml">News</a>
-                        </div>
+
                         <h:form id="form">
                             <div class="card crud-demo">
                                 <p:growl id="messages" showDetail="true"/>

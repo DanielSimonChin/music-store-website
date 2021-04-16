@@ -5,8 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <head>
 
@@ -16,13 +15,22 @@
     </head>
 
     <h:body>
-        <ui:composition template="/templates/commonadmin.xhtml">
+        <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
-                <link rel="stylesheet" href="adminfront.css"/>
-                <div class="wrapper">
+                <link rel="stylesheet" href="frontdoor.css"/>
 
+
+
+
+                <div class="wrapper">
                     <!-- MAIN CONTAINER -->
                     <section class="main-container">
+                        <div class="errorText" id="home">
+
+                            <h1 id="home">#{msgs.error404}</h1>
+
+                            #{msgs.looksLike} <a href="/MusicalMoose/#home">#{msgs.hereLink}</a>
+                        </div>
 
                         
                     </section>
@@ -32,3 +40,7 @@
 
     </h:body>
 </html>
+
+
+
+

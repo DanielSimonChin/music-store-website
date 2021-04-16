@@ -5,19 +5,14 @@
  */
 package com.gb4w21.musicalmoose.util;
 
-import com.gb4w21.musicalmoose.controller.BanneradJpaController;
 import com.gb4w21.musicalmoose.controller.NewsJpaController;
-import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
-import com.gb4w21.musicalmoose.entities.Bannerad;
 import com.gb4w21.musicalmoose.entities.News;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
