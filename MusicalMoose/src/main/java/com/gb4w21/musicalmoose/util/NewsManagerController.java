@@ -146,12 +146,14 @@ public class NewsManagerController implements Serializable {
         }
         else {
             this.selectedNews.setDisplayed(Boolean.FALSE);
-            FacesContext.getCurrentInstance().addMessage(null, createMsg("invalid", "newsInvalid"));
+            FacesMessage facesMsg = createMsg("invalid", "newsInvalid");
+            facesMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            FacesContext.getCurrentInstance().addMessage(null, facesMsg);
         }
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
-//    
+    
 //    /**
 //     * Checks if the ad created/update is valid with the other ads
 //     * 
