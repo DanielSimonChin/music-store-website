@@ -183,7 +183,7 @@ public class MusicTrackJpaController implements Serializable {
 
         CriteriaQuery cq = cb.createQuery();
         Root e = cq.from(MusicTrack.class);
-        cq.orderBy(cb.asc(e.get("dateentered"))).where(cb.equal(e.get("available"), 1));
+        cq.orderBy(cb.desc(e.get("dateentered"))).where(cb.equal(e.get("available"), 1));
 
         Query q = em.createQuery(cq);
 
