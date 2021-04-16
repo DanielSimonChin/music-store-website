@@ -48,20 +48,7 @@ public class SurveyJpaController implements Serializable {
     private EntityManager em;
 
     public void create(Survey survey) throws RollbackFailureException, javax.transaction.RollbackException {
-        LOG.debug("id"+survey.getSurveyid());
-        LOG.debug("id"+survey.getSurveytitle());
-        LOG.debug("id"+survey.getQuestion());
-        LOG.debug("id"+survey.getSurveryinuse());
-        LOG.debug("id"+survey.getAnserw1());
-        LOG.debug("id"+survey.getAnserw2());
-        LOG.debug("id"+survey.getAnserw3());
-        LOG.debug("id"+survey.getAnserw4());
-        LOG.debug("id"+survey.getAnserw1votes());
-        LOG.debug("id"+survey.getAnserw2votes());
-        LOG.debug("id"+survey.getAnserw3votes());
-        LOG.debug("id"+survey.getAnserw4votes());
-        LOG.debug("id"+survey.getDatesurveyrcreated());
-        LOG.debug("id"+survey.getDatelastused());
+       
         try {
             utx.begin();
 
@@ -170,7 +157,9 @@ public class SurveyJpaController implements Serializable {
         }
 
     }
-
+    public void setIsSurveyUsed(boolean isSurveyUsed){
+        this.isSurveyUsed=isSurveyUsed;
+    }
     public boolean isSurveyUsed() {
         return this.isSurveyUsed;
     }

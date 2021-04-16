@@ -124,6 +124,7 @@ public class SaleJpaController implements Serializable {
             for (Invoicedetail invoicedetailListOldInvoicedetail : invoicedetailListOld) {
                 if (!invoicedetailListNew.contains(invoicedetailListOldInvoicedetail)) {
                     invoicedetailListOldInvoicedetail.setSaleid(null);
+                    
                     invoicedetailListOldInvoicedetail = em.merge(invoicedetailListOldInvoicedetail);
                 }
             }
@@ -131,14 +132,19 @@ public class SaleJpaController implements Serializable {
                 if (!invoicedetailListOld.contains(invoicedetailListNewInvoicedetail)) {
                     Sale oldSaleidOfInvoicedetailListNewInvoicedetail = invoicedetailListNewInvoicedetail.getSaleid();
                     invoicedetailListNewInvoicedetail.setSaleid(sale);
+                    
                     invoicedetailListNewInvoicedetail = em.merge(invoicedetailListNewInvoicedetail);
                     if (oldSaleidOfInvoicedetailListNewInvoicedetail != null && !oldSaleidOfInvoicedetailListNewInvoicedetail.equals(sale)) {
                         oldSaleidOfInvoicedetailListNewInvoicedetail.getInvoicedetailList().remove(invoicedetailListNewInvoicedetail);
+                        for (Invoicedetail invoicedetail : oldSaleidOfInvoicedetailListNewInvoicedetail.getInvoicedetailList()) {
+                           
+                        }
                         oldSaleidOfInvoicedetailListNewInvoicedetail = em.merge(oldSaleidOfInvoicedetailListNewInvoicedetail);
                     }
                 }
             }
             utx.commit();
+
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -232,9 +238,10 @@ public class SaleJpaController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
 
         Root<Invoicedetail> invoice = cq.from(Invoicedetail.class);
-
+        Join sale = invoice.join("saleid");
+        cq.where(cb.equal(invoice.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.equal(invoice.get("inventoryid").get("inventoryid"), inventoryid));
         //We want all the invoicedetail objects that have the parameter inventoryid
-        cq.where(cb.equal(invoice.get("inventoryid").get("inventoryid"), inventoryid));
+      
 
         Query q = em.createQuery(cq);
 
@@ -260,9 +267,9 @@ public class SaleJpaController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
 
         Root<Invoicedetail> invoice = cq.from(Invoicedetail.class);
-
+         Join sale = invoice.join("saleid");
         //We want all the invoicedetail objects that have the parameter albumid
-        cq.where(cb.equal(invoice.get("albumid").get("albumid"), albumid));
+        cq.where(cb.equal(invoice.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0),cb.equal(invoice.get("albumid").get("albumid"), albumid));
 
         Query q = em.createQuery(cq);
 
@@ -275,7 +282,7 @@ public class SaleJpaController implements Serializable {
         }
         return totalSales.doubleValue();
     }
-    
+
     public List<Sale> findSaleByClientId(int clientId) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -283,12 +290,12 @@ public class SaleJpaController implements Serializable {
 
         Root<Sale> sale = cq.from(Sale.class);
 
-        cq.where(cb.equal(sale.get("clientid").get("clientid"), clientId)); 
+        cq.where(cb.equal(sale.get("clientid").get("clientid"), clientId));
 
         Query q = em.createQuery(cq);
-        
+
         List<Sale> results = q.getResultList();
-        
+
         if (results.size() == 0) {
             throw new NonexistentEntityException("Cannot find Album with id");
         }

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <head>
+        <title>Manage Client</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+    <h:body>
+        <ui:composition template="/templates/commonadmin.xhtml">
+            <ui:define name="content">
+                <link rel="stylesheet" href="adminfront.css"/>
+                <div class="wrapper">
+                    <br/>
+                    <br/>
+                    <!-- MAIN CONTAINER -->
+                    <section class="main-container">
+
+                        <h:form id="form">
+                            <div class="card crud-demo">
+                                <p:growl id="messages" showDetail="true"/>
+                                <p:toolbar>
+                                    <p:toolbarGroup align="right">
+                                     
+                                        <p:commandButton value="#{msgs.removeCount}" rendered="#{orderManagementController.addRemoved}" action="#{orderManagementController.changeTable()}" styleClass="ui-button-help" ajax="false">
+                                           
+                                        </p:commandButton>
+                                         <p:commandButton value="#{msgs.includeCount}" rendered="#{not orderManagementController.addRemoved}" action="#{orderManagementController.changeTable()}" styleClass="ui-button-help" ajax="false">
+                                           
+                                        </p:commandButton>
+                                    </p:toolbarGroup>
+                                  
+                                 
+                                </p:toolbar>
+                                <p:dataTable id="dt-products" widgetVar="dtProducts" var="sale" value="#{orderManagementController.sales}"
+                                             reflow="true" styleClass="products-table"
+                                             rowKey="#{sale.saleid}" paginator="true"
+                                             rows="10" rowSelectMode="add" paginatorPosition="bottom">
+                                    <f:facet name="header">
+                                        <div class="products-table-header">
+                                            <span style="font-weight: bold">#{msgs.sales}</span>
+
+                                            <span class="filter-container ui-input-icon-left">
+                                                <i class="pi pi-search"></i>
+                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                            </span>
+
+                                        </div>
+                                    </f:facet>
+                                    <p:column  headerText="#{msgs.id}" sortBy="#{sale.saleid}" filterBy="#{sale.saleid}">
+                                        <h:outputText  value="#{sale.saleid}"/>
+                                    </p:column>
+                                    <p:column  headerText="#{msgs.clientName}" sortBy="#{sale.clientid.username}" filterBy="#{sale.clientid.username}">
+                                        <h:outputText  value="#{sale.clientid.username}"/>
+                                    </p:column>
+                                    <p:column  headerText="#{msgs.totalProfit}" sortBy="#{orderManagementController.totalProfit(sale)}" >
+                                        <h:outputText  value="#{orderManagementController.totalProfit(sale)}"/>
+                                    </p:column>
+                                    <p:column  headerText="#{msgs.totalCurrentCost}" sortBy="#{orderManagementController.totalCurrentCost(sale)}" >
+                                        <h:outputText  value="#{orderManagementController.totalCurrentCost(sale)}"/>
+                                    </p:column>
+                                    <p:column  headerText="#{msgs.numberOfTracks}" sortBy="#{orderManagementController.totalNumberOfTracks(sale)}" >
+                                        <h:outputText  value="#{orderManagementController.totalNumberOfTracks(sale)}"/>
+                                    </p:column>
+                                    <p:column  headerText="#{msgs.numberOfAlbums}" sortBy="#{orderManagementController.totalNumberOfAlbums(sale)}" >
+                                        <h:outputText  value="#{orderManagementController.totalNumberOfAlbums(sale)}"/>
+                                    </p:column>
+                                    <p:column  headerText="#{msgs.saleDate}" sortBy="#{sale.saledate}" >
+                                        <h:outputText  value="#{sale.saledate}"/>
+                                    </p:column>
+                                    <p:column  headerText="#{msgs.saleStatus}" sortBy="#{sale.saleremoved}" >
+                                        <h:outputText rendered="#{not sale.saleremoved}" value="#{msgs.inUse}"/>
+                                        <h:outputText rendered="#{sale.saleremoved}" value="#{msgs.removed}"/>
+                                    </p:column>
+                                    <p:column exportable="false">
+                                        <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
+                                                         oncomplete="PF('manageProductDialog').show()"
+                                                         styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                            <f:setPropertyActionListener value="#{sale}" target="#{orderManagementController.selectedSale}"/>
+                                            <p:resetInput target=":form:manage-product-content"/>
+                                        </p:commandButton>
+
+                                    </p:column>
+
+                                </p:dataTable>
+                                <p:dialog header="#{msgs.saleDetailts}" showEffect="fade" modal="true" maximizable="true" minimizable="true" 
+                                          width="860" height="540" widgetVar="manageProductDialog" responsive="true">
+                                    <p:outputPanel id="manage-product-content" class="ui-fluid">
+                                        <p:outputPanel rendered="#{not empty orderManagementController.selectedSale}">
+                                            <div class="p-field">
+                                                <p:outputLabel  value="#{msgs.invoiceId}"/>
+                                                <p:outputLabel  value="#{orderManagementController.selectedSale.saleid}"/>
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel  value="#{msgs.invoceClientName}"/>
+                                                <p:outputLabel  value="#{orderManagementController.selectedSale.clientid.username}"/>
+                                            </div>
+                                            <div class="p-field">
+                                                <p:outputLabel for="saleDateInput"  value="#{msgs.saleDate}"/>
+                                                <p:calendar id="saleDateInput" value="#{orderManagementController.selectedSale.saledate}" required="true" requiredMessage="#{msgs.required}"  validator="#{orderManagementController.validateSaleDate}">
+                                                    <f:ajax event="blur" render="saleDateError" />
+                                                </p:calendar>
+                                                <p:message id="saleDateError" for="saleDateInput" style="color:red" />
+                                            </div>
+                                            <p:outputLabel  value="#{msgs.individualSales}"/>
+                                            <ui:repeat value="#{orderManagementController.selectedSale.invoicedetailList}" var="invoicedetail">
+                                                <div class="p-field">
+                                                    <p:outputLabel for="albumTitle" rendered="#{orderManagementController.isAblum(invoicedetail)}"  value="#{msgs.invoiceAlbumName}"/>
+                                                    <p:outputLabel id="albumTitle" rendered="#{orderManagementController.isAblum(invoicedetail)}" value="#{invoicedetail.albumid.albumtitle}"/>
+
+                                                    <p:outputLabel for="trackTtitle" rendered="#{not orderManagementController.isAblum(invoicedetail)}"  value="#{msgs.invoiceTrackName}"/>
+                                                    <p:outputLabel id="trackTtitle" rendered="#{not orderManagementController.isAblum(invoicedetail)}" value="#{invoicedetail.inventoryid.tracktitle}"/>
+                                                </div>
+                                                <div class="p-field">
+                                                    <p:outputLabel for="invoiceDate" value="#{msgs.invoiceDate}" />
+                                                    <p:calendar id="invoiceDate"  value="#{invoicedetail.saledate}" validator="#{orderManagementController.validateInvoiceDate}">
+                                                        <f:ajax event="blur" render="invoiceDateError" />
+                                                    </p:calendar >
+                                                    <p:message id="invoiceDateError" for="invoiceDate" style="color:red" />
+                                                </div>
+                                                <div class="p-field">
+                                                    <p:outputLabel for="profit" value="#{msgs.profit}"/>
+                                                    <p:inputNumber minValue="0" id="profit" value="#{invoicedetail.profit}">
+                                                                   <f:ajax event="blur" render="profitError" />
+                                                    </p:inputNumber >
+                                                    <p:message id="profitError" for="profit" style="color:red" />
+                                                </div>
+                                                <div class="p-field">
+                                                    <p:outputLabel for="currentCost"  value="#{msgs.currentCost}"/>
+                                                    <p:inputNumber minValue="0" id="currentCost" value="#{invoicedetail.currentcost}">
+                                                                   <f:ajax event="blur" render="currentCostError" />
+                                                    </p:inputNumber >
+                                                    <p:message id="currentCostError" for="currentCost" style="color:red" />
+                                                </div>
+                                                <div class="p-field">
+                                                    <p:outputLabel for="productDownload" value="#{msgs.numberOfDownloads}"/>
+                                                    <p:inputNumber minValue="0" id="productDownload" value="#{invoicedetail.productdownloaded}">
+                                                                   <f:ajax event="blur" render="productDownloadError" />
+                                                    </p:inputNumber >
+                                                    <p:message id="productDownloadError" for="productDownload" style="color:red" />
+                                                </div>
+                                                <div class="p-field">
+                                                    <p:outputLabel for="invoiceApproved">#{msgs.invoiceStatus}</p:outputLabel>
+                                                    <p:selectOneRadio id="invoiceApproved" value="#{invoicedetail.invoicedetailremoved}" required="true" requiredMessage="#{msgs.required}" layout="responsive" columns="2">
+
+                                                        <f:selectItem itemValue="#{false}" itemLabel="#{msgs.inUse}" />
+                                                        <f:selectItem itemValue="#{true}" itemLabel="#{msgs.removed}" />
+
+                                                    </p:selectOneRadio>
+                                                    <p:message id="invoiceApprovedError" for="invoiceApproved" style="color:red" />
+                                                </div>
+                                            </ui:repeat>
+                                           <div class="p-field">
+                                                <p:outputLabel for="saleApproved">#{msgs.saleStatus}</p:outputLabel>
+                                                <p:selectOneRadio id="saleApproved" value="#{orderManagementController.selectedSale.saleremoved}" required="true" requiredMessage="#{msgs.required}" layout="responsive" columns="2">
+
+                                                    <f:selectItem itemValue="#{false}" itemLabel="#{msgs.inUse}" />
+                                                    <f:selectItem itemValue="#{true}" itemLabel="#{msgs.removed}" />
+
+                                                </p:selectOneRadio>
+                                                <p:message id="saleApprovedError" for="saleApproved" style="color:red" />
+                                            </div>
+                                        </p:outputPanel>
+                                    </p:outputPanel>
+                                    <f:facet name="footer">
+                                        <p:commandButton value="#{msgs.save}"  actionListener="#{orderManagementController.saveSale()}"
+                                                         update="manage-product-content" process="manage-product-content @this"/>
+                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                                         class="ui-button-secondary"/>
+                                    </f:facet>
+                                </p:dialog>
+
+                                <p:confirmDialog global="true" showEffect="fade" width="300">
+                                    <p:commandButton value="#{msgs.yes}" type="button" styleClass="ui-confirmdialog-yes" />
+                                    <p:commandButton value="#{msgs.no}" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                                                     />
+                                </p:confirmDialog>
+                            </div>
+                        </h:form>
+                    </section>
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
