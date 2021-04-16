@@ -145,8 +145,8 @@
                                     <f:facet name="footer">
                                         <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{newsManagerController.saveNews()}"
                                                          update="manage-product-content" process="manage-product-content @this"/>
-                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" actionListener="#{newsManagerController.cancelNewsForm()}" 
-                                                         class="ui-button-secondary"/>
+                                        <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
+                                                         actionListener="#{newsManagerController.cancelNewsForm()}" class="ui-button-secondary"/>
                                     </f:facet>
                                 </p:dialog>
 

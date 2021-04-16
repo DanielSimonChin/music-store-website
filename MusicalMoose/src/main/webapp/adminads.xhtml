@@ -162,7 +162,7 @@
                                         <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{bannerAdManagerController.saveBannerAd()}"
                                                          update="manage-product-content" process="manage-product-content @this"/>
                                         <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" actionListener="#{bannerAdManagerController.cancelBannerAdForm()}" 
-                                                         class="ui-button-secondary"/>
+                                                          onclick="PF('manageProductDialog').hide()" class="ui-button-secondary"/>
                                     </f:facet>
                                 </p:dialog>
 
