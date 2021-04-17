@@ -190,9 +190,9 @@ public class ReportManagementController implements Serializable {
         this.totalCost = totalCost;
     }
 
-   public float getTotalSales() {
+    public float getTotalSales() {
         return this.totalSales;
-   }
+    }
 
     public void setTotalSales(float totalSales) {
         this.totalSales = totalSales;
@@ -242,8 +242,8 @@ public class ReportManagementController implements Serializable {
         clients = new ArrayList<>();
         tracks = new ArrayList<>();
         albums = new ArrayList<>();
-        totalCost=0;
-        totalSales=0;
+        totalCost = 0;
+        totalSales = 0;
         totalProfit = 0;
         toalNumberOfSales = 0;
         totalNumberOfDownloads = 0;
@@ -578,17 +578,24 @@ public class ReportManagementController implements Serializable {
         setTotals(invoiceDetails);
         return invoiceDetails;
     }
-    private void setTotals( List<Invoicedetail> invoiceDetails){
+
+    /**
+     * Calculates all the totals when the user requests a sales report
+     * @param invoiceDetails List<Invoicedetail>
+     */
+    private void setTotals(List<Invoicedetail> invoiceDetails) {
         this.toalNumberOfSales = invoiceDetails.size();
         for (Invoicedetail selectedInvoicedetail : invoiceDetails) {
             this.totalProfit += selectedInvoicedetail.getProfit();
-            totalSales +=selectedInvoicedetail.getCurrentcost();
-            this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
-            if(selectedInvoicedetail.getInventoryid()!=null){
-                this.totalCost+=selectedInvoicedetail.getInventoryid().getCostprice();
+            totalSales += selectedInvoicedetail.getCurrentcost();
+            if (this.reportCategory.equals(ReportCategory.SalesByTrack.toString()) || this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())) {
+                this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
             }
-            if(selectedInvoicedetail.getAlbumid()!=null){
-                this.totalCost+=selectedInvoicedetail.getAlbumid().getCostprice();
+            if (selectedInvoicedetail.getInventoryid() != null) {
+                this.totalCost += selectedInvoicedetail.getInventoryid().getCostprice();
+            }
+            if (selectedInvoicedetail.getAlbumid() != null) {
+                this.totalCost += selectedInvoicedetail.getAlbumid().getCostprice();
             }
         }
     }
@@ -604,12 +611,12 @@ public class ReportManagementController implements Serializable {
     public void validateSpecificSearch(FacesContext context, UIComponent component,
             Object value) {
         UIInput selectInput = (UIInput) component.findComponent("criteria");
-      
+
         if (selectInput.getValue().equals(ReportCategory.SalesByAlbum.toString())
                 || selectInput.getValue().equals(ReportCategory.SalesByArtist.toString())
                 || selectInput.getValue().equals(ReportCategory.SalesByClient.toString())
                 || selectInput.getValue().equals(ReportCategory.SalesByTrack.toString())) {
-      
+
             if (value == null || value.toString().isEmpty() || value.toString().isBlank()) {
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                         "com.gb4w21.musicalmoose.bundles.messages", "specificNotNullError", null);

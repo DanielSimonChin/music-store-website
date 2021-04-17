@@ -139,7 +139,5 @@ public class ReviewManagerController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         
     }
-      public void doNothing(){
-        
-    }
+    
 }

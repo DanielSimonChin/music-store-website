@@ -224,7 +224,11 @@ public class AlbumJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
-
+    /**
+     * Takes a user from the search page to the album page
+     * @param id int
+     * @return album page
+     */
     public String searchSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
 
@@ -232,7 +236,11 @@ public class AlbumJpaController implements Serializable {
         LOG.info("album id:" + id);
         return "searchAlbum";
     }
-
+    /**
+     * Takes a user from the index page to the album page
+     * @param id int
+     * @return album page
+     */
     public String selectSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
         validateGenreCookie();
@@ -257,7 +265,11 @@ public class AlbumJpaController implements Serializable {
 
         return (Album) q.getResultList().get(0);
     }
-
+    /**
+     * takes the user back to the album page after writing a review
+     * @param album Album
+     * @return String Album page
+     */
     public String backToAlbum(Album album) {
         this.selectedAlbum = album;
         return "reviewAlbum";
@@ -361,7 +373,11 @@ public class AlbumJpaController implements Serializable {
 
         return "detailAlbum";
     }
-
+/**
+ * takes a user to the album page
+ * @param album Album
+ * @return album page
+ */
     public String toAlbum(Album album) {
         this.selectedAlbum = album;
         LOG.info("" + album.getAlbumtitle());
@@ -397,7 +413,10 @@ public class AlbumJpaController implements Serializable {
         this.selectedAlbum = album;
         return "relatedAlbumFromAlbum";
     }
-
+/**
+ * creates a list of specials albums that have the largest sale
+ * @return List<Album> special album list
+ */
     public List<Album> getSpecialAlbums() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
@@ -410,8 +429,10 @@ public class AlbumJpaController implements Serializable {
         List<Album> albums = query.getResultList();
         final int specialsLimt = 3;
         List<Album> specialList = new ArrayList<>();
+        //Adds to three ablums to special list
         if (albums.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
+                LOG.info("Special ablum:"+albums.get(i).getAlbumtitle());
                 specialList.add(albums.get(i));
             }
             return specialList;

@@ -119,7 +119,7 @@ public class ReportManagerFailedJUnitTest {
     public ReportManagerFailedJUnitTest() {
 
     }
-    //thrown.expect(SQLException.class);
+   
 
     @Test
     public void testTotalSalesInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {

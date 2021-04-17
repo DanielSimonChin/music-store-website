@@ -156,7 +156,7 @@
                                             </div>
                                             <div class="p-field">
                                                  <p:outputLabel for="answer2" value="#{msgs.answer2}"/>
-                                                <p:inputText id="answer2" label="#{msgs.answer2}"  value="#{surveyManagerController.bigSurvey.anserw2}" >
+                                                <p:inputText id="answer2" label="#{msgs.answer2}"  value="#{surveyManagerController.bigSurvey.anserw2}" required="true" requiredMessage="#{msgs.required}" >
                                                     
 
                                                     <f:ajax event="blur" render="answer2Error" />

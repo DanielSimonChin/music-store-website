@@ -6,8 +6,9 @@
 package com.gb4w21.musicalmoose.controller.exceptions;
 
 /**
- *
- * @author owner
+ * Error thrown if the report controller is given a nothing to conduct a specified search
+ * @author Alesandro Dare
+ * @version 1.0
  */
 public class NullSearchValueException extends Exception {
 

@@ -29,7 +29,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * the login controller that's responsible for login in both a client and a manager and signing them out
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @Named
 @SessionScoped
 public class LoginController  implements Serializable{
@@ -49,7 +53,10 @@ public class LoginController  implements Serializable{
     public LoginController(){
         
     }
-   
+   /**
+    * if login bean is null it gives a blank one to avoid errors
+    * @return LoginBean
+    */
     public LoginBean getLoginBean(){
         if(loginBean==null){
             loginBean=new LoginBean();
@@ -59,42 +66,59 @@ public class LoginController  implements Serializable{
     public void setLoginBean(LoginBean loginBean){
         this.loginBean=loginBean;
     }
+    /**
+     * takes a user to the login page
+     * @return String web page address
+     */
     public String toLoginPage(){
         loginBean = new LoginBean();
         FacesContext context=FacesContext.getCurrentInstance();
        
         loginLastPage=context.getViewRoot().getViewId();
         loginLastPage=loginLastPage.substring(1, loginLastPage.length() - 6);
+        //stores the previously viested page if it can from the registration page
         if(loginLastPage.equals("register")||loginLastPage.equals("login")){
-            LOG.debug("LOGIN 1");
+
             loginLastPage=registrationController.getLastPageRegister();
-             LOG.debug("LOGIN 2"+loginLastPage);
+            
         }
+        
+        //in case user cam from manager page
         if(cameFromManagerPage){
             cameFromManagerPage=false;
-             LOG.debug("LOGIN 3");
+             
             return "index";
         }
-         LOG.debug("LOGIN 4");
+       
         return "login";
     }
     public String getLoginLastPage(){
         return loginLastPage;
     }
+    /**
+     * sings the user out and returns them back to their previous page back to the index page if the user was a manager 
+     * @return Previous page or index page
+     */
     public String signOut(){
         loginBean = new LoginBean();
         loginBean.setLoggedIn(false);
          FacesContext context=FacesContext.getCurrentInstance();
         loginLastPage=context.getViewRoot().getViewId();
         loginLastPage=loginLastPage.substring(1, loginLastPage.length() - 6);
+        LOG.info("log out form manager:"+cameFromManagerPage);
          if(cameFromManagerPage){
             cameFromManagerPage=false;
-             LOG.debug("LOGIN 3");
+            
             return "index";
         }
         return loginLastPage;
     }
-    
+    /**
+     * Validates if the user login information was correct and the information wasn't from a deactivated or false account
+     * @param context
+     * @param component
+     * @param value 
+     */
     public void validateUser(FacesContext context, UIComponent component,
             Object value) {
         // These values have not yet been added to the bean
@@ -111,7 +135,12 @@ public class LoginController  implements Serializable{
             throw new ValidatorException(message);
         }
     }
-    
+    /**
+     * Logs the user in and sends the user to the their previously visited page 
+     * if they log in as a client or the admin front page if they log in as a manager
+     * or to the checkout page if they log in to finalized an order
+     * @return String page address
+     */
     public String loggIn(){
         LOG.info("username:"+loginBean.getUsername());
         LOG.info("password:"+loginBean.getPassword());
@@ -120,19 +149,22 @@ public class LoginController  implements Serializable{
         loginBean.setLoggedIn(true);
         loginBean.setEmailAddress(this.clientJpaController.findClient(loginBean.getId()).getEmail());
         LOG.info("Is manager:"+registeredClient.getIsmanager());
-        
+        //if the user logged in to finialize
         if (loginLastPage.equals("cart")){
             cameFromManagerPage=false;
             return checkoutController.toCheckout();
         }
+        //if the user loged in as manager
         else if (registeredClient.getIsmanager()){
             cameFromManagerPage=true;
             return "adminfront";
         }
+        //if the user just logged out as manager and logs in as a client
         else if(cameFromManagerPage){
             cameFromManagerPage=false;
             return "index";
         }
+        // if the user logs in as a client
         else{
             cameFromManagerPage=false;
             return loginLastPage;

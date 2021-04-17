@@ -259,7 +259,11 @@ public class MusicTrackJpaController implements Serializable {
         this.searchedTrack = track;
         return "detailTrackFromAlbum";
     }
-
+    /**
+     * Takes the id of a track a takes the user to that track page from the search page
+     * @param id int
+     * @return track page 
+     */
     public String searchSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
         if (searchedTrack != null) {
@@ -267,7 +271,11 @@ public class MusicTrackJpaController implements Serializable {
         }
         return "searchTrack";
     }
-
+    /**
+     * Takes the id of a track a takes the user to that track page from the index page
+     * @param id int
+     * @return track page 
+     */
     public String selectSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
         
@@ -295,12 +303,19 @@ public class MusicTrackJpaController implements Serializable {
 
         return (MusicTrack) q.getResultList().get(0);
     }
-
+    /**
+     * takes a user back to the track page after writing a review
+     * @param musicTrack MusicTrack
+     * @return track page
+     */
     public String backToTrack(MusicTrack musicTrack) {
         this.searchedTrack = musicTrack;
         return "reviewTrack";
     }
-
+    /**
+     * get a list of tracks that have the biggest sale
+     * @return List<MusicTrack> a list of special tracks
+     */
     public List<MusicTrack> getSpecialTracks() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
@@ -313,8 +328,10 @@ public class MusicTrackJpaController implements Serializable {
         List<MusicTrack> tracks = query.getResultList();
         final int specialsLimt = 3;
         List<MusicTrack> specialList = new ArrayList<>();
+        //Adds to three tracks to special list
         if (tracks.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
+                LOG.info("Special ablum:"+tracks.get(i).getTracktitle());
                 specialList.add(tracks.get(i));
             }
 

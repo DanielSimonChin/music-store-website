@@ -52,7 +52,12 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import org.primefaces.component.calendar.Calendar;
-
+/**
+ * The controller to manage the sales page use it to edit any sales 
+ * changes made by the manager and allows the sale information to be displayed
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @Named
 @SessionScoped
 public class OrderManagementController implements Serializable {
@@ -67,27 +72,30 @@ public class OrderManagementController implements Serializable {
     private Sale selectedSale;
     private List<Sale> sales;
     private boolean addRemoved;
-
+    /**
+     * Default constructor
+     */
     public OrderManagementController() {
 
     }
-
+    /**
+     * post constructor used to reset values
+     */
     @PostConstruct
     public void init() {
         this.addRemoved = true;
         selectedSale = null;
         sales = saleJpaController.findSaleEntities();
-        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
-        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
-        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
-        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
-        LOG.debug("THIS WAS CALLED MORE THEN ONCE1");
+       
     }
 
     public boolean isAddRemoved() {
         return addRemoved;
     }
-
+    /**
+     * changes table to show or exclude sales that have been removed
+     * @return String admin page
+     */
     public String changeTable() {
         sales = saleJpaController.findSaleEntities();
         if (addRemoved) {
@@ -99,7 +107,9 @@ public class OrderManagementController implements Serializable {
 
         return "adminsale";
     }
-
+    /**
+     * removes all invoices that have been marked as removed from the sale
+     */
     private void removeAdded() {
         List<Sale> removedSale = new ArrayList<>();
         for (Sale sale : this.sales) {
@@ -126,11 +136,19 @@ public class OrderManagementController implements Serializable {
     public void setSales(List<Sale> sales) {
         this.sales = sales;
     }
-
+    /**
+     * Shows weather an invoice is for an album or track
+     * @param invoicedetail Invoicedetail
+     * @return boolean album if true track if false
+     */
     public boolean isAblum(Invoicedetail invoicedetail) {
         return invoicedetail.getAlbumid() != null;
     }
-
+   /**
+     * calculates the total amount of profit the website made on the sale
+     * @param sale Sale
+     * @return  float total profit
+     */
     public float totalProfit(Sale sale) {
         float totalProfit = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
@@ -145,7 +163,11 @@ public class OrderManagementController implements Serializable {
         }
         return totalProfit;
     }
-
+ /**
+     * calculates the total amount the use sent on the sale
+     * @param sale Sale
+     * @return  float total current cost
+     */
     public float totalCurrentCost(Sale sale) {
         float totalCurrentCost = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
@@ -159,12 +181,16 @@ public class OrderManagementController implements Serializable {
         }
         return totalCurrentCost;
     }
-
+     /**
+     * calculates the total number of tracks for a specific sale
+     * @param sale Sale
+     * @return  int number of tracks
+     */
     public int totalNumberOfTracks(Sale sale) {
         int trackNumber = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
             if (addRemoved) {
-                trackNumber += invoicedetail.getProfit();
+                trackNumber ++;
             } else {
                 if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getInventoryid() != null) {
                     trackNumber++;
@@ -173,12 +199,16 @@ public class OrderManagementController implements Serializable {
         }
         return trackNumber;
     }
-
+    /**
+     * calculates the total number of albums for a specific sale
+     * @param sale Sale
+     * @return  int number of albums
+     */
     public int totalNumberOfAlbums(Sale sale) {
         int albumNumber = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
             if (addRemoved) {
-                albumNumber += invoicedetail.getProfit();
+                albumNumber ++;
             } else {
                 if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getAlbumid() != null) {
                     albumNumber++;
@@ -187,7 +217,9 @@ public class OrderManagementController implements Serializable {
         }
         return albumNumber;
     }
-
+    /**
+     * saves the changes to the specified sale and it's related invoices
+     */
     public void saveSale() {
 
         try {
@@ -226,43 +258,7 @@ public class OrderManagementController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 
-    public void validateSaleDate(FacesContext context, UIComponent component, Object value) {
-      
-       
-        if (value != null) {
-            Date saleDate = (Date) value;
-            if (checkDateInFutre(saleDate)) {
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "saleDateError", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-                throw new ValidatorException(message);
-            }
-        }
-    }
-
-    public void validateInvoiceDate(FacesContext context, UIComponent component, Object value) {
-
-        if (value != null) {
-            Date invoiceDate = (Date) value;
-            if (checkDateInFutre(invoiceDate)) {
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "saleDateError", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-                throw new ValidatorException(message);
-            }
-            /**
-            if (invoiceDate.compareTo(this.selectedSale.getSaledate()) > 0) {
-                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                        "com.gb4w21.musicalmoose.bundles.messages", "invoiceDateError", null);
-                message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-                throw new ValidatorException(message);
-            }*/
-
-        }
-    }
+    
 
     /**
      * checks to see if the chosen date is in the future

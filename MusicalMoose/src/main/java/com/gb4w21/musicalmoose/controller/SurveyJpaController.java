@@ -36,7 +36,10 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class SurveyJpaController implements Serializable {
-
+    private final int vote1=1; 
+    private final int vote2=2; 
+    private final int vote3=3; 
+    private final int vote4=4; 
     private boolean isSurveyUsed = false;
 
      private final static Logger LOG = LoggerFactory.getLogger(SurveyJpaController.class);
@@ -142,7 +145,10 @@ public class SurveyJpaController implements Serializable {
             return em.find(Survey.class, id);
       
     }
-
+    /**
+     * Gets the survey that's currently available
+     * @return Survey available survey
+     */
     public Survey getRunningSurvey() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -163,42 +169,69 @@ public class SurveyJpaController implements Serializable {
     public boolean isSurveyUsed() {
         return this.isSurveyUsed;
     }
-
+    /**
+     * increases vote for answer1
+     * @return String index page (reloads page)
+     * @throws Exception 
+     */
     public String incearseVote1() throws Exception {
-        incearseVote(1);
+        incearseVote(vote1);
         return "reloadindex";
     }
-
+ /**
+     * increases vote for answer2
+     * @return String index page (reloads page)
+     * @throws Exception 
+     */
     public String incearseVote2() throws Exception {
-        incearseVote(2);
+        incearseVote(vote2);
         return "reloadindex";
     }
-
+ /**
+     * increases vote for answer3
+     * @return String index page (reloads page)
+     * @throws Exception 
+     */
     public String incearseVote3() throws Exception {
-        incearseVote(3);
+        incearseVote(vote3);
         return "reloadindex";
     }
-
+ /**
+     * increases vote for answer4
+     * @return String index page (reloads page)
+     * @throws Exception 
+     */
     public String incearseVote4() throws Exception {
-        incearseVote(4);
+        incearseVote(vote4);
         return "reloadindex";
     }
-
+    /**
+     * Increases the vote for selected survey and sets it to be used so the user can't vote again
+     * @param voteNumber The answer that should be voted
+     * @throws Exception 
+     */
     private void incearseVote(int voteNumber) throws Exception {
         Survey survey = getRunningSurvey();
         increaseRow(voteNumber, survey);
         this.isSurveyUsed = true;
 
     }
-
+    /**
+     * Increases the the vote for selected answer on the currently running survey
+     * @param rowNumber int
+     * @param survey Survey
+     * @throws Exception 
+     */
     private void increaseRow(int rowNumber, Survey survey) throws Exception {
-        if (rowNumber == 1) {
+        LOG.info("Vote Number:"+rowNumber);
+        LOG.info("Current Survey:"+survey.getSurveytitle());
+        if (rowNumber == vote1) {
             survey.setAnserw1votes(survey.getAnserw1votes() + 1);
-        } else if (rowNumber == 2) {
+        } else if (rowNumber ==vote2) {
             survey.setAnserw2votes(survey.getAnserw2votes() + 1);
-        } else if (rowNumber == 3) {
+        } else if (rowNumber == vote3){
             survey.setAnserw3votes(survey.getAnserw3votes() + 1);
-        } else if (rowNumber == 4) {
+        } else if (rowNumber == vote4) {
             survey.setAnserw4votes(survey.getAnserw4votes() + 1);
         }
         edit(survey);

@@ -183,15 +183,9 @@ public class ValidationController implements Serializable {
      * @param value FacesContext
      */
     public void validateDateTo(FacesContext context, UIComponent component, Object value) {
-        LOG.debug("uiComponent:" + component.getClientId());
-        LOG.debug("uiComponent:" + component.getId());
-        LOG.debug("uiComponent:" + component.getFamily());
-        LOG.debug("uiComponent:" + component.getChildren());
+    
         UIInput dateInput = (UIInput) component.findComponent("fromSearch");
-        LOG.debug("uiComponent:" + dateInput.getClientId());
-        LOG.debug("uiComponent:" + dateInput.getId());
-        LOG.debug("uiComponent:" + dateInput.getFamily());
-        LOG.debug("uiComponent:" + dateInput.getChildren());
+       
         Calendar calendar = (Calendar) dateInput;
         //calendar.getAttributes()
 
@@ -218,41 +212,39 @@ public class ValidationController implements Serializable {
         }
 
     }
+    /**
+     * Validates the sale date to make user it isn't in the future
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value Object
+     */
+   public void validateSaleDate(FacesContext context, UIComponent component, Object value) {
+      
+       
+        if (value != null) {
+            Date saleDate = (Date) value;
+            if (checkDateInFutre(saleDate)) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "saleDateError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
-    public void validateDateSale(FacesContext context, UIComponent component, Object value) {
-        FacesContext context1 = FacesContext.getCurrentInstance();
-
-        UIInput dateInput = (UIInput) component.findComponent("saleDateInput");
-        LOG.debug("uiComponentQQQQQQQQ:" + context1.getViewRoot().getChildren().size());
-        LOG.debug("uiComponentQQQQQQQQQ:" + context1.getViewRoot().findComponent("body"));
-        LOG.debug("uiComponentQQQQQQQQQ:" + context.getViewRoot().getChildren().size());
-        LOG.debug("uiComponentQQQQQQQQQ:" +context.getViewRoot().getChildren().size());
-        for(UIComponent uc:context.getViewRoot().getChildren()){
-            LOG.debug("uiComponentZZZZZZZZZ:" + uc.getRendererType());
-            LOG.debug("uiComponentZZZZZZZZZ:" + uc.toString());
-            LOG.debug("uiComponentZZZZZZZZZ:" + uc.getFamily());
+                throw new ValidatorException(message);
+            }
         }
-        Calendar calendar = (Calendar) dateInput;
-
     }
-
+   /**
+    * Validates the invoice date to make sure it isn't in the future
+    * @param context FacesContext
+    * @param component UIComponent
+    * @param value  Object
+    */
     public void validateInvoiceDate(FacesContext context, UIComponent component, Object value) {
         for (UIComponent uiComponent : component.getChildren()) {
-            LOG.debug("222uiComponent:" + uiComponent.getClientId());
-            LOG.debug("222uiComponent:" + uiComponent.getId());
-            LOG.debug("222uiComponent:" + uiComponent.getClientId());
-            LOG.debug("222uiComponent:" + uiComponent.getId());
-            LOG.debug("111uiComponent:" + uiComponent.getClientId());
-            LOG.debug("111uiComponent:" + uiComponent.getId());
-            LOG.debug("111uiComponent:" + uiComponent.getClientId());
-            LOG.debug("111uiComponent:" + uiComponent.getId());
+   
         }
 
         UIInput dateInput = (UIInput) component.findComponent("saleDateInput");
-        LOG.debug("33uiComponent:" + dateInput);
-        LOG.debug("33uiComponent:" + dateInput);
-        LOG.debug("33uiComponent:" + dateInput);
-        LOG.debug("33uiComponent:" + dateInput);
+
         Calendar calendar = (Calendar) dateInput;
 
         if (value != null) {
