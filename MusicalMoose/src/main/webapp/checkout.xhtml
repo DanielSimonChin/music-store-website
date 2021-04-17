@@ -88,7 +88,7 @@
                         <h3>Order Summary</h3>
                         <h:outputText value="#{msgs.itemsFind} $#{shoppingCartController.calculateTotal()}" />
                         <br></br>
-                        <h:outputText value=" $#{checkoutController.shippingHandlingPrice}" />
+                        <h:outputText value="#{msgs.shipAndHand} $#{checkoutController.shippingHandlingPrice}" />
                         <br></br>
                         <h:outputText id="gsthstText" value="#{msgs.estGST} $#{checkoutController.GSTHSTPrice}" />
                         <br></br>
