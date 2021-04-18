@@ -10,6 +10,9 @@
 
     <head>
         <title>Musical Moose</title>
+        <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
 
     <h:body>
@@ -60,9 +63,9 @@
                                     <h:outputText value="#{product.saleprice}" style="font-weight: 700" >
                                         <f:convertNumber currencySymbol="$" type="currency"/>
                                     </h:outputText>
-                                    
+
 <!--                                    <h:outputText value="#{product.saleprice}" style="font-weight: 700" rendered="#{product.saleprice != null}">
-                                    </h:outputText>-->
+</h:outputText>-->
                                 </p:column>
 
                                 <p:column headerText="#{msgs.tablePriceStatusHeader}" sortBy="#{product.isOnSale()}">

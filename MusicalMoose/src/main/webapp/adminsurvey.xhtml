@@ -10,6 +10,9 @@
     <head>
         <title>Manage Survey</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
@@ -31,7 +34,7 @@
 
                                 </p:toolbarGroup>
                                 <p:toolbar>
-                                   
+
                                 </p:toolbar>
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="survey" value="#{surveyManagerController.surveys}"
                                              reflow="true" styleClass="products-table"
@@ -74,7 +77,7 @@
                                     </p:column>
                                     <p:column headerText="#{msgs.answer2Votes}" sortBy="#{survey.anserw2votes}" filterBy="#{survey.anserw2votes}">
                                         <h:outputText rendered="#{not empty survey.anserw2}"  value="#{survey.anserw2votes}"/>
-                                      <h:outputText rendered="#{not empty survey.anserw2 and  empty survey.anserw2votes}"  value="0"/>
+                                        <h:outputText rendered="#{not empty survey.anserw2 and  empty survey.anserw2votes}"  value="0"/>
                                         <h:outputText rendered="#{empty survey.anserw2}"  value="#{msgs.nullMs}"/>
                                     </p:column>
                                     <p:column headerText="#{msgs.answer3}" sortBy="#{survey.anserw3}" filterBy="#{survey.anserw3}">
@@ -82,8 +85,8 @@
                                         <h:outputText rendered="#{empty survey.anserw3}"  value="#{msgs.nullMs}"/>
                                     </p:column>
                                     <p:column headerText="#{msgs.answer3Votes}" sortBy="#{survey.anserw3votes}" filterBy="#{survey.anserw3votes}">
-                                       <h:outputText rendered="#{not empty survey.anserw3}"  value="#{survey.anserw3votes}"/>
-                                       <h:outputText rendered="#{not empty survey.anserw3 and  empty survey.anserw3votes}"  value="0"/>
+                                        <h:outputText rendered="#{not empty survey.anserw3}"  value="#{survey.anserw3votes}"/>
+                                        <h:outputText rendered="#{not empty survey.anserw3 and  empty survey.anserw3votes}"  value="0"/>
                                         <h:outputText rendered="#{empty survey.anserw3}"  value="#{msgs.nullMs}"/>
                                     </p:column>
                                     <p:column headerText="#{msgs.answer4}" sortBy="#{survey.anserw4}" filterBy="#{survey.anserw4}">
@@ -127,7 +130,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="title" value="#{msgs.surveyTitle}"/>
                                                 <p:inputText id="title" label="#{msgs.surveyTitle}"  value="#{surveyManagerController.bigSurvey.surveytitle}" required="true" requiredMessage="#{msgs.required}"  validator="#{surveyManagerController.validateSurveyTitle}">
-                                                    
+
 
                                                     <f:ajax event="blur" render="titleError" />
                                                 </p:inputText>
@@ -137,7 +140,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="question" value="#{msgs.question}"/>
                                                 <p:inputText id="question" label="#{msgs.question}"  value="#{surveyManagerController.bigSurvey.question}" required="true" requiredMessage="#{msgs.required}"  validator="#{surveyManagerController.validateSurveyQuestion}">
-                                                    
+
 
                                                     <f:ajax event="blur" render="questionError" />
                                                 </p:inputText>
@@ -147,17 +150,17 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="answer1" value="#{msgs.answer1}"/>
                                                 <p:inputText id="answer1" label="#{msgs.answer1}"  value="#{surveyManagerController.bigSurvey.anserw1}" required="true" requiredMessage="#{msgs.required}"    >
-                                                    
+
 
                                                     <f:ajax event="blur" render="answer1Error" />
                                                 </p:inputText>
-                                               <p:message id="answer1Error" for="answer1" style="color:red" />
+                                                <p:message id="answer1Error" for="answer1" style="color:red" />
 
                                             </div>
                                             <div class="p-field">
-                                                 <p:outputLabel for="answer2" value="#{msgs.answer2}"/>
+                                                <p:outputLabel for="answer2" value="#{msgs.answer2}"/>
                                                 <p:inputText id="answer2" label="#{msgs.answer2}"  value="#{surveyManagerController.bigSurvey.anserw2}" required="true" requiredMessage="#{msgs.required}" >
-                                                    
+
 
                                                     <f:ajax event="blur" render="answer2Error" />
                                                 </p:inputText>
@@ -167,7 +170,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="answer3" value="#{msgs.answer3}"/>
                                                 <p:inputText id="answer3" label="#{msgs.answer3}"  value="#{surveyManagerController.bigSurvey.anserw3}"  >
-                                                    
+
 
                                                     <f:ajax event="blur" render="answer3Error" />
                                                 </p:inputText>
@@ -175,14 +178,14 @@
 
                                             </div>
                                             <div class="p-field">
-                                                 <p:outputLabel for="answer4" value="#{msgs.answer4}"/>
+                                                <p:outputLabel for="answer4" value="#{msgs.answer4}"/>
                                                 <p:inputText id="answer4" label="#{msgs.answer4}"  value="#{surveyManagerController.bigSurvey.anserw4}" >
-                                                    
+
 
                                                     <f:ajax event="blur" render="answer4Error" />
                                                 </p:inputText>
                                                 <p:message id="answer4Error" for="answer4" style="color:red" />
-                                               
+
 
                                             </div>
                                             <div class="p-field">

@@ -26,6 +26,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import jodd.mail.Email;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -44,6 +45,7 @@ import org.slf4j.LoggerFactory;
 
 @RunWith(Arquillian.class)
 public class ClientUnitTest {
+
     private final static Logger LOG = LoggerFactory.getLogger(ClientUnitTest.class);
 
     @Inject
@@ -51,10 +53,11 @@ public class ClientUnitTest {
 
     @Resource(lookup = "java:app/jdbc/myMusic")
     private DataSource ds;
+
     public ClientUnitTest() {
     }
-    
-     @Deployment
+
+    @Deployment
     public static WebArchive deploy() {
 
         // Use an alternative to the JUnit assert library called AssertJ
@@ -77,6 +80,7 @@ public class ClientUnitTest {
                 .addPackage(PreRenderViewBean.class.getPackage())
                 .addPackage(AlbumConverter.class.getPackage())
                 .addPackage(JavaEE8Resource.class.getPackage())
+                .addPackage(Email.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ClientJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
@@ -90,88 +94,69 @@ public class ClientUnitTest {
 
         return webArchive;
     }
+
     @Test
-    public void testFindClient(){
+    public void testFindClient() {
         Client orignalClient = this.controller.findClient(1);
         Client foudnClient = this.controller.findUser(orignalClient.getUsername(), orignalClient.getPassword());
-        assertEquals(compareClients(orignalClient,foudnClient), true);
+        assertEquals(compareClients(orignalClient, foudnClient), true);
     }
-    private boolean compareClients(Client client1, Client client2){
-        if(!client1.getAddress1().equals(client2.getAddress1())){
+
+    private boolean compareClients(Client client1, Client client2) {
+        if (!client1.getAddress1().equals(client2.getAddress1())) {
+            return false;
+        } else if (!client1.getEmail().equals(client2.getEmail())) {
+            return false;
+        } else if (!client1.getUsername().equals(client2.getUsername())) {
+            return false;
+        } else if (!client1.getPassword().equals(client2.getPassword())) {
+            return false;
+        } else if (!client1.getPostalcode().equals(client2.getPostalcode())) {
+            return false;
+        } else if (!client1.getFirstname().equals(client2.getFirstname())) {
+            return false;
+        } else if (!client1.getLastname().equals(client2.getLastname())) {
+            return false;
+        } else if (!client1.getCity().equals(client2.getCity())) {
+            return false;
+        } else if (!client1.getProvince().equals(client2.getProvince())) {
+            return false;
+        } else if (!client1.getCountry().equals(client2.getCountry())) {
+            return false;
+        } else if (!client1.getTitle().equals(client2.getTitle())) {
+            return false;
+        } else if (!client1.getHometelephone().equals(client2.getHometelephone())) {
+            return false;
+        } else if (!client1.getGenreoflastsearch().equals(client2.getGenreoflastsearch())) {
+            return false;
+        } else if (!client1.getClientid().equals(client2.getClientid())) {
+            return false;
+        } else if ((client1.getAddress2() != null && client2.getAddress2() == null) || (client1.getAddress2() == null && client2.getAddress2() != null)) {
+            return false;
+        } else if (client1.getAddress2() != null && client1.getAddress2() != null && !client1.getAddress2().equals(client2.getAddress2())) {
+            return false;
+        } else if ((client1.getCompanyname() != null && client2.getCompanyname() == null) || (client1.getCompanyname() == null && client2.getCompanyname() != null)) {
+            return false;
+        } else if (client1.getCompanyname() != null && client1.getCompanyname() != null && !client1.getCompanyname().equals(client2.getCompanyname())) {
+            return false;
+        } else if ((client1.getCelltelephone() != null && client2.getCelltelephone() == null) || (client1.getCelltelephone() == null && client2.getCelltelephone() != null)) {
+            return false;
+        } else if (client1.getCelltelephone() != null && client1.getCelltelephone() != null && !client1.getCelltelephone().equals(client2.getCelltelephone())) {
+            return false;
+        } else if ((client1.getIsmanager() && !client2.getIsmanager()) && (!client1.getIsmanager() && client2.getIsmanager())) {
             return false;
         }
-        
-        else if(!client1.getEmail().equals(client2.getEmail())){
-            return false;
-        }
-        else if(!client1.getUsername().equals(client2.getUsername())){
-            return false;
-        }
-        else if(!client1.getPassword().equals(client2.getPassword())){
-            return false;
-        }
-        else if(!client1.getPostalcode().equals(client2.getPostalcode())){
-            return false;
-        }
-         else if(!client1.getFirstname().equals(client2.getFirstname())){
-            return false;
-        }
-        else if(!client1.getLastname().equals(client2.getLastname())){
-            return false;
-        }
-        else if(!client1.getCity().equals(client2.getCity())){
-            return false;
-        }
-         else if(!client1.getProvince().equals(client2.getProvince())){
-            return false;
-        }
-        else if(!client1.getCountry().equals(client2.getCountry())){
-            return false;
-        }
-        else if(!client1.getTitle().equals(client2.getTitle())){
-            return false;
-        }
-        else if(!client1.getHometelephone().equals(client2.getHometelephone())){
-            return false;
-        }
-        else if(!client1.getGenreoflastsearch().equals(client2.getGenreoflastsearch())){
-            return false;
-        }
-        else if(!client1.getClientid().equals(client2.getClientid())){
-            return false;
-        }
-        else if((client1.getAddress2() !=null && client2.getAddress2() ==null)||(client1.getAddress2() ==null && client2.getAddress2() !=null)){
-            return false;
-        }
-        else if (client1.getAddress2() !=null && client1.getAddress2() !=null  && !client1.getAddress2().equals(client2.getAddress2())){
-           return false;
-        }
-        else if((client1.getCompanyname()!=null && client2.getCompanyname() ==null)||(client1.getCompanyname() ==null && client2.getCompanyname() !=null)){
-            return false;
-        } 
-        else if (client1.getCompanyname() !=null && client1.getCompanyname() !=null  && !client1.getCompanyname().equals(client2.getCompanyname())){
-           return false;
-        }
-        else if((client1.getCelltelephone()!=null && client2.getCelltelephone() ==null)||(client1.getCelltelephone() ==null && client2.getCelltelephone() !=null)){
-            return false;
-        }
-        else if (client1.getCelltelephone() !=null && client1.getCelltelephone() !=null  && !client1.getCelltelephone().equals(client2.getCelltelephone())){
-           return false;
-        }
-        else if((client1.getIsmanager()&&!client2.getIsmanager())&& (!client1.getIsmanager()&&client2.getIsmanager())){
-          return false;
-        }
-        
-     
+
         return true;
     }
-   
+
     @Test
     public void testFindClientNoResults() {
         Client client = this.controller.findUser("", "");
         assertEquals(null, client);
     }
-     /**
+
+    /**
      * Restore the database to a known state before testing. This is important
      * if the test is destructive. This routine is courtesy of Bartosz Majsak
      * who also solved my Arquillian remote server problem

@@ -7,13 +7,18 @@
 import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
+import com.gb4w21.musicalmoose.controller.CheckoutController;
+import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.converters.AlbumConverter;
 import com.gb4w21.musicalmoose.entities.Album;
+import com.gb4w21.musicalmoose.entities.Client;
+import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.resources.JavaEE8Resource;
 import com.gb4w21.musicalmoose.util.LocaleChanger;
+import com.gb4w21.musicalmoose.util.ReportManagementController;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +33,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import jodd.mail.Email;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -43,13 +49,14 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.junit.Ignore;
 /**
  * Arquillian unit tests for the methods in the AlbumJpaController that involves
  * CriteriaBuilder queries.
  *
  * @author Daniel
  */
+
 @RunWith(Arquillian.class)
 public class AlbumControllerUnitTests {
 
@@ -87,10 +94,14 @@ public class AlbumControllerUnitTests {
                 .addPackage(AlbumConverter.class.getPackage())
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
-                .addPackage(AlbumJpaController.class.getPackage())
-                .addPackage(MusicTrackJpaController.class.getPackage())
+                .addPackage(ClientJpaController.class.getPackage())
+                .addPackage(ReportManagementController.class.getPackage())
+                .addPackage(ReportManagerJUnitTest.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
+                .addPackage(Client.class.getPackage())
+                .addPackage(Invoicedetail.class.getPackage())
                 .addPackage(Album.class.getPackage())
+                .addPackage(Email.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
@@ -198,7 +209,7 @@ public class AlbumControllerUnitTests {
         assertTrue(checkConditions);
     }
 
-    /**
+      /**
      * Restore the database to a known state before testing. This is important
      * if the test is destructive. This routine is courtesy of Bartosz Majsak
      * who also solved my Arquillian remote server problem

@@ -10,9 +10,13 @@
     <head>
         <title>Manage Client</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+       <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
+
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <div class="wrapper">
@@ -25,7 +29,7 @@
 
                                 <p:toolbar>
 
-                                   
+
 
                                 </p:toolbar>
 

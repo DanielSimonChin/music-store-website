@@ -12,11 +12,14 @@
 
         <title>Musical Moose</title>
         <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-
+        <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
 
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
+
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <div class="wrapper">
@@ -45,7 +48,7 @@
 
                                     </p:toolbarGroup>
                                 </p:toolbar>
-                                
+
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="news" value="#{newsManagerController.newsList}"
                                              reflow="true" styleClass="products-table"
                                              selection="#{newsManagerController.selectedNewsList}" rowKey="#{news.newsid}" paginator="true"
@@ -82,20 +85,20 @@
                                     <p:column headerText="#{msgs.newsText}" sortBy="#{news.newstext}" filterBy="#{news.newstext}">
                                         <h:outputText value="#{news.newstext}"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msgs.newsURL}" sortBy="#{news.url}" filterBy="#{news.url}">
                                         <h:outputText value="#{news.url}"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msgs.newsCreateDate}" sortBy="#{news.createddate}" filterBy="#{news.createddate}">
                                         <h:outputText value="#{news.createddate}"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msgs.newsDisplayed}" sortBy="#{news.displayed}">
                                         <h:outputText rendered="#{news.displayed}" value="#{msgs.yes}"/>
                                         <h:outputText rendered="#{not news.displayed}" value="#{msgs.no}"/>
                                     </p:column>
-                                    
+
                                     <p:column exportable="false">
                                         <p:commandButton icon="pi pi-pencil" update=":form:manage-product-content"
                                                          oncomplete="PF('manageProductDialog').show()"
@@ -120,12 +123,12 @@
                                                 <p:outputLabel for="newsTitle">#{msgs.newsTitle}</p:outputLabel>
                                                 <p:inputText id="newsTitle" value="#{newsManagerController.selectedNews.newtitle}" required="true"/>
                                             </div>
-                                            
+
                                             <div class="p-field">
                                                 <p:outputLabel for="newsText">#{msgs.newsText}</p:outputLabel>
                                                 <p:inputText id="newsText" value="#{newsManagerController.selectedNews.newstext}" required="true"/>
                                             </div>
-                                            
+
                                             <div class="p-field">
                                                 <p:outputLabel for="newsURL">#{msgs.newsURL}</p:outputLabel>
                                                 <p:inputText id="newsURL" value="#{newsManagerController.selectedNews.url}" required="true"/>

@@ -13,6 +13,9 @@ and open the template in the editor.
     <head>
         <title>Musical moose</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+           <f:metadata>
+            <f:event type="preRenderView" listener="#{managerViewChecker.checkClient}" />
+        </f:metadata>
     </head>
     <body>
         <ui:composition template="/templates/common.xhtml">

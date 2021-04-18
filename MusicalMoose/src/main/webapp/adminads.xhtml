@@ -10,10 +10,14 @@
 
     <head>
         <title>Musical Moose</title>
+         <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
 
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
+
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <div class="wrapper">
@@ -51,7 +55,7 @@
                                                   listener="#{fileUploadController.handleFileAdUpload}"
                                                   label="#{msgs.import}"/>
                                 </h:form>
-                                
+
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="bannerAd" value="#{bannerAdManagerController.bannerAds}"
                                              reflow="true" styleClass="products-table"
                                              selection="#{bannerAdManagerController.selectedBannerAds}" rowKey="#{bannerAd.banneraddid}" paginator="true"
@@ -88,12 +92,12 @@
                                     <p:column headerText="#{msgs.adFileName}" sortBy="#{bannerAd.filename}" filterBy="#{bannerAd.filename}">
                                         <h:outputText value="#{bannerAd.filename}"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msgs.adDisplay}" sortBy="#{bannerAd.displayed}">
                                         <h:outputText rendered="#{bannerAd.displayed}" value="#{msgs.yes}"/>
                                         <h:outputText rendered="#{not bannerAd.displayed}" value="#{msgs.no}"/>
                                     </p:column>
-                                    
+
                                     <p:column headerText="#{msgs.adPosition}" sortBy="#{bannerAd.pageposition}">
                                         <h:outputText value="#{bannerAd.pageposition}"/>
                                     </p:column>
@@ -130,7 +134,7 @@
                                                     <f:selectItem itemLabel="#{msgs.noOption}" itemValue="false"/>
                                                 </p:selectOneMenu>
                                             </div>
-                                            
+
                                             <div class="p-field">
                                                 <p:outputLabel for="adPosition">#{msgs.adPosition}</p:outputLabel>
                                                 <p:selectOneMenu id="adPosition" value="#{bannerAdManagerController.selectedBannerAd.pageposition}">
@@ -138,7 +142,7 @@
                                                     <f:selectItem itemLabel="2" itemValue="2"/>
                                                 </p:selectOneMenu>
                                             </div>
-                                            
+
                                             <div class="p-field">
                                                 <p:outputLabel for="adfilename">#{msgs.adFileName}</p:outputLabel>
                                                 <p:selectOneMenu id="adfilename" value="#{bannerAdManagerController.selectedBannerAd.filename}" filter="true" filterMatchMode="startsWith"
@@ -162,7 +166,7 @@
                                         <p:commandButton value="#{msgs.save}" icon="pi pi-check" actionListener="#{bannerAdManagerController.saveBannerAd()}"
                                                          update="manage-product-content" process="manage-product-content @this"/>
                                         <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" actionListener="#{bannerAdManagerController.cancelBannerAdForm()}" 
-                                                          onclick="PF('manageProductDialog').hide()" class="ui-button-secondary"/>
+                                                         onclick="PF('manageProductDialog').hide()" class="ui-button-secondary"/>
                                     </f:facet>
                                 </p:dialog>
 

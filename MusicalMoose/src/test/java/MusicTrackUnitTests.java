@@ -21,6 +21,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import jodd.mail.Email;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -73,6 +74,7 @@ public class MusicTrackUnitTests {
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
                 .addPackage(AlbumConverter.class.getPackage())
+                .addPackage(Email.class.getPackage())
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(MusicTrackJpaController.class.getPackage())
@@ -119,8 +121,7 @@ public class MusicTrackUnitTests {
         }
         assertTrue(checkConditions);
     }
-    
-  
+
     /**
      * Testing to ensure that all returned tracks have a lower sale price than
      * list price.
@@ -137,12 +138,12 @@ public class MusicTrackUnitTests {
         }
         assertTrue(checkConditions);
     }
-    
+
     /**
      * Test that the method returns no more than 3 tracks.
      */
     @Test
-    public void testGetSpecialTracksCount(){
+    public void testGetSpecialTracksCount() {
         List<MusicTrack> specialTracks = controller.getSpecialTracks();
         assertTrue(specialTracks.size() <= 3);
     }

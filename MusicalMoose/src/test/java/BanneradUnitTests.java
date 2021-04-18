@@ -6,10 +6,14 @@
 
 import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
+import com.gb4w21.musicalmoose.controller.AlbumJpaController;
 import com.gb4w21.musicalmoose.controller.BanneradJpaController;
+import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.converters.AlbumConverter;
+import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Bannerad;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.resources.JavaEE8Resource;
 import com.gb4w21.musicalmoose.util.LocaleChanger;
 import java.io.BufferedReader;
@@ -26,6 +30,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import jodd.mail.Email;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -82,8 +87,12 @@ public class BanneradUnitTests {
                 .addPackage(AlbumConverter.class.getPackage())
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
-                .addPackage(BanneradJpaController.class.getPackage())
+                .addPackage(AlbumJpaController.class.getPackage())
+                .addPackage(MusicTrackJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
+                .addPackage(Album.class.getPackage())
+                .addPackage(MusicTrack.class.getPackage())
+                .addPackage(Email.class.getPackage())
                 .addPackage(Bannerad.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")

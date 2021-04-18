@@ -34,6 +34,7 @@ import java.util.logging.Level;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import jodd.mail.Email;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -49,13 +50,15 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.junit.Ignore;
+
 /**
- * Arquillian unit tests for the MusicTrackController's methods that involve
- * CrtieriaBuilder queries.
+ * Arquillian unit tests for the report controller test as failed instants where
+ * it returns no results or is supposed to throw and error
  *
- * @author Daniel
+ * @author Alessandro Dare
+ * @version 1.0
  */
- @Ignore
+@Ignore
 @RunWith(Arquillian.class)
 public class ReportManagerFailedJUnitTest {
 
@@ -105,6 +108,7 @@ public class ReportManagerFailedJUnitTest {
                 .addPackage(Client.class.getPackage())
                 .addPackage(Invoicedetail.class.getPackage())
                 .addPackage(Album.class.getPackage())
+                .addPackage(Email.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
@@ -119,8 +123,15 @@ public class ReportManagerFailedJUnitTest {
     public ReportManagerFailedJUnitTest() {
 
     }
-   
 
+    /**
+     * test at getting a list of all sales will return 0 results if given an
+     * invalid date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testTotalSalesInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -132,9 +143,17 @@ public class ReportManagerFailedJUnitTest {
         reportController.reportSearch();
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
-     @Test
+
+    /**
+     * throws an exception if the category field for any search is null
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
+    @Test
     public void testInvlidCategoryNull() throws ParseException, NullSearchValueException, NullCategoryException {
-         thrown.expect(NullCategoryException.class);
+        thrown.expect(NullCategoryException.class);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date fromDate = sdf.parse("1970-01-01");
         Date toDate = sdf.parse("1990-01-01");
@@ -142,9 +161,18 @@ public class ReportManagerFailedJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory(null);
         reportController.reportSearch();
-       // assertEquals(reportController.getInvoicedetails().size(), 0);
+
     }
-      @Test
+
+    /**
+     * test at getting a list of sales for any search will return 0 results if
+     * given an invalid category
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
+    @Test
     public void testInvlidCategory() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date fromDate = sdf.parse("1970-01-01");
@@ -155,6 +183,15 @@ public class ReportManagerFailedJUnitTest {
         reportController.reportSearch();
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
+
+    /**
+     * test at getting a list of sales for a specified client will return 0
+     * results if given an null date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testTotalSalesInvalidDateNull() throws ParseException, NullSearchValueException, NullCategoryException {
 
@@ -168,6 +205,14 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
 
+    /**
+     * test at getting a list of sales for a specified client will return 0
+     * results if given an invalid date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByClientInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -182,6 +227,13 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
 
+    /**
+     * throws an exception if the specified field for an client search is null
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByClientInvalidClientNull() throws ParseException, NullSearchValueException, NullCategoryException {
         thrown.expect(NullSearchValueException.class);
@@ -196,11 +248,20 @@ public class ReportManagerFailedJUnitTest {
         reportController.reportSearch();
 
     }
-     @Test
+
+    /**
+     * test at getting a list of sales for a specified client will return 0
+     * results if given an invalid client
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
+    @Test
     public void testSalesByClientInvalidClient() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("1970-01-01");
-        Date toDate = sdf.parse("1990-01-01");
+        Date fromDate = sdf.parse("2000-01-01");
+        Date toDate = new Date();
         reportController.setFromDate(fromDate);
         reportController.setReportCategory("SalesByClient");
         reportController.setToDate(toDate);
@@ -209,6 +270,15 @@ public class ReportManagerFailedJUnitTest {
         reportController.reportSearch();
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
+
+    /**
+     * test at getting a list of sales for a specified artist will return 0
+     * results if given an invalid track
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByArtistInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -223,27 +293,42 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
 
+    /**
+     * throws an exception if the specified field for an artist search is null
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByArtistInvalidArtistNull() throws ParseException, NullSearchValueException, NullCategoryException {
         thrown.expect(NullSearchValueException.class);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("1970-01-01");
-        Date toDate = sdf.parse("1990-01-01");
+        Date fromDate = sdf.parse("2000-01-01");
+        Date toDate = new Date();
         reportController.setFromDate(fromDate);
         reportController.setReportCategory("SalesByClient");
         reportController.setToDate(toDate);
         reportController.setSpecifiedSearch(null);
         reportController.setReportCategory("SalesByArtist");
         reportController.reportSearch();
-        
 
     }
+
+    /**
+     * test at getting a list of sales for a specified artist will return 0
+     * results if given an invalid artist
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByArtistInvalidArtist() throws ParseException, NullSearchValueException, NullCategoryException {
-        
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("1970-01-01");
-        Date toDate = sdf.parse("1990-01-01");
+        Date fromDate = sdf.parse("2000-01-01");
+        Date toDate = new Date();
         reportController.setFromDate(fromDate);
         reportController.setReportCategory("SalesByClient");
         reportController.setToDate(toDate);
@@ -253,6 +338,15 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
 
     }
+
+    /**
+     * test at getting a list of sales for a specified track will return 0
+     * results if given an invalid track
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByTrackDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -267,12 +361,19 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
 
+    /**
+     * throws an exception if the specified field for an track search is null
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByTrackInvalidTrackNull() throws ParseException, NullSearchValueException, NullCategoryException {
-         thrown.expect(NullSearchValueException.class);
+        thrown.expect(NullSearchValueException.class);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("1970-01-01");
-        Date toDate = sdf.parse("1990-01-01");
+        Date fromDate = sdf.parse("2000-01-01");
+        Date toDate = new Date();
         reportController.setFromDate(fromDate);
         reportController.setToDate(toDate);
         MusicTrack track = this.musicTrackJpaController.findMusicTrack(71);
@@ -281,12 +382,21 @@ public class ReportManagerFailedJUnitTest {
         reportController.reportSearch();
 
     }
+
+    /**
+     * test at getting a list of sales for a specified track will return 0
+     * results if given an invalid track
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSalesByTrackInvalidTrack() throws ParseException, NullSearchValueException, NullCategoryException {
- 
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("1970-01-01");
-        Date toDate = sdf.parse("1990-01-01");
+        Date fromDate = sdf.parse("2000-01-01");
+        Date toDate = new Date();
         reportController.setFromDate(fromDate);
         reportController.setToDate(toDate);
         MusicTrack track = this.musicTrackJpaController.findMusicTrack(71);
@@ -296,8 +406,17 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
 
     }
+
+    /**
+     * test at getting a list of sales for a specified album will return 0
+     * results if given an invalid date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
-    public void testSaleByAlbumDate() throws ParseException, NullSearchValueException, NullCategoryException {
+    public void testSaleByAlbumInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date fromDate = sdf.parse("1970-01-01");
         Date toDate = sdf.parse("1990-01-01");
@@ -310,27 +429,42 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
     }
 
+    /**
+     * throws an exception if the specified field for an album search is null
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testSaleByAlbumInvalidAlbumNull() throws ParseException, NullSearchValueException, NullCategoryException {
-         thrown.expect(NullSearchValueException.class);
+        thrown.expect(NullSearchValueException.class);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("1970-01-01");
-        Date toDate = sdf.parse("1990-01-01");
+        Date fromDate = sdf.parse("2000-01-01");
+        Date toDate = new Date();
         reportController.setFromDate(fromDate);
         reportController.setToDate(toDate);
         Album album = this.albumJpaController.findAlbum(1);
         reportController.setSpecifiedSearch(null);
         reportController.setReportCategory("SalesByAlbum");
         reportController.reportSearch();
-     
 
     }
-      @Test
-    public void testSaleByAlbumInvalidAlbum() throws ParseException, NullSearchValueException, NullCategoryException{
+
+    /**
+     * test at getting a list of sales for a specified album will return 0
+     * results if given an invalid album
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
+    @Test
+    public void testSaleByAlbumInvalidAlbum() throws ParseException, NullSearchValueException, NullCategoryException {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("1970-01-01");
-        Date toDate = sdf.parse("1990-01-01");
+        Date fromDate = sdf.parse("2000-01-01");
+        Date toDate = new Date();
         reportController.setFromDate(fromDate);
         reportController.setToDate(toDate);
         Album album = this.albumJpaController.findAlbum(1);
@@ -340,6 +474,15 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getInvoicedetails().size(), 0);
 
     }
+
+    /**
+     * test at getting a list of top selling clients will return 0 results if
+     * given an invalid date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testTopClientsDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -352,6 +495,14 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getClients().size(), 0);
     }
 
+    /**
+     * test at getting a list of top selling clients will return 0 results if
+     * given an invalid date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testTopClientsDateNull() throws ParseException, NullSearchValueException, NullCategoryException {
 
@@ -365,6 +516,14 @@ public class ReportManagerFailedJUnitTest {
         assertEquals(reportController.getClients().size(), 0);
     }
 
+    /**
+     * test at getting a list of top selling clients will return 0 results if
+     * given an invalid date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testTopSellersInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -377,6 +536,14 @@ public class ReportManagerFailedJUnitTest {
         assertEquals((reportController.getTracks().size() + reportController.getAlbums().size()), 0);
     }
 
+    /**
+     * test at getting a list of top selling clients will return 0 results if
+     * given an null date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testTopSellersInvalidDateNull() throws ParseException, NullSearchValueException, NullCategoryException {
 
@@ -391,29 +558,46 @@ public class ReportManagerFailedJUnitTest {
 
     }
 
+    /**
+     * test at getting a list of zero selling tracks will return 0 results if
+     * given an null date
+     *
+     * @throws ParseException
+     * @throws NullCategoryException
+     * @throws NullSearchValueException
+     */
     @Test
     public void testZeroTracksAllDates() throws ParseException, NullCategoryException, NullSearchValueException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("2000-01-01");
+        Date fromDate = null;
         Date toDate = null;
         reportController.setFromDate(fromDate);
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroTracks");
         reportController.reportSearch();
+        assertEquals(reportController.getTracks().size(), 0);
 
     }
 
+    /**
+     * test at getting a list of zero selling clients will return 0 results if
+     * given an mull date
+     *
+     * @throws ParseException
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
     @Test
     public void testZeroCleintsAllDates() throws ParseException, NullSearchValueException, NullCategoryException {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date fromDate = sdf.parse("2000-01-01");
+        Date fromDate = null;
         Date toDate = null;
         reportController.setFromDate(fromDate);
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroClients");
         reportController.reportSearch();
-
+        assertEquals(reportController.getClients().size(), 0);
     }
 
     /**

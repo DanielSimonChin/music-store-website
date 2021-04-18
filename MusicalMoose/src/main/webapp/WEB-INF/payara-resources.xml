@@ -10,9 +10,9 @@
                           pool-resize-quantity="2"
                           res-type="javax.sql.ConnectionPoolDataSource"
                           steady-pool-size="8">
-        <property name="URL" value="jdbc:mysql://localhost:3306/musicstorage?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
+        <property name="URL" value="jdbc:mysql://localhost:3306/csgb4w21?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;useSSL=false&amp;allowPublicKeyRetrieval=true"/>
 
-        <property name="User" value="music"/>
-        <property name="Password" value="dawson123"/>
+        <property name="User" value="CSgb4w21"/>
+        <property name="Password" value="ssecomal"/>
     </jdbc-connection-pool>
 </resources>

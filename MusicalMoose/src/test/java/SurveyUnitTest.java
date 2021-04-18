@@ -26,6 +26,7 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import jodd.mail.Email;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -44,13 +45,15 @@ import org.slf4j.LoggerFactory;
 
 @RunWith(Arquillian.class)
 public class SurveyUnitTest {
-     private final static Logger LOG = LoggerFactory.getLogger(SurveyUnitTest.class);
+
+    private final static Logger LOG = LoggerFactory.getLogger(SurveyUnitTest.class);
 
     @Inject
     private SurveyJpaController controller;
 
     @Resource(lookup = "java:app/jdbc/myMusic")
     private DataSource ds;
+
     public SurveyUnitTest() {
     }
 
@@ -81,6 +84,7 @@ public class SurveyUnitTest {
                 .addPackage(SurveyJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Survey.class.getPackage())
+                .addPackage(Email.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -90,7 +94,8 @@ public class SurveyUnitTest {
 
         return webArchive;
     }
-     /**
+
+    /**
      * The following methods support the seedDatabse method
      */
     private String loadAsString(final String path) {
@@ -101,7 +106,8 @@ public class SurveyUnitTest {
             throw new RuntimeException("Unable to close input stream.", e);
         }
     }
-     private List<String> splitStatements(Reader reader,
+
+    private List<String> splitStatements(Reader reader,
             String statementDelimiter) {
         final BufferedReader bufferedReader = new BufferedReader(reader);
         final StringBuilder sqlStatement = new StringBuilder();
@@ -119,16 +125,18 @@ public class SurveyUnitTest {
                     sqlStatement.setLength(0);
                 }
             }
-              return statements;
+            return statements;
         } catch (IOException e) {
             throw new RuntimeException("Failed parsing sql", e);
         }
     }
-     @Test
-    public void testFindClient(){
-        Survey survey=controller.getRunningSurvey();
+
+    @Test
+    public void testFindClient() {
+        Survey survey = controller.getRunningSurvey();
         assertEquals(survey.getSurveryinuse(), true);
     }
+
     /**
      * Restore the database to a known state before testing. This is important
      * if the test is destructive. This routine is courtesy of Bartosz Majsak
@@ -147,8 +155,8 @@ public class SurveyUnitTest {
             throw new RuntimeException("Failed seeding database", e);
         }
     }
-    
-     private boolean isComment(final String line) {
+
+    private boolean isComment(final String line) {
         return line.startsWith("--") || line.startsWith("//")
                 || line.startsWith("/*");
     }

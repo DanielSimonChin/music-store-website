@@ -9,9 +9,12 @@ import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -231,12 +234,33 @@ public class ReportManagementController implements Serializable {
     }
 
     /**
+     * If the date field is null change it to and invalid date
+     */
+    private void changeDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date invalidDate = null;
+        try {
+            invalidDate = sdf.parse("1950-01-01");
+        } catch (ParseException ex) {
+            LOG.info("erro with date conversion:" + ex.getLocalizedMessage());
+        }
+        if (this.toDate == null || this.fromDate == null) {
+            invoicedetails = new ArrayList<>();
+            clients = new ArrayList<>();
+            tracks = new ArrayList<>();
+            albums = new ArrayList<>();
+        }
+
+    }
+
+    /**
      * searches and displays the list of chosen sales, tracks, albums etc that
      * is requested for the report
      *
      * @return String report page
      */
     public String reportSearch() throws NullSearchValueException, NullCategoryException {
+
         gettingSales = false;
         invoicedetails = new ArrayList<>();
         clients = new ArrayList<>();
@@ -299,7 +323,7 @@ public class ReportManagementController implements Serializable {
         for (Invoicedetail iD : invoicedetails) {
             LOG.debug("ids" + iD.getInvoiceid());
         }
-
+        changeDate();
         return "adminreport";
     }
 
@@ -581,6 +605,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * Calculates all the totals when the user requests a sales report
+     *
      * @param invoiceDetails List<Invoicedetail>
      */
     private void setTotals(List<Invoicedetail> invoiceDetails) {

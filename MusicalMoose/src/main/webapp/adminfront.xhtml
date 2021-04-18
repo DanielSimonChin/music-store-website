@@ -3,6 +3,10 @@
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
+<f:event listener="#{managerViewChecker.checkManager}" type="preRenderView" />
+<f:metadata>
+            <f:event type="preRenderView" listener="#{managerViewChecker.performManagerCheck()}" />
+        </f:metadata>
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -14,10 +18,15 @@ and open the template in the editor.
     <head>
         <title>Manager</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
+         
     </head>
     <body>
 
         <ui:composition template="/templates/commonadmin.xhtml">
+
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <h1 class="welcomeAdmin">Manager front page</h1>
