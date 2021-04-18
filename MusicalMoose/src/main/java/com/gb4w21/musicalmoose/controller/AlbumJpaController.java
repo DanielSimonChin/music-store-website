@@ -219,7 +219,13 @@ public class AlbumJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
-
+    /**
+     * Takes a user from the search page to the album page
+     * @author Alessandro Dare
+     * @param id int
+     * 
+     * @return album page
+     */
     public String searchSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
 
@@ -228,6 +234,7 @@ public class AlbumJpaController implements Serializable {
         return "searchAlbum";
     }
 
+
     /**
      * Store given album by id to selectedAlbum
      * 
@@ -235,6 +242,7 @@ public class AlbumJpaController implements Serializable {
      * 
      * @param id
      * @return string to navigate to album page
+
      */
     public String selectSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
@@ -269,7 +277,11 @@ public class AlbumJpaController implements Serializable {
 
         return (Album) q.getResultList().get(0);
     }
-
+    /**
+     * takes the user back to the album page after writing a review
+     * @param album Album
+     * @return String Album page
+     */
     public String backToAlbum(Album album) {
         this.selectedAlbum = album;
         return "reviewAlbum";
@@ -385,6 +397,7 @@ public class AlbumJpaController implements Serializable {
         return "detailAlbum";
     }
 
+
     /**
      * Sends page to album page given an Album object
      * 
@@ -393,6 +406,7 @@ public class AlbumJpaController implements Serializable {
      * @param album
      * @return 
      */
+
     public String toAlbum(Album album) {
         this.selectedAlbum = album;
         LOG.info("" + album.getAlbumtitle());
@@ -433,7 +447,11 @@ public class AlbumJpaController implements Serializable {
         this.selectedAlbum = album;
         return "relatedAlbumFromAlbum";
     }
-
+/**
+ * creates a list of specials albums that have the largest sale
+ * @author Alessandro Dare
+ * @return List<Album> special album list
+ */
     public List<Album> getSpecialAlbums() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
@@ -446,8 +464,10 @@ public class AlbumJpaController implements Serializable {
         List<Album> albums = query.getResultList();
         final int specialsLimt = 3;
         List<Album> specialList = new ArrayList<>();
+        //Adds to three ablums to special list
         if (albums.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
+                LOG.info("Special ablum:"+albums.get(i).getAlbumtitle());
                 specialList.add(albums.get(i));
             }
             return specialList;

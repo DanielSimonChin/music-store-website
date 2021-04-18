@@ -30,7 +30,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
+/**
+ * Responsible for registering and validating a client creates them and stores them in the database logs them in automatically
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @Named
 @SessionScoped
 public class RegistrationController implements Serializable {
@@ -47,9 +51,11 @@ public class RegistrationController implements Serializable {
     private String confrimPassword;
     private boolean userRegistered;
     private String lastPageRegister;
-    private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+   
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$", Pattern.CASE_INSENSITIVE);
-
+    /**
+     * Default controller
+     */
     public RegistrationController() {
 
     }
@@ -85,7 +91,13 @@ public class RegistrationController implements Serializable {
     public void setRegistrationBean(Client registrationBean) {
         this.registrationBean = registrationBean;
     }
-
+    /**
+     * takes user name information from the registration information form the registration 
+     * page and uses to to create a user and logs the in automatically
+     * @author Alessandro Dare
+     * @return previous visted page
+     * @throws RollbackFailureException 
+     */
     public String addNewUser() throws RollbackFailureException {
         registrationBean.setPassword(fristPassword);
         registrationBean.setClientactive(true);
@@ -98,7 +110,11 @@ public class RegistrationController implements Serializable {
         loginController.getLoginBean().setEmailAddress(registrationBean.getEmail());
         return lastPageRegister;
     }
-
+    /**
+     * takes the user to the registration page and clears all previous values
+     * @author Alessandro Dare
+     * @return the register page
+     */
     public String registerUser() {
         FacesContext context = FacesContext.getCurrentInstance();
         lastPageRegister = context.getViewRoot().getViewId();
@@ -113,48 +129,14 @@ public class RegistrationController implements Serializable {
         return "register";
     }
 
-    public void validateEmailError(FacesContext context, UIComponent component,
-            Object value) {
-        String email = value.toString();
-        Matcher matcher = VALID_EMAIL_ADDRESS_PATTERN.matcher(email);
-        if (!matcher.find()) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "emailError", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-            throw new ValidatorException(message);
-        }
-    }
-
-    public void validateUserNameError(FacesContext context, UIComponent component,
-            Object value) {
-        String username = value.toString();
-        if (!checkUserName(username)) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "usernameTakenError", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-            throw new ValidatorException(message);
-        }
-    }
-
-    private boolean checkUserName(String username) {
-        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Client> cq = cb.createQuery(Client.class);
-        Root<Client> client = cq.from(Client.class);
-        cq.select(client);
-        // Use String to refernce a field
-        cq.where(cb.equal(client.get("username"), username));
-
-        TypedQuery<Client> query = entityManager.createQuery(cq);
-
-        if (query.getResultList().isEmpty()) {
-            return true;
-        }
-        return false;
-
-    }
-
+ 
+    /**
+     * validates to make sure the confirm password matches the original password
+     * @author Alessandro Dare
+     * @param context
+     * @param component
+     * @param value 
+     */
     public void validatePasswordError(FacesContext context, UIComponent component,
             Object value) {
         String confrimPassword = value.toString();
@@ -166,7 +148,13 @@ public class RegistrationController implements Serializable {
             throw new ValidatorException(message);
         }
     }
-
+    /**
+     * validates the second address to make sure it's in the correct format and isn't copying address 1
+     * @author Alessandro Dare
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value  Object
+     */
     public void validateAddress(FacesContext context, UIComponent component,
             Object value) {
         String address1 = registrationBean.getAddress1();
@@ -181,19 +169,13 @@ public class RegistrationController implements Serializable {
             }
         }
     }
-
-    public void validateHomePhoneNumber(FacesContext context, UIComponent component,
-            Object value) {
-        String phoneNumber = value.toString();
-        Matcher matcher = VALID_PHONE_NUMBER_PATTERN.matcher(phoneNumber);
-        if (!matcher.find()) {
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "phoneNumberFormatError", null);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-
-            throw new ValidatorException(message);
-        }
-    }
+    /**
+     * validates to make sure cell phone follows correct format and isn't related to the home page
+     * @author Alessandro Dare
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value  Object
+     */
 
     public void validateCellPhoneNumber(FacesContext context, UIComponent component,
             Object value) {

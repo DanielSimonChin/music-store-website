@@ -3,7 +3,7 @@ import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.converters.AlbumConverter;
+
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.resources.JavaEE8Resource;
 import com.gb4w21.musicalmoose.util.LocaleChanger;
@@ -74,7 +74,8 @@ public class MusicTrackUnitTests {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                .addPackage(AlbumConverter.class.getPackage())
+                
+                .addPackage(Email.class.getPackage())
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(MusicTrackJpaController.class.getPackage())
@@ -93,7 +94,7 @@ public class MusicTrackUnitTests {
 
     /**
      * Test that the findMostRecentTracks method only returns 3 music tracks.
-     *
+     * 
      * @throws SQLException
      */
     @Test
@@ -105,7 +106,7 @@ public class MusicTrackUnitTests {
     /**
      * Find a track and test that all its related tracks are part of the same
      * album and that the results don't return the input track.
-     *
+     * 
      * @throws SQLException
      */
     @Test
@@ -122,11 +123,11 @@ public class MusicTrackUnitTests {
         }
         assertTrue(checkConditions);
     }
-    
-  
+
     /**
      * Testing to ensure that all returned tracks have a lower sale price than
      * list price.
+     * 
      */
     @Test
     public void testGetSpecialTracks() {
@@ -140,12 +141,12 @@ public class MusicTrackUnitTests {
         }
         assertTrue(checkConditions);
     }
-    
+
     /**
      * Test that the method returns no more than 3 tracks.
      */
     @Test
-    public void testGetSpecialTracksCount(){
+    public void testGetSpecialTracksCount() {
         List<MusicTrack> specialTracks = controller.getSpecialTracks();
         assertTrue(specialTracks.size() <= 3);
     }

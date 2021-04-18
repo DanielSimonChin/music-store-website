@@ -243,7 +243,13 @@ public class ClientJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
-    
+    /**
+     * find user with matching username and password
+     * @author Alessandro Dare
+     * @param userName String
+     * @param password String
+     * @return 
+     */
     public Client findUser(String userName, String password){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();

@@ -10,9 +10,13 @@
     <head>
         <title>Manage Client</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+       <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
+
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <div class="wrapper">
@@ -25,7 +29,7 @@
 
                                 <p:toolbar>
 
-                                   
+
 
                                 </p:toolbar>
 
@@ -253,7 +257,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="pcode" value="#{msgs.postalCode}"/>
                                                 <p:inputText id="pcode" label="#{msgs.postalCode}" value="#{clientManagerController.selectedClient.postalcode}" required="true" requiredMessage="#{msgs.required}" >
-                                                    <f:validateLength minimum="3" maximum="9" />
+                                                    <f:validateLength minimum="6" maximum="7" />
                                                     <f:ajax event="blur" render="pcodeError" />
                                                 </p:inputText>
                                                 <p:message id="pcodeError" for="pcode" style="color:red" />
@@ -271,7 +275,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="cphone" value="#{msgs.cellphone}"/>
                                                 <p:inputText id="cphone" label="#{msgs.cellphone}" value="#{clientManagerController.selectedClient.celltelephone}"   validator="#{clientManagerController.validateCellPhoneNumber}">
-                                                    <f:validateLength minimum="10" maximum="25" />
+                                                    
                                                     <f:ajax event="blur" render="cphoneError" />
                                                 </p:inputText>
                                                 <p:message id="cphoneError" for="cphone" style="color:red" />

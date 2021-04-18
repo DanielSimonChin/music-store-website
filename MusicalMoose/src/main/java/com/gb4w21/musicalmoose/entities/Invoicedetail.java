@@ -27,7 +27,7 @@ import javax.persistence.TemporalType;
  * @author MusicalMoose
  */
 @Entity
-@Table(name = "invoicedetail", catalog = "MUSICSTORAGE", schema = "")
+@Table(name = "invoicedetail", catalog = "CSgb4w21", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Invoicedetail.findAll", query = "SELECT i FROM Invoicedetail i"),
     @NamedQuery(name = "Invoicedetail.findByInvoiceid", query = "SELECT i FROM Invoicedetail i WHERE i.invoiceid = :invoiceid"),

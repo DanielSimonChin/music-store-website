@@ -260,6 +260,7 @@ public class MusicTrackJpaController implements Serializable {
         return "detailTrackFromAlbum";
     }
 
+
     /**
      * Store given track by id to selectedAlbum
      * 
@@ -267,6 +268,7 @@ public class MusicTrackJpaController implements Serializable {
      * 
      * @param id
      * @return string to navigate to track page
+
      */
     public String searchSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
@@ -275,7 +277,11 @@ public class MusicTrackJpaController implements Serializable {
         }
         return "searchTrack";
     }
-
+    /**
+     * Takes the id of a track a takes the user to that track page from the index page
+     * @param id int
+     * @return track page 
+     */
     public String selectSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
         
@@ -312,12 +318,20 @@ public class MusicTrackJpaController implements Serializable {
 
         return (MusicTrack) q.getResultList().get(0);
     }
-
+    /**
+     * takes a user back to the track page after writing a review
+     * @param musicTrack MusicTrack
+     * @return track page
+     */
     public String backToTrack(MusicTrack musicTrack) {
         this.searchedTrack = musicTrack;
         return "reviewTrack";
     }
-
+    /**
+     * get a list of tracks that have the biggest sale
+     * @author Alessandro Dare
+     * @return List<MusicTrack> a list of special tracks
+     */
     public List<MusicTrack> getSpecialTracks() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
@@ -330,8 +344,10 @@ public class MusicTrackJpaController implements Serializable {
         List<MusicTrack> tracks = query.getResultList();
         final int specialsLimt = 3;
         List<MusicTrack> specialList = new ArrayList<>();
+        //Adds to three tracks to special list
         if (tracks.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
+                LOG.info("Special ablum:"+tracks.get(i).getTracktitle());
                 specialList.add(tracks.get(i));
             }
 
@@ -392,7 +408,7 @@ public class MusicTrackJpaController implements Serializable {
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.
-     *
+     * @author Alessandro Dare
      * @param track
      * @return display the trackpage.xhtml
      */

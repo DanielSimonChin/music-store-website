@@ -29,7 +29,7 @@ import javax.persistence.TemporalType;
  * @author MusicalMoose
  */
 @Entity
-@Table(name = "sale", catalog = "MUSICSTORAGE", schema = "")
+@Table(name = "sale", catalog = "CSgb4w21", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Sale.findAll", query = "SELECT s FROM Sale s"),
     @NamedQuery(name = "Sale.findBySaleid", query = "SELECT s FROM Sale s WHERE s.saleid = :saleid"),

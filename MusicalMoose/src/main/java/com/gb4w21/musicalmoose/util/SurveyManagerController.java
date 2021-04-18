@@ -102,6 +102,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * takes the user to the survey management page resets all values
+     * @author Alessandro Dare
      */
     @PostConstruct
     public void init() {
@@ -109,18 +110,10 @@ public class SurveyManagerController implements Serializable {
         bigSurvey = null;
         selectedSurveys = new ArrayList<>();
     }
-    /**
-     * takes the user to the survey management page resets all values
-     * @return String survey page
-     */
-    public String toSurveryManagement() {
-        surveys = surveyJpaController.findSurveyEntities();
-        bigSurvey = null;
-        selectedSurveys = new ArrayList<>();
-        return "adminsurvey";
-    }
+    
     /**
      * saves current survey information if a survey is changed to be active the current survey on the front page will be taken down
+     @author Alessandro Dare
      */
     public void saveSurvey() {
        
@@ -181,6 +174,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * set votes to zero and not null is a new answer was created
+     * @author Alessandro Dare
      */
     private void setAnswerVotesCreate() {
         if (this.bigSurvey.getAnserw1() != null && (!this.bigSurvey.getAnserw1().isEmpty())) {
@@ -198,6 +192,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * resets the votes for a given survey to zero if a question was edited or removed
+     * @author Alessandro Dare
      */
     private void setAnswerVotesEdit() {
         Survey currentSurvey = this.surveyJpaController.findSurvey(this.bigSurvey.getSurveyid());
@@ -230,6 +225,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * checks to see if specified survey exists
+     * @author Alessandro Dare
      * @param id int
      * @return boolean true if it exits false if not
      */
@@ -241,6 +237,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * removes the current survey being used from the home page
+     * @author Alessandro Dare
      */
     private void takeDonwCurrentSurvey() {
         Survey runningSurvey = surveyJpaController.getRunningSurvey();
@@ -258,6 +255,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * Checks to see if the survey question given was already taken if so it returns an error
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value  Object
@@ -277,6 +275,7 @@ public class SurveyManagerController implements Serializable {
     }
      /**
      * checks to see if the question for the survey was found in the database
+     * @author Alessandro Dare
      * @param question String
      * @return boolean true if survey question isn't found false if it is
      */
@@ -303,6 +302,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * Checks to see if the survey title given was already taken if so it returns an error
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value  Object
@@ -320,6 +320,7 @@ public class SurveyManagerController implements Serializable {
     }
     /**
      * checks to see if the title for the survey was found in the database
+     * @author Alessandro Dare
      * @param surveytitle String
      * @return boolean true if survey title isn't found false if it is
      */

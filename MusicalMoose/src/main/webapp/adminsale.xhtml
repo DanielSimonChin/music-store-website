@@ -10,6 +10,9 @@
     <head>
         <title>Manage Client</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
@@ -26,16 +29,16 @@
                                 <p:growl id="messages" showDetail="true"/>
                                 <p:toolbar>
                                     <p:toolbarGroup align="right">
-                                     
+
                                         <p:commandButton value="#{msgs.removeCount}" rendered="#{orderManagementController.addRemoved}" action="#{orderManagementController.changeTable()}" styleClass="ui-button-help" ajax="false">
-                                           
+
                                         </p:commandButton>
-                                         <p:commandButton value="#{msgs.includeCount}" rendered="#{not orderManagementController.addRemoved}" action="#{orderManagementController.changeTable()}" styleClass="ui-button-help" ajax="false">
-                                           
+                                        <p:commandButton value="#{msgs.includeCount}" rendered="#{not orderManagementController.addRemoved}" action="#{orderManagementController.changeTable()}" styleClass="ui-button-help" ajax="false">
+
                                         </p:commandButton>
                                     </p:toolbarGroup>
-                                  
-                                 
+
+
                                 </p:toolbar>
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="sale" value="#{orderManagementController.sales}"
                                              reflow="true" styleClass="products-table"
@@ -126,21 +129,21 @@
                                                 <div class="p-field">
                                                     <p:outputLabel for="profit" value="#{msgs.profit}"/>
                                                     <p:inputNumber minValue="0" id="profit" value="#{invoicedetail.profit}">
-                                                                   <f:ajax event="blur" render="profitError" />
+                                                        <f:ajax event="blur" render="profitError" />
                                                     </p:inputNumber >
                                                     <p:message id="profitError" for="profit" style="color:red" />
                                                 </div>
                                                 <div class="p-field">
                                                     <p:outputLabel for="currentCost"  value="#{msgs.currentCost}"/>
                                                     <p:inputNumber minValue="0" id="currentCost" value="#{invoicedetail.currentcost}">
-                                                                   <f:ajax event="blur" render="currentCostError" />
+                                                        <f:ajax event="blur" render="currentCostError" />
                                                     </p:inputNumber >
                                                     <p:message id="currentCostError" for="currentCost" style="color:red" />
                                                 </div>
                                                 <div class="p-field">
                                                     <p:outputLabel for="productDownload" value="#{msgs.numberOfDownloads}"/>
                                                     <p:inputNumber minValue="0" id="productDownload" value="#{invoicedetail.productdownloaded}">
-                                                                   <f:ajax event="blur" render="productDownloadError" />
+                                                        <f:ajax event="blur" render="productDownloadError" />
                                                     </p:inputNumber >
                                                     <p:message id="productDownloadError" for="productDownload" style="color:red" />
                                                 </div>
@@ -155,7 +158,7 @@
                                                     <p:message id="invoiceApprovedError" for="invoiceApproved" style="color:red" />
                                                 </div>
                                             </ui:repeat>
-                                           <div class="p-field">
+                                            <div class="p-field">
                                                 <p:outputLabel for="saleApproved">#{msgs.saleStatus}</p:outputLabel>
                                                 <p:selectOneRadio id="saleApproved" value="#{orderManagementController.selectedSale.saleremoved}" required="true" requiredMessage="#{msgs.required}" layout="responsive" columns="2">
 

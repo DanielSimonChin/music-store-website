@@ -11,7 +11,9 @@
 
         <title>Musical Moose</title>
         <!--<h:outputStylesheet library="css" name="frontdoor.css" />-->
-
+         <f:metadata>
+            <f:event type="preRenderView" listener="#{managerViewChecker.checkClient}" />
+        </f:metadata>
     </head>
 
     <h:body>

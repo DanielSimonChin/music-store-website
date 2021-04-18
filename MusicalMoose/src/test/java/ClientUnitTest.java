@@ -8,7 +8,7 @@ import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.converters.AlbumConverter;
+
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.resources.JavaEE8Resource;
 import com.gb4w21.musicalmoose.util.LocaleChanger;
@@ -43,7 +43,11 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Tests public methods for client controller
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @RunWith(Arquillian.class)
 public class ClientUnitTest {
 
@@ -79,8 +83,9 @@ public class ClientUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                .addPackage(AlbumConverter.class.getPackage())
+               
                 .addPackage(JavaEE8Resource.class.getPackage())
+                .addPackage(Email.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ClientJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
@@ -95,14 +100,23 @@ public class ClientUnitTest {
 
         return webArchive;
     }
-
+    /**
+     * test that findusre will return the correct client
+     * @author Alessandro Dare
+     */
     @Test
     public void testFindClient() {
         Client orignalClient = this.controller.findClient(1);
         Client foudnClient = this.controller.findUser(orignalClient.getUsername(), orignalClient.getPassword());
         assertEquals(compareClients(orignalClient, foudnClient), true);
     }
-
+    /**
+     * compares the two clients to make sure they match
+     * @author Alessandro Dare
+     * @param client1 Client
+     * @param client2 Client
+     * @return true if they match false if not
+     */
     private boolean compareClients(Client client1, Client client2) {
         if (!client1.getAddress1().equals(client2.getAddress1())) {
             return false;
@@ -150,7 +164,10 @@ public class ClientUnitTest {
 
         return true;
     }
-
+    /**
+     * test that find user will return null if given invalid parameters
+     * @author Alessandro Dare
+     */
     @Test
     public void testFindClientNoResults() {
         Client client = this.controller.findUser("", "");

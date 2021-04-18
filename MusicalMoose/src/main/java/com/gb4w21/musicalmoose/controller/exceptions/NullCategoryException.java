@@ -6,8 +6,9 @@
 package com.gb4w21.musicalmoose.controller.exceptions;
 
 /**
- *
- * @author owner
+ * Error thrown if the report controller is given a null category for a search
+ * @author Alesandro Dare
+ * @version 1.0
  */
 public class NullCategoryException extends Exception{
      public NullCategoryException(String message) {

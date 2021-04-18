@@ -10,7 +10,9 @@
     <!-- Global settings for the project. Settings can be accessed in the pom
     by placing the tag name in ${...} -->
     <properties>
-     <skipTests>true</skipTests>
+
+      <skipTests>true</skipTests>  
+
     </properties>
 
     <!-- All of the sample code shares the same dependencies and build         -->
@@ -74,6 +76,7 @@
             <artifactId>javax.mail-api</artifactId>
             <version>1.6.2</version>
         </dependency>
+           
       </dependencies>
 
 </project>

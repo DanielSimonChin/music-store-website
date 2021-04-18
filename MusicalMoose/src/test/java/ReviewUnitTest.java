@@ -10,7 +10,7 @@ import com.gb4w21.musicalmoose.controller.AlbumJpaController;
 import com.gb4w21.musicalmoose.controller.ReviewJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.converters.AlbumConverter;
+
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Review;
@@ -46,10 +46,14 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Tests public methods for review controller
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @RunWith(Arquillian.class)
 public class ReviewUnitTest {
-    
+
     private final static Logger LOG = LoggerFactory.getLogger(ReviewUnitTest.class);
 
     @Inject
@@ -60,8 +64,10 @@ public class ReviewUnitTest {
     private AlbumJpaController albumJpaController;
     @Resource(lookup = "java:app/jdbc/myMusic")
     private DataSource ds;
+
     public ReviewUnitTest() {
     }
+
     @Deployment
     public static WebArchive deploy() {
 
@@ -83,13 +89,14 @@ public class ReviewUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                .addPackage(AlbumConverter.class.getPackage())
+                
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ReviewJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Review.class.getPackage())
-                .addPackage(Email.class.getPackage()) 
+                .addPackage(Email.class.getPackage())
+
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -99,46 +106,77 @@ public class ReviewUnitTest {
 
         return webArchive;
     }
+    /**
+     * Tests that all reviews given are for selected track
+     * @author Alessandro Dare
+     */
     @Test
-    public void testRealtedTrackReviews(){
-        MusicTrack musicTrack= musicTrackJpaController.findMusicTrack(1);
-        List <Review> reviews=this.controller.getTrackReviews(musicTrack);
-        assertEquals(checkRealtedTracks(musicTrack,reviews ), true);
+    public void testRealtedTrackReviews() {
+        MusicTrack musicTrack = musicTrackJpaController.findMusicTrack(1);
+        List<Review> reviews = this.controller.getTrackReviews(musicTrack);
+        assertEquals(checkRealtedTracks(musicTrack, reviews), true);
     }
-    private boolean checkRealtedTracks(MusicTrack musicTrack, List <Review> reviews){
-        for(Review review:reviews){
-            if(review.getInventoryid().getInventoryid()!=musicTrack.getInventoryid()){
+    /**
+     * checks that all reviews are related to the selected tracks
+     * @author Alessandro Dare
+     * @param musicTrack MusicTrack
+     * @param reviews List<Review>
+     * @return true if all reviews are related false if not
+     */
+    private boolean checkRealtedTracks(MusicTrack musicTrack, List<Review> reviews) {
+        for (Review review : reviews) {
+            if (review.getInventoryid().getInventoryid() != musicTrack.getInventoryid()) {
                 return false;
             }
         }
         return true;
     }
+    /**
+     * Tests that no reviews a given to a new track
+     * @author Alessandro Dare
+     */
     @Test
-    public void testRealtedTrackReviewsCount(){
-         MusicTrack musicTrack= new MusicTrack();
-        List <Review> reviews=this.controller.getTrackReviews(musicTrack);
+    public void testRealtedTrackReviewsCount() {
+        MusicTrack musicTrack = new MusicTrack();
+        List<Review> reviews = this.controller.getTrackReviews(musicTrack);
         assertEquals(reviews.size(), 0);
     }
+    /**
+     * tests all reviews generated a from the selected album
+     * @author Alessandro Dare
+     */
     @Test
-    public void testRealtedAblumReviews(){
-        Album album= this.albumJpaController.findAlbum(1);
-        List <Review> reviews=this.controller.getAlbumTrackReviews(album);
-        assertEquals(checkRealtedAlbums(album,reviews ), true);
+    public void testRealtedAblumReviews() {
+        Album album = this.albumJpaController.findAlbum(1);
+        List<Review> reviews = this.controller.getAlbumTrackReviews(album);
+        assertEquals(checkRealtedAlbums(album, reviews), true);
     }
-    private boolean checkRealtedAlbums(Album album, List <Review> reviews){
-        for(Review review:reviews){
-            if(review.getInventoryid().getAlbumid().getAlbumid()!=album.getAlbumid()){
+    /**
+     * checks all reviews are given to related album
+     * @author Alessandro Dare
+     * @param album Album
+     * @param reviews List<Review>
+     * @return true if their related false if not
+     */
+    private boolean checkRealtedAlbums(Album album, List<Review> reviews) {
+        for (Review review : reviews) {
+            if (review.getInventoryid().getAlbumid().getAlbumid() != album.getAlbumid()) {
                 return false;
             }
         }
         return true;
     }
+    /**
+     * tests that a new receive will  no reviews
+     * @author Alessandro Dare
+     */
     @Test
-    public void testRealtedAlbumReviewsCount(){
-         Album album= new Album();
-        List <Review> reviews=this.controller.getAlbumTrackReviews(album);
+    public void testRealtedAlbumReviewsCount() {
+        Album album = new Album();
+        List<Review> reviews = this.controller.getAlbumTrackReviews(album);
         assertEquals(reviews.size(), 0);
     }
+
     /**
      * Restore the database to a known state before testing. This is important
      * if the test is destructive. This routine is courtesy of Bartosz Majsak
@@ -157,7 +195,8 @@ public class ReviewUnitTest {
             throw new RuntimeException("Failed seeding database", e);
         }
     }
-     /**
+
+    /**
      * The following methods support the seedDatabse method
      */
     private String loadAsString(final String path) {
@@ -168,6 +207,7 @@ public class ReviewUnitTest {
             throw new RuntimeException("Unable to close input stream.", e);
         }
     }
+
     private List<String> splitStatements(Reader reader,
             String statementDelimiter) {
         final BufferedReader bufferedReader = new BufferedReader(reader);
@@ -191,6 +231,7 @@ public class ReviewUnitTest {
             throw new RuntimeException("Failed parsing sql", e);
         }
     }
+
     private boolean isComment(final String line) {
         return line.startsWith("--") || line.startsWith("//")
                 || line.startsWith("/*");

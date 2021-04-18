@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
  * @author MusicalMoose
  */
 @Entity
-@Table(name = "rss", catalog = "MUSICSTORAGE", schema = "")
+@Table(name = "rss", catalog = "CSgb4w21", schema = "")
 @NamedQueries({
     @NamedQuery(name = "Rss.findAll", query = "SELECT r FROM Rss r"),
     @NamedQuery(name = "Rss.findById", query = "SELECT r FROM Rss r WHERE r.id = :id"),

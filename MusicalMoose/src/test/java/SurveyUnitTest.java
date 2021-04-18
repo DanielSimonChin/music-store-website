@@ -8,7 +8,7 @@ import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.SurveyJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.converters.AlbumConverter;
+
 import com.gb4w21.musicalmoose.entities.Survey;
 import com.gb4w21.musicalmoose.resources.JavaEE8Resource;
 import com.gb4w21.musicalmoose.util.LocaleChanger;
@@ -39,16 +39,22 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Tests public methods for survey controller
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @RunWith(Arquillian.class)
 public class SurveyUnitTest {
-     private final static Logger LOG = LoggerFactory.getLogger(SurveyUnitTest.class);
+
+    private final static Logger LOG = LoggerFactory.getLogger(SurveyUnitTest.class);
 
     @Inject
     private SurveyJpaController controller;
 
     @Resource(lookup = "java:app/jdbc/myMusic")
     private DataSource ds;
+
     public SurveyUnitTest() {
     }
 
@@ -73,13 +79,13 @@ public class SurveyUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                .addPackage(AlbumConverter.class.getPackage())
+                
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(SurveyJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Survey.class.getPackage())
-                .addPackage(Email.class.getPackage()) 
+                .addPackage(Email.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -89,7 +95,8 @@ public class SurveyUnitTest {
 
         return webArchive;
     }
-     /**
+
+    /**
      * The following methods support the seedDatabse method
      */
     private String loadAsString(final String path) {
@@ -100,7 +107,8 @@ public class SurveyUnitTest {
             throw new RuntimeException("Unable to close input stream.", e);
         }
     }
-     private List<String> splitStatements(Reader reader,
+
+    private List<String> splitStatements(Reader reader,
             String statementDelimiter) {
         final BufferedReader bufferedReader = new BufferedReader(reader);
         final StringBuilder sqlStatement = new StringBuilder();
@@ -118,17 +126,21 @@ public class SurveyUnitTest {
                     sqlStatement.setLength(0);
                 }
             }
-              return statements;
+            return statements;
         } catch (IOException e) {
             throw new RuntimeException("Failed parsing sql", e);
         }
     }
-     @Test
-    public void testFindClient(){
-        Survey survey=controller.getRunningSurvey();
+    /**
+     * Test that the survey given is the one on the website
+     * @author Alessandro Dare
+     */
+    @Test
+    public void testFindSurvey() {
+        Survey survey = controller.getRunningSurvey();
         assertEquals(survey.getSurveryinuse(), true);
     }
-    
+
     /**
      * Restore the database to a known state before testing. This is important
      * if the test is destructive. This routine is courtesy of Bartosz Majsak
@@ -147,8 +159,8 @@ public class SurveyUnitTest {
             throw new RuntimeException("Failed seeding database", e);
         }
     }
-    
-     private boolean isComment(final String line) {
+
+    private boolean isComment(final String line) {
         return line.startsWith("--") || line.startsWith("//")
                 || line.startsWith("/*");
     }

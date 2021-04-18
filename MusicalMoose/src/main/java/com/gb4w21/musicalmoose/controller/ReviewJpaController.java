@@ -244,7 +244,13 @@ public class ReviewJpaController implements Serializable {
         return q.getResultList();
 
     }
-
+    /**
+     * takes the user to the review page so they could write the review for the specific track
+     * @author Alessandro Dare
+     * @param track  MusicTrack
+     * @param fromAlbum boolean
+     * @return String review page
+     */
     public String writeReview(MusicTrack track, boolean fromAlbum) {
         review = new Review();
         review.setInventoryid(track);
@@ -252,7 +258,13 @@ public class ReviewJpaController implements Serializable {
         this.fromAlbum = fromAlbum;
         return "reviewpage";
     }
-
+    /**
+     * Creates specified review and stores it to the database
+     * @author Alessandro Dare
+     * @param id int
+     * @return String search page
+     * @throws RollbackFailureException 
+     */
     public String postReview(int id) throws RollbackFailureException {
         review.setReviewdate(new Date());
         review.setRating(Integer.parseInt(this.starRating));
@@ -268,7 +280,11 @@ public class ReviewJpaController implements Serializable {
         trackCreated = true;
         return "reviewpage";
     }
-
+    /**
+     * returns you to the track/album page where to created the review
+     * @author Alessandro Dare
+     * @return track/album page
+     */
     public String backToPage() {
         review = null;
         if (fromAlbum) {

@@ -9,6 +9,9 @@
     <head>
         <title>Manage Review</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <f:metadata>
+           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        </f:metadata>
     </head>
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
@@ -23,7 +26,7 @@
                                 <p:growl id="messages" showDetail="true"/>
 
                                 <p:toolbarGroup align="right">
-                                   
+
                                 </p:toolbarGroup>
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="review" value="#{reviewManagerController.reviews}"
                                              reflow="true" styleClass="products-table"
@@ -100,7 +103,7 @@
                                     </p:outputPanel>
                                     <f:facet name="footer">
                                         <p:commandButton value="#{msgs.save}"  actionListener="#{reviewManagerController.saveReview()}"
-                                                             update="manage-product-content" process="manage-product-content @this"/>
+                                                         update="manage-product-content" process="manage-product-content @this"/>
                                         <p:commandButton value="#{msgs.cancel}" icon="pi pi-times" onclick="PF('manageProductDialog').hide()"
                                                          class="ui-button-secondary"/>
                                     </f:facet>

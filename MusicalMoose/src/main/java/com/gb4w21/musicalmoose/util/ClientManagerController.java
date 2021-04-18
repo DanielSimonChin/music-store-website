@@ -96,6 +96,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * creates a new client
+     * @author Alessandro Dare
      */
     public void createNewClient() {
         this.selectedClient = new Client();
@@ -104,7 +105,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * takes use to the search page and resets all values
-     *
+     * @author Alessandro Dare
      * @return String the search page
      */
     @PostConstruct
@@ -114,21 +115,10 @@ public class ClientManagerController implements Serializable {
         this.selectedClient = null;
     }
 
-    /**
-     * takes use to the search page and resets all values
-     *
-     * @return String the search page
-     */
-    public String toClientManagement() {
-        clients = clientJpaController.findClientEntities();
-        selectedClients = new ArrayList<>();
-        this.selectedClient = null;
-        return "adminclient";
-    }
 
     /**
      * gives a list of all clients in the database
-     *
+     * @author Alessandro Dare
      * @return String the search page
      */
     public String searchAllClients() {
@@ -141,7 +131,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * searches the database for specified clients
-     *
+     * @author Alessandro Dare
      * @return String the search page
      */
     public String searchClients() {
@@ -154,7 +144,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * gets all clients that have the specified username
-     *
+     * @author Alessandro Dare
      * @param clientSearch String
      * @return List<Client>
      */
@@ -174,6 +164,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * saves changes to client information
+     * @author Alessandro Dare
      */
     public void saveClient() {
         try {
@@ -197,7 +188,7 @@ public class ClientManagerController implements Serializable {
     /**
      * Validates the cellphone number to see if it matches the correct format
      * and doesn't match the home phone if either it throws an error
-     *
+     * @author Alessandro Dare
      * @param context
      * @param component
      * @param value
@@ -226,7 +217,7 @@ public class ClientManagerController implements Serializable {
     /**
      * Validates the search to see if it returns no results if not it throws and
      * error
-     *
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
@@ -248,7 +239,7 @@ public class ClientManagerController implements Serializable {
     /**
      * calculates the total profit a given client has spent in the current date
      * range
-     *
+     * @author Alessandro Dare
      * @param chosenClient Client
      * @return double total profit form client
      */
@@ -273,7 +264,7 @@ public class ClientManagerController implements Serializable {
     /**
      * Checks to make sure the username given is unique and not used by another
      * users if not it returns false
-     *
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
@@ -294,7 +285,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * Check in the database if specified user name was chosen
-     *
+     * @author Alessandro Dare
      * @param username String
      * @return boolean true if the doesn't match false if not
      */
@@ -320,7 +311,7 @@ public class ClientManagerController implements Serializable {
     /**
      * Validates the address to make sure the second address doesn't match the
      * first
-     *
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object

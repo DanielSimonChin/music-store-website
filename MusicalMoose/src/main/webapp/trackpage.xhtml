@@ -11,7 +11,9 @@
     <head>
 
         <title>Musical Moose</title>
-
+         <f:metadata>
+            <f:event type="preRenderView" listener="#{managerViewChecker.checkClient}" />
+        </f:metadata>
     </head>
 
     <h:body>
