@@ -17,30 +17,34 @@ and open the template in the editor.
         <ui:composition template="/templates/common.xhtml">
             <ui:define name="content">
                 <link rel="stylesheet" href="invoice.css"/>
-                <h1 id="title"> #{msgs.invoice} <br></br></h1> 
-                <h3 id="title">
-                    <h:outputText style="text-align: center" rendered="#{checkoutController.sendInvoiceEmail()}" value="#{msgs.copyOfEmail}"/>
-                </h3>
-                <button id="printBtn" style="width: 70px; border-radius: 25px;">
-                    Print
-                </button>
-                <br/>
-                <a id="download" href="/MusicalMoose/download.xhtml"><u>#{msgs.downloadSongs}</u></a>
-                <br/>
-                <div class="section-to-print" id="invoiceContainer">
-                    <h1 id="title"><u>Musical Moose</u></h1>
-                    <p><b>#{msgs.saleNumber} #{checkoutController.saleBean.saleid}</b></p>
-                    <p><b>#{msgs.clientNumber} #{loginController.loginBean.id}</b></p>
-                    <p><b>#{msgs.dateOfSale} #{checkoutController.saleBean.saledate}</b></p>
-                    <p>---</p>
-                    <p><b>#{msgs.totalGrossValueOfTheSale} $#{shoppingCartController.totalCost}</b></p>
-                    <p><b>#{msgs.GST} $#{checkoutController.GST}</b></p>
-                    <p><b>#{msgs.HST} $#{checkoutController.HST}</b></p>
-                    <p><b>#{msgs.PST} $#{checkoutController.PST}</b></p>
-                    <p><b>#{msgs.totalNetValueOfTheSale} $#{checkoutController.calculateTotalNetValue()}</b></p>
+                
+                <section id="invoiceSectionContainer">
+                    <h1 id="title"> #{msgs.invoice} <br></br></h1> 
+                    <h3 id="title">
+                        <h:outputText style="text-align: center" value="#{msgs.copyOfEmail}"/>
+                    </h3>
+                    <button id="printBtn" style="width: 70px; border-radius: 25px;">
+                        Print
+                    </button>
                     <br/>
+                    <a id="download" href="/MusicalMoose/download.xhtml"><u>#{msgs.downloadSongs}</u></a>
                     <br/>
-                </div>
+                    <div class="section-to-print" id="invoiceContainer">
+                        <h1 id="title"><u>Musical Moose</u></h1>
+                        <p><b>#{msgs.saleNumber} #{checkoutController.saleBean.saleid}</b></p>
+                        <p><b>#{msgs.clientNumber} #{loginController.loginBean.id}</b></p>
+                        <p><b>#{msgs.dateOfSale} #{checkoutController.saleBean.saledate}</b></p>
+                        <p>---</p>
+                        <p><b>#{msgs.totalGrossValueOfTheSale} $#{shoppingCartController.totalCost}</b></p>
+                        <p><b>#{msgs.GST} $#{checkoutController.GST}</b></p>
+                        <p><b>#{msgs.HST} $#{checkoutController.HST}</b></p>
+                        <p><b>#{msgs.PST} $#{checkoutController.PST}</b></p>
+                        <p><b>#{msgs.totalNetValueOfTheSale} $#{checkoutController.calculateTotalNetValue()}</b></p>
+                        <br/>
+                        <br/>
+                    </div>
+                </section>
+                
                 <script src="./invoice.js"></script>
             </ui:define>
         </ui:composition>

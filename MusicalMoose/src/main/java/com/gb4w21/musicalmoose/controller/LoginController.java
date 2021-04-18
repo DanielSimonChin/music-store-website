@@ -8,10 +8,8 @@ package com.gb4w21.musicalmoose.controller;
 import com.gb4w21.musicalmoose.controller.CheckoutController;
 import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
-import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.entities.Client;
 import java.io.Serializable;
-import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -22,11 +20,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,6 +105,14 @@ public class LoginController  implements Serializable{
         }
     }
     
+    /**
+     * Sets the loginBean to the entered login information
+     * 
+     * @author Alessandro
+     * @author Victor
+     * 
+     * @return nav page after log in
+     */
     public String loggIn(){
         LOG.info("username:"+loginBean.getUsername());
         LOG.info("password:"+loginBean.getPassword());

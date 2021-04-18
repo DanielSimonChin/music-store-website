@@ -19,9 +19,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * This is a class dedicated to controlling the cookies
  *
- *
- * @author victor and daniel
+ * @author Victor and Daniel
  */
 @Named
 @SessionScoped
@@ -39,6 +39,8 @@ public class PreRenderViewBean implements Serializable {
 
     /**
      * Check for genre cookie
+     *
+     * @author Victor
      */
     public void checkGenreTrackingCookie() {
         if (!checkedCookies) {
@@ -52,6 +54,8 @@ public class PreRenderViewBean implements Serializable {
 
     /**
      * Writing a cookie
+     *
+     * @author Victor
      */
     public void writeGenreTrackingCookie(String genre) {
         if (genre != null) {
@@ -63,6 +67,13 @@ public class PreRenderViewBean implements Serializable {
         }
     }
 
+    /**
+     * This cookies checks if has cookie named GenreTracking
+     *
+     * @author Victor
+     * 
+     * @return true if has cookie named GenreTracking, false otherwise
+     */
     public boolean hasGenreCookie() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object genreCookie = context.getExternalContext().getRequestCookieMap().get("GenreTracking");
@@ -74,6 +85,13 @@ public class PreRenderViewBean implements Serializable {
         }
     }
 
+    /**
+     * This writes a cookie for the most recently search track/album's genre
+     *
+     * @author Victor
+     * 
+     * @return genre String value
+     */
     public String findRecentGenreCookie() {
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -85,6 +103,11 @@ public class PreRenderViewBean implements Serializable {
         return ((Cookie) genreTrackingCookie).getValue();
     }
 
+    /**
+     * Splits the cart_album cookie value into the associative album IDs and stores it in the shoppingCart list
+     *
+     * @author Victor
+     */
     private void addAlbumCookiesToShoppingCart() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartAlbumCookie = context.getExternalContext().getRequestCookieMap().get("cart_album");
@@ -98,6 +121,11 @@ public class PreRenderViewBean implements Serializable {
         }
     }
 
+    /**
+     * Splits the cart_track cookie value into the associative music track IDs and stores it in the shoppingCart list
+     *
+     * @author Victor
+     */
     private void addTrackCookiesToShoppingCart() {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartTrackCookie = context.getExternalContext().getRequestCookieMap().get("cart_track");
@@ -111,6 +139,14 @@ public class PreRenderViewBean implements Serializable {
         }
     }
 
+    /**
+     * Writes a cookie to cart whenever you add an item to cart
+     *
+     * @author Victor
+     * 
+     * @param id
+     * @param cookieName 
+     */
     public void writeCartCookie(int id, String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartCookie = context.getExternalContext().getRequestCookieMap().get(cookieName);
@@ -126,6 +162,14 @@ public class PreRenderViewBean implements Serializable {
         }
     }
 
+    /**
+     * Removes the associated cookie you removed from cart
+     *
+     * @author Victor
+     * 
+     * @param id
+     * @param cookieName 
+     */
     public void removeCartCookie(int id, String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
         Object cartCookie = context.getExternalContext().getRequestCookieMap().get(cookieName);
@@ -146,6 +190,13 @@ public class PreRenderViewBean implements Serializable {
         }
     }
 
+    /**
+     * Removes a cookie from cart given the cookie name 
+     *
+     * @author Victor
+     * 
+     * @param cookieName 
+     */
     public void removeCookie(String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().addResponseCookie(cookieName, "", null);

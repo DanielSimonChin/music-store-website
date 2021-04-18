@@ -47,6 +47,20 @@ public class DownloadController implements Serializable {
     
     private List<MusicItem> downloadMusicItems;
     
+    public List<MusicItem> getDownloadMusicItems() {
+        return this.downloadMusicItems;
+    }
+    
+    public void setDownloadMusicItems(List<MusicItem> downloadMusicItems) {
+        this.downloadMusicItems = downloadMusicItems;
+    }
+    
+    /**
+     * Finds all the items the logged in client purchased and returns a list of MusicItem to download
+     * 
+     * @return List of purchased MusicItems
+     * @throws NonexistentEntityException 
+     */
     public List<MusicItem> findDownloads() throws NonexistentEntityException {
         try {
             this.downloadMusicItems = new ArrayList<MusicItem>();
