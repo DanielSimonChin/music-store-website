@@ -10,7 +10,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
-import com.gb4w21.musicalmoose.entities.Sale;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Resource;
@@ -176,6 +175,8 @@ public class MusicTrackJpaController implements Serializable {
 
     /**
      * Returns a list of the three most recently added MusicTrack objects
+     * 
+     * @author Daniel
      *
      * @return List of MusicTrack objects
      */
@@ -210,6 +211,8 @@ public class MusicTrackJpaController implements Serializable {
 
     /**
      * Finds all tracks that belong to a track's album
+     * 
+     * @author Daniel
      *
      * @param track
      * @return tracks from same album
@@ -244,9 +247,6 @@ public class MusicTrackJpaController implements Serializable {
      */
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
-        LOG.info("" + track.getTracktitle());
-
-        LOG.info("" + track.getTracktitle());
         
         if (searchedTrack != null) {
             this.preRenderViewBean.writeGenreTrackingCookie(searchedTrack.getMusiccategory());

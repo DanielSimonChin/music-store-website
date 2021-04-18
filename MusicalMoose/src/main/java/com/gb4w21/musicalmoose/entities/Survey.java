@@ -21,8 +21,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 /**
+ * Generated entity from database
  *
- * @author owner
+ * @author MusicalMoose
  */
 @Entity
 @Table(name = "survey", catalog = "MUSICSTORAGE", schema = "")

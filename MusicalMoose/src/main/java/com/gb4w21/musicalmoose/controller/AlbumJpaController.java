@@ -9,7 +9,6 @@ import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Album;
-import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
@@ -17,19 +16,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
-import javax.servlet.http.Cookie;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -186,7 +181,7 @@ public class AlbumJpaController implements Serializable {
         return q.getResultList();
 
     }
-    
+
     public String findGenreAlbumId(int albumId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -201,11 +196,11 @@ public class AlbumJpaController implements Serializable {
         cq.where(cb.equal(albumTracks.get("albumid"), albumId));
 
         Query q = em.createQuery(cq);
-        
+
         if (q.getResultList().size() < 1) {
             return null;
         }
-        
+
         MusicTrack musicTrack = (MusicTrack) q.getResultList().get(0);
 
         return musicTrack.getMusiccategory();
@@ -267,6 +262,8 @@ public class AlbumJpaController implements Serializable {
      * The track page will show 3 albums from other artists that are part of the
      * same category
      *
+     * @author Daniel
+     *
      * @param track
      * @return A list of Album objects
      */
@@ -283,7 +280,7 @@ public class AlbumJpaController implements Serializable {
         if (track.getAlbumid() == null) {
             cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.equal(album.get("available"), 1)).distinct(true);
 
-         //If the track is part of an album, then we do not want albums is the same as the current track's album
+            //If the track is part of an album, then we do not want albums is the same as the current track's album
         } else {
             cq.where(cb.equal(albumsTracks.get("musiccategory"), track.getMusiccategory()), cb.notEqual(album.get("albumid"), track.getAlbumid().getAlbumid()), cb.equal(album.get("available"), 1)).distinct(true);
 
@@ -302,6 +299,8 @@ public class AlbumJpaController implements Serializable {
 
     /**
      * Overloaded method that finds all related albums given an input album
+     *
+     * @Daniel
      *
      * @param album
      * @return all related albums in that music category
@@ -404,7 +403,7 @@ public class AlbumJpaController implements Serializable {
         Root<Album> album = cq.from(Album.class);
         cq.select(album);
 
-        cq.where(cb.notEqual(album.get("saleprice"), 0),cb.lessThan(album.get("saleprice"), album.get("listprice")), cb.equal(album.get("available"), 1));
+        cq.where(cb.notEqual(album.get("saleprice"), 0), cb.lessThan(album.get("saleprice"), album.get("listprice")), cb.equal(album.get("available"), 1));
         cq.orderBy(cb.desc(album.get("saleprice")));
         TypedQuery<Album> query = em.createQuery(cq);
         List<Album> albums = query.getResultList();

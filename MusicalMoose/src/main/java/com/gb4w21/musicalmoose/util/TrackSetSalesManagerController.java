@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller methods and variables that allow an admin to set the sale prices of
+ * Controller methods and variables that allow an admin to set the sale price of
  * a track
  *
  * @author Daniel
@@ -50,6 +50,10 @@ public class TrackSetSalesManagerController implements Serializable {
      */
     @PostConstruct
     public void init() {
+        this.tracks = this.trackController.findMusicTrackEntities();
+    }
+    
+    public void reloadData(){
         this.tracks = this.trackController.findMusicTrackEntities();
     }
 

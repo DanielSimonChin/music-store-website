@@ -1,6 +1,5 @@
 package com.gb4w21.musicalmoose.controller;
 
-import com.gb4w21.musicalmoose.beans.LoginBean;
 import com.gb4w21.musicalmoose.beans.ProvinceBean;
 import com.gb4w21.musicalmoose.beans.MusicItem;
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
@@ -13,14 +12,9 @@ import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Sale;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -40,7 +34,7 @@ import jodd.mail.SmtpServer;
 
 /**
  *
- * @author victo
+ * @author victor
  */
 @Named
 @SessionScoped
