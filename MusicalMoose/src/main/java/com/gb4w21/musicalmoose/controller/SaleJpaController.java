@@ -228,6 +228,8 @@ public class SaleJpaController implements Serializable {
 
     /**
      * Retrieve the total value of a track's sales
+     * 
+     * @author Daniel
      *
      * @param inventoryid
      * @return the total sales of a track
@@ -240,8 +242,6 @@ public class SaleJpaController implements Serializable {
         Root<Invoicedetail> invoice = cq.from(Invoicedetail.class);
         Join sale = invoice.join("saleid");
         cq.where(cb.equal(invoice.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.equal(invoice.get("inventoryid").get("inventoryid"), inventoryid));
-        //We want all the invoicedetail objects that have the parameter inventoryid
-      
 
         Query q = em.createQuery(cq);
 
@@ -257,6 +257,8 @@ public class SaleJpaController implements Serializable {
 
     /**
      * Retrieve the total value of an album's sales
+     * 
+     * @author Daniel
      *
      * @param albumid
      * @return the total sales of an album

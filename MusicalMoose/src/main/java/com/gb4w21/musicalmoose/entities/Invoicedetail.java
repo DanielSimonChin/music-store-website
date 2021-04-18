@@ -22,8 +22,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 /**
+ * Generated entity from database
  *
- * @author owner
+ * @author MusicalMoose
  */
 @Entity
 @Table(name = "invoicedetail", catalog = "MUSICSTORAGE", schema = "")

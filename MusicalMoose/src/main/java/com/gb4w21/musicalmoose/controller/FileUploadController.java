@@ -13,7 +13,6 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -21,7 +20,6 @@ import javax.inject.Named;
 import org.primefaces.PrimeFaces;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.file.UploadedFile;
-import org.primefaces.shaded.commons.io.FilenameUtils;
 import org.primefaces.shaded.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * This class handles are file upload related methods for the track and album
  * management pages which allow users to import an image.
  *
- * @author Daniel
+ * @author Daniel and Victor
  */
 @Named
 @SessionScoped
@@ -69,7 +67,7 @@ public class FileUploadController implements Serializable {
     public void handleFileUpload(FileUploadEvent event) throws IOException {
         fileUpload(event, "album_covers");
     }
-    
+
     /**
      * Call the saveUploadedImage method to save the image to the project and
      * display a success message to the user
@@ -80,7 +78,14 @@ public class FileUploadController implements Serializable {
     public void handleFileAdUpload(FileUploadEvent event) throws IOException {
         fileUpload(event, "ads");
     }
-    
+
+    /**
+     * Ensure that the file is not null and then call the saveUploadedImage to
+     * save the image.
+     *
+     * @param event
+     * @param fileName
+     */
     private void fileUpload(FileUploadEvent event, String fileName) {
         this.file = null;
         UploadedFile file = event.getFile();
@@ -101,7 +106,6 @@ public class FileUploadController implements Serializable {
         try {
             String currentClassPath = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
             String destinationPath = currentClassPath.substring(0, currentClassPath.indexOf("target/")) + "src/main/webapp/" + fileName + "/";
-            //String filename = FilenameUtils.getName(this.file.getFileName());
             inputStream = this.file.getInputStream();
             OutputStream outputStream = new FileOutputStream(new File(destinationPath, this.file.getFileName()));
             try {
@@ -131,7 +135,7 @@ public class FileUploadController implements Serializable {
         for (int i = 0; i < listOfFiles.length; i++) {
             if (listOfFiles[i].isFile()) {
                 fileNames.add(listOfFiles[i].getName());
-            } 
+            }
         }
         return fileNames;
     }

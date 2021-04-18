@@ -27,8 +27,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 /**
+ * Generated entity from database
  *
- * @author owner
+ * @author MusicalMoose
  */
 @Entity
 @Table(name = "music_track", catalog = "MUSICSTORAGE", schema = "")
@@ -138,7 +139,6 @@ public class MusicTrack implements Serializable {
         this.inventoryid = inventoryid;
     }
 
-
     public Float getPlaylength() {
         return playlength;
     }
@@ -154,7 +154,6 @@ public class MusicTrack implements Serializable {
     public void setSelectionnumber(Integer selectionnumber) {
         this.selectionnumber = selectionnumber;
     }
-
 
     public Float getCostprice() {
         return costprice;
@@ -220,6 +219,10 @@ public class MusicTrack implements Serializable {
         this.partofalbum = partofalbum;
     }
 
+    /**
+     * @author Daniel
+     * @return a string depending on the value
+     */
     public String getPartOfAlbumStringFormat() {
         if (partofalbum) {
             return "Part of album";
@@ -227,6 +230,10 @@ public class MusicTrack implements Serializable {
         return "Single";
     }
 
+    /**
+     * @author Daniel
+     * @return a message depending on the value of the field
+     */
     public String isAvailableToClients() {
         if (this.available) {
             return com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -316,6 +323,8 @@ public class MusicTrack implements Serializable {
     /**
      * If the saleprice is 0, then we display the list price. Otherwise, we
      * return the sale price.
+     * 
+     * @author Daniel
      *
      * @return the saleprice if it is not equal to 0
      */

@@ -20,8 +20,9 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 /**
+ * Generated entity from database
  *
- * @author owner
+ * @author MusicalMoose
  */
 @Entity
 @Table(name = "client", catalog = "MUSICSTORAGE", schema = "")

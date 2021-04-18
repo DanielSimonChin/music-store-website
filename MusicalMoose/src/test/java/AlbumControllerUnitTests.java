@@ -28,21 +28,17 @@ import java.util.Scanner;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import jodd.mail.Email;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.maven.Maven;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Arquillian unit tests for the methods in the AlbumJpaController that involves
@@ -52,9 +48,6 @@ import org.slf4j.LoggerFactory;
  */
 @RunWith(Arquillian.class)
 public class AlbumControllerUnitTests {
-
-   // private final static Logger LOG = LoggerFactory.getLogger(AlbumControllerUnitTests.class);
-
     @Inject
     private AlbumJpaController albumController;
     @Inject
@@ -92,6 +85,7 @@ public class AlbumControllerUnitTests {
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Album.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
+                .addPackage(Email.class.getPackage()) 
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
