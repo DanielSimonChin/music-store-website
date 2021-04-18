@@ -94,7 +94,7 @@ public class MusicTrackUnitTests {
 
     /**
      * Test that the findMostRecentTracks method only returns 3 music tracks.
-     *
+     * 
      * @throws SQLException
      */
     @Test
@@ -106,7 +106,7 @@ public class MusicTrackUnitTests {
     /**
      * Find a track and test that all its related tracks are part of the same
      * album and that the results don't return the input track.
-     *
+     * 
      * @throws SQLException
      */
     @Test
@@ -127,6 +127,7 @@ public class MusicTrackUnitTests {
     /**
      * Testing to ensure that all returned tracks have a lower sale price than
      * list price.
+     * 
      */
     @Test
     public void testGetSpecialTracks() {

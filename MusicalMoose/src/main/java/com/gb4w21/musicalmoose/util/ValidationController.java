@@ -57,7 +57,7 @@ public class ValidationController implements Serializable {
     /**
      * Checks to make sure email given is the correct format if not it returns
      * and error
-     *
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
@@ -78,7 +78,7 @@ public class ValidationController implements Serializable {
     /**
      * Checks to make sure the username given is unique and not used by another
      * users if not it returns false
-     *
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
@@ -97,7 +97,7 @@ public class ValidationController implements Serializable {
 
     /**
      * Check in the database if specified user name was chosen
-     *
+     * @author Alessandro Dare
      * @param username String
      * @return boolean true if the doesn't match false if not
      */
@@ -123,7 +123,7 @@ public class ValidationController implements Serializable {
     /**
      * Checks to make sure the phone number given is the correct format if not
      * it throws an error
-     *
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
@@ -144,7 +144,7 @@ public class ValidationController implements Serializable {
     /**
      * Validates the from date field checks to make sure the date wasn't in the
      * future or is after or matches the to field if so it returns and error
-     *
+     * @author Alessandro Dare
      * @param context Object
      * @param component UIComponent
      * @param value FacesContext
@@ -179,7 +179,7 @@ public class ValidationController implements Serializable {
     /**
      * Validates the to date field checks to make sure the date wasn't in the
      * future or is before or matches the from field if so it returns and error
-     *
+     * @author Alessandro Dare
      * @param context Object
      * @param component UIComponent
      * @param value FacesContext
@@ -217,7 +217,7 @@ public class ValidationController implements Serializable {
 
     /**
      * Validates the sale date to make user it isn't in the future
-     *
+     *  @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
@@ -240,6 +240,7 @@ public class ValidationController implements Serializable {
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
+     * @author Alessandro Dare
      */
     public void validatePostalCode(FacesContext context, UIComponent component, Object value) {
         if (value != null && (!value.toString().isEmpty())) {
@@ -261,6 +262,7 @@ public class ValidationController implements Serializable {
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
+     * @author Alessandro Dare
      */
     public void validateInvoiceDate(FacesContext context, UIComponent component, Object value) {
         for (UIComponent uiComponent : component.getChildren()) {
@@ -297,7 +299,7 @@ public class ValidationController implements Serializable {
 
     /**
      * checks to see if the chosen date is in the future
-     *
+     * @author Alessandro Dare
      * @param chosenDate Date
      * @return boolean true if the date is in the future false if not
      */

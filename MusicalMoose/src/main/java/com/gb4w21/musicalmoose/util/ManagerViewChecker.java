@@ -72,7 +72,7 @@ public class ManagerViewChecker implements Serializable {
         Client client=clientJpaController.findUser(loginController.getLoginBean().getUsername(),loginController.getLoginBean().getPassword());
         if (client==null||(!client.getIsmanager())||(!client.getClientactive())){
             ConfigurableNavigationHandler nav  = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
-            nav.performNavigation("noAcess");
+            nav.performNavigation("authenticationerror");
         }		
     }	
      /**
@@ -87,7 +87,7 @@ public class ManagerViewChecker implements Serializable {
        
         if (client!=null&&client.getIsmanager()&&client.getClientactive()){
             ConfigurableNavigationHandler nav  = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
-            nav.performNavigation("noAcess");
+            nav.performNavigation("adminauthenticationerror");
         }		
     }
 }
