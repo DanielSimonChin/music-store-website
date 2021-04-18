@@ -21,10 +21,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- * @author victo
+ * This is the controller used for the admin management of the news
+ * 
+ * @author Victor Ouy
  */
-
 @Named
 @SessionScoped
 public class NewsManagerController implements Serializable {
@@ -85,6 +85,13 @@ public class NewsManagerController implements Serializable {
         return this.selectedNewsList != null && !this.selectedNewsList.isEmpty();
     }
 
+    /**
+     * Creates a proper message that notifies the user whenever they edit, create or delete a news
+     * 
+     * @param summary
+     * @param detail
+     * @return FaceMessage
+     */
     private FacesMessage createMsg(String summary, String detail) {
         FacesMessage facesMsgDets = com.gb4w21.musicalmoose.util.Messages.getMessage(
                 "com.gb4w21.musicalmoose.bundles.messages", summary, null);
@@ -110,12 +117,12 @@ public class NewsManagerController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
     }
-//
-//    /**
-//     * Set the selected ad's available field to false.
-//     *
-//     * @throws Exception
-//     */
+    
+    /**
+     * Set the selected ad's available field to false.
+     *
+     * @throws Exception
+     */
     public void removeNews() throws Exception {
         this.selectedNews.setDisplayed(Boolean.FALSE);
         this.newsJpaController.edit(this.selectedNews);
@@ -123,12 +130,12 @@ public class NewsManagerController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
-//
-//    /**
-//     * Update the selected news and display a message for the user.
-//     *
-//     * @throws Exception
-//     */
+
+    /**
+     * Update the selected news and display a message for the user.
+     *
+     * @throws Exception
+     */
     public void saveNews() throws Exception {
         if (checkValidNews()) {
             // If this is a new track
@@ -154,11 +161,11 @@ public class NewsManagerController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
     
-//    /**
-//     * Checks if the ad created/update is valid with the other ads
-//     * 
-//     * @return boolean
-//     */
+    /**
+     * Checks if the ad created/update is valid with the other ads
+     * 
+     * @return boolean
+     */
     private boolean checkValidNews() {
         int displayedCounter = 0;
         if (selectedNews.getDisplayed()) {
@@ -175,14 +182,14 @@ public class NewsManagerController implements Serializable {
         }
         return true;
     }
-//
-//    /**
-//     * When the cancel button is clicked for the management form, all changes
-//     * made before the cancel button was clicked will not affect the datatable
-//     * or the database. Reset the datatable values.
-//     *
-//     * @throws NonexistentEntityException
-//     */
+
+    /**
+     * When the cancel button is clicked for the management form, all changes
+     * made before the cancel button was clicked will not affect the datatable
+     * or the database. Reset the datatable values.
+     *
+     * @throws NonexistentEntityException
+     */
     public void cancelNewsForm() throws NonexistentEntityException {
         this.newsList = this.newsJpaController.findNewsEntities();
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");

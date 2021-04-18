@@ -25,65 +25,67 @@
                     <f:event type="preRenderView" listener="#{preRenderViewBean.checkGenreTrackingCookie()}" />
                 </f:metadata>
                 
-                <h1 id="title">#{msgs.shoppingCart}</h1>
-                
-                <h:form>
-                    <h:commandButton class="back" value="#{msgs.back}" action="#{shoppingCartController.backPage()}" />
-                </h:form>
+                <section id="cartSectionContainer">
+                    <h1 id="title">#{msgs.shoppingCart}</h1>
 
-                <div id="info2" class="container-info" style="height: 700px;">
-                    <h4>#{msgs.cart}</h4>
-                    <div id="scrollcart" style="padding-bottom: 240px; padding-left:20px; padding-right:20px; padding-top:10px; background-color: #2d2d1f; border-radius: 25px;">
-                        <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">
-                            <h:form>
-                                <ui:fragment rendered="#{cartItems.isAlbum}">
-                                    <h:commandLink value="#{msgs.albumFind} #{cartItems.title} - #{cartItems.artiste} $#{shoppingCartController.floatToBigDec(cartItems.price)}" action="#{albumJpaController.selectSingleAlbum(cartItems.id)}"/>
-                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
-                                        <h:graphicImage value="icons/delete-cart.png" />
-                                    </h:commandLink>
-                                </ui:fragment>
+                    <h:form>
+                        <h:commandButton class="back" value="#{msgs.back}" action="#{shoppingCartController.backPage()}" />
+                    </h:form>
 
-                                <ui:fragment rendered="#{not cartItems.isAlbum}">
-                                    <h:commandLink value="#{msgs.trackFind} #{cartItems.title} - #{cartItems.artiste} $#{shoppingCartController.floatToBigDec(cartItems.price)}" action="#{musicTrackJpaController.selectSingleTrack(cartItems.id)}"/>
-                                    <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
-                                        <h:graphicImage value="icons/delete-cart.png" />
-                                    </h:commandLink>
-                                </ui:fragment>
-                            </h:form>
-                            <hr></hr>
-                        </ui:repeat>
+                    <div id="info2" class="container-info" style="height: 700px;">
+                        <h4>#{msgs.cart}</h4>
+                        <div id="scrollcart" style="padding-bottom: 240px; padding-left:20px; padding-right:20px; padding-top:10px; background-color: #2d2d1f; border-radius: 25px;">
+                            <ui:repeat value="#{shoppingCartController.getShoppingCartList()}" var="cartItems">
+                                <h:form class="itemsInCart">
+                                    <ui:fragment rendered="#{cartItems.isAlbum}">
+                                        <h:commandLink value="#{msgs.albumFind} #{cartItems.title} - #{cartItems.artiste} $#{shoppingCartController.floatToBigDec(cartItems.price)}" action="#{albumJpaController.selectSingleAlbum(cartItems.id)}"/>
+                                        <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
+                                            <h:graphicImage value="icons/delete-cart.png" />
+                                        </h:commandLink>
+                                    </ui:fragment>
+
+                                    <ui:fragment rendered="#{not cartItems.isAlbum}">
+                                        <h:commandLink value="#{msgs.trackFind} #{cartItems.title} - #{cartItems.artiste} $#{shoppingCartController.floatToBigDec(cartItems.price)}" action="#{musicTrackJpaController.selectSingleTrack(cartItems.id)}"/>
+                                        <h:commandLink action="#{shoppingCartController.deleteCartItem(cartItems)}" >
+                                            <h:graphicImage value="icons/delete-cart.png" />
+                                        </h:commandLink>
+                                    </ui:fragment>
+                                </h:form>
+                                <hr></hr>
+                            </ui:repeat>
+                        </div>
+
+                        <p>#{msgs.total} <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
+                        
+                        <h:form>
+                            <h:commandButton 
+                                value="#{msgs.removeAllItems}" 
+                                action="#{shoppingCartController.clearCart()}"   
+                                style="
+                                    margin-top: 10px;
+                                    padding-left: 25px; 
+                                    padding-right: 25px; 
+                                    padding-top: 15px; 
+                                    padding-bottom: 15px;
+                                    border-radius: 15px;"
+                                rendered="#{not shoppingCartController.checkCartEmpty()}"/>
+                        </h:form>
+                        <h:form id="checkoutForm">
+                            <h:commandButton 
+                                id="checkoutButton"
+                                value="#{msgs.checkout}" 
+                                action="#{checkoutController.toCheckout()}"   
+                                style="
+                                    float: right;
+                                    padding-left: 25px; 
+                                    padding-right: 25px; 
+                                    padding-top: 15px; 
+                                    padding-bottom: 15px;
+                                    border-radius: 15px;"
+                                rendered="#{not shoppingCartController.checkCartEmpty()}"/>
+                        </h:form>
                     </div>
-
-                    <p>#{msgs.total} <span class="price"><b>$#{shoppingCartController.calculateTotal()}</b></span></p>
-                    
-                    <h:form>
-                        <h:commandButton 
-                            value="#{msgs.removeAllItems}" 
-                            action="#{shoppingCartController.clearCart()}"   
-                            style="
-                                margin-top: 10px;
-                                padding-left: 25px; 
-                                padding-right: 25px; 
-                                padding-top: 15px; 
-                                padding-bottom: 15px;
-                                border-radius: 15px;"
-                            rendered="#{not shoppingCartController.checkCartEmpty()}"/>
-                        <h:commandButton 
-                            value="#{msgs.checkout}" 
-                            action="#{checkoutController.toCheckout()}"   
-                            style="
-                                float: right;
-                                margin-top: 10px;
-                                padding-left: 25px; 
-                                padding-right: 25px; 
-                                padding-top: 15px; 
-                                padding-bottom: 15px;
-                                border-radius: 15px;"
-                            rendered="#{not shoppingCartController.checkCartEmpty()}"/>
-                    </h:form>
-                    <h:form>
-                    </h:form>
-                </div>
+                </section>
             </ui:define>
         </ui:composition>
     </h:body>

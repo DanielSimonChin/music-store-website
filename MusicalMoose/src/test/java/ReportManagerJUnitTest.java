@@ -8,7 +8,7 @@ import com.gb4w21.musicalmoose.controller.NewsJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NullCategoryException;
 import com.gb4w21.musicalmoose.controller.exceptions.NullSearchValueException;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
-import com.gb4w21.musicalmoose.converters.AlbumConverter;
+
 import com.gb4w21.musicalmoose.entities.Album;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
@@ -99,7 +99,7 @@ public class ReportManagerJUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                .addPackage(AlbumConverter.class.getPackage())
+               
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ClientJpaController.class.getPackage())

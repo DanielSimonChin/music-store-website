@@ -35,7 +35,7 @@
                 </h:form>
                 
                 <div id="info1" class="container-info">
-                    <h:form>
+                    <h:form id="checkingOutForm">
                     <div id="infobox">
                         <h3>#{msgs.payment}</h3>
                         <label for="fname">Select Card</label>
@@ -88,25 +88,26 @@
                         </div>
 
                         <div id="summary">
-                        <h3>Order Summary</h3>
-                        <h:outputText value="#{msgs.itemsFind} $#{shoppingCartController.calculateTotal()}" />
-                        <br></br>
-                        <h:outputText value="#{msgs.shipAndHand} $#{checkoutController.shippingHandlingPrice}" />
-                        <br></br>
-                        <h:outputText id="gsthstText" value="#{msgs.estGST} $#{checkoutController.GSTHSTPrice}" />
-                        <br></br>
-                        <h:outputText id="pstText" value="#{msgs.estPST} $#{checkoutController.PSTPrice}" />
-                        <br></br>
-                        <h:outputText id="totalText" value="#{msgs.orderTotal} $#{checkoutController.totalPrice}" />
-                        <br></br><br></br>
+                            <h3>Order Summary</h3>
+                            <h:outputText value="#{msgs.itemsFind} $#{shoppingCartController.calculateTotal()}" />
+                            <br></br>
+                            <h:outputText value="#{msgs.shipAndHand} $#{checkoutController.shippingHandlingPrice}" />
+                            <br></br>
+                            <h:outputText id="gsthstText" value="#{msgs.estGST} $#{checkoutController.GSTHSTPrice}" />
+                            <br></br>
+                            <h:outputText id="pstText" value="#{msgs.estPST} $#{checkoutController.PSTPrice}" />
+                            <br></br>
+                            <h:outputText id="totalText" value="#{msgs.orderTotal} $#{checkoutController.totalPrice}" />
+                            <br></br><br></br>
 
-                        <h:commandButton value="#{msgs.purchase}" styleClass="btn-sub" action="#{checkoutController.toInvoice()}"
-                                style="
-                                padding-left: 25px; 
-                                padding-right: 25px; 
-                                padding-top: 10px; 
-                                padding-bottom: 10px;
-                                border-radius: 15px;"/>
+                            <!--<p:growl id="growl" showDetail="true" />-->
+                            <h:commandButton id="confirmPurchase" value="#{msgs.purchase}" styleClass="btn-sub" action="#{checkoutController.toInvoice()}"
+                                    style="
+                                    padding-left: 25px; 
+                                    padding-right: 25px; 
+                                    padding-top: 10px; 
+                                    padding-bottom: 10px;
+                                    border-radius: 15px;"/>
                         </div>
                     </h:form>
                 </div>

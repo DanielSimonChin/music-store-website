@@ -11,7 +11,9 @@
     by placing the tag name in ${...} -->
     <properties>
 
+
         <skipTests>true</skipTests> 
+
     </properties>
 
     <!-- All of the sample code shares the same dependencies and build         -->
@@ -75,6 +77,13 @@
             <artifactId>javax.mail-api</artifactId>
             <version>1.6.2</version>
         </dependency>
+            <dependency>
+                  <groupId>com.gb4w21</groupId>
+                  <artifactId>MusicalMoose</artifactId>
+                  <version>1.0-SNAPSHOT</version>
+                  <scope>test</scope>
+                  <type>war</type>
+            </dependency>
       </dependencies>
 
 </project>

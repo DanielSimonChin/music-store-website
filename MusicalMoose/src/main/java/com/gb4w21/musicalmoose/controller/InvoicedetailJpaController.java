@@ -171,6 +171,15 @@ public class InvoicedetailJpaController implements Serializable {
 
     }
 
+    /**
+     * Finds the InvoiceDetails of the foreign key saleId
+     * 
+     * @author Victor
+     * 
+     * @param saleId
+     * @return InvoiceDetails of the foreign key saleId
+     * @throws NonexistentEntityException 
+     */
     public List<Invoicedetail> findInvoiceDetailsBySaleId(int saleId) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -179,28 +188,9 @@ public class InvoicedetailJpaController implements Serializable {
         Root<Invoicedetail> invoiceDetail = cq.from(Invoicedetail.class);
 
         cq.where(cb.equal(invoiceDetail.get("saleid").get("saleid"), saleId));
-//        cq.where(cb.equal(invoiceDetail.get("clientid"), clientId));
         cq.distinct(true);
 
         Query q = em.createQuery(cq);
         return q.getResultList();
-
-//        TypedQuery<Invoicedetail> q = em.createQuery(cq);
-//        CriteriaBuilder cb = em.getCriteriaBuilder();
-//
-//        CriteriaQuery<Sale> cq = cb.createQuery(Sale.class);
-//
-//        Root<Sale> sale = cq.from(Sale.class);
-//        
-//        sale.join("invoicedetailList");
-//
-////        cq.where(cb.equal(sales.get("saleid"), saleId));
-//        cq.where(cb.equal(sale.get("clientid"), clientId));
-//
-//        Query q = em.createQuery(cq);
-////        TypedQuery<Invoicedetail> q = em.createQuery(cq);
-//
-//        List<Invoicedetail> invoiceDetails = q.getResultList();
-//        return invoiceDetails;
     }
 }

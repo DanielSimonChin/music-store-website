@@ -63,8 +63,8 @@
                         </div>
                         
                         <div style="padding-left: 20px">
-                            <h:form>
-                                <h:commandLink action="#{shoppingCartController.toShoppingCart()}">
+                            <h:form id="shoppingCartForm">
+                                <h:commandLink action="#{shoppingCartController.toShoppingCart()}" id="shoppingCartButton">
                                     <h:graphicImage value="icons/shopping-cart.png" height="40px" width="48px"/>
                                 </h:commandLink>
                             </h:form>

@@ -41,7 +41,7 @@
                                     <ui:repeat value="#{albumJpaController.getAlbumTracks(detailAlbum.albumid)}" var="albumTracks">
                                         <tr>
                                             <th>
-                                                <h:form>
+                                                <h:form class="trackOfAlbum">
                                                     <!-- Create a link that brings the user to the track page of the related track from the same album-->
                                                     <h:commandLink value="#{albumTracks.tracktitle}" action="#{musicTrackJpaController.showTrackFromAlbum(albumTracks)}">
                                                     </h:commandLink>
@@ -51,11 +51,10 @@
                                     </ui:repeat>
 
                                     <div id="shopCart">
-                                        
-                                        <h:form>
+                                        <h:form id="addAlbumCartForm">
                                             <p:growl id="growl" showDetail="true" />
                                             <p:commandLink actionListener="#{shoppingCartController.addShoppingCartAlbum(detailAlbum)}" 
-                                                        update="growl" styleClass="p-mr-2">
+                                                        update="growl" styleClass="p-mr-2" id="addAlbumCartButton">
                                                 <h:graphicImage value="icons/shopping-cart.png" />
                                                 <p style="color: white;">#{msgs.addToCart}</p> 
                                             </p:commandLink>
@@ -135,7 +134,7 @@
                             <div  class="relBox">
                                 <h4>#{msgs.writeReviews}</h4>
                                 <ui:repeat value="#{detailAlbum.musicTrackList}" var="relatedTracks">
-                                    <h:form id="form">
+                                    <h:form class="form">
 
                                         <h:commandLink disabled="#{not loginController.loginBean.loggedIn}" action="#{reviewJpaController.writeReview(relatedTracks, true)}">
                                             <b class="adjustEllipse">#{relatedTracks.tracktitle}</b>

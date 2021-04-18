@@ -231,10 +231,16 @@ public class AlbumJpaController implements Serializable {
         LOG.info("album id:" + id);
         return "searchAlbum";
     }
+
+
     /**
-     * Takes a user from the index page to the album page
-     * @param id int
-     * @return album page
+     * Store given album by id to selectedAlbum
+     * 
+     * @author Victor
+     * 
+     * @param id
+     * @return string to navigate to album page
+
      */
     public String selectSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
@@ -242,6 +248,15 @@ public class AlbumJpaController implements Serializable {
         return "detailAlbum";
     }
 
+    /**
+     * Finds an album given the id
+     * 
+     * @author Victor
+     * 
+     * @param id
+     * @return found album
+     * @throws NonexistentEntityException 
+     */
     public Album findAlbumById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -340,6 +355,13 @@ public class AlbumJpaController implements Serializable {
         return results;
     }
 
+    /**
+     * Gets the list of albums of the most recently searched genre
+     * 
+     * @author Victor
+     * 
+     * @return list of albums of specific genre
+     */
     public List<Album> getRecentGenreAlbums() {
         String recentGenre = this.preRenderViewBean.findRecentGenreCookie();
 
@@ -372,11 +394,17 @@ public class AlbumJpaController implements Serializable {
 
         return "detailAlbum";
     }
-/**
- * takes a user to the album page
- * @param album Album
- * @return album page
- */
+
+
+    /**
+     * Sends page to album page given an Album object
+     * 
+     * @author Victor
+     * 
+     * @param album
+     * @return 
+     */
+
     public String toAlbum(Album album) {
         this.selectedAlbum = album;
         LOG.info("" + album.getAlbumtitle());
@@ -385,6 +413,11 @@ public class AlbumJpaController implements Serializable {
         return "albumpage";
     }
 
+    /**
+     * Checks if genre cookie is a valid genre string
+     * 
+     * @author Victor
+     */
     private void validateGenreCookie() {
         if (selectedAlbum != null) {
             List<MusicTrack> musicTracks = selectedAlbum.getMusicTrackList();
