@@ -20,7 +20,7 @@
 
                     <div class="wrapper">
                         <!-- MAIN CONTAINER -->
-                        <section class="main-container">
+                        <section id="indexSectionContainer" class="main-container">
                             <ui:param name="survey" value="#{surveyJpaController.getRunningSurvey()}" />
                             <div class="location" id="home">
 
@@ -88,7 +88,7 @@
                                         <h:panelGroup id="surveyPanel1">
                                             <h:commandButton id="answer1Button" rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" disabled="true" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />                                   
                                             <h:outputText rendered="#{( surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" id="voteOutput1" value="#{survey.anserw1votes}"/>
-                                            <h:commandButton id="anserbtn" rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
+                                            <h:commandButton id="answerbtn" rendered="#{(not surveyJpaController.isSurveyUsed()) and (not empty survey.anserw1)}" value="#{survey.anserw1}" action="#{surveyJpaController.incearseVote1()}" />
                                         </h:panelGroup>
 
 

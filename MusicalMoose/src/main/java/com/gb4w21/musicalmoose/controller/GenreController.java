@@ -6,11 +6,9 @@
 package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.beans.SearchResult;
-import com.gb4w21.musicalmoose.controller.BanneradJpaController;
 import com.gb4w21.musicalmoose.entities.Album;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;

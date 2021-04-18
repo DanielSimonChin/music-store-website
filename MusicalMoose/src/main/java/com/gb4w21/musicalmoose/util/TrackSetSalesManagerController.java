@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller methods and variables that allow an admin to set the sale prices of
+ * Controller methods and variables that allow an admin to set the sale price of
  * a track
  *
  * @author Daniel
