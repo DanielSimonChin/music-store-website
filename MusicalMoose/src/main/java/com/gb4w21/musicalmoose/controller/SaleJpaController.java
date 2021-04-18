@@ -14,7 +14,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import com.gb4w21.musicalmoose.entities.Client;
 import com.gb4w21.musicalmoose.entities.Invoicedetail;
-import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.entities.Sale;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +21,6 @@ import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Join;
@@ -285,6 +283,15 @@ public class SaleJpaController implements Serializable {
         return totalSales.doubleValue();
     }
 
+    /**
+     * Retrieves a list of Sale given a clientId as foreign key
+     * 
+     * @author Victor
+     * 
+     * @param clientId
+     * @return list of Sale
+     * @throws NonexistentEntityException 
+     */
     public List<Sale> findSaleByClientId(int clientId) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 

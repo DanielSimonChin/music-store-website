@@ -113,6 +113,13 @@ public class BannerAdManagerController implements Serializable {
         return this.selectedBannerAds != null && !this.selectedBannerAds.isEmpty();
     }
     
+    /**
+     * Creates a proper message that notifies the user whenever they edit, create or delete a banner ad
+     * 
+     * @param summary
+     * @param detail
+     * @return FaceMessage
+     */
     private FacesMessage createMsg(String summary, String detail) {
         FacesMessage facesMsgDets = com.gb4w21.musicalmoose.util.Messages.getMessage(
                 "com.gb4w21.musicalmoose.bundles.messages", summary, null);

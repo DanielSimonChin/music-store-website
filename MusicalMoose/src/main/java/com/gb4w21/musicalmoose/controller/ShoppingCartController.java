@@ -3,8 +3,6 @@ package com.gb4w21.musicalmoose.controller;
 import com.gb4w21.musicalmoose.beans.MusicItem;
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
 import com.gb4w21.musicalmoose.controller.AlbumJpaController;
-import com.gb4w21.musicalmoose.controller.AlbumJpaController;
-import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
 import com.gb4w21.musicalmoose.entities.Album;
@@ -24,8 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Sets the shopping cart functionality such as adding to cart, clearing, etc.
  *
- * @author victoAlberta
+ * @author Victor 
  */
 @Named
 @SessionScoped
@@ -73,6 +72,11 @@ public class ShoppingCartController implements Serializable {
         this.totalCost = totalCost;
     }
     
+    /**
+     * Adds the given id Album to shopping cart list
+     * 
+     * @param id 
+     */
     public void findAlbumById(int id) {
         try {
             Album album = this.albumJpaController.findAlbumById(id);
@@ -83,6 +87,11 @@ public class ShoppingCartController implements Serializable {
         }
     }
     
+    /**
+     * Adds the given id Track to shopping cart list
+     * 
+     * @param id 
+     */
     public void findMusicTrackById(int id) {
         try {
             MusicTrack musicTrack = this.musicTrackJpaController.findTrackById(id);
@@ -93,6 +102,12 @@ public class ShoppingCartController implements Serializable {
         }
     }
     
+    /**
+     * Converts an Album object to a MusicItem bean
+     * 
+     * @param album
+     * @return musicitem bean
+     */
     public MusicItem convertAlbumToMusicItem(Album album) {
         MusicItem musicItem = new MusicItem();
         musicItem.setId(album.getAlbumid());
@@ -112,6 +127,12 @@ public class ShoppingCartController implements Serializable {
         return musicItem;
     }
     
+    /**
+     * Converts an Music Track object to a MusicItem bean
+     * 
+     * @param album
+     * @return musicitem bean
+     */
     public MusicItem convertMusicTrackToMusicItem(MusicTrack musicTrack) {
         MusicItem musicItem = new MusicItem();
         musicItem.setId(musicTrack.getInventoryid());
@@ -131,6 +152,11 @@ public class ShoppingCartController implements Serializable {
         return musicItem;
     }
     
+    /**
+     * Add given album to shopping cart
+     * 
+     * @param addedAlbum 
+     */
     public void addShoppingCartAlbum(Album addedAlbum) {
         MusicItem musicItem = convertAlbumToMusicItem(addedAlbum);
         shoppingCart.add(musicItem);
@@ -142,6 +168,11 @@ public class ShoppingCartController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "albumAdded"));
     }
     
+    /**
+     * Add given musicTrack to shopping cart
+     * 
+     * @param addedAlbum 
+     */
     public void addShoppingCartTrack(MusicTrack addedTrack) {
         MusicItem musicItem = convertMusicTrackToMusicItem(addedTrack);
         shoppingCart.add(musicItem);
@@ -154,6 +185,13 @@ public class ShoppingCartController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "trackAdded"));
     }
     
+    /**
+     * Creates a message to notify user whenever they add item to cart
+     * 
+     * @param summary
+     * @param detail
+     * @return FacesMessage message
+     */
     private FacesMessage createMsg(String summary, String detail) {
         FacesMessage facesMsgDets = com.gb4w21.musicalmoose.util.Messages.getMessage(
                 "com.gb4w21.musicalmoose.bundles.messages", summary, null);
@@ -163,11 +201,24 @@ public class ShoppingCartController implements Serializable {
         return facesMsgDets;
     }
     
+    /**
+     * Adds message to FacesContext
+     * 
+     * @param severity
+     * @param summary
+     * @param detail 
+     */
     public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
         FacesContext.getCurrentInstance().
                 addMessage(null, new FacesMessage(severity, summary, detail));
     }
     
+    /**
+     * Delete a given MusicItem from shopping cart list
+     * 
+     * @param deleteItem
+     * @return string of removed item
+     */
     public String deleteCartItem(MusicItem deleteItem) {
         shoppingCart.remove(deleteItem);
         if (deleteItem.getIsAlbum()) {
@@ -179,6 +230,11 @@ public class ShoppingCartController implements Serializable {
         return null;
     }
     
+    /**
+     * Calculates the total without tax to present to user in shopping cart
+     * 
+     * @return BigDecimal total
+     */
     public BigDecimal calculateTotal() {
         float totalAmount = 0;
         for (int i = 0; i < shoppingCart.size(); i++) {
@@ -186,9 +242,13 @@ public class ShoppingCartController implements Serializable {
         }
         totalCost = new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
         return totalCost;
-//        return new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
     }
     
+    /**
+     * Redirects user to shopping cart
+     * 
+     * @return string nav to cart
+     */
     public String toShoppingCart() {
         FacesContext context = FacesContext.getCurrentInstance();
         String tempPrevPage = context.getViewRoot().getViewId();
@@ -200,19 +260,38 @@ public class ShoppingCartController implements Serializable {
         return "shoppingcartpage";
     }
     
+    /**
+     * Redirects user to the page they were at before going to shopping cart
+     * 
+     * @return 
+     */
     public String backPage() {
         return prevPage;
     }
     
+    /**
+     * Converts Float to BigDecimal
+     * 
+     * @param price
+     * @return BigDecimal converted from Float
+     */
     public BigDecimal floatToBigDec(Float price) {
         return new BigDecimal(Float.toString(price))
                 .setScale(2, RoundingMode.HALF_UP);
     }
     
+    /**
+     * Checks if cart is empty
+     * 
+     * @return true if empty, false otherwise
+     */
     public boolean checkCartEmpty() {
         return this.shoppingCart.isEmpty();
     }
     
+    /**
+     * Clears the cart and cookies
+     */
     public void clearCart() {
         shoppingCart.clear();
         preRenderViewBean.removeCookie("cart_album");

@@ -260,6 +260,14 @@ public class MusicTrackJpaController implements Serializable {
         return "detailTrackFromAlbum";
     }
 
+    /**
+     * Store given track by id to selectedAlbum
+     * 
+     * @author Victor
+     * 
+     * @param id
+     * @return string to navigate to track page
+     */
     public String searchSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
         if (searchedTrack != null) {
@@ -277,6 +285,15 @@ public class MusicTrackJpaController implements Serializable {
         return "detailTrack";
     }
 
+    /**
+     * Finds an track given the id
+     * 
+     * @author Victor
+     * 
+     * @param id
+     * @return track
+     * @throws NonexistentEntityException 
+     */
     public MusicTrack findTrackById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -324,6 +341,13 @@ public class MusicTrackJpaController implements Serializable {
         }
     }
 
+    /**
+     * Gets the list of tracks of the most recently searched genre
+     * 
+     * @author Victor
+     * 
+     * @return list of tracks of specific genre
+     */
     public List<MusicTrack> getRecentGenreTracks() {
         String recentGenre = this.preRenderViewBean.findRecentGenreCookie();
 
