@@ -63,6 +63,7 @@ public class ManagerViewChecker implements Serializable {
     }
     /**
      * checks to make sure that only a manager can go to manager pages by accessing the url
+     * @author Alessandro Dare
      * @param event ComponentSystemEvent
      */
     public void checkManager(ComponentSystemEvent event){
@@ -76,6 +77,7 @@ public class ManagerViewChecker implements Serializable {
     }	
      /**
      * checks to make sure that a manager can't get to the client side y accessing the url
+     * @author Alessandro Dare
      * @param event ComponentSystemEvent
      */
      public void checkClient(ComponentSystemEvent event){

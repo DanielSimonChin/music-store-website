@@ -50,6 +50,7 @@ public class GenreController implements Serializable {
     }
       /**
      * searches all tracks and albums associated with pop genre
+     * @author Alessandro Dare
      * @return Search Page
      * @throws Exception 
      */
@@ -61,6 +62,7 @@ public class GenreController implements Serializable {
     }
       /**
      * searches all tracks and albums associated with R7B genre
+     * @author Alessandro Dare
      * @return Search Page
      * @throws Exception 
      */
@@ -72,6 +74,7 @@ public class GenreController implements Serializable {
     }
       /**
      * searches all tracks and albums associated with Rock genre
+     * @author Alessandro Dare
      * @return Search Page
      * @throws Exception 
      */
@@ -83,6 +86,7 @@ public class GenreController implements Serializable {
     }
       /**
      * searches all tracks and albums associated with Hip Hop genre
+     * @author Alessandro Dare
      * @return Search Page
      * @throws Exception 
      */
@@ -94,6 +98,7 @@ public class GenreController implements Serializable {
     }
      /**
      * searches all tracks and albums associated with anime genre
+     * @author Alessandro Dare
      * @return Search Page
      * @throws Exception 
      */
@@ -105,6 +110,7 @@ public class GenreController implements Serializable {
     }
     /**
      * Searches for tracks/albums for specific genre and displays them on the search page
+     * @author Alessandro Dare
      * @param genre String
      * @throws Exception 
      */
@@ -119,6 +125,7 @@ public class GenreController implements Serializable {
     }
     /**
      * Searches all albums and tracks associated with selected genre
+     * @author Alessandro Dare
      * @param musicGenre String
      */
     private void searchResultsGenre(String musicGenre) {

@@ -221,7 +221,9 @@ public class AlbumJpaController implements Serializable {
     }
     /**
      * Takes a user from the search page to the album page
+     * @author Alessandro Dare
      * @param id int
+     * 
      * @return album page
      */
     public String searchSingleAlbum(int id) {
@@ -447,6 +449,7 @@ public class AlbumJpaController implements Serializable {
     }
 /**
  * creates a list of specials albums that have the largest sale
+ * @author Alessandro Dare
  * @return List<Album> special album list
  */
     public List<Album> getSpecialAlbums() {

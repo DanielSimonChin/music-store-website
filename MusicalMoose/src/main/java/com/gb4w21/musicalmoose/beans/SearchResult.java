@@ -42,7 +42,7 @@ public class SearchResult {
 
     /**
      * Constructor for when storing a track in a search bean
-     *
+     * @author Alessandro Dare
      * @param tracktitle
      * @param musiccategory
      * @param artist
@@ -61,7 +61,7 @@ public class SearchResult {
 
     /**
      * Constructor for storing an album in a search bean
-     *
+     * @author Alessandro Dare
      * @param albumtitle
      * @param releasedate
      * @param artist

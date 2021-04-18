@@ -48,6 +48,7 @@ public class LoginController  implements Serializable{
     }
    /**
     * if login bean is null it gives a blank one to avoid errors
+    * @author Alessandro Dare
     * @return LoginBean
     */
     public LoginBean getLoginBean(){
@@ -61,6 +62,7 @@ public class LoginController  implements Serializable{
     }
     /**
      * takes a user to the login page
+     * @author Alessandro Dare
      * @return String web page address
      */
     public String toLoginPage(){
@@ -90,6 +92,7 @@ public class LoginController  implements Serializable{
     }
     /**
      * sings the user out and returns them back to their previous page back to the index page if the user was a manager 
+     * @author Alessandro Dare
      * @return Previous page or index page
      */
     public String signOut(){
@@ -108,6 +111,7 @@ public class LoginController  implements Serializable{
     }
     /**
      * Validates if the user login information was correct and the information wasn't from a deactivated or false account
+     * @author Alessandro Dare
      * @param context
      * @param component
      * @param value 

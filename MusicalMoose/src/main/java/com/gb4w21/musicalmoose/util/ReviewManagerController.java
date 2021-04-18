@@ -96,6 +96,7 @@ public class ReviewManagerController implements Serializable {
     }
     /**
      * Takes the user to the review page and resets page values
+     * @author Alessandro Dare
      * @return String admin review page
      */
     public String toReviewPage(){
@@ -110,6 +111,7 @@ public class ReviewManagerController implements Serializable {
     }
     /**
      * save changes to a review if a review is changed to approved it will be displayed
+     * @author Alessandro Dare
      */
      public void saveReview() {
          

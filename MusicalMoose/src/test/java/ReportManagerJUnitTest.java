@@ -129,6 +129,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -151,6 +152,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -171,6 +173,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTotalSaleTotalProfit() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -192,6 +195,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTotalSaleTotalCurrentCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -214,6 +218,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTotalSaleTotalCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -236,6 +241,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -257,6 +263,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return boolean true if all sales are in the date range false if not
+     * @author Alessandro Dare
      */
     private boolean checkForTotalSale(List<Invoicedetail> invoicedetails, Date toDate, Date fromDate) {
         for (Invoicedetail invoicedetail : invoicedetails) {
@@ -276,6 +283,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -300,6 +308,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByClientAllProfit() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -325,6 +334,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByClientAllCurrentCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -350,6 +360,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByClientAllCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -375,6 +386,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
  
     @Test
@@ -398,6 +410,7 @@ public class ReportManagerJUnitTest {
      * @param invoiceList List<Invoicedetail>
      * @param client Client
      * @return true if all sales matched the client false if not
+     * @author Alessandro Dare
      */
     private boolean checkForClient(List<Invoicedetail> invoiceList, Client client) {
         for (Invoicedetail invoicedetail : invoiceList) {
@@ -417,6 +430,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -441,6 +455,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -465,6 +480,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -489,6 +505,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByArtistAllProfit() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -514,6 +531,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByArtistAllCurrentCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -539,6 +557,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByArtistAllCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -564,6 +583,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -587,6 +607,7 @@ public class ReportManagerJUnitTest {
      * @param invoiceList List<Invoicedetail>
      * @param artist String
      * @return true if all sales matched the artist false if not
+     * @author Alessandro Dare
      */
     private boolean checkForArtist(List<Invoicedetail> invoiceList, String artist) {
         for (Invoicedetail invoicedetail : invoiceList) {
@@ -615,6 +636,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
 
     @Test
@@ -639,6 +661,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -663,6 +686,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -687,6 +711,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -711,6 +736,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByTrackAllProfit() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -736,6 +762,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByTrackAllCurrentCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -761,6 +788,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByTrackAllCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -786,6 +814,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -810,6 +839,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -834,6 +864,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test
@@ -856,6 +887,7 @@ public class ReportManagerJUnitTest {
      * @param invoiceList List<Invoicedetail>
      * @param track MusicTrack
      * @return true if all sales matched the track false if not
+     * @author Alessandro Dare
      */
     private boolean checkForTrack(List<Invoicedetail> invoiceList, MusicTrack track) {
         for (Invoicedetail invoicedetail : invoiceList) {
@@ -881,6 +913,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -905,6 +938,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByAlbumAllProfit() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -930,6 +964,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByAlbumAllCurrentCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -955,6 +990,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByAlbumAllCost() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -980,6 +1016,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test
@@ -1005,6 +1042,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -1028,6 +1066,7 @@ public class ReportManagerJUnitTest {
      * @param invoiceList List<Invoicedetail>
      * @param album Album
      * @return true if all sales matched the track false if not
+     * @author Alessandro Dare
      */
     private boolean checkForAlbum(List<Invoicedetail> invoiceList, Album album) {
         for (Invoicedetail invoicedetail : invoiceList) {
@@ -1053,6 +1092,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -1077,6 +1117,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test
@@ -1101,6 +1142,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -1122,6 +1164,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test
@@ -1144,6 +1187,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return true if the client made no purchases false if not
+     * @author Alessandro Dare
      */
     private boolean checkForeroClients(List<Client> clients, Date toDate, Date fromDate) {
         for (Client client : clients) {
@@ -1169,6 +1213,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -1190,6 +1235,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -1211,6 +1257,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -1233,6 +1280,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return true if the track did not sale false if not
+     * @author Alessandro Dare
      */
     private boolean checkForZeroTracks(List<MusicTrack> tracks, Date toDate, Date fromDate) {
         for (MusicTrack musicTrack : tracks) {
@@ -1256,6 +1304,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -1277,6 +1326,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test
@@ -1298,6 +1348,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
    
     @Test
@@ -1320,6 +1371,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return true if the client made purchases false if not
+     * @author Alessandro Dare
      */
     private boolean checkForTopClients(List<Client> clients, Date toDate, Date fromDate) {
 
@@ -1337,6 +1389,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return boolean true it it has been sold false if not
+     * @author Alessandro Dare
      */
     private boolean checkClientHasBought(Client client,Date toDate, Date fromDate){
        if (client.getSaleList() != null) {
@@ -1360,6 +1413,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test
@@ -1381,6 +1435,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     
     @Test
@@ -1402,6 +1457,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test
@@ -1424,6 +1480,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return true if the tracks been purchased false if not
+     * @author Alessandro Dare
      */
     private boolean checkForTopTracks(List<MusicTrack> tracks, Date toDate, Date fromDate) {
         for (MusicTrack musicTrack : tracks) {
@@ -1440,6 +1497,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return boolean true it it has been sold false if not
+     * @author Alessandro Dare
      */
     private boolean checkTrackHasSold(MusicTrack track,Date toDate, Date fromDate){
         if (track.getInvoicedetailList() != null) {
@@ -1460,6 +1518,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return true if the albums have been purchased false if not
+     * @author Alessandro Dare
      */
     private boolean checkForTopAlbums(List<Album> albums, Date toDate, Date fromDate) {
         for (Album album : albums) {
@@ -1476,6 +1535,7 @@ public class ReportManagerJUnitTest {
      * @param toDate Date
      * @param fromDate Date
      * @return boolean true it it has been sold false if not
+     * @author Alessandro Dare
      */
     private boolean checkAlbumHasSold(Album album,Date toDate, Date fromDate){
         if (album.getInvoicedetailList() != null) {
@@ -1495,6 +1555,7 @@ public class ReportManagerJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
   
     @Test

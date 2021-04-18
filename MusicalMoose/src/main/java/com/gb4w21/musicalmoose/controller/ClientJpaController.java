@@ -245,6 +245,7 @@ public class ClientJpaController implements Serializable {
     }
     /**
      * find user with matching username and password
+     * @author Alessandro Dare
      * @param userName String
      * @param password String
      * @return 

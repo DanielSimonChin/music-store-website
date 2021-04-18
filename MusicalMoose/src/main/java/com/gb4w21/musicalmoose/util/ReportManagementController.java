@@ -95,6 +95,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * Constructor that resets all page values
+     * @author Alessandro Dare
      */
     @PostConstruct
     public void init() {
@@ -235,6 +236,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * If the date field is null change it to and invalid date
+     * @author Alessandro Dare
      */
     private void changeDate() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -256,7 +258,7 @@ public class ReportManagementController implements Serializable {
     /**
      * searches and displays the list of chosen sales, tracks, albums etc that
      * is requested for the report
-     *
+     * @author Alessandro Dare
      * @return String report page
      */
     public String reportSearch() throws NullSearchValueException, NullCategoryException {
@@ -329,7 +331,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * Takes user to report page constructor that resets all page values
-     *
+     * @author Alessandro Dare
      * @return String report page
      */
     public String toReportPage() {
@@ -348,7 +350,7 @@ public class ReportManagementController implements Serializable {
     /**
      * Returns a list of clients who hadn't made a purchase in a specified date
      * range
-     *
+     * @author Alessandro Dare
      * @return List<Client> list of clients
      */
     private List<Client> getUnsoldClients() {
@@ -373,7 +375,7 @@ public class ReportManagementController implements Serializable {
     /**
      * Returns a list of music tracks that haven't sold in the specified date
      * range
-     *
+     * @author Alessandro Dare
      * @return List<MusicTrack> list of music tracks
      */
     private List<MusicTrack> getUnsoldTarcks() {
@@ -400,7 +402,7 @@ public class ReportManagementController implements Serializable {
     /**
      * Returns a list of clients ordered by total sale that have made a purchase
      * in the specified date range
-     *
+     * @author Alessandro Dare
      * @return List<Client> client list
      */
     private List<Client> getTopClients() {
@@ -426,7 +428,7 @@ public class ReportManagementController implements Serializable {
     /**
      * Returns a list of tracks ordered by total sale that have been purchased
      * in the specified date range
-     *
+     * @author Alessandro Dare
      * @return List<MusicTrack> track list
      */
     private List<MusicTrack> getTopTarcks() {
@@ -453,7 +455,7 @@ public class ReportManagementController implements Serializable {
     /**
      * Returns a list of albums ordered by total sale that have been purchased
      * in the specified date range
-     *
+     * @author Alessandro Dare
      * @return List<Album> album list
      */
     private List<Album> getTopAlbums() {
@@ -478,7 +480,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * Gets all sales of the given track made in the specified date range
-     *
+     * @author Alessandro Dare
      * @param trackid int
      * @return List<Invoicedetail> sale list
      */
@@ -501,7 +503,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * Gets all sales of the given album made in the specified date range
-     *
+     * @author Alessandro Dare
      * @param albumid int
      * @return List<Invoicedetail> sale list
      */
@@ -525,7 +527,7 @@ public class ReportManagementController implements Serializable {
     /**
      * Gets a sale list of all sale form a certain artist in the specified date
      * range
-     *
+     * @author Alessandro Dare
      * @param artist String
      * @return List<Invoicedetail> sale list
      */
@@ -560,7 +562,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * get a list of all sale made in a certain date range
-     *
+     * @author Alessandro Dare
      * @return List<Invoicedetail> sale list
      */
     private List<Invoicedetail> getAllSales() {
@@ -582,7 +584,7 @@ public class ReportManagementController implements Serializable {
     /**
      * get all sales that where made by a chosen client in the specified date
      * range
-     *
+     * @author Alessandro Dare
      * @param chosenClient
      * @return List<Invoicedetail> the list of sale
      */
@@ -605,7 +607,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * Calculates all the totals when the user requests a sales report
-     *
+     * @author Alessandro Dare
      * @param invoiceDetails List<Invoicedetail>
      */
     private void setTotals(List<Invoicedetail> invoiceDetails) {
@@ -628,7 +630,7 @@ public class ReportManagementController implements Serializable {
     /**
      * Checks to see if the track, album, artists , or client exists before
      * doing a specified search if it does it throws an error
-     *
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
@@ -686,7 +688,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if track or album with specified artist exists
-     *
+     * @author Alessandro Dare
      * @param artist String
      * @return true if it exists false if not
      */
@@ -717,7 +719,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if album with specified name exists
-     *
+     * @author Alessandro Dare
      * @param albumTitle String
      * @return true if it exists false if not
      */
@@ -740,7 +742,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if client with specified name exists
-     *
+     * @author Alessandro Dare
      * @param userName String
      * @return true if it exists false if not
      */
@@ -761,7 +763,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if track with specified name exists
-     *
+     * @author Alessandro Dare
      * @param trackname String
      * @return true if it exists false if not
      */
@@ -781,7 +783,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * gets track with specified track name
-     *
+     * @author Alessandro Dare
      * @param trackname String
      * @return MusicTrack specified track
      */
@@ -802,7 +804,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * gets album with specified album title
-     *
+     * @author Alessandro Dare
      * @param albumName String
      * @return Album album with specified title
      */
@@ -824,7 +826,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * get client with specified username
-     *
+     * @author Alessandro Dare
      * @param userName String
      * @return Client client with username
      */

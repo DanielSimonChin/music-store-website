@@ -133,6 +133,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTotalSalesInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -152,6 +153,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testInvlidCategoryNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -173,6 +175,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testInvlidCategory() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -193,6 +196,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTotalSalesInvalidDateNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -214,6 +218,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByClientInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -235,6 +240,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByClientInvalidClientNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -258,6 +264,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByClientInvalidClient() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -280,6 +287,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByArtistInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -301,6 +309,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByArtistInvalidArtistNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -324,6 +333,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByArtistInvalidArtist() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -348,6 +358,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByTrackDate() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -369,6 +380,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByTrackInvalidTrackNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -392,6 +404,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSalesByTrackInvalidTrack() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -416,6 +429,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByAlbumInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -437,6 +451,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByAlbumInvalidAlbumNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -460,6 +475,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testSaleByAlbumInvalidAlbum() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -484,6 +500,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTopClientsDate() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -504,6 +521,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTopClientsDateNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -525,6 +543,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTopSellersInvalidDate() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -545,6 +564,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testTopSellersInvalidDateNull() throws ParseException, NullSearchValueException, NullCategoryException {
@@ -567,6 +587,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullCategoryException
      * @throws NullSearchValueException
+     * @author Alessandro Dare
      */
     @Test
     public void testZeroTracksAllDates() throws ParseException, NullCategoryException, NullSearchValueException {
@@ -588,6 +609,7 @@ public class ReportManagerFailedJUnitTest {
      * @throws ParseException
      * @throws NullSearchValueException
      * @throws NullCategoryException
+     * @author Alessandro Dare
      */
     @Test
     public void testZeroCleintsAllDates() throws ParseException, NullSearchValueException, NullCategoryException {

@@ -145,6 +145,7 @@ public class SurveyJpaController implements Serializable {
     }
     /**
      * Gets the survey that's currently available
+     * @author Alessandro Dare
      * @return Survey available survey
      */
     public Survey getRunningSurvey() {
@@ -169,6 +170,7 @@ public class SurveyJpaController implements Serializable {
     }
     /**
      * increases vote for answer1
+     * @author Alessandro Dare
      * @return String index page (reloads page)
      * @throws Exception 
      */
@@ -178,6 +180,7 @@ public class SurveyJpaController implements Serializable {
     }
  /**
      * increases vote for answer2
+     * @author Alessandro Dare
      * @return String index page (reloads page)
      * @throws Exception 
      */
@@ -187,6 +190,7 @@ public class SurveyJpaController implements Serializable {
     }
  /**
      * increases vote for answer3
+     * @author Alessandro Dare
      * @return String index page (reloads page)
      * @throws Exception 
      */
@@ -196,6 +200,7 @@ public class SurveyJpaController implements Serializable {
     }
  /**
      * increases vote for answer4
+     * @author Alessandro Dare
      * @return String index page (reloads page)
      * @throws Exception 
      */
@@ -205,6 +210,7 @@ public class SurveyJpaController implements Serializable {
     }
     /**
      * Increases the vote for selected survey and sets it to be used so the user can't vote again
+     * @author Alessandro Dare
      * @param voteNumber The answer that should be voted
      * @throws Exception 
      */
@@ -216,6 +222,7 @@ public class SurveyJpaController implements Serializable {
     }
     /**
      * Increases the the vote for selected answer on the currently running survey
+     * @author Alessandro Dare
      * @param rowNumber int
      * @param survey Survey
      * @throws Exception 

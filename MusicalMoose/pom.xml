@@ -12,7 +12,8 @@
     <properties>
 
 
-        <skipTests>true</skipTests> 
+      <skipTests>true</skipTests>  
+
 
     </properties>
 
@@ -77,13 +78,7 @@
             <artifactId>javax.mail-api</artifactId>
             <version>1.6.2</version>
         </dependency>
-            <dependency>
-                  <groupId>com.gb4w21</groupId>
-                  <artifactId>MusicalMoose</artifactId>
-                  <version>1.0-SNAPSHOT</version>
-                  <scope>test</scope>
-                  <type>war</type>
-            </dependency>
+           
       </dependencies>
 
 </project>

@@ -39,7 +39,11 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Tests public methods for survey controller
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @RunWith(Arquillian.class)
 public class SurveyUnitTest {
 
@@ -127,9 +131,12 @@ public class SurveyUnitTest {
             throw new RuntimeException("Failed parsing sql", e);
         }
     }
-
+    /**
+     * Test that the survey given is the one on the website
+     * @author Alessandro Dare
+     */
     @Test
-    public void testFindClient() {
+    public void testFindSurvey() {
         Survey survey = controller.getRunningSurvey();
         assertEquals(survey.getSurveryinuse(), true);
     }

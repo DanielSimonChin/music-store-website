@@ -132,6 +132,7 @@ public class SearchController implements Serializable {
     }
     /**
      * clears all search results
+     * @author Alessandro Dare
      */
     private void clearSearchResult() {
         searchResultsTrack = new ArrayList<SearchResult>();
@@ -140,6 +141,7 @@ public class SearchController implements Serializable {
     /**
      * Generates search results base on selected categories and takes a user to a search page unless 
      * it gets a single results in which case it takes you directly tot eh track/album page
+     * @author Alessandro Dare
      * @return String Search page or track/album page if there's a single result
      * @throws Exception 
      */
@@ -185,6 +187,7 @@ public class SearchController implements Serializable {
     }
     /**
      * If the search list has just one result and it's a track take the user to the selected track page
+     * @author Alessandro Dare
      */
     private void setSingleTrack() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -205,6 +208,7 @@ public class SearchController implements Serializable {
     }
     /**
      * If the search list has just one result and it's n album take the user to the selected album page
+     * @author Alessandro Dare
      */
     private void setSingleAlbum() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -224,6 +228,7 @@ public class SearchController implements Serializable {
     }
    /**
      * Generates a list of tracks  that have the same title or the title name is similar  to the search string
+     * @author Alessandro Dare
      */
     private void searchResultsMusicTrack() {
         searchText = "%" + searchText + "%";
@@ -240,6 +245,7 @@ public class SearchController implements Serializable {
     }
     /**
      * Generates a list of albums  that have the same title or the title name is similar  to the search string
+     * @author Alessandro Dare
      */
     private void searchResultsAlbums() {
         searchText = "%" + searchText + "%";
@@ -255,6 +261,7 @@ public class SearchController implements Serializable {
     }
     /**
      * Generates a list of albums and tracks who's creation date is in between the specified field
+     * @author Alessandro Dare
      * @throws ParseException 
      */
     private void searchResultsDate() throws ParseException {
@@ -280,6 +287,7 @@ public class SearchController implements Serializable {
     }
     /**
      * Generates a list of albums and tracks that have the same artist or the artists name is similar  to the search string
+     * @author Alessandro Dare
      */
     private void searchResultsArtist() {
         searchText = "%" + searchText + "%";

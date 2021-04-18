@@ -46,7 +46,11 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+/**
+ * Tests public methods for review controller
+ * @author Alessandro Dare
+ * @version 1.0
+ */
 @RunWith(Arquillian.class)
 public class ReviewUnitTest {
 
@@ -102,14 +106,23 @@ public class ReviewUnitTest {
 
         return webArchive;
     }
-
+    /**
+     * Tests that all reviews given are for selected track
+     * @author Alessandro Dare
+     */
     @Test
     public void testRealtedTrackReviews() {
         MusicTrack musicTrack = musicTrackJpaController.findMusicTrack(1);
         List<Review> reviews = this.controller.getTrackReviews(musicTrack);
         assertEquals(checkRealtedTracks(musicTrack, reviews), true);
     }
-
+    /**
+     * checks that all reviews are related to the selected tracks
+     * @author Alessandro Dare
+     * @param musicTrack MusicTrack
+     * @param reviews List<Review>
+     * @return true if all reviews are related false if not
+     */
     private boolean checkRealtedTracks(MusicTrack musicTrack, List<Review> reviews) {
         for (Review review : reviews) {
             if (review.getInventoryid().getInventoryid() != musicTrack.getInventoryid()) {
@@ -118,21 +131,33 @@ public class ReviewUnitTest {
         }
         return true;
     }
-
+    /**
+     * Tests that no reviews a given to a new track
+     * @author Alessandro Dare
+     */
     @Test
     public void testRealtedTrackReviewsCount() {
         MusicTrack musicTrack = new MusicTrack();
         List<Review> reviews = this.controller.getTrackReviews(musicTrack);
         assertEquals(reviews.size(), 0);
     }
-
+    /**
+     * tests all reviews generated a from the selected album
+     * @author Alessandro Dare
+     */
     @Test
     public void testRealtedAblumReviews() {
         Album album = this.albumJpaController.findAlbum(1);
         List<Review> reviews = this.controller.getAlbumTrackReviews(album);
         assertEquals(checkRealtedAlbums(album, reviews), true);
     }
-
+    /**
+     * checks all reviews are given to related album
+     * @author Alessandro Dare
+     * @param album Album
+     * @param reviews List<Review>
+     * @return true if their related false if not
+     */
     private boolean checkRealtedAlbums(Album album, List<Review> reviews) {
         for (Review review : reviews) {
             if (review.getInventoryid().getAlbumid().getAlbumid() != album.getAlbumid()) {
@@ -141,7 +166,10 @@ public class ReviewUnitTest {
         }
         return true;
     }
-
+    /**
+     * tests that a new receive will  no reviews
+     * @author Alessandro Dare
+     */
     @Test
     public void testRealtedAlbumReviewsCount() {
         Album album = new Album();

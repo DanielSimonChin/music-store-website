@@ -94,6 +94,7 @@ public class RegistrationController implements Serializable {
     /**
      * takes user name information from the registration information form the registration 
      * page and uses to to create a user and logs the in automatically
+     * @author Alessandro Dare
      * @return previous visted page
      * @throws RollbackFailureException 
      */
@@ -111,6 +112,7 @@ public class RegistrationController implements Serializable {
     }
     /**
      * takes the user to the registration page and clears all previous values
+     * @author Alessandro Dare
      * @return the register page
      */
     public String registerUser() {
@@ -130,6 +132,7 @@ public class RegistrationController implements Serializable {
  
     /**
      * validates to make sure the confirm password matches the original password
+     * @author Alessandro Dare
      * @param context
      * @param component
      * @param value 
@@ -147,6 +150,7 @@ public class RegistrationController implements Serializable {
     }
     /**
      * validates the second address to make sure it's in the correct format and isn't copying address 1
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value  Object
@@ -167,6 +171,7 @@ public class RegistrationController implements Serializable {
     }
     /**
      * validates to make sure cell phone follows correct format and isn't related to the home page
+     * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
      * @param value  Object

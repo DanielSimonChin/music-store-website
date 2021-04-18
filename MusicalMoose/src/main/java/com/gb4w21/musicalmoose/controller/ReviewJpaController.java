@@ -246,6 +246,7 @@ public class ReviewJpaController implements Serializable {
     }
     /**
      * takes the user to the review page so they could write the review for the specific track
+     * @author Alessandro Dare
      * @param track  MusicTrack
      * @param fromAlbum boolean
      * @return String review page
@@ -259,6 +260,7 @@ public class ReviewJpaController implements Serializable {
     }
     /**
      * Creates specified review and stores it to the database
+     * @author Alessandro Dare
      * @param id int
      * @return String search page
      * @throws RollbackFailureException 
@@ -280,6 +282,7 @@ public class ReviewJpaController implements Serializable {
     }
     /**
      * returns you to the track/album page where to created the review
+     * @author Alessandro Dare
      * @return track/album page
      */
     public String backToPage() {

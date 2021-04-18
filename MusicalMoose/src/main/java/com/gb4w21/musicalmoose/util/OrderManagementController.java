@@ -80,6 +80,7 @@ public class OrderManagementController implements Serializable {
     }
     /**
      * post constructor used to reset values
+     * @author Alessandro Dare
      */
     @PostConstruct
     public void init() {
@@ -94,6 +95,7 @@ public class OrderManagementController implements Serializable {
     }
     /**
      * changes table to show or exclude sales that have been removed
+     * @author Alessandro Dare
      * @return String admin page
      */
     public String changeTable() {
@@ -109,6 +111,7 @@ public class OrderManagementController implements Serializable {
     }
     /**
      * removes all invoices that have been marked as removed from the sale
+     * @author Alessandro Dare
      */
     private void removeAdded() {
         List<Sale> removedSale = new ArrayList<>();
@@ -138,6 +141,7 @@ public class OrderManagementController implements Serializable {
     }
     /**
      * Shows weather an invoice is for an album or track
+     * @author Alessandro Dare
      * @param invoicedetail Invoicedetail
      * @return boolean album if true track if false
      */
@@ -146,6 +150,7 @@ public class OrderManagementController implements Serializable {
     }
    /**
      * calculates the total amount of profit the website made on the sale
+     * @author Alessandro Dare
      * @param sale Sale
      * @return  float total profit
      */
@@ -165,6 +170,7 @@ public class OrderManagementController implements Serializable {
     }
  /**
      * calculates the total amount the use sent on the sale
+     * @author Alessandro Dare
      * @param sale Sale
      * @return  float total current cost
      */
@@ -183,6 +189,7 @@ public class OrderManagementController implements Serializable {
     }
      /**
      * calculates the total number of tracks for a specific sale
+     * @author Alessandro Dare
      * @param sale Sale
      * @return  int number of tracks
      */
@@ -201,6 +208,7 @@ public class OrderManagementController implements Serializable {
     }
     /**
      * calculates the total number of albums for a specific sale
+     * @author Alessandro Dare
      * @param sale Sale
      * @return  int number of albums
      */
@@ -219,6 +227,7 @@ public class OrderManagementController implements Serializable {
     }
     /**
      * saves the changes to the specified sale and it's related invoices
+     * @author Alessandro Dare
      */
     public void saveSale() {
 
@@ -262,7 +271,7 @@ public class OrderManagementController implements Serializable {
 
     /**
      * checks to see if the chosen date is in the future
-     *
+     * @author Alessandro Dare
      * @param chosenDate Date
      * @return boolean true if the date is in the future false if not
      */

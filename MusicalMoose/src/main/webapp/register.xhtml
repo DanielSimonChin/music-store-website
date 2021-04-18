@@ -130,8 +130,8 @@ and open the template in the editor.
                             <br></br>
                             <br></br>
                             <h:outputLabel for="pcode" value="#{msgs.postalCode}"/>
-                            <h:inputText id="pcode" label="#{msgs.postalCode}" value="#{registrationBean.postalcode}" required="true" requiredMessage="#{msgs.required}" a:placeholder="H9U 6T0">
-                                <f:validateLength minimum="5" maximum="9" />
+                            <h:inputText id="pcode" label="#{msgs.postalCode}" value="#{registrationBean.postalcode}" required="true" requiredMessage="#{msgs.required}" a:placeholder="H9U 6T0" validator="#{validationController.validatePostalCode}">  
+                                <f:validateLength minimum="6" maximum="7" />
                                 <f:ajax event="blur" render="pcodeError" />
                             </h:inputText>
                             <h:message id="pcodeError" for="pcode" style="color:red" />
@@ -148,7 +148,7 @@ and open the template in the editor.
                             <br></br>
                             <h:outputLabel for="cphone" value="#{msgs.cellphone}"/>
                             <h:inputText id="cphone" label="#{msgs.cellphone}" value="#{registrationBean.celltelephone}"  a:placeholder="514-987-9876" validator="#{registrationController.validateCellPhoneNumber}">
-                                <f:validateLength minimum="10" maximum="25" />
+                               
                                 <f:ajax event="blur" render="cphoneError" />
                             </h:inputText>
                             <h:message id="cphoneError" for="cphone" style="color:red" />

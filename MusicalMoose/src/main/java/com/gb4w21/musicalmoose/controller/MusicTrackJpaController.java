@@ -329,6 +329,7 @@ public class MusicTrackJpaController implements Serializable {
     }
     /**
      * get a list of tracks that have the biggest sale
+     * @author Alessandro Dare
      * @return List<MusicTrack> a list of special tracks
      */
     public List<MusicTrack> getSpecialTracks() {
@@ -407,7 +408,7 @@ public class MusicTrackJpaController implements Serializable {
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.
-     *
+     * @author Alessandro Dare
      * @param track
      * @return display the trackpage.xhtml
      */

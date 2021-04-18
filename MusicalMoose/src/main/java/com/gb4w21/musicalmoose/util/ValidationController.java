@@ -44,7 +44,9 @@ public class ValidationController implements Serializable {
     private ClientJpaController clientJpaController;
     private static final Pattern VALID_EMAIL_ADDRESS_PATTERN = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern VALID_POSTAL_CODE_PATTERN = Pattern.compile("^(?!.*[DFIOQU])[A-VXY][0-9][A-Z] ?[0-9][A-Z][0-9]$", Pattern.CASE_INSENSITIVE);
 
+    ;
     /**
      * Default constructor
      */
@@ -183,9 +185,9 @@ public class ValidationController implements Serializable {
      * @param value FacesContext
      */
     public void validateDateTo(FacesContext context, UIComponent component, Object value) {
-    
+
         UIInput dateInput = (UIInput) component.findComponent("fromSearch");
-       
+
         Calendar calendar = (Calendar) dateInput;
         //calendar.getAttributes()
 
@@ -212,15 +214,16 @@ public class ValidationController implements Serializable {
         }
 
     }
+
     /**
      * Validates the sale date to make user it isn't in the future
+     *
      * @param context FacesContext
      * @param component UIComponent
      * @param value Object
      */
-   public void validateSaleDate(FacesContext context, UIComponent component, Object value) {
-      
-       
+    public void validateSaleDate(FacesContext context, UIComponent component, Object value) {
+
         if (value != null) {
             Date saleDate = (Date) value;
             if (checkDateInFutre(saleDate)) {
@@ -232,15 +235,36 @@ public class ValidationController implements Serializable {
             }
         }
     }
-   /**
-    * Validates the invoice date to make sure it isn't in the future
-    * @param context FacesContext
-    * @param component UIComponent
-    * @param value  Object
-    */
+    /**
+     * validates the given postal code is in the correct format
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value Object
+     */
+    public void validatePostalCode(FacesContext context, UIComponent component, Object value) {
+        if (value != null && (!value.toString().isEmpty())) {
+            String postalCode = value.toString();
+            Matcher matcher = VALID_POSTAL_CODE_PATTERN.matcher(postalCode);
+            if (!matcher.find()) {
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "postcalCodeError", null);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                throw new ValidatorException(message);
+            }
+        }
+    }
+
+    /**
+     * Validates the invoice date to make sure it isn't in the future
+     *
+     * @param context FacesContext
+     * @param component UIComponent
+     * @param value Object
+     */
     public void validateInvoiceDate(FacesContext context, UIComponent component, Object value) {
         for (UIComponent uiComponent : component.getChildren()) {
-   
+
         }
 
         UIInput dateInput = (UIInput) component.findComponent("saleDateInput");
