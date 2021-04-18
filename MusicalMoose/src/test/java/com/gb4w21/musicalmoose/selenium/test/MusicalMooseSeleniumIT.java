@@ -1,26 +1,12 @@
 package com.gb4w21.musicalmoose.selenium.test;
 
-import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import io.github.bonigarcia.wdm.WebDriverManager;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.sql.DataSource;
-import org.jboss.arquillian.junit.Arquillian;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -228,6 +214,98 @@ public class MusicalMooseSeleniumIT {
         WebElement inputElement = driver.findElement(By.xpath("//*[@id=\"searchSectionContainer\"]"));
         wait.until(ExpectedConditions.visibilityOf(inputElement));
 
+    }
+    
+    /**
+     * Test that when clicking on the Add to Cart music track and album page that it will add to the shopping cart
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testClickAddCart() throws Exception {
+        driver.get("http://localhost:8080/MusicalMoose/");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        // Wait for the page to load, timeout after 10 seconds
+        wait.until(ExpectedConditions.titleIs("Musical Moose"));
+        
+        driver.findElement(By.className("specialTrackButton")).click();
+        driver.findElement(By.id("addTrackCartForm:addCartTrack")).click();
+
+        try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+
+        driver.findElement(By.className("form")).click();
+        driver.findElement(By.id("addAlbumCartForm:addAlbumCartButton")).click();
+        
+        try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+
+        driver.findElement(By.id("logo")).click();
+        driver.findElement(By.id("shoppingCartForm")).click();
+        try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+        
+        WebElement resultElement = driver.findElement(By.xpath("//*[@id=\"cartSectionContainer\"]"));
+        wait.until(ExpectedConditions.visibilityOf(resultElement));
+        
+        // Checks if items are inside the shopping cart
+        Assert.assertTrue(!driver.findElements(By.className("itemsInCart")).isEmpty());
+    }
+    
+    /**
+     * Test that the items are in the cart are able to checkout
+     *
+     * @throws Exception
+     */
+    @Test
+    public void testCheckOut() throws Exception {
+        driver.get("http://localhost:8080/MusicalMoose/");
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+        // Wait for the page to load, timeout after 10 seconds
+        wait.until(ExpectedConditions.titleIs("Musical Moose"));
+        
+        driver.findElement(By.className("specialTrackButton")).click();
+        driver.findElement(By.id("addTrackCartForm:addCartTrack")).click();
+        driver.findElement(By.className("form")).click();
+        driver.findElement(By.id("addAlbumCartForm:addAlbumCartButton")).click();
+
+        driver.findElement(By.id("logo")).click();
+        driver.findElement(By.id("shoppingCartForm")).click();
+        try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
+        
+        driver.findElement(By.id("checkoutForm:checkoutButton")).click();
+        WebElement clickElement = driver.findElement(By.id("loginForm:cname"));
+        clickElement.clear();
+        // Enter text into the input field
+        clickElement.sendKeys("DawsonConsumer");
+
+        // Find password input field
+        clickElement = driver.findElement(By.id("loginForm:password"));
+        // Clear out anything currently in the field
+        clickElement.clear();
+        // Enter text into the input field
+        clickElement.sendKeys("dawsoncollege");
+
+        driver.findElement(By.id("loginForm:formLogin")).click();
+        
+        WebElement inputElement = driver.findElement(By.id("checkingOutForm:cname"));
+        inputElement.clear();
+        inputElement.sendKeys("DawsonConsumer");
+
+        inputElement = driver.findElement(By.xpath("//*[@id=\"checkingOutForm:cardSelect:0\"]"));
+        inputElement.click();
+
+        inputElement = driver.findElement(By.id("checkingOutForm:ccnum"));
+        inputElement.clear();
+        inputElement.sendKeys("4024007111674510");
+
+        inputElement = driver.findElement(By.id("checkingOutForm:expmonth"));
+        inputElement.clear();
+        inputElement.sendKeys("11/2021");
+        
+        // Click the submit button
+        driver.findElement(By.id("checkingOutForm:confirmPurchase")).click();
+        try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+        
+        WebElement resultElement = driver.findElement(By.xpath("//*[@id=\"invoiceSectionContainer\"]"));
+        wait.until(ExpectedConditions.visibilityOf(resultElement));
     }
 
     @After

@@ -48,7 +48,8 @@ public class ShoppingCartController implements Serializable {
         this.shoppingCart = new ArrayList<MusicItem>();
     }
     
-    public List<MusicItem> getShoppingCart() {
+    public List<MusicItem> getShoppingCartList() {
+        LOG.info("Find shopping cart list " + shoppingCart.size());
         return this.shoppingCart;
     }
     
@@ -139,8 +140,6 @@ public class ShoppingCartController implements Serializable {
         LOG.info("Shopping Cart Album Added: " + addedAlbum.getAlbumtitle());
         
         FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "albumAdded"));
-        
-//        addMessage(FacesMessage.SEVERITY_INFO, "Success", "Album added to cart");
     }
     
     public void addShoppingCartTrack(MusicTrack addedTrack) {
@@ -150,9 +149,9 @@ public class ShoppingCartController implements Serializable {
         preRenderViewBean.writeCartCookie(addedTrack.getInventoryid(), "cart_track");
         
         LOG.info("Shopping Cart Track Added: " + addedTrack.getTracktitle());
+        LOG.info("COUNT: " + shoppingCart.size());
         
         FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "trackAdded"));
-//        addMessage(FacesMessage.SEVERITY_INFO, "Success", "Music track added to cart");
     }
     
     private FacesMessage createMsg(String summary, String detail) {
@@ -167,11 +166,6 @@ public class ShoppingCartController implements Serializable {
     public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
         FacesContext.getCurrentInstance().
                 addMessage(null, new FacesMessage(severity, summary, detail));
-    }
-    
-    public List<MusicItem> getShoppingCartList() {
-        LOG.info("Find shopping cart list");
-        return this.shoppingCart;
     }
     
     public String deleteCartItem(MusicItem deleteItem) {

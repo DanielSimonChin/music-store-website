@@ -99,6 +99,14 @@ public class CheckoutController implements Serializable {
         this.HST = HST;
     }
     
+    public BigDecimal getPST() {
+        return this.PST;
+    }
+    
+    public void setPST(BigDecimal PST) {
+        this.PST = PST;
+    }
+    
     public Float getTotalProfit() {
         return this.totalProfit;
     }
@@ -201,7 +209,8 @@ public class CheckoutController implements Serializable {
         createSale();
         createInvoiceDetails();
         this.shoppingCartController.clearCart();
-        addMessage("Processing purchase & email", "This may take a few seconds.");
+//        addMessage("Processing purchase & email", "This may take a few seconds.");
+          sendInvoiceEmail();
         return "invoice";
     }
     
@@ -316,17 +325,10 @@ public class CheckoutController implements Serializable {
                 LOG.info("Email sent");
             }
             catch (Exception e) {
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().addResponseCookie("errone", "1", null);
                 return false;
             }
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().addResponseCookie("errtwo", "2", null);
             return true;
         }
-        
-            FacesContext context = FacesContext.getCurrentInstance();
-            context.getExternalContext().addResponseCookie("errthre", toEmailAddress, null);
         return false;
     }
     

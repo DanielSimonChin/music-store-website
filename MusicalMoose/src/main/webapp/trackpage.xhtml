@@ -40,7 +40,7 @@
                                     <ui:repeat value="#{musicTrackJpaController.findAllRelatedTracks(detailTrack)}" var="relatedTracks">
                                         <tr>
                                             <th>
-                                                <h:form>
+                                                <h:form class="trackOfAlbum">
                                                     <!-- Create a link that brings the user to the track page of the related track from the same album-->
                                                     <h:commandLink value="#{relatedTracks.tracktitle}" action="#{musicTrackJpaController.searchRelatedTrack(relatedTracks)}">
                                                     </h:commandLink>
@@ -50,10 +50,10 @@
                                     </ui:repeat>
 
                                     <div id="shopCart">
-                                        <h:form>
+                                        <h:form id="addTrackCartForm">
                                             <p:growl id="growl" showDetail="true" />
                                             <p:commandLink actionListener="#{shoppingCartController.addShoppingCartTrack(musicTrackJpaController.getMusicTrack())}" 
-                                                        update="growl" styleClass="p-mr-2">
+                                                        update="growl" styleClass="p-mr-2" id="addCartTrack">
                                                 <h:graphicImage value="icons/shopping-cart.png" />
                                                 <p style="color: white;">#{msgs.addToCart}</p> 
                                             </p:commandLink>
@@ -111,7 +111,7 @@
 
                                     <div id="relatedAlbums" class="relBox">
                                         <ui:repeat value="#{albumJpaController.findRelatedAlbums(detailTrack)}" var="relatedAlbums">
-                                            <h:form id="form">
+                                            <h:form class="form">
                                                 <h:commandLink action="#{albumJpaController.selectAlbum(relatedAlbums)}">
                                                     <b class="adjustEllipse">#{relatedAlbums.albumtitle}</b>
                                                     <h:graphicImage value="album_covers/#{relatedAlbums.albumimagefilenamebig}" />
