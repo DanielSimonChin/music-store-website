@@ -73,6 +73,14 @@ public class CheckoutController implements Serializable {
     public CheckoutController() {
     }
     
+    public void setSaleBean(Sale saleBean){
+        this.saleBean = saleBean;
+    }
+    
+    public Sale getSaleBean() {
+        return this.saleBean;
+    }
+    
     public void setProvinceBean(ProvinceBean provinceBean){
         this.provinceBean = provinceBean;
     }
@@ -84,21 +92,25 @@ public class CheckoutController implements Serializable {
     public BigDecimal getGST() {
         return this.GST;
     }
+    
+    public void setGST(BigDecimal GST) {
+        this.GST = GST;
+    }
                 
     public BigDecimal getHST() {
         return this.HST;
     }
     
-    public BigDecimal getPST() {
-        return this.PST;
+    public void setHST(BigDecimal HST) {
+        this.HST = HST;
     }
     
-    public Sale getSaleBean() {
-        return this.saleBean;
+    public Float getTotalProfit() {
+        return this.totalProfit;
     }
     
-    public void setSaleBean(Sale saleBean) {
-        this.saleBean = saleBean;
+    public void setTotalProfit(Float totalProfit) {
+        this.totalProfit = totalProfit;
     }
     
     public String toCheckout() {

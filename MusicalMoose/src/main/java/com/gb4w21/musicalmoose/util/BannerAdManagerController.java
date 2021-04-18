@@ -15,15 +15,10 @@ import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- *
- * @author victo
+ * This is the controller used for the admin management of the banner ads
+ * 
+ * @author Victor Ouy
  */
 @Named
 @SessionScoped
@@ -48,30 +43,63 @@ public class BannerAdManagerController implements Serializable {
         this.bannerAds = bannerAdJpaController.findBanneradEntities();
     }
     
+    /**
+     * Getter for bannerAds
+     * 
+     * @return this.bannerAds
+     */
     public List<Bannerad> getBannerAds() {
         return this.bannerAds;
     }
     
+    /**
+     * Setter for bannerAds
+     * 
+     * @param bannerAds 
+     */
     public void setBannerAds(List<Bannerad> bannerAds) {
         this.bannerAds = bannerAds;
     }
     
+    /**
+     * Getter for selectedBannerAds
+     * 
+     * @return this.selectedBannerAds
+     */
     public List<Bannerad> getSelectedBannerAds() {
         return this.selectedBannerAds;
     }
     
+    /**
+     * Setter for bannerAds
+     * 
+     * @param bannerAds 
+     */
     public void setSelectedBannerAds(List<Bannerad> selectedBannerAds) {
         this.selectedBannerAds = selectedBannerAds;
     }
     
+    /**
+     * Getter for selectedBannerAd
+     * 
+     * @return this.selectedBannerAd
+     */
     public Bannerad getSelectedBannerAd() {
         return this.selectedBannerAd;
     }
     
+    /**
+     * Setter for selectedBannerAd
+     * 
+     * @param selectedBannerAd 
+     */
     public void setSelectedBannerAd(Bannerad selectedBannerAd) {
         this.selectedBannerAd = selectedBannerAd;
     }
     
+    /**
+     * Re-instantiates the selected banner ad 
+     */
     public void openNew() {
         this.selectedBannerAd = new Bannerad();
     }

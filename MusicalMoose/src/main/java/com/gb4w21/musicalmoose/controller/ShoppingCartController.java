@@ -48,8 +48,28 @@ public class ShoppingCartController implements Serializable {
         this.shoppingCart = new ArrayList<MusicItem>();
     }
     
+    public List<MusicItem> getShoppingCart() {
+        return this.shoppingCart;
+    }
+    
+    public void setShoppingCart(List<MusicItem> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+    
+    public String getPrevPage() {
+        return this.prevPage;
+    }
+    
+    public void setPrevPage(String prevPage) {
+        this.prevPage = prevPage;
+    }
+    
     public BigDecimal getTotalCost() {
         return this.totalCost;
+    }
+    
+    public void setTotalCost(BigDecimal totalCost) {
+        this.totalCost = totalCost;
     }
     
     public void findAlbumById(int id) {

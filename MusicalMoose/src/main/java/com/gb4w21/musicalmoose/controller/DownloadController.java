@@ -50,6 +50,14 @@ public class DownloadController implements Serializable {
     
     private List<MusicItem> downloadMusicItems;
     
+    public List<MusicItem> getDownloadMusicItems() {
+        return this.downloadMusicItems;
+    }
+    
+    public void setDownloadMusicItems(List<MusicItem> downloadMusicItems) {
+        this.downloadMusicItems = downloadMusicItems;
+    }
+    
     public List<MusicItem> findDownloads() throws NonexistentEntityException {
         try {
             this.downloadMusicItems = new ArrayList<MusicItem>();
