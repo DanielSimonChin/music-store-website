@@ -26,7 +26,7 @@ and open the template in the editor.
                 <h1 id="title">#{msgs.accountManagement}</h1>
 
                 <div class="container-info">
-                    <h:form >
+                    <h:form id="registerForm">
 
                         <div class="row">
                             <br/>
@@ -166,7 +166,7 @@ and open the template in the editor.
 
                         </div>
                         <br></br>
-                        <h:commandButton class="buttonsub" value="#{msgs.createAccount}" action="#{registrationController.addNewUser()}" />
+                        <h:commandButton id="registerUserButton" class="buttonsub" value="#{msgs.createAccount}" action="#{registrationController.addNewUser()}" />
 
 
                     </h:form>

@@ -155,6 +155,8 @@ public class PreRenderViewBean implements Serializable {
      * Checks for an existing cookie which contains the last selected locale
      * from the last session.
      *
+     * @author Daniel
+     *
      * return the string representing the language code
      */
     public String checkLocaleCookie() {
@@ -167,7 +169,6 @@ public class PreRenderViewBean implements Serializable {
             LOG.info(((Cookie) localeCookie).getValue());
 
             return localeCookie.getValue();
-
         }
         return null;
     }
@@ -175,6 +176,8 @@ public class PreRenderViewBean implements Serializable {
     /**
      * Whenever a user switches language, create a new cookie with its value set
      * as the language code (en, fr)
+     *
+     * @author Daniel
      *
      * @param languageCode
      */

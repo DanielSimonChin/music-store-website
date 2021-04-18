@@ -92,6 +92,7 @@ public class ReviewUnitTest {
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Review.class.getPackage())
                 .addPackage(Email.class.getPackage())
+
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")

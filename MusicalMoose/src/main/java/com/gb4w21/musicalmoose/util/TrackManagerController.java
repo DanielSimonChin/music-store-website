@@ -66,7 +66,7 @@ public class TrackManagerController implements Serializable {
      * @return the list of all tracks displayed in the data table
      */
     public List<MusicTrack> getTracks() {
-        init();
+        //init();
         return this.tracks;
     }
 

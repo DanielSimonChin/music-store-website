@@ -54,8 +54,6 @@ public class ReviewJpaController implements Serializable {
     private UserTransaction utx;
     @Inject
     ClientJpaController clientJpaController;
-   // @Inject
-   // LoginController loginController;
     @PersistenceContext(unitName = "musicPU")
     private EntityManager em;
 
@@ -198,6 +196,8 @@ public class ReviewJpaController implements Serializable {
 
     /**
      * Returns all reviews related to a track
+     * 
+     * @author Daniel
      *
      * @param track
      * @return List of review objects
@@ -221,6 +221,8 @@ public class ReviewJpaController implements Serializable {
 
     /**
      * Returns all the review objects for an album's tracks
+     * 
+     * @author Daniel
      *
      * @param album
      * @return A list if Review objects
@@ -301,7 +303,4 @@ public class ReviewJpaController implements Serializable {
     public boolean getTrackCreated() {
         return trackCreated;
     }
-
- 
-
 }

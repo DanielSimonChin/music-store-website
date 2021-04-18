@@ -204,21 +204,6 @@
                                             </div>
 
                                             <div class="p-field">
-                                                <p:outputLabel for="pstinput">#{msgs.formPST}</p:outputLabel>
-                                                <p:inputNumber id="pstinput" value="#{trackManagerController.selectedTrack.pst}" modifyValueOnWheel="false" required="true" minValue="0"/>
-                                            </div>
-
-                                            <div class="p-field">
-                                                <p:outputLabel for="gstinput">#{msgs.formGST}</p:outputLabel>
-                                                <p:inputNumber id="gstinput" value="#{trackManagerController.selectedTrack.gst}" modifyValueOnWheel="false" required="true" minValue="0"/>
-                                            </div>
-
-                                            <div class="p-field">
-                                                <p:outputLabel for="hstinput">#{msgs.formHST}</p:outputLabel>
-                                                <p:inputNumber id="hstinput" value="#{trackManagerController.selectedTrack.hst}" modifyValueOnWheel="false" required="true" minValue="0" />
-                                            </div>
-
-                                            <div class="p-field">
                                                 <p:selectBooleanCheckbox value="#{trackManagerController.selectedTrack.partofalbum}" itemLabel="#{msgs.partOfAlbum}">
                                                     <p:ajax event="change" update="albumselection albumselectionlabel albumSelectionGroup"/>
                                                     <p:ajax event="change" listener="#{trackManagerController.setAlbumidToNull()}"/>

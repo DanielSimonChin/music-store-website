@@ -58,6 +58,7 @@ import org.junit.Ignore;
  * @author Alessandro Dare
  * @version 1.0
  */
+
 @Ignore
 @RunWith(Arquillian.class)
 public class ReportManagerFailedJUnitTest {
@@ -110,6 +111,7 @@ public class ReportManagerFailedJUnitTest {
                 .addPackage(Album.class.getPackage())
                 .addPackage(Email.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
+                .addPackage(Email.class.getPackage()) 
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")

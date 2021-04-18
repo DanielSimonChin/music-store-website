@@ -48,8 +48,8 @@ and open the template in the editor.
                        
                     </h:form>
                     <br></br>
-                    <h:form>
-                        <h:commandButton value="#{msgs.noAccount}" class="btn-sub" action="#{registrationController.registerUser()}"/>
+                    <h:form id="noAccountForm">
+                        <h:commandButton id="noAccountButton" value="#{msgs.noAccount}" class="btn-sub" action="#{registrationController.registerUser()}"/>
                     </h:form>
                 </div>
             </ui:define>

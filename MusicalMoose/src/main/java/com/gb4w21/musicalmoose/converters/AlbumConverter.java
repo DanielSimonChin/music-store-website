@@ -17,6 +17,7 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 /**
+ * Class with converters for selectOneMenu tags
  *
  * @author Daniel
  */
@@ -24,7 +25,7 @@ import javax.faces.convert.FacesConverter;
 public class AlbumConverter implements Converter {
 
     @Override
-    public Object getAsObject(FacesContext ctx, UIComponent uiComponent, String albumId){
+    public Object getAsObject(FacesContext ctx, UIComponent uiComponent, String albumId) {
         ValueExpression vex
                 = ctx.getApplication().getExpressionFactory()
                         .createValueExpression(ctx.getELContext(),

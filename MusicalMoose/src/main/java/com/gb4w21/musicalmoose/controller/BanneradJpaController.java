@@ -17,14 +17,12 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.servlet.http.HttpServletResponse;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -146,6 +144,14 @@ public class BanneradJpaController implements Serializable {
 
     }
 
+    /**
+     * Retrieves the Bannerad object given a position on the front page
+     *
+     * @author Daniel
+     *
+     * @param pagePosition
+     * @return the banner ad at this position
+     */
     public Bannerad getRunningAd(int pagePosition) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
@@ -164,8 +170,11 @@ public class BanneradJpaController implements Serializable {
 
     /**
      * Redirect the user to a new window representing the ad's url field
+     * 
+     * @Daniel
+     *
      * @param ad
-     * @throws IOException 
+     * @throws IOException
      */
     public void redirectToWebsite(Bannerad ad) throws IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();

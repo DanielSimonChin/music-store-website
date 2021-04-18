@@ -177,10 +177,10 @@ CREATE TABLE RSS(
 
 INSERT INTO NEWS (NEWSID, NEWTITLE, NEWSTEXT, CREATEDDATE, LASTDISPLAYEDDTAE, URL, DISPLAYED)
 VALUES 
-(1, "Elton John reveals he’s been working on “something” with Metallica", "Elton John has teased an unlikely collaboration with Metallica, after the singer joined forces with the metal icons during the latest coronavirus lockdown.", TIMESTAMP("2020-03-08", "11:03:11"), TIMESTAMP("2020-03-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/elton-john-reveals-hes-been-working-on-something-with-metallica-2910055",1), 
-(2, "Red Velvet’s Wendy unveils release date of upcoming solo debut", "Wendy, the main vocalist of K-pop girl group Red Velvet, is set to make her solo debut soon.", TIMESTAMP("2019-06-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/red-velvet-wendy-solo-debut-2021-april-2897448",1), 
-(3, "Big Sean celebrates birthday with live performance of ‘Lucky Me’ and ‘Still I Rise’", "Big Sean celebrated his birthday this week with a live performance of new tracks ‘Lucky Me’ and ‘Still I Rise’ – watch it below.", TIMESTAMP("2021-01-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/big-sean-celebrates-birthday-with-live-performance-of-lucky-me-and-still-i-rise-2909838",1), 
-(4, "Future joins Diddy’s son King Combs on sleek new track ‘Holdin Me Down’", "Future has teamed up with Diddy‘s son King Combs on a sleek new track called ‘Holdin Me Down’ – listen to it below.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/future-joins-diddys-son-king-combs-on-sleek-new-track-holdin-me-down-2909817",0), 
+(1, "Elton John reveals he's been working on “something” with Metallica", "Elton John has teased an unlikely collaboration with Metallica, after the singer joined forces with the metal icons during the latest coronavirus lockdown.", TIMESTAMP("2020-03-08", "11:03:11"), TIMESTAMP("2020-03-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/elton-john-reveals-hes-been-working-on-something-with-metallica-2910055",1), 
+(2, "Red Velvet's Wendy unveils release date of upcoming solo debut", "Wendy, the main vocalist of K-pop girl group Red Velvet, is set to make her solo debut soon.", TIMESTAMP("2019-06-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/red-velvet-wendy-solo-debut-2021-april-2897448",1), 
+(3, "Big Sean celebrates birthday with live performance of 'Lucky Me' and 'Still I Rise'", "Big Sean celebrated his birthday this week with a live performance of new tracks 'Lucky Me’ and 'Still I Rise’ – watch it below.", TIMESTAMP("2021-01-23", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/big-sean-celebrates-birthday-with-live-performance-of-lucky-me-and-still-i-rise-2909838",1), 
+(4, "Future joins Diddy's son King Combs on sleek new track 'Holdin Me Down'", "Future has teamed up with Diddy's son King Combs on a sleek new track called 'Holdin Me Down’ – listen to it below.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/future-joins-diddys-son-king-combs-on-sleek-new-track-holdin-me-down-2909817",0), 
 (5, "5,000 people attend COVID-19 experiment gig in Barcelona", "Five thousand people attended a concert in Barcelona last night (March 27) as part of a COVID-19 experiment. The show, which saw Spanish rock band Love of Lesbian playing at the Palau Sant Jordi arena, is said to be the biggest concert in Europe since the pandemic began last year.", TIMESTAMP("2021-02-08", "11:03:11"), TIMESTAMP("2020-02-10", "11:03:11"),"https://www.nme.com/en_asia/news/music/5000-people-attend-covid-19-experiment-gig-in-barcelona-2909802",0);
 
 INSERT INTO SURVEY (SURVEYID, SURVEYTITLE, QUESTION, ANSERW1, ANSERW1VOTES, ANSERW2, ANSERW2VOTES, ANSERW3, ANSERW3VOTES, ANSERW4, ANSERW4VOTES, DATESURVEYRCREATED, DATELASTUSED, SURVERYINUSE)
@@ -349,14 +349,14 @@ INSERT INTO CLIENT (CLIENTID, USERNAME, PASSWORD, TITLE, LASTNAME, FIRSTNAME, CO
 INSERT INTO REVIEW (REVIEWID, REVIEWDATE, CLIENTNAME, RATING, REVIEWTEXT, APROVALSTATUS, CLIENTID, INVENTORYID) 
 VALUE 
 (1, TIMESTAMP("2020-01-01", "11:03:11"), "Alli", 5, "Great product! This Music works extremely well. It wetly improves my tennis by a lot.", 0, 1, 1),
-(2, TIMESTAMP("2020-03-05", "08:16:34"), "Alli", 1, "Song isn’t that good to be honest", 1, 1, 1),
+(2, TIMESTAMP("2020-03-05", "08:16:34"), "Alli", 1, "Song isn't that good to be honest", 1, 1, 1),
 (3, TIMESTAMP("2020-11-13", "04:13:55"), "Quincey", 2, "Definitely not a great song", 1, 2, 2),
 (4, TIMESTAMP("2021-01-09", "10:30:31"), "Alli", 3, "Heard better music in my day but its alright", 1, 1, 2),
 (5, TIMESTAMP("2017-02-18", "04:20:00"), "Amara", 4, "one of my hobbies is programming. and when i'm programming this music works great", 1, 3, 3),
-(6, TIMESTAMP("2019-04-16", "11:03:11"), "Lucien", 1, "Song isn’t that good to be honest", 0, 4, 4),
+(6, TIMESTAMP("2019-04-16", "11:03:11"), "Lucien", 1, "Song isn't that good to be honest", 0, 4, 4),
 (7, TIMESTAMP("2018-06-22", "10:30:31"), "Andy", 5, "This Music works excessively well. It speedily improves my baseball by a lot. talk about surprise!!!", 1, 5, 5),
 (8, TIMESTAMP("2018-04-14", "04:20:00"), "Andy", 5, "This Music works so well. It delightedly improves my football by a lot.", 0, 5, 6),
-(9, TIMESTAMP("2020-08-22", "08:16:34"), "Andy", 1, "Song isn’t that good to be honest", 1, 5, 7),
+(9, TIMESTAMP("2020-08-22", "08:16:34"), "Andy", 1, "Song isn't that good to be honest", 1, 5, 7),
 (10, TIMESTAMP("2016-12-07", "10:30:31"), "Quincey", 3, "Song is so good. You must take a listen, you will not regret it I am sure", 1, 2, 8),
 (11, TIMESTAMP("2020-03-08", "11:03:11"), "Alli", 4, "this Music is hyper.", 0, 1, 9),
 (12, TIMESTAMP("2019-05-01", "04:13:55"), "Quincey",4 , "My coworker told me about this song. It is pretty good", 1, 2, 10),

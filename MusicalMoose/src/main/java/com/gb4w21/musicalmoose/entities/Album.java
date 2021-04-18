@@ -8,7 +8,6 @@ package com.gb4w21.musicalmoose.entities;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,8 +24,9 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 /**
+ * Generated entity from database
  *
- * @author owner
+ * @author MusicalMoose
  */
 @Entity
 @Table(name = "album", catalog = "CSgb4w21", schema = "")
@@ -124,7 +124,6 @@ public class Album implements Serializable {
         this.albumid = albumid;
     }
 
-
     public Date getReleasedate() {
         return releasedate;
     }
@@ -132,7 +131,6 @@ public class Album implements Serializable {
     public void setReleasedate(Date releasedate) {
         this.releasedate = releasedate;
     }
-
 
     public Integer getNumberoftracks() {
         return numberoftracks;
@@ -149,7 +147,6 @@ public class Album implements Serializable {
     public void setDateentered(Date dateentered) {
         this.dateentered = dateentered;
     }
-
 
     public Float getCostprice() {
         return costprice;
@@ -231,6 +228,10 @@ public class Album implements Serializable {
         this.available = available;
     }
 
+    /**
+     * @author Daniel
+     * @return a specific string depending on the field's value
+     */
     public String isAvailableToClients() {
         if (this.available) {
             return com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -264,8 +265,10 @@ public class Album implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Album[ albumid=" + albumid + " ]";
     }
-    
+
     /**
+     * @author Daniel
+     * 
      * @return a specific string message depending on if the sale price is 0.
      */
     public String isOnSale() {
@@ -276,10 +279,12 @@ public class Album implements Serializable {
         return com.gb4w21.musicalmoose.util.Messages.getMessage(
                 "com.gb4w21.musicalmoose.bundles.messages", "onSale", null).getDetail();
     }
-    
+
     /**
      * If the saleprice is 0, then we display the list price. Otherwise, we
      * return the sale price.
+     *
+     * @author Daniel
      *
      * @return the saleprice if it is not equal to 0
      */

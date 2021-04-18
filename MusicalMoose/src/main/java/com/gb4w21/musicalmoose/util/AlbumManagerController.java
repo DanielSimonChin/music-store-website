@@ -60,7 +60,7 @@ public class AlbumManagerController implements Serializable {
      * @return the list of all tracks displayed in the data table
      */
     public List<Album> getAlbums() {
-        init();
+        //init();
         return this.albums;
     }
 
