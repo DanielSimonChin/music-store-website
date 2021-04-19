@@ -1,7 +1,7 @@
 package com.gb4w21.musicalmoose.selenium.test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import java.util.List;
+import java.util.Random;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -112,7 +112,8 @@ public class MusicalMooseSeleniumIT {
         driver.findElement(By.id("noAccountForm")).click();
         WebElement inputElement = driver.findElement(By.id("registerForm:cname"));
         inputElement.clear();
-        inputElement.sendKeys("SampleTestUser");
+        //Since clients cannot have the same username, we append two random ints to ensure that they will never have the same username
+        inputElement.sendKeys(generateRandomInt() + "SampleTestUser" + generateRandomInt());
 
         inputElement = driver.findElement(By.xpath("//*[@id=\"registerForm:title:0\"]"));
         inputElement.click();
@@ -159,7 +160,7 @@ public class MusicalMooseSeleniumIT {
 
         inputElement = driver.findElement(By.id("registerForm:pcode"));
         inputElement.clear();
-        inputElement.sendKeys("H9U 6T0");
+        inputElement.sendKeys("A1A 1A1");
 
         inputElement = driver.findElement(By.id("registerForm:hphone"));
         inputElement.clear();
@@ -175,7 +176,18 @@ public class MusicalMooseSeleniumIT {
 
         driver.findElement(By.id("registerForm:registerUserButton")).click();
 
-        wait.until(ExpectedConditions.titleIs("Musical Moose"));
+        //Once we register, it should bring us back to the index page where we previously were.
+        WebElement indexSectionElement = driver.findElement(By.xpath("//*[@id=\"indexSectionContainer\"]"));
+        wait.until(ExpectedConditions.visibilityOf(indexSectionElement));
+    }
+
+    /**
+     * @return a random number to be appended to the username.
+     */
+    private static int generateRandomInt() {
+        Random rand = new Random();
+        int randomNum = rand.nextInt((1000 - 1) + 1) + 1;
+        return randomNum;
     }
 
     /**
@@ -210,14 +222,15 @@ public class MusicalMooseSeleniumIT {
         // Wait for the page to load, timeout after 10 seconds
         wait.until(ExpectedConditions.titleIs("Musical Moose"));
 
-        driver.findElement(By.xpath("//*[@id=\"j_idt81\"]/a")).click();
+        driver.findElement(By.xpath("//*[@id=\"j_idt80\"]/a")).click();
         WebElement inputElement = driver.findElement(By.xpath("//*[@id=\"searchSectionContainer\"]"));
         wait.until(ExpectedConditions.visibilityOf(inputElement));
 
     }
-    
+
     /**
-     * Test that when clicking on the Add to Cart music track and album page that it will add to the shopping cart
+     * Test that when clicking on the Add to Cart music track and album page
+     * that it will add to the shopping cart
      *
      * @throws Exception
      */
@@ -227,28 +240,40 @@ public class MusicalMooseSeleniumIT {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         // Wait for the page to load, timeout after 10 seconds
         wait.until(ExpectedConditions.titleIs("Musical Moose"));
-        
+
         driver.findElement(By.className("specialTrackButton")).click();
         driver.findElement(By.id("addTrackCartForm:addCartTrack")).click();
 
-        try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         driver.findElement(By.className("form")).click();
         driver.findElement(By.id("addAlbumCartForm:addAlbumCartButton")).click();
-        
-        try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         driver.findElement(By.id("logo")).click();
         driver.findElement(By.id("shoppingCartForm")).click();
-        try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
-        
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         WebElement resultElement = driver.findElement(By.xpath("//*[@id=\"cartSectionContainer\"]"));
         wait.until(ExpectedConditions.visibilityOf(resultElement));
-        
+
         // Checks if items are inside the shopping cart
         Assert.assertTrue(!driver.findElements(By.className("itemsInCart")).isEmpty());
     }
-    
+
     /**
      * Test that the items are in the cart are able to checkout
      *
@@ -260,7 +285,7 @@ public class MusicalMooseSeleniumIT {
         WebDriverWait wait = new WebDriverWait(driver, 10);
         // Wait for the page to load, timeout after 10 seconds
         wait.until(ExpectedConditions.titleIs("Musical Moose"));
-        
+
         driver.findElement(By.className("specialTrackButton")).click();
         driver.findElement(By.id("addTrackCartForm:addCartTrack")).click();
         driver.findElement(By.className("form")).click();
@@ -268,8 +293,12 @@ public class MusicalMooseSeleniumIT {
 
         driver.findElement(By.id("logo")).click();
         driver.findElement(By.id("shoppingCartForm")).click();
-        try {Thread.sleep(500);} catch (InterruptedException e) {e.printStackTrace();}
-        
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         driver.findElement(By.id("checkoutForm:checkoutButton")).click();
         WebElement clickElement = driver.findElement(By.id("loginForm:cname"));
         clickElement.clear();
@@ -284,7 +313,7 @@ public class MusicalMooseSeleniumIT {
         clickElement.sendKeys("dawsoncollege");
 
         driver.findElement(By.id("loginForm:formLogin")).click();
-        
+
         WebElement inputElement = driver.findElement(By.id("checkingOutForm:cname"));
         inputElement.clear();
         inputElement.sendKeys("DawsonConsumer");
@@ -299,11 +328,15 @@ public class MusicalMooseSeleniumIT {
         inputElement = driver.findElement(By.id("checkingOutForm:expmonth"));
         inputElement.clear();
         inputElement.sendKeys("11/2021");
-        
+
         // Click the submit button
         driver.findElement(By.id("checkingOutForm:confirmPurchase")).click();
-        try {Thread.sleep(1000);} catch (InterruptedException e) {e.printStackTrace();}
-        
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         WebElement resultElement = driver.findElement(By.xpath("//*[@id=\"invoiceSectionContainer\"]"));
         wait.until(ExpectedConditions.visibilityOf(resultElement));
     }

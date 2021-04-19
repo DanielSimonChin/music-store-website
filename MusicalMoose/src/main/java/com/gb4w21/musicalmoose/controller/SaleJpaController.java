@@ -122,7 +122,7 @@ public class SaleJpaController implements Serializable {
             for (Invoicedetail invoicedetailListOldInvoicedetail : invoicedetailListOld) {
                 if (!invoicedetailListNew.contains(invoicedetailListOldInvoicedetail)) {
                     invoicedetailListOldInvoicedetail.setSaleid(null);
-                    
+
                     invoicedetailListOldInvoicedetail = em.merge(invoicedetailListOldInvoicedetail);
                 }
             }
@@ -130,12 +130,12 @@ public class SaleJpaController implements Serializable {
                 if (!invoicedetailListOld.contains(invoicedetailListNewInvoicedetail)) {
                     Sale oldSaleidOfInvoicedetailListNewInvoicedetail = invoicedetailListNewInvoicedetail.getSaleid();
                     invoicedetailListNewInvoicedetail.setSaleid(sale);
-                    
+
                     invoicedetailListNewInvoicedetail = em.merge(invoicedetailListNewInvoicedetail);
                     if (oldSaleidOfInvoicedetailListNewInvoicedetail != null && !oldSaleidOfInvoicedetailListNewInvoicedetail.equals(sale)) {
                         oldSaleidOfInvoicedetailListNewInvoicedetail.getInvoicedetailList().remove(invoicedetailListNewInvoicedetail);
                         for (Invoicedetail invoicedetail : oldSaleidOfInvoicedetailListNewInvoicedetail.getInvoicedetailList()) {
-                           
+
                         }
                         oldSaleidOfInvoicedetailListNewInvoicedetail = em.merge(oldSaleidOfInvoicedetailListNewInvoicedetail);
                     }
@@ -225,8 +225,9 @@ public class SaleJpaController implements Serializable {
     }
 
     /**
-     * Retrieve the total value of a track's sales
-     * 
+     * Retrieve the total value of a track's sales using the currentcost which
+     * is the price at which it was sold.
+     *
      * @author Daniel
      *
      * @param inventoryid
@@ -254,8 +255,9 @@ public class SaleJpaController implements Serializable {
     }
 
     /**
-     * Retrieve the total value of an album's sales
-     * 
+     * Retrieve the total value of an album's sales using the currentcost which
+     * is the price at which it was sold.
+     *
      * @author Daniel
      *
      * @param albumid
@@ -267,9 +269,9 @@ public class SaleJpaController implements Serializable {
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
 
         Root<Invoicedetail> invoice = cq.from(Invoicedetail.class);
-         Join sale = invoice.join("saleid");
+        Join sale = invoice.join("saleid");
         //We want all the invoicedetail objects that have the parameter albumid
-        cq.where(cb.equal(invoice.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0),cb.equal(invoice.get("albumid").get("albumid"), albumid));
+        cq.where(cb.equal(invoice.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.equal(invoice.get("albumid").get("albumid"), albumid));
 
         Query q = em.createQuery(cq);
 
@@ -285,12 +287,12 @@ public class SaleJpaController implements Serializable {
 
     /**
      * Retrieves a list of Sale given a clientId as foreign key
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @param clientId
      * @return list of Sale
-     * @throws NonexistentEntityException 
+     * @throws NonexistentEntityException
      */
     public List<Sale> findSaleByClientId(int clientId) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
