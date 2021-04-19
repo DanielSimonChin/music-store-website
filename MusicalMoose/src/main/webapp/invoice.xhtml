@@ -24,7 +24,7 @@ and open the template in the editor.
                 <section id="invoiceSectionContainer">
                     <h1 id="title"> #{msgs.invoice} <br></br></h1> 
                     <h3 id="title">
-                        <h:outputText style="text-align: center" value="#{msgs.copyOfEmail}"/>
+                        <h:outputText style="text-align: center" rendered="#{checkoutController.sentEmail}" value="#{msgs.copyOfEmail}"/>
                     </h3>
                     <button id="printBtn" style="width: 70px; border-radius: 25px;">
                         Print

@@ -124,6 +124,7 @@ public class ShoppingCartController implements Serializable {
         musicItem.setGenre(albumJpaController.findGenreAlbumId(album.getAlbumid()));
         musicItem.setNumberOfTracks(album.getNumberoftracks());
         
+        LOG.info("Converted music item: " + musicItem.getId());
         return musicItem;
     }
     
@@ -149,6 +150,7 @@ public class ShoppingCartController implements Serializable {
         musicItem.setGenre(musicTrack.getMusiccategory());
         musicItem.setSongLength(musicTrack.getPlaylength());
         
+        LOG.info("Converted music item: " + musicItem.getId());
         return musicItem;
     }
     
@@ -180,7 +182,7 @@ public class ShoppingCartController implements Serializable {
         preRenderViewBean.writeCartCookie(addedTrack.getInventoryid(), "cart_track");
         
         LOG.info("Shopping Cart Track Added: " + addedTrack.getTracktitle());
-        LOG.info("COUNT: " + shoppingCart.size());
+        LOG.info("Cart size: " + shoppingCart.size());
         
         FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "trackAdded"));
     }
@@ -227,6 +229,7 @@ public class ShoppingCartController implements Serializable {
         else {
             preRenderViewBean.removeCartCookie(deleteItem.getId(), "cart_track");
         }
+        LOG.info("Shopping cart deleted");
         return null;
     }
     
@@ -241,6 +244,7 @@ public class ShoppingCartController implements Serializable {
             totalAmount += shoppingCart.get(i).getPrice();
         }
         totalCost = new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
+        LOG.info("Total cost: " + totalCost);
         return totalCost;
     }
     
@@ -257,6 +261,7 @@ public class ShoppingCartController implements Serializable {
         if (!tempPrevPage.equals("cart")) {
             this.prevPage = tempPrevPage;
         }
+        LOG.info("To shopping cart page");
         return "shoppingcartpage";
     }
     
@@ -296,5 +301,6 @@ public class ShoppingCartController implements Serializable {
         shoppingCart.clear();
         preRenderViewBean.removeCookie("cart_album");
         preRenderViewBean.removeCookie("cart_track");
+        LOG.info("Cart cleared");
     }
 }
