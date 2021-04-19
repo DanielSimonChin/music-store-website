@@ -23,8 +23,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
- * @author victo
+ *  Controller used to allow functionality of downloading songs and retrieving those purchased by the client
+ * 
+ * @author Victor & Alessandro
  */
 @Named
 @SessionScoped
@@ -58,6 +59,8 @@ public class DownloadController implements Serializable {
     /**
      * Finds all the items the logged in client purchased and returns a list of
      * MusicItem to download
+     * 
+     * @author Victor
      *
      * @return List of purchased MusicItems
      * @throws NonexistentEntityException
@@ -89,6 +92,14 @@ public class DownloadController implements Serializable {
         }
     }
 
+    /**
+     * This increments the download field in the invoicedetail table every time a client downloads a song
+     * 
+     * @author Alessandro
+     * 
+     * @param musicItem
+     * @return 
+     */
     public String addDownload(MusicItem musicItem) {
         Invoicedetail invoicedetail = invoiceDetailJpaController.findInvoicedetail(musicItem.getInvoiceId());
         LOG.debug("NUMBER OF DOWNLOADS:" + invoicedetail.getProductdownloaded());

@@ -15,3 +15,5 @@ CREATE USER CSgb4w21@'%' IDENTIFIED WITH mysql_native_password BY 'ssecomal' REQ
 GRANT ALL ON CSgb4w21.* TO CSgb4w21@'localhost';
 
 GRANT ALL ON CSgb4w21.* TO CSgb4w21@'%';
+
+FLUSH PRIVILEGES;

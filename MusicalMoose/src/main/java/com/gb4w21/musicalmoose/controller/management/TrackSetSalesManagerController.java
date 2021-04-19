@@ -3,11 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller.management;
 
-import com.gb4w21.musicalmoose.controller.AlbumJpaController;
-import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
-import com.gb4w21.musicalmoose.entities.Album;
+import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
+import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -23,58 +22,63 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Controller methods and variables that allow an admin to set the sale prices
- * of an album
+ * Controller methods and variables that allow an admin to set the sale price of
+ * a track
  *
  * @author Daniel
  */
 @Named
 @SessionScoped
-public class AlbumSetSalesManagerController implements Serializable {
+public class TrackSetSalesManagerController implements Serializable {
 
-    private final static Logger LOG = LoggerFactory.getLogger(AlbumSetSalesManagerController.class);
+    private final static Logger LOG = LoggerFactory.getLogger(TrackSetSalesManagerController.class);
 
     @Inject
-    private AlbumJpaController albumController;
+    private MusicTrackJpaController trackController;
 
     //The global variables used for the track management page
-    private List<Album> albums;
-    private Album selectedAlbum;
+    private List<MusicTrack> tracks;
+    private MusicTrack selectedTrack;
 
-    public AlbumSetSalesManagerController() {
+    public TrackSetSalesManagerController() {
+
     }
 
     /**
-     * The data table should be filled with all the album entity objects from
+     * The data table should be filled with all the track entity objects from
      * the database.
      */
     @PostConstruct
     public void init() {
-        this.albums = albumController.findAlbumEntities();
+        this.tracks = this.trackController.findMusicTrackEntities();
+    }
+
+    public void reloadData() {
+        this.tracks = this.trackController.findMusicTrackEntities();
     }
 
     /**
      * @return the list of all tracks displayed in the data table
      */
-    public List<Album> getAlbums() {
+    public List<MusicTrack> getTracks() {
         init();
-        return this.albums;
+        return this.tracks;
     }
 
     /**
-     * @return the selected album that the user chose.
+     * @return the selected track that the user chose.
      */
-    public Album getSelectedAlbum() {
-        return this.selectedAlbum;
+    public MusicTrack getSelectedTrack() {
+        return this.selectedTrack;
     }
 
     /**
-     * When a album is clicked, it becomes the selected album
+     * When a track is clicked, it becomes the selected track
      *
      * @param musicTrack
      */
-    public void setSelectedAlbum(Album album) {
-        this.selectedAlbum = album;
+    public void setSelectedTrack(MusicTrack musicTrack) {
+        this.selectedTrack = musicTrack;
     }
 
     /**
@@ -83,23 +87,19 @@ public class AlbumSetSalesManagerController implements Serializable {
      * @throws Exception
      */
     public void saveProduct() throws Exception {
-        this.albumController.edit(this.selectedAlbum);
+        this.trackController.edit(this.selectedTrack);
         FacesContext.getCurrentInstance().addMessage(null, com.gb4w21.musicalmoose.util.Messages.getMessage(
-                "com.gb4w21.musicalmoose.bundles.messages", "albumUpdated", null));
+                "com.gb4w21.musicalmoose.bundles.messages", "trackUpdated", null));
 
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 
     /**
-     * When the cancel button is clicked for the management form, all changes
-     * made before the cancel button was clicked will not affect the datatable
-     * or the database. Reset the datatable values.
-     *
-     * @throws NonexistentEntityException
+     * Reset the data table with the database rows.
      */
-    public void cancelAlbumForm() throws NonexistentEntityException {
-        this.albums = this.albumController.findAlbumEntities();
+    public void cancelSalesEditForm() {
+        this.tracks = this.trackController.findMusicTrackEntities();
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
@@ -115,12 +115,13 @@ public class AlbumSetSalesManagerController implements Serializable {
             Object value) {
         Double price = Double.valueOf(value.toString());
 
-        if (price >= this.selectedAlbum.getListprice()) {
+        if (price >= this.selectedTrack.getListprice()) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "saleInputError", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(message);
         }
+
     }
 }

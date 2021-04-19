@@ -65,10 +65,19 @@ public class CheckoutController implements Serializable {
     private BigDecimal HST;
     private BigDecimal PST;
     private Float totalProfit;
-
+    private boolean sentEmail = false;
+    
     public CheckoutController() {
     }
-
+    
+    public boolean getSentEmail() {
+        return this.sentEmail;
+    }
+    
+    public void setSentEmail(boolean sentEmail) {
+        this.sentEmail = sentEmail;
+    }
+    
     public void setSaleBean(Sale saleBean) {
         this.saleBean = saleBean;
     }
@@ -260,7 +269,7 @@ public class CheckoutController implements Serializable {
         createSale();
         createInvoiceDetails();
         this.shoppingCartController.clearCart();
-        sendInvoiceEmail();
+        this.sentEmail = sendInvoiceEmail();
         return "invoice";
     }
 

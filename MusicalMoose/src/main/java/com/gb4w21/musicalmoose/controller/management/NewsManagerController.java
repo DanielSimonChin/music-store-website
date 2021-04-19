@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller.management;
 
 import com.gb4w21.musicalmoose.controller.NewsJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
@@ -116,6 +116,7 @@ public class NewsManagerController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
+        LOG.info("Removed selected news");
     }
 
     /**
@@ -129,6 +130,7 @@ public class NewsManagerController implements Serializable {
         this.selectedNews = null;
         FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        LOG.info("Removed news");
     }
 
     /**
@@ -155,6 +157,8 @@ public class NewsManagerController implements Serializable {
             FacesMessage facesMsg = createMsg("invalid", "newsInvalid");
             facesMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
             FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+            
+            LOG.info("Invalid change");
         }
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
@@ -193,5 +197,6 @@ public class NewsManagerController implements Serializable {
         this.newsList = this.newsJpaController.findNewsEntities();
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        LOG.info("Cancelled news form");
     }
 }
