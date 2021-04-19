@@ -123,16 +123,18 @@ public class Client implements Serializable {
     public List<Sale> getSaleList() {
         return saleList;
     }
+
     public void setSaleList(List<Sale> saleList) {
         this.saleList = saleList;
     }
+
     public List<Review> getReviewList() {
         return reviewList;
     }
+
     public void setReviewList(List<Review> reviewList) {
         this.reviewList = reviewList;
     }
-
 
     public Integer getClientid() {
         return clientid;
@@ -141,24 +143,30 @@ public class Client implements Serializable {
     public void setClientid(Integer clientid) {
         this.clientid = clientid;
     }
+
     public Boolean getIsmanager() {
         return ismanager;
     }
+
     public void setIsmanager(Boolean ismanager) {
         this.ismanager = ismanager;
     }
+
     public Boolean getClientactive() {
         return clientactive;
     }
+
     public void setClientactive(Boolean clientactive) {
         this.clientactive = clientactive;
     }
+
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (clientid != null ? clientid.hashCode() : 0);
         return hash;
     }
+
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
@@ -171,6 +179,7 @@ public class Client implements Serializable {
         }
         return true;
     }
+
     @Override
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Client[ clientid=" + clientid + " ]";
@@ -292,9 +301,6 @@ public class Client implements Serializable {
         return email;
     }
 
-   
-
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -306,5 +312,5 @@ public class Client implements Serializable {
     public void setGenreoflastsearch(String genreoflastsearch) {
         this.genreoflastsearch = genreoflastsearch;
     }
-    
+
 }

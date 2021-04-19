@@ -24,87 +24,85 @@ import org.slf4j.LoggerFactory;
 /**
  * Sets the shopping cart functionality such as adding to cart, clearing, etc.
  *
- * @author Victor 
+ * @author Victor
  */
 @Named
 @SessionScoped
 public class ShoppingCartController implements Serializable {
-    
+
     private final static Logger LOG = LoggerFactory.getLogger(ShoppingCartController.class);
-    
+
     @Inject
     private AlbumJpaController albumJpaController;
     @Inject
     private MusicTrackJpaController musicTrackJpaController;
     @Inject
     private PreRenderViewBean preRenderViewBean;
-    
+
     private List<MusicItem> shoppingCart;
     private String prevPage;
     private BigDecimal totalCost;
-    
+
     public ShoppingCartController() {
         this.shoppingCart = new ArrayList<MusicItem>();
     }
-    
+
     public List<MusicItem> getShoppingCartList() {
         LOG.info("Find shopping cart list " + shoppingCart.size());
         return this.shoppingCart;
     }
-    
+
     public void setShoppingCart(List<MusicItem> shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
-    
+
     public String getPrevPage() {
         return this.prevPage;
     }
-    
+
     public void setPrevPage(String prevPage) {
         this.prevPage = prevPage;
     }
-    
+
     public BigDecimal getTotalCost() {
         return this.totalCost;
     }
-    
+
     public void setTotalCost(BigDecimal totalCost) {
         this.totalCost = totalCost;
     }
-    
+
     /**
      * Adds the given id Album to shopping cart list
-     * 
-     * @param id 
+     *
+     * @param id
      */
     public void findAlbumById(int id) {
         try {
             Album album = this.albumJpaController.findAlbumById(id);
             shoppingCart.add(convertAlbumToMusicItem(album));
-        }
-        catch (NonexistentEntityException e) {
+        } catch (NonexistentEntityException e) {
             java.util.logging.Logger.getLogger(ShoppingCartController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
+
     /**
      * Adds the given id Track to shopping cart list
-     * 
-     * @param id 
+     *
+     * @param id
      */
     public void findMusicTrackById(int id) {
         try {
             MusicTrack musicTrack = this.musicTrackJpaController.findTrackById(id);
             shoppingCart.add(convertMusicTrackToMusicItem(musicTrack));
-        }
-        catch (NonexistentEntityException e) {
+        } catch (NonexistentEntityException e) {
             java.util.logging.Logger.getLogger(ShoppingCartController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
-    
+
     /**
      * Converts an Album object to a MusicItem bean
-     * 
+     *
      * @param album
      * @return musicitem bean
      */
@@ -115,21 +113,20 @@ public class ShoppingCartController implements Serializable {
         musicItem.setArtist(album.getArtist());
         if (album.getSaleprice() == 0) {
             musicItem.setPrice(album.getListprice());
-        }
-        else {
+        } else {
             musicItem.setPrice(album.getSaleprice());
         }
         musicItem.setIsAlbum(true);
         musicItem.setImgNameBig(album.getAlbumimagefilenamebig());
         musicItem.setGenre(albumJpaController.findGenreAlbumId(album.getAlbumid()));
         musicItem.setNumberOfTracks(album.getNumberoftracks());
-        
+
         return musicItem;
     }
-    
+
     /**
      * Converts an Music Track object to a MusicItem bean
-     * 
+     *
      * @param album
      * @return musicitem bean
      */
@@ -140,54 +137,53 @@ public class ShoppingCartController implements Serializable {
         musicItem.setArtist(musicTrack.getArtist());
         if (musicTrack.getSaleprice() == 0) {
             musicItem.setPrice(musicTrack.getListprice());
-        }
-        else {
+        } else {
             musicItem.setPrice(musicTrack.getSaleprice());
         }
         musicItem.setIsAlbum(false);
         musicItem.setImgNameBig(musicTrack.getAlbumimagefilenamebig());
         musicItem.setGenre(musicTrack.getMusiccategory());
         musicItem.setSongLength(musicTrack.getPlaylength());
-        
+
         return musicItem;
     }
-    
+
     /**
      * Add given album to shopping cart
-     * 
-     * @param addedAlbum 
+     *
+     * @param addedAlbum
      */
     public void addShoppingCartAlbum(Album addedAlbum) {
         MusicItem musicItem = convertAlbumToMusicItem(addedAlbum);
         shoppingCart.add(musicItem);
-        
+
         preRenderViewBean.writeCartCookie(addedAlbum.getAlbumid(), "cart_album");
-                
+
         LOG.info("Shopping Cart Album Added: " + addedAlbum.getAlbumtitle());
-        
+
         FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "albumAdded"));
     }
-    
+
     /**
      * Add given musicTrack to shopping cart
-     * 
-     * @param addedAlbum 
+     *
+     * @param addedAlbum
      */
     public void addShoppingCartTrack(MusicTrack addedTrack) {
         MusicItem musicItem = convertMusicTrackToMusicItem(addedTrack);
         shoppingCart.add(musicItem);
-        
+
         preRenderViewBean.writeCartCookie(addedTrack.getInventoryid(), "cart_track");
-        
+
         LOG.info("Shopping Cart Track Added: " + addedTrack.getTracktitle());
         LOG.info("COUNT: " + shoppingCart.size());
-        
+
         FacesContext.getCurrentInstance().addMessage(null, createMsg("success", "trackAdded"));
     }
-    
+
     /**
      * Creates a message to notify user whenever they add item to cart
-     * 
+     *
      * @param summary
      * @param detail
      * @return FacesMessage message
@@ -200,22 +196,22 @@ public class ShoppingCartController implements Serializable {
         facesMsgDets.setDetail(facesMsgSummary.getSummary());
         return facesMsgDets;
     }
-    
+
     /**
      * Adds message to FacesContext
-     * 
+     *
      * @param severity
      * @param summary
-     * @param detail 
+     * @param detail
      */
     public void addMessage(FacesMessage.Severity severity, String summary, String detail) {
         FacesContext.getCurrentInstance().
                 addMessage(null, new FacesMessage(severity, summary, detail));
     }
-    
+
     /**
      * Delete a given MusicItem from shopping cart list
-     * 
+     *
      * @param deleteItem
      * @return string of removed item
      */
@@ -223,16 +219,15 @@ public class ShoppingCartController implements Serializable {
         shoppingCart.remove(deleteItem);
         if (deleteItem.getIsAlbum()) {
             preRenderViewBean.removeCartCookie(deleteItem.getId(), "cart_album");
-        }
-        else {
+        } else {
             preRenderViewBean.removeCartCookie(deleteItem.getId(), "cart_track");
         }
         return null;
     }
-    
+
     /**
      * Calculates the total without tax to present to user in shopping cart
-     * 
+     *
      * @return BigDecimal total
      */
     public BigDecimal calculateTotal() {
@@ -243,35 +238,35 @@ public class ShoppingCartController implements Serializable {
         totalCost = new BigDecimal(totalAmount).setScale(2, RoundingMode.HALF_UP);
         return totalCost;
     }
-    
+
     /**
      * Redirects user to shopping cart
-     * 
+     *
      * @return string nav to cart
      */
     public String toShoppingCart() {
         FacesContext context = FacesContext.getCurrentInstance();
         String tempPrevPage = context.getViewRoot().getViewId();
         tempPrevPage = tempPrevPage.substring(1, tempPrevPage.length() - 6);
-        
+
         if (!tempPrevPage.equals("cart")) {
             this.prevPage = tempPrevPage;
         }
         return "shoppingcartpage";
     }
-    
+
     /**
      * Redirects user to the page they were at before going to shopping cart
-     * 
-     * @return 
+     *
+     * @return
      */
     public String backPage() {
         return prevPage;
     }
-    
+
     /**
      * Converts Float to BigDecimal
-     * 
+     *
      * @param price
      * @return BigDecimal converted from Float
      */
@@ -279,16 +274,16 @@ public class ShoppingCartController implements Serializable {
         return new BigDecimal(Float.toString(price))
                 .setScale(2, RoundingMode.HALF_UP);
     }
-    
+
     /**
      * Checks if cart is empty
-     * 
+     *
      * @return true if empty, false otherwise
      */
     public boolean checkCartEmpty() {
         return this.shoppingCart.isEmpty();
     }
-    
+
     /**
      * Clears the cart and cookies
      */

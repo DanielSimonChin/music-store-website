@@ -23,8 +23,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.validator.ValidatorException;
+
 /**
- * Responsible for registering and validating a client creates them and stores them in the database logs them in automatically
+ * Responsible for registering and validating a client creates them and stores
+ * them in the database logs them in automatically
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -44,8 +47,9 @@ public class RegistrationController implements Serializable {
     private String confrimPassword;
     private boolean userRegistered;
     private String lastPageRegister;
-   
+
     private static final Pattern VALID_PHONE_NUMBER_PATTERN = Pattern.compile("^(\\+\\d{1,3}( )?)?((\\(\\d{1,3}\\))|\\d{1,3})[- .]?\\d{3,4}[- .]?\\d{4}$", Pattern.CASE_INSENSITIVE);
+
     /**
      * Default controller
      */
@@ -84,18 +88,23 @@ public class RegistrationController implements Serializable {
     public void setRegistrationBean(Client registrationBean) {
         this.registrationBean = registrationBean;
     }
+
     /**
-     * takes user name information from the registration information form the registration 
-     * page and uses to to create a user and logs the in automatically
+     * takes user name information from the registration information form the
+     * registration page and uses to to create a user and logs the in
+     * automatically
+     *
      * @author Alessandro Dare
      * @return previous visted page
-     * @throws RollbackFailureException 
+     * @throws RollbackFailureException
      */
     public String addNewUser() throws RollbackFailureException {
+        LOG.info("New User Created" + registrationBean.getUsername());
         registrationBean.setPassword(fristPassword);
         registrationBean.setClientactive(true);
         registrationBean.setIsmanager(false);
         clientJpaController.create(registrationBean);
+        //create new login bean
         loginController.getLoginBean().setLoggedIn(true);
         loginController.getLoginBean().setId(clientJpaController.findUser(registrationBean.getUsername(), registrationBean.getPassword()).getClientid());
         loginController.getLoginBean().setPassword(registrationBean.getPassword());
@@ -103,8 +112,10 @@ public class RegistrationController implements Serializable {
         loginController.getLoginBean().setEmailAddress(registrationBean.getEmail());
         return lastPageRegister;
     }
+
     /**
      * takes the user to the registration page and clears all previous values
+     *
      * @author Alessandro Dare
      * @return the register page
      */
@@ -112,6 +123,8 @@ public class RegistrationController implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         lastPageRegister = context.getViewRoot().getViewId();
         lastPageRegister = lastPageRegister.substring(1, lastPageRegister.length() - 6);
+        LOG.info("Previous Page:" + lastPageRegister);
+        //store last page
         if (lastPageRegister.equals("register") || lastPageRegister.equals("login")) {
             lastPageRegister = loginController.getLoginLastPage();
         }
@@ -122,16 +135,18 @@ public class RegistrationController implements Serializable {
         return "register";
     }
 
- 
     /**
      * validates to make sure the confirm password matches the original password
+     *
      * @author Alessandro Dare
      * @param context
      * @param component
-     * @param value 
+     * @param value
      */
     public void validatePasswordError(FacesContext context, UIComponent component,
             Object value) {
+        LOG.info("frist password:" + fristPassword);
+        LOG.info("confrim password:" + value.toString());
         String confrimPassword = value.toString();
         if (!fristPassword.equals(confrimPassword)) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -141,17 +156,22 @@ public class RegistrationController implements Serializable {
             throw new ValidatorException(message);
         }
     }
+
     /**
-     * validates the second address to make sure it's in the correct format and isn't copying address 1
+     * validates the second address to make sure it's in the correct format and
+     * isn't copying address 1
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
-     * @param value  Object
+     * @param value Object
      */
     public void validateAddress(FacesContext context, UIComponent component,
             Object value) {
         String address1 = registrationBean.getAddress1();
         String address2 = value.toString();
+        LOG.info("Address1:" + address1);
+        LOG.info("Address2:" + address2);
         if (address2 != null && (!address2.equals(""))) {
             if (address1.equals(address2)) {
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -162,20 +182,24 @@ public class RegistrationController implements Serializable {
             }
         }
     }
+
     /**
-     * validates to make sure cell phone follows correct format and isn't related to the home page
+     * validates to make sure cell phone follows correct format and isn't
+     * related to the home page
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
-     * @param value  Object
+     * @param value Object
      */
-
     public void validateCellPhoneNumber(FacesContext context, UIComponent component,
             Object value) {
         String cellPhoneNumber = value.toString();
         String homePhoneNumber = "" + registrationBean.getHometelephone();
         Matcher matcher = VALID_PHONE_NUMBER_PATTERN.matcher(cellPhoneNumber);
-        if (cellPhoneNumber!=null &&(!cellPhoneNumber.isEmpty())) {
+        LOG.info("Cell Number" + cellPhoneNumber);
+        LOG.info("Home Number" + homePhoneNumber);
+        if (cellPhoneNumber != null && (!cellPhoneNumber.isEmpty())) {
             if (!matcher.find()) {
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                         "com.gb4w21.musicalmoose.bundles.messages", "phoneNumberFormatError", null);

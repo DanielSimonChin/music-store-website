@@ -53,6 +53,7 @@ public class Sale implements Serializable {
     private Client clientid;
     @OneToMany(mappedBy = "saleid")
     private List<Invoicedetail> invoicedetailList;
+
     public Sale() {
     }
 
@@ -91,12 +92,15 @@ public class Sale implements Serializable {
     public void setClientid(Client clientid) {
         this.clientid = clientid;
     }
-    public List<Invoicedetail> getInvoicedetailList(){
+
+    public List<Invoicedetail> getInvoicedetailList() {
         return invoicedetailList;
     }
-    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList){
-        this.invoicedetailList =invoicedetailList;
+
+    public void setInvoicedetailList(List<Invoicedetail> invoicedetailList) {
+        this.invoicedetailList = invoicedetailList;
     }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -121,5 +125,5 @@ public class Sale implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Sale[ saleid=" + saleid + " ]";
     }
-    
+
 }

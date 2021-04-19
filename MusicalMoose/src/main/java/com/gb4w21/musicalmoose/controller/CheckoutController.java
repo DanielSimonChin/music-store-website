@@ -33,16 +33,17 @@ import jodd.mail.SendMailSession;
 import jodd.mail.SmtpServer;
 
 /**
- * This class is used for the checkout page that does calculations of the price and emails the user
+ * This class is used for the checkout page that does calculations of the price
+ * and emails the user
  *
  * @author Victor
  */
 @Named
 @SessionScoped
 public class CheckoutController implements Serializable {
-    
+
     private final static Logger LOG = LoggerFactory.getLogger(CheckoutController.class);
-    
+
     @Inject
     private AlbumJpaController albumJpaController;
     @Inject
@@ -57,141 +58,136 @@ public class CheckoutController implements Serializable {
     private InvoicedetailJpaController invoicedetailJpaController;
     @Inject
     private ClientJpaController clientJpaController;
-    
+
     private Sale saleBean;
     private ProvinceBean provinceBean = new ProvinceBean();
     private BigDecimal GST;
     private BigDecimal HST;
     private BigDecimal PST;
     private Float totalProfit;
-    
+
     public CheckoutController() {
     }
-    
-    public void setSaleBean(Sale saleBean){
+
+    public void setSaleBean(Sale saleBean) {
         this.saleBean = saleBean;
     }
-    
+
     public Sale getSaleBean() {
         return this.saleBean;
     }
-    
-    public void setProvinceBean(ProvinceBean provinceBean){
+
+    public void setProvinceBean(ProvinceBean provinceBean) {
         this.provinceBean = provinceBean;
     }
-    
+
     public ProvinceBean getProvinceBean() {
         return this.provinceBean;
     }
-    
+
     public BigDecimal getGST() {
         return this.GST;
     }
-    
+
     public void setGST(BigDecimal GST) {
         this.GST = GST;
     }
-                
+
     public BigDecimal getHST() {
         return this.HST;
     }
-    
+
     public void setHST(BigDecimal HST) {
         this.HST = HST;
     }
-    
+
     public BigDecimal getPST() {
         return this.PST;
     }
-    
+
     public void setPST(BigDecimal PST) {
         this.PST = PST;
     }
-    
+
     public Float getTotalProfit() {
         return this.totalProfit;
     }
-    
+
     public void setTotalProfit(Float totalProfit) {
         this.totalProfit = totalProfit;
     }
-    
+
     /**
      * Sends user to the checkout page
-     * 
+     *
      * @return checkout nav string
      */
     public String toCheckout() {
         if (loginController.getLoginBean().isLoggedIn()) {
             this.saleBean = new Sale();
             return "checkout";
-        }
-        else {
+        } else {
             return loginController.toLoginPage();
         }
     }
-    
+
     /**
      * Calculates the shipping and handling price
-     * 
+     *
      * @return shipping and handling price
      */
     public BigDecimal getShippingHandlingPrice() {
         return this.shoppingCartController.calculateTotal().multiply(new BigDecimal("0.08")).setScale(2, RoundingMode.HALF_UP);
     }
-    
+
     /**
      * Finds the GST and HST price based on province selected
-     * 
+     *
      * @return GST and HST price
      */
     public BigDecimal getGSTHSTPrice() {
         if (this.provinceBean.getSelectedItem().equals("valueOntario")) {
             return calculateGSTHST(new BigDecimal("0"), new BigDecimal("0.13"));
-        }
-        else if (checkProvinceFivePercentTax()) {
+        } else if (checkProvinceFivePercentTax()) {
             return calculateGSTHST(new BigDecimal("0.05"), new BigDecimal("0"));
-        }
-        else if (checkProvinceFifteenPercentTax()) {
+        } else if (checkProvinceFifteenPercentTax()) {
             return calculateGSTHST(new BigDecimal("0"), new BigDecimal("0.15"));
-        }
-        else {
+        } else {
             return calculateGSTHST(new BigDecimal("0"), new BigDecimal("0"));
         }
     }
-    
+
     /**
      * Checks if province selected has 5% tax rate
-     * 
+     *
      * @return true if it is a province with 5% tax
      */
     private boolean checkProvinceFivePercentTax() {
-        return this.provinceBean.getSelectedItem().equals("valueAlberta") || 
-                this.provinceBean.getSelectedItem().equals("valueBritishColumbia") ||
-                this.provinceBean.getSelectedItem().equals("valueManitoba") ||
-                this.provinceBean.getSelectedItem().equals("valueNorthwestTerritories") || 
-                this.provinceBean.getSelectedItem().equals("valueNunavut") ||
-                this.provinceBean.getSelectedItem().equals("valueQuebec") ||
-                this.provinceBean.getSelectedItem().equals("valueSaskatchewan") ||
-                this.provinceBean.getSelectedItem().equals("valueYukon");
+        return this.provinceBean.getSelectedItem().equals("valueAlberta")
+                || this.provinceBean.getSelectedItem().equals("valueBritishColumbia")
+                || this.provinceBean.getSelectedItem().equals("valueManitoba")
+                || this.provinceBean.getSelectedItem().equals("valueNorthwestTerritories")
+                || this.provinceBean.getSelectedItem().equals("valueNunavut")
+                || this.provinceBean.getSelectedItem().equals("valueQuebec")
+                || this.provinceBean.getSelectedItem().equals("valueSaskatchewan")
+                || this.provinceBean.getSelectedItem().equals("valueYukon");
     }
-    
-    
+
     /**
      * Checks if province selected has 15% tax rate
-     * 
+     *
      * @return true if it is a province with 15% tax
      */
     private boolean checkProvinceFifteenPercentTax() {
-        return this.provinceBean.getSelectedItem().equals("valueNewBrunswick") ||
-                this.provinceBean.getSelectedItem().equals("valueNewfoundlandandLabrador") ||
-                this.provinceBean.getSelectedItem().equals("valueNoveScotia") ||
-                this.provinceBean.getSelectedItem().equals("valuePrinceEdwardIsland");
+        return this.provinceBean.getSelectedItem().equals("valueNewBrunswick")
+                || this.provinceBean.getSelectedItem().equals("valueNewfoundlandandLabrador")
+                || this.provinceBean.getSelectedItem().equals("valueNoveScotia")
+                || this.provinceBean.getSelectedItem().equals("valuePrinceEdwardIsland");
     }
-    
+
     /**
      * Calculates the GST and HST price based on province selected
-     * 
+     *
      * @return GST and HST price
      */
     private BigDecimal calculateGSTHST(BigDecimal percentGST, BigDecimal percentHST) {
@@ -199,32 +195,29 @@ public class CheckoutController implements Serializable {
         this.HST = calculateTax(percentHST);
         return GST.add(HST);
     }
-    
+
     /**
      * Finds the PST price based on province selected
-     * 
+     *
      * @return PST price
      */
     public BigDecimal getPSTPrice() {
-        if (this.provinceBean.getSelectedItem().equals("valueBritishColumbia") ||
-                this.provinceBean.getSelectedItem().equals("valueManitoba")) {
+        if (this.provinceBean.getSelectedItem().equals("valueBritishColumbia")
+                || this.provinceBean.getSelectedItem().equals("valueManitoba")) {
             this.PST = calculateTax(new BigDecimal("0.07"));
-        }
-        else if (this.provinceBean.getSelectedItem().equals("valueQuebec")) {
+        } else if (this.provinceBean.getSelectedItem().equals("valueQuebec")) {
             this.PST = calculateTax(new BigDecimal("0.09975"));
-        }
-        else if (this.provinceBean.getSelectedItem().equals("valueSaskatchewan")) {
+        } else if (this.provinceBean.getSelectedItem().equals("valueSaskatchewan")) {
             this.PST = calculateTax(new BigDecimal("0.06"));
-        }
-        else {
+        } else {
             this.PST = new BigDecimal("0");
         }
         return this.PST;
     }
-    
+
     /**
      * Finds the total tax price
-     * 
+     *
      * @return total tax
      */
     private BigDecimal calculateTax(BigDecimal taxPercentage) {
@@ -232,10 +225,10 @@ public class CheckoutController implements Serializable {
                 .multiply(taxPercentage)
                 .setScale(2, RoundingMode.HALF_UP);
     }
-    
+
     /**
      * Finds the total price
-     * 
+     *
      * @return total price
      */
     public BigDecimal getTotalPrice() {
@@ -246,22 +239,22 @@ public class CheckoutController implements Serializable {
                 .add(PST)
                 .setScale(2, RoundingMode.HALF_UP);
     }
-    
+
     /**
      * Finds the total net value
-     * 
+     *
      * @return total net value
      */
     public BigDecimal calculateTotalNetValue() {
         return new BigDecimal(Float.toString(totalProfit))
                 .setScale(2, RoundingMode.HALF_UP);
     }
-    
+
     /**
      * Redirects user to invoice page and calls method to email user
-     * 
+     *
      * @return nav string to invoice
-     * @throws RollbackFailureException 
+     * @throws RollbackFailureException
      */
     public String toInvoice() throws RollbackFailureException {
         createSale();
@@ -270,27 +263,27 @@ public class CheckoutController implements Serializable {
         sendInvoiceEmail();
         return "invoice";
     }
-    
+
     /**
-     * Method called to validate the input. The validation rule is that there
-     * is only 16 characters
+     * Method called to validate the input. The validation rule is that there is
+     * only 16 characters
      *
      * @param fc
      * @param c
      * @param value
      */
     public void validateCreditCard(FacesContext fc, UIComponent c, Object value) {
-        if (!((String)value).matches("[0-9]+")) {
+        if (!((String) value).matches("[0-9]+")) {
             throw new ValidatorException(new FacesMessage("Must only contain numbers"));
         }
-        if (!luhnCheck((String)value)) {
+        if (!luhnCheck((String) value)) {
             throw new ValidatorException(new FacesMessage("Invalid credit card number"));
         }
     }
-    
+
     /**
      * Checks if valid credit card number
-     * 
+     *
      * @param cardNumber
      * @return true if valid, false otherwise
      */
@@ -309,11 +302,11 @@ public class CheckoutController implements Serializable {
         }
         return sum % 10 == 0;
     }
-    
+
     /**
      * Creates the sale
-     * 
-     * @throws RollbackFailureException 
+     *
+     * @throws RollbackFailureException
      */
     private void createSale() throws RollbackFailureException {
         this.saleBean.setClientid(clientJpaController.findClient(this.loginController.getLoginBean().getId()));
@@ -321,15 +314,15 @@ public class CheckoutController implements Serializable {
         this.saleBean.setSaleremoved(false);
         this.saleJpaController.create(saleBean);
     }
-    
+
     /**
      * Creates the invoice details such as price
-     * 
-     * @throws RollbackFailureException 
+     *
+     * @throws RollbackFailureException
      */
     private void createInvoiceDetails() throws RollbackFailureException {
         List<MusicItem> shoppingCartList = this.shoppingCartController.getShoppingCartList();
-        this.totalProfit = (float)0;
+        this.totalProfit = (float) 0;
         for (int i = 0; i < shoppingCartList.size(); i++) {
             Invoicedetail invoiceDetailBean = new Invoicedetail();
             invoiceDetailBean.setSaleid(saleBean);
@@ -338,28 +331,25 @@ public class CheckoutController implements Serializable {
             if (shoppingCartList.get(i).getIsAlbum()) {
                 Album album = this.albumJpaController.findAlbum(shoppingCartList.get(i).getId());
                 invoiceDetailBean.setAlbumid(album);
-                
+
                 if (album.getSaleprice() == 0) {
                     invoiceDetailBean.setCurrentcost(album.getListprice());
                     invoiceDetailBean.setProfit(album.getListprice() - album.getCostprice());
                     totalProfit += album.getListprice() - album.getCostprice();
-                }
-                else {
+                } else {
                     invoiceDetailBean.setCurrentcost(album.getSaleprice());
                     invoiceDetailBean.setProfit(album.getSaleprice() - album.getCostprice());
                     totalProfit += album.getSaleprice() - album.getCostprice();
                 }
-            }
-            else {
+            } else {
                 MusicTrack musicTrack = this.musicTrackJpaController.findMusicTrack(shoppingCartList.get(i).getId());
                 invoiceDetailBean.setInventoryid(musicTrack);
-                
+
                 if (musicTrack.getSaleprice() == 0) {
                     invoiceDetailBean.setCurrentcost(musicTrack.getListprice());
                     invoiceDetailBean.setProfit(musicTrack.getListprice() - musicTrack.getCostprice());
                     totalProfit += musicTrack.getListprice() - musicTrack.getCostprice();
-                }
-                else {
+                } else {
                     invoiceDetailBean.setCurrentcost(musicTrack.getSaleprice());
                     invoiceDetailBean.setProfit(musicTrack.getSaleprice() - musicTrack.getCostprice());
                     totalProfit += musicTrack.getSaleprice() - musicTrack.getCostprice();
@@ -368,12 +358,12 @@ public class CheckoutController implements Serializable {
             invoicedetailJpaController.create(invoiceDetailBean);
         }
     }
-    
+
     /**
      * Standard send routine for Jodd using SmtpServer
-     * 
-     * @return the Email object if all checks and validations are correct, 
-     *         null if SendMailSessionsession session error
+     *
+     * @return the Email object if all checks and validations are correct, null
+     * if SendMailSessionsession session error
      */
     public boolean sendInvoiceEmail() {
         String toEmailAddress = this.loginController.getLoginBean().getEmailAddress();
@@ -384,25 +374,24 @@ public class CheckoutController implements Serializable {
             String emailSubject = "Invoice for your MusicalMoose purchase";
             createEmailSubMsg(emailSubject, createHTMLInvoiceMsg(), email);
             email.to(toEmailAddress);
-        
-            try (SendMailSession session = smtpServer.createSession()) {
+
+            try ( SendMailSession session = smtpServer.createSession()) {
                 session.open();
                 // Set date/time right before sending to get most accurate time
                 email.currentSentDate();
                 session.sendMail(email);
                 LOG.info("Email sent");
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 return false;
             }
             return true;
         }
         return false;
     }
-    
+
     /**
      * Creates an HTML message of the invoice to email to the user
-     * 
+     *
      * @return HTML message
      */
     private String createHTMLInvoiceMsg() {
@@ -410,7 +399,7 @@ public class CheckoutController implements Serializable {
                 + "<div>"
                 + "<h1><u>INVOICE</u></h1>"
                 + "<p><b>Sale #: " + this.saleBean.getSaleid() + "</b></p>"
-                + "<p><b>Date: " + this.saleBean.getSaledate()+ "</b></p>"
+                + "<p><b>Date: " + this.saleBean.getSaledate() + "</b></p>"
                 + "<p>---</p>"
                 + "<p><b>Total Gross Value Of Sale: " + this.shoppingCartController.getTotalCost() + "</b></p>"
                 + "<p><b>GST: " + this.GST + "</b></p>"
@@ -419,11 +408,11 @@ public class CheckoutController implements Serializable {
                 + "<p><b>Total Net Value Of Sale: " + this.calculateTotalNetValue() + "</b></p>"
                 + "</div>";
     }
-        
+
     /**
-     * Creates and returns StmpServer
-     * Use this email and user as a base admin email
-     * 
+     * Creates and returns StmpServer Use this email and user as a base admin
+     * email
+     *
      * @return the SmtpServer
      */
     private SmtpServer createSmtpServer() {
@@ -433,7 +422,7 @@ public class CheckoutController implements Serializable {
                 .auth("project.username01@gmail.com", "simplepass01")
                 .buildSmtpMailServer();
     }
-    
+
     /**
      * Assign subject and calls method to assign messages to null
      *
@@ -449,16 +438,16 @@ public class CheckoutController implements Serializable {
             email.htmlMessage(htmlMsg);
         }
     }
-        
+
     /**
      * Checks if emailAddress is not null and valid
-     * 
+     *
      * @param emailAddress
-     * @return true if emailAddress not null and 
-     *         RFC2822AddressParser is not null, false if so
+     * @return true if emailAddress not null and RFC2822AddressParser is not
+     * null, false if so
      */
     private boolean checkEmailAddress(String emailAddress) {
         return emailAddress != null && RFC2822AddressParser.STRICT.parseToEmailAddress(emailAddress) != null;
     }
-    
+
 }

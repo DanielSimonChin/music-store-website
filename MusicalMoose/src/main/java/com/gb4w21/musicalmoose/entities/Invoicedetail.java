@@ -70,12 +70,15 @@ public class Invoicedetail implements Serializable {
 
     public Invoicedetail() {
     }
-    public int getProductdownloaded(){
+
+    public int getProductdownloaded() {
         return productdownloaded;
     }
-    public void setProductdownloaded(int productdownloaded){
-        this.productdownloaded=productdownloaded;
+
+    public void setProductdownloaded(int productdownloaded) {
+        this.productdownloaded = productdownloaded;
     }
+
     public Invoicedetail(Integer invoiceid) {
         this.invoiceid = invoiceid;
     }
@@ -168,5 +171,5 @@ public class Invoicedetail implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Invoicedetail[ invoiceid=" + invoiceid + " ]";
     }
-    
+
 }

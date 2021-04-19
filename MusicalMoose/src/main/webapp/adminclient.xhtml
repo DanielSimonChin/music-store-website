@@ -10,13 +10,12 @@
     <head>
         <title>Manage Client</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-       <f:metadata>
-           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
         </f:metadata>
     </head>
     <h:body>
         <ui:composition template="/templates/commonadmin.xhtml">
-
             <ui:define name="content">
                 <link rel="stylesheet" href="adminfront.css"/>
                 <div class="wrapper">
@@ -28,39 +27,40 @@
                                 <p:growl id="messages" showDetail="true"/>
 
                                 <p:toolbar>
-
-
-
+                                    <p:toolbarGroup align="right">
+                                  
+                                    </p:toolbarGroup>
                                 </p:toolbar>
-
-
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="client" value="#{clientManagerController.clients}"
                                              reflow="true" styleClass="products-table"
-                                             selection="#{clientManagerController.selectedClients}" rowKey="#{client.clientid}" paginator="true"
+                                             rowKey="#{client.clientid}" paginator="true"
                                              rows="10" rowSelectMode="add" paginatorPosition="bottom">
                                     <f:facet name="header">
                                         <div class="products-table-header">
                                             <span style="font-weight: bold">#{msgs.clients}</span>
-
+                                            
                                             <span class="filter-container ui-input-icon-left">
                                                 <i class="pi pi-search"></i>
                                                 <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
                                             </span>
-
+                                            
                                         </div>
                                     </f:facet>
 
 
+
                                     <p:column selectionMode="multiple" exportable="false"></p:column>
 
-                                    <p:column  headerText="#{msgs.id}"  sortBy="#{client.clientid}">
+
+
+                                    <p:column  headerText="#{msgs.id}" filterBy="#{client.clientid}"  sortBy="#{client.clientid}">
                                         <h:outputText  value="#{client.clientid}"/>
                                     </p:column>
 
-                                    <p:column headerText="#{msgs.username}" sortBy="#{client.username}" >
+                                    <p:column headerText="#{msgs.username}" filterBy="#{client.username}" sortBy="#{client.username}" >
                                         <h:outputText value="#{client.username}"/>
                                     </p:column>
-                                    <p:column headerText="#{msgs.email}" sortBy="#{client.email}" >
+                                    <p:column headerText="#{msgs.email}" filterBy="#{client.email}" sortBy="#{client.email}" >
                                         <h:outputText  value="#{client.email}"/>
                                     </p:column>
                                     <p:column headerText="#{msgs.password}" sortBy="#{client.password}" >
@@ -157,7 +157,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="password" value="#{msgs.password}"/>
                                                 <p:inputText id="password" label="#{msgs.password}" value="#{clientManagerController.selectedClient.password}" requiredMessage="#{msgs.required}"   required="true">
-                                                    <f:validateLength minimum="4" maximum="27" />
+                                                    <f:validateLength minimum="6" maximum="27" />
                                                     <f:ajax event="blur" render="password1Error" />
                                                 </p:inputText>
                                                 <p:message id="passwordError" for="password" style="color:red" />
@@ -265,7 +265,7 @@
                                             </div>
                                             <div class="p-field">
                                                 <p:outputLabel for="hphone" value="#{msgs.homeTelephone}"/>
-                                                <p:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{clientManagerController.selectedClient.hometelephone}" required="true"  requiredMessage="#{msgs.required}"  validator="#{registrationController.validateHomePhoneNumber}">
+                                                <p:inputText id="hphone" label="#{msgs.homeTelephone}" value="#{clientManagerController.selectedClient.hometelephone}" required="true"  requiredMessage="#{msgs.required}"  validator="#{validationController.validateHomePhoneNumber}">
                                                     <f:validateLength  minimum="10" maximum="25" />
                                                     <f:ajax event="blur" render="hphoneError" />
                                                 </p:inputText>
@@ -275,7 +275,7 @@
                                             <div class="p-field">
                                                 <p:outputLabel for="cphone" value="#{msgs.cellphone}"/>
                                                 <p:inputText id="cphone" label="#{msgs.cellphone}" value="#{clientManagerController.selectedClient.celltelephone}"   validator="#{clientManagerController.validateCellPhoneNumber}">
-                                                    
+
                                                     <f:ajax event="blur" render="cphoneError" />
                                                 </p:inputText>
                                                 <p:message id="cphoneError" for="cphone" style="color:red" />

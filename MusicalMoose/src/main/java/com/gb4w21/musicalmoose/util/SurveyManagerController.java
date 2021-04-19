@@ -39,8 +39,11 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+
 /**
- * Controller for survey manager allows the creation and editing of existing surveys
+ * Controller for survey manager allows the creation and editing of existing
+ * surveys
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -56,17 +59,17 @@ public class SurveyManagerController implements Serializable {
 
     private List<Survey> surveys;
 
-
     private Survey bigSurvey;
 
     private List<Survey> selectedSurveys;
+
     /**
      * Default constructor
      */
     public SurveyManagerController() {
 
     }
-    
+
     public Survey getBigSurvey() {
         return bigSurvey;
     }
@@ -75,7 +78,6 @@ public class SurveyManagerController implements Serializable {
         this.bigSurvey = bigSurvey;
     }
 
- 
     public void setSurveys(List<Survey> surveys) {
         this.surveys = surveys;
     }
@@ -84,7 +86,6 @@ public class SurveyManagerController implements Serializable {
         this.selectedSurveys = selectedSurveys;
     }
 
-
     public List<Survey> getSurveys() {
         return this.surveys;
     }
@@ -92,6 +93,7 @@ public class SurveyManagerController implements Serializable {
     public List<Survey> getSelectedSurveys() {
         return this.selectedSurveys;
     }
+
     /**
      * creates a new survey
      */
@@ -100,8 +102,10 @@ public class SurveyManagerController implements Serializable {
         this.bigSurvey = new Survey();
         this.bigSurvey.setDatesurveyrcreated(new Date());
     }
+
     /**
      * takes the user to the survey management page resets all values
+     *
      * @author Alessandro Dare
      */
     @PostConstruct
@@ -110,52 +114,54 @@ public class SurveyManagerController implements Serializable {
         bigSurvey = null;
         selectedSurveys = new ArrayList<>();
     }
-    
+
     /**
-     * saves current survey information if a survey is changed to be active the current survey on the front page will be taken down
-     @author Alessandro Dare
+     * saves current survey information if a survey is changed to be active the
+     * current survey on the front page will be taken down
+     *
+     * @author Alessandro Dare
      */
     public void saveSurvey() {
-       
+
         if (bigSurvey.getSurveryinuse()) {
             surveyJpaController.setIsSurveyUsed(false);
             takeDonwCurrentSurvey();
-            
+
         }
         try {
-            
+            //checking to see if selected id exsist
             if (this.bigSurvey.getSurveyid() == null) {
-                
+                //generate id
+                LOG.info("survey created");
                 Random random = new Random();
-               
 
                 int id = random.nextInt(1000000);
                 while (surveyExists(id)) {
                     id = random.nextInt(1000000);
                 }
-               
+                LOG.info("new survey id:" + id);
                 bigSurvey.setSurveyid(id);
-              
+
                 setAnswerVotesCreate();
                 this.surveys.add(this.bigSurvey);
-               
+
                 surveyJpaController.create(bigSurvey);
-               
+
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                         "com.gb4w21.musicalmoose.bundles.messages", "createdSurvey", null);
-                
+
                 FacesContext.getCurrentInstance().addMessage(null, message);
-              
+
             } else {
-                
+                LOG.info("survey edited");
                 setAnswerVotesEdit();
                 surveyJpaController.edit(bigSurvey);
-              
+
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                         "com.gb4w21.musicalmoose.bundles.messages", "editedSurvey", null);
-          
+
                 FacesContext.getCurrentInstance().addMessage(null, message);
-   
+
             }
         } catch (RollbackFailureException ex) {
 
@@ -165,66 +171,88 @@ public class SurveyManagerController implements Serializable {
 
             LOG.info("Trouble editing survey" + ex.getLocalizedMessage());
         }
-     
+
         surveys = surveyJpaController.findSurveyEntities();
- 
+
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
-    
+
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
+
     /**
      * set votes to zero and not null is a new answer was created
+     *
      * @author Alessandro Dare
      */
     private void setAnswerVotesCreate() {
+        //create vote number if an answer was added
         if (this.bigSurvey.getAnserw1() != null && (!this.bigSurvey.getAnserw1().isEmpty())) {
             this.bigSurvey.setAnserw1votes(0);
+            LOG.info("answer 1 created");
         }
         if (this.bigSurvey.getAnserw2() != null && (!this.bigSurvey.getAnserw2().isEmpty())) {
             this.bigSurvey.setAnserw2votes(0);
+            LOG.info("answer 2 created");
         }
         if (this.bigSurvey.getAnserw3() != null && (!this.bigSurvey.getAnserw3().isEmpty())) {
             this.bigSurvey.setAnserw3votes(0);
+            LOG.info("answer 3 created");
         }
         if (this.bigSurvey.getAnserw4() != null && (!this.bigSurvey.getAnserw4().isEmpty())) {
             this.bigSurvey.setAnserw4votes(0);
+            LOG.info("answer 4 created");
         }
     }
+
     /**
-     * resets the votes for a given survey to zero if a question was edited or removed
+     * resets the votes for a given survey to zero if a question was edited or
+     * removed
+     *
      * @author Alessandro Dare
      */
     private void setAnswerVotesEdit() {
         Survey currentSurvey = this.surveyJpaController.findSurvey(this.bigSurvey.getSurveyid());
+        //if answers for a survey are null or don't exsit set votes to 0
         if (this.bigSurvey.getAnserw1() == null && (this.bigSurvey.getAnserw1().isEmpty())) {
+            LOG.info("answer 1 null");
             this.bigSurvey.setAnserw1votes(0);
         }
         if (this.bigSurvey.getAnserw2() == null && (this.bigSurvey.getAnserw2().isEmpty())) {
+            LOG.info("answer 2 null");
             this.bigSurvey.setAnserw2votes(0);
         }
         if (this.bigSurvey.getAnserw3() == null && (this.bigSurvey.getAnserw3().isEmpty())) {
+            LOG.info("answer 3 null");
             this.bigSurvey.setAnserw3votes(0);
         }
         if (this.bigSurvey.getAnserw4() == null && (this.bigSurvey.getAnserw4().isEmpty())) {
+            LOG.info("answer 4 null");
             this.bigSurvey.setAnserw4votes(0);
         }
-
+        //if answeres to a survey have been edited set their votes to zero
         if (this.bigSurvey.getAnserw1() != null && currentSurvey.getAnserw1() != null && (!currentSurvey.getAnserw1().equals(this.bigSurvey.getAnserw1()))) {
+            LOG.info("answer 1 null");
             this.bigSurvey.setAnserw1votes(0);
         }
         if (this.bigSurvey.getAnserw2() != null && currentSurvey.getAnserw2() != null && (!currentSurvey.getAnserw2().equals(this.bigSurvey.getAnserw2()))) {
+
+            LOG.info("answer 2 null");
             this.bigSurvey.setAnserw2votes(0);
         }
         if (this.bigSurvey.getAnserw3() != null && currentSurvey.getAnserw3() != null && (!currentSurvey.getAnserw3().equals(this.bigSurvey.getAnserw3()))) {
+            LOG.info("answer 3 null");
             this.bigSurvey.setAnserw3votes(0);
         }
         if (this.bigSurvey.getAnserw4() != null && currentSurvey.getAnserw4() != null && (!currentSurvey.getAnserw4().equals(this.bigSurvey.getAnserw4()))) {
+            LOG.info("answer 4 null");
             this.bigSurvey.setAnserw4votes(0);
         }
 
     }
+
     /**
      * checks to see if specified survey exists
+     *
      * @author Alessandro Dare
      * @param id int
      * @return boolean true if it exits false if not
@@ -235,8 +263,10 @@ public class SurveyManagerController implements Serializable {
         }
         return false;
     }
+
     /**
      * removes the current survey being used from the home page
+     *
      * @author Alessandro Dare
      */
     private void takeDonwCurrentSurvey() {
@@ -253,12 +283,15 @@ public class SurveyManagerController implements Serializable {
             }
         }
     }
+
     /**
-     * Checks to see if the survey question given was already taken if so it returns an error
+     * Checks to see if the survey question given was already taken if so it
+     * returns an error
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
-     * @param value  Object
+     * @param value Object
      */
     public void validateSurveyQuestion(FacesContext context, UIComponent component,
             Object value) {
@@ -273,8 +306,10 @@ public class SurveyManagerController implements Serializable {
             throw new ValidatorException(message);
         }
     }
-     /**
+
+    /**
      * checks to see if the question for the survey was found in the database
+     *
      * @author Alessandro Dare
      * @param question String
      * @return boolean true if survey question isn't found false if it is
@@ -300,12 +335,15 @@ public class SurveyManagerController implements Serializable {
         return false;
 
     }
+
     /**
-     * Checks to see if the survey title given was already taken if so it returns an error
+     * Checks to see if the survey title given was already taken if so it
+     * returns an error
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
-     * @param value  Object
+     * @param value Object
      */
     public void validateSurveyTitle(FacesContext context, UIComponent component,
             Object value) {
@@ -318,13 +356,16 @@ public class SurveyManagerController implements Serializable {
             throw new ValidatorException(message);
         }
     }
+
     /**
      * checks to see if the title for the survey was found in the database
+     *
      * @author Alessandro Dare
      * @param surveytitle String
      * @return boolean true if survey title isn't found false if it is
      */
     private boolean checkTile(String surveytitle) {
+        LOG.info("Survey Title:" + surveytitle);
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Survey> cq = cb.createQuery(Survey.class);
         Root<Survey> survey = cq.from(Survey.class);

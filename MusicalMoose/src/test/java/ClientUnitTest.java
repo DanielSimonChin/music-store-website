@@ -43,8 +43,10 @@ import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * Tests public methods for client controller
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -83,7 +85,6 @@ public class ClientUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-               
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(Email.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
@@ -100,8 +101,10 @@ public class ClientUnitTest {
 
         return webArchive;
     }
+
     /**
      * test that findusre will return the correct client
+     *
      * @author Alessandro Dare
      */
     @Test
@@ -110,8 +113,10 @@ public class ClientUnitTest {
         Client foudnClient = this.controller.findUser(orignalClient.getUsername(), orignalClient.getPassword());
         assertEquals(compareClients(orignalClient, foudnClient), true);
     }
+
     /**
      * compares the two clients to make sure they match
+     *
      * @author Alessandro Dare
      * @param client1 Client
      * @param client2 Client
@@ -164,8 +169,10 @@ public class ClientUnitTest {
 
         return true;
     }
+
     /**
      * test that find user will return null if given invalid parameters
+     *
      * @author Alessandro Dare
      */
     @Test

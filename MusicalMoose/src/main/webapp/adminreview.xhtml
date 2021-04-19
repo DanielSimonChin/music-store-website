@@ -10,7 +10,7 @@
         <title>Manage Review</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <f:metadata>
-           <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
+            <f:event type="preRenderView" listener="#{managerViewChecker.checkManager}" />
         </f:metadata>
     </head>
     <h:body>
@@ -24,10 +24,11 @@
                         <h:form id="form">
                             <div class="card crud-demo">
                                 <p:growl id="messages" showDetail="true"/>
+                                <p:toolbar>
+                                    <p:toolbarGroup align="right">
 
-                                <p:toolbarGroup align="right">
-
-                                </p:toolbarGroup>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
                                 <p:dataTable id="dt-products" widgetVar="dtProducts" var="review" value="#{reviewManagerController.reviews}"
                                              reflow="true" styleClass="products-table"
                                              selection="#{reviewManagerController.selectedReviews}" rowKey="#{review.reviewid}" paginator="true"

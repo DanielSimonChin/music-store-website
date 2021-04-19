@@ -37,8 +37,11 @@ import javax.faces.event.ComponentSystemEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.faces.application.ConfigurableNavigationHandler;
+
 /**
- * Checks to make sure that manger's can't get to the client side by using the url and vise versa
+ * Checks to make sure that manger's can't get to the client side by using the
+ * url and vise versa
+ *
  * @author Alessandro
  * @version 1.0
  */
@@ -51,43 +54,51 @@ public class ManagerViewChecker implements Serializable {
     private EntityManager entityManager;
     @Inject
     RegistrationController registrationController;
-     @Inject
+    @Inject
     LoginController loginController;
-     @Inject
-     ClientJpaController clientJpaController;
-     /**
-      * Default constructor
-      */
+    @Inject
+    ClientJpaController clientJpaController;
+
+    /**
+     * Default constructor
+     */
     public ManagerViewChecker() {
 
     }
+
     /**
-     * checks to make sure that only a manager can go to manager pages by accessing the url
+     * checks to make sure that only a manager can go to manager pages by
+     * accessing the url
+     *
      * @author Alessandro Dare
      * @param event ComponentSystemEvent
      */
-    public void checkManager(ComponentSystemEvent event){
+    public void checkManager(ComponentSystemEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
-        loginController.getLoginBean();
-        Client client=clientJpaController.findUser(loginController.getLoginBean().getUsername(),loginController.getLoginBean().getPassword());
-        if (client==null||(!client.getIsmanager())||(!client.getClientactive())){
-            ConfigurableNavigationHandler nav  = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+
+        LOG.info("user " + loginController.getLoginBean().getUsername() + " is trying to go to a management page");
+        Client client = clientJpaController.findUser(loginController.getLoginBean().getUsername(), loginController.getLoginBean().getPassword());
+        if (client == null || (!client.getIsmanager()) || (!client.getClientactive())) {
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
             nav.performNavigation("authenticationerror");
-        }		
-    }	
-     /**
-     * checks to make sure that a manager can't get to the client side y accessing the url
+        }
+    }
+
+    /**
+     * checks to make sure that a manager can't get to the client side y
+     * accessing the url
+     *
      * @author Alessandro Dare
      * @param event ComponentSystemEvent
      */
-     public void checkClient(ComponentSystemEvent event){
+    public void checkClient(ComponentSystemEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
         loginController.getLoginBean();
-        Client client=clientJpaController.findUser(loginController.getLoginBean().getUsername(),loginController.getLoginBean().getPassword());
-       
-        if (client!=null&&client.getIsmanager()&&client.getClientactive()){
-            ConfigurableNavigationHandler nav  = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+        Client client = clientJpaController.findUser(loginController.getLoginBean().getUsername(), loginController.getLoginBean().getPassword());
+        LOG.info("user " + loginController.getLoginBean().getUsername() + " is trying to go to a client page");
+        if (client != null && client.getIsmanager() && client.getClientactive()) {
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
             nav.performNavigation("adminauthenticationerror");
-        }		
+        }
     }
 }

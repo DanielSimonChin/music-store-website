@@ -52,9 +52,11 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import org.primefaces.component.calendar.Calendar;
+
 /**
- * The controller to manage the sales page use it to edit any sales 
- * changes made by the manager and allows the sale information to be displayed
+ * The controller to manage the sales page use it to edit any sales changes made
+ * by the manager and allows the sale information to be displayed
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -72,14 +74,17 @@ public class OrderManagementController implements Serializable {
     private Sale selectedSale;
     private List<Sale> sales;
     private boolean addRemoved;
+
     /**
      * Default constructor
      */
     public OrderManagementController() {
 
     }
+
     /**
      * post constructor used to reset values
+     *
      * @author Alessandro Dare
      */
     @PostConstruct
@@ -87,14 +92,16 @@ public class OrderManagementController implements Serializable {
         this.addRemoved = true;
         selectedSale = null;
         sales = saleJpaController.findSaleEntities();
-       
+
     }
 
     public boolean isAddRemoved() {
         return addRemoved;
     }
+
     /**
      * changes table to show or exclude sales that have been removed
+     *
      * @author Alessandro Dare
      * @return String admin page
      */
@@ -109,8 +116,10 @@ public class OrderManagementController implements Serializable {
 
         return "adminsale";
     }
+
     /**
      * removes all invoices that have been marked as removed from the sale
+     *
      * @author Alessandro Dare
      */
     private void removeAdded() {
@@ -139,8 +148,10 @@ public class OrderManagementController implements Serializable {
     public void setSales(List<Sale> sales) {
         this.sales = sales;
     }
+
     /**
      * Shows weather an invoice is for an album or track
+     *
      * @author Alessandro Dare
      * @param invoicedetail Invoicedetail
      * @return boolean album if true track if false
@@ -148,11 +159,13 @@ public class OrderManagementController implements Serializable {
     public boolean isAblum(Invoicedetail invoicedetail) {
         return invoicedetail.getAlbumid() != null;
     }
-   /**
+
+    /**
      * calculates the total amount of profit the website made on the sale
+     *
      * @author Alessandro Dare
      * @param sale Sale
-     * @return  float total profit
+     * @return float total profit
      */
     public float totalProfit(Sale sale) {
         float totalProfit = 0;
@@ -166,13 +179,16 @@ public class OrderManagementController implements Serializable {
 
             }
         }
+        LOG.info("total profit:" + totalProfit);
         return totalProfit;
     }
- /**
+
+    /**
      * calculates the total amount the use sent on the sale
+     *
      * @author Alessandro Dare
      * @param sale Sale
-     * @return  float total current cost
+     * @return float total current cost
      */
     public float totalCurrentCost(Sale sale) {
         float totalCurrentCost = 0;
@@ -185,56 +201,67 @@ public class OrderManagementController implements Serializable {
                 }
             }
         }
+        LOG.info("total current cost:" + totalCurrentCost);
         return totalCurrentCost;
     }
-     /**
+
+    /**
      * calculates the total number of tracks for a specific sale
+     *
      * @author Alessandro Dare
      * @param sale Sale
-     * @return  int number of tracks
+     * @return int number of tracks
      */
     public int totalNumberOfTracks(Sale sale) {
         int trackNumber = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
             if (addRemoved) {
-                trackNumber ++;
+                trackNumber++;
             } else {
                 if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getInventoryid() != null) {
                     trackNumber++;
                 }
             }
         }
+        LOG.info("total number of tracks sold:" + trackNumber);
         return trackNumber;
     }
+
     /**
      * calculates the total number of albums for a specific sale
+     *
      * @author Alessandro Dare
      * @param sale Sale
-     * @return  int number of albums
+     * @return int number of albums
      */
     public int totalNumberOfAlbums(Sale sale) {
         int albumNumber = 0;
         for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
             if (addRemoved) {
-                albumNumber ++;
+                albumNumber++;
             } else {
                 if (!invoicedetail.getInvoicedetailremoved() && invoicedetail.getAlbumid() != null) {
                     albumNumber++;
                 }
             }
         }
+        LOG.info("total number of albums sold:" + albumNumber);
         return albumNumber;
     }
+
     /**
      * saves the changes to the specified sale and it's related invoices
+     *
      * @author Alessandro Dare
      */
     public void saveSale() {
 
         try {
-
+            LOG.info("sale id:" + this.selectedSale.getSaleid());
+            //checkes to make sure selected sale exsits
             if (this.selectedSale.getSaleid() != null) {
-
+                LOG.info("sale edited");
+                //eidts each invocie in the sales
                 for (Invoicedetail invoicedetail : selectedSale.getInvoicedetailList()) {
                     invoicedetailJpaController.edit(invoicedetail);
                 }
@@ -251,7 +278,6 @@ public class OrderManagementController implements Serializable {
 
                 FacesContext.getCurrentInstance().addMessage(null, message);
             }
-            Sale s = saleJpaController.findSale(selectedSale.getSaleid());
 
         } catch (Exception ex) {
 
@@ -267,10 +293,9 @@ public class OrderManagementController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
 
-    
-
     /**
      * checks to see if the chosen date is in the future
+     *
      * @author Alessandro Dare
      * @param chosenDate Date
      * @return boolean true if the date is in the future false if not

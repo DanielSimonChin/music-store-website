@@ -58,7 +58,6 @@ public class Bannerad implements Serializable {
         this.banneraddid = banneraddid;
     }
 
-
     public Integer getBanneraddid() {
         return banneraddid;
     }
@@ -66,7 +65,6 @@ public class Bannerad implements Serializable {
     public void setBanneraddid(Integer banneraddid) {
         this.banneraddid = banneraddid;
     }
-
 
     @Override
     public int hashCode() {
@@ -124,5 +122,5 @@ public class Bannerad implements Serializable {
     public void setPageposition(Integer pageposition) {
         this.pageposition = pageposition;
     }
-    
+
 }

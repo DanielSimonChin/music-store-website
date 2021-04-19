@@ -74,14 +74,13 @@ public class MusicTrackUnitTests {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                
                 .addPackage(Email.class.getPackage())
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(MusicTrackJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
-                .addPackage(Email.class.getPackage()) 
+                .addPackage(Email.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -94,7 +93,7 @@ public class MusicTrackUnitTests {
 
     /**
      * Test that the findMostRecentTracks method only returns 3 music tracks.
-     * 
+     *
      * @throws SQLException
      */
     @Test
@@ -106,7 +105,7 @@ public class MusicTrackUnitTests {
     /**
      * Find a track and test that all its related tracks are part of the same
      * album and that the results don't return the input track.
-     * 
+     *
      * @throws SQLException
      */
     @Test
@@ -127,7 +126,7 @@ public class MusicTrackUnitTests {
     /**
      * Testing to ensure that all returned tracks have a lower sale price than
      * list price.
-     * 
+     *
      */
     @Test
     public void testGetSpecialTracks() {
