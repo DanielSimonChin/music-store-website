@@ -1,4 +1,4 @@
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller.management;
 
 import com.gb4w21.musicalmoose.controller.BanneradJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;
@@ -144,6 +144,7 @@ public class BannerAdManagerController implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "adSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
+        LOG.info("Remove Selected Banner ad");
     }
 
     /**
@@ -157,6 +158,7 @@ public class BannerAdManagerController implements Serializable {
         this.selectedBannerAd = null;
         FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "adSetNotDisplayed"));
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        LOG.info("Remove Banner ad");
     }
 
     /**
@@ -183,6 +185,7 @@ public class BannerAdManagerController implements Serializable {
             FacesMessage facesMsg = createMsg("invalid", "adInvalid");
             facesMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
             FacesContext.getCurrentInstance().addMessage(null, facesMsg);
+            LOG.info("INVALID AD CHANGE/CREATION");
         }
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
@@ -217,5 +220,6 @@ public class BannerAdManagerController implements Serializable {
         this.bannerAds = this.bannerAdJpaController.findBanneradEntities();
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
+        LOG.info("Cancelled banner ad form");
     }
 }

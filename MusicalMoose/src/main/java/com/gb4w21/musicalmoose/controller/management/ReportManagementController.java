@@ -1,4 +1,4 @@
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller.management;
 
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;

@@ -18,7 +18,7 @@ import com.gb4w21.musicalmoose.entities.Invoicedetail;
 import com.gb4w21.musicalmoose.entities.MusicTrack;
 import com.gb4w21.musicalmoose.resources.JavaEE8Resource;
 import com.gb4w21.musicalmoose.util.LocaleChanger;
-import com.gb4w21.musicalmoose.util.ReportManagementController;
+import com.gb4w21.musicalmoose.controller.management.ReportManagementController;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;

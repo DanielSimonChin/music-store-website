@@ -263,7 +263,7 @@ public class ShoppingCartController implements Serializable {
     /**
      * Redirects user to the page they were at before going to shopping cart
      *
-     * @return
+     * @return string to nav to previous page 
      */
     public String backPage() {
         return prevPage;

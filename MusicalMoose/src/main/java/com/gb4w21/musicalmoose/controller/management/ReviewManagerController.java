@@ -1,4 +1,4 @@
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller.management;
 
 import javax.faces.application.Application;
 import com.gb4w21.musicalmoose.controller.ReviewJpaController;

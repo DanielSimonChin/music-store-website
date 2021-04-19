@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.gb4w21.musicalmoose.util;
+package com.gb4w21.musicalmoose.controller.management;
 
 import com.gb4w21.musicalmoose.controller.MusicTrackJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.NonexistentEntityException;

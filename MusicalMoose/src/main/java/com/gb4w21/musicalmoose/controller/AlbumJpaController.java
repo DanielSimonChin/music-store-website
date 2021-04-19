@@ -475,6 +475,7 @@ public class AlbumJpaController implements Serializable {
             for (int i = 0; i < specialsLimt; i++) {
                 LOG.info("Special ablum:" + albums.get(i).getAlbumtitle());
                 LOG.info("Special cost" + albums.get(i).getSaleprice());
+                specialList.add(albums.get(i));
             }
             return specialList;
         } else {
