@@ -182,6 +182,14 @@ public class AlbumJpaController implements Serializable {
 
     }
 
+    /**
+     * Getting the genre of an album given its id.
+     *
+     * @author Daniel
+     *
+     * @param albumId
+     * @return the album's genre
+     */
     public String findGenreAlbumId(int albumId) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
 
@@ -219,11 +227,13 @@ public class AlbumJpaController implements Serializable {
         return ((Long) q.getSingleResult()).intValue();
 
     }
+
     /**
      * Takes a user from the search page to the album page
+     *
      * @author Alessandro Dare
      * @param id int
-     * 
+     *
      * @return album page
      */
     public String searchSingleAlbum(int id) {
@@ -234,15 +244,14 @@ public class AlbumJpaController implements Serializable {
         return "searchAlbum";
     }
 
-
     /**
      * Store given album by id to selectedAlbum
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @param id
      * @return string to navigate to album page
-
+     *
      */
     public String selectSingleAlbum(int id) {
         this.selectedAlbum = findAlbum(id);
@@ -252,12 +261,12 @@ public class AlbumJpaController implements Serializable {
 
     /**
      * Finds an album given the id
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @param id
      * @return found album
-     * @throws NonexistentEntityException 
+     * @throws NonexistentEntityException
      */
     public Album findAlbumById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -277,8 +286,10 @@ public class AlbumJpaController implements Serializable {
 
         return (Album) q.getResultList().get(0);
     }
+
     /**
      * takes the user back to the album page after writing a review
+     *
      * @param album Album
      * @return String Album page
      */
@@ -359,9 +370,9 @@ public class AlbumJpaController implements Serializable {
 
     /**
      * Gets the list of albums of the most recently searched genre
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @return list of albums of specific genre
      */
     public List<Album> getRecentGenreAlbums() {
@@ -397,16 +408,14 @@ public class AlbumJpaController implements Serializable {
         return "detailAlbum";
     }
 
-
     /**
      * Sends page to album page given an Album object
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @param album
-     * @return 
+     * @return
      */
-
     public String toAlbum(Album album) {
         this.selectedAlbum = album;
         LOG.info("" + album.getAlbumtitle());
@@ -417,7 +426,7 @@ public class AlbumJpaController implements Serializable {
 
     /**
      * Checks if genre cookie is a valid genre string
-     * 
+     *
      * @author Victor
      */
     private void validateGenreCookie() {
@@ -447,11 +456,13 @@ public class AlbumJpaController implements Serializable {
         this.selectedAlbum = album;
         return "relatedAlbumFromAlbum";
     }
-/**
- * creates a list of specials albums that have the largest sale
- * @author Alessandro Dare
- * @return List<Album> special album list
- */
+
+    /**
+     * creates a list of specials albums that have the largest sale
+     *
+     * @author Alessandro Dare
+     * @return List<Album> special album list
+     */
     public List<Album> getSpecialAlbums() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
@@ -467,7 +478,7 @@ public class AlbumJpaController implements Serializable {
         //Adds to three ablums to special list
         if (albums.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
-                LOG.info("Special ablum:"+albums.get(i).getAlbumtitle());
+                LOG.info("Special ablum:" + albums.get(i).getAlbumtitle());
                 specialList.add(albums.get(i));
             }
             return specialList;

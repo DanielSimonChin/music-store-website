@@ -7,10 +7,8 @@ package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.LoginController;
 import com.gb4w21.musicalmoose.controller.ClientJpaController;
-import com.gb4w21.musicalmoose.controller.ClientJpaController;
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
 import com.gb4w21.musicalmoose.entities.Client;
-import com.gb4w21.musicalmoose.entities.MusicTrack;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,12 +22,7 @@ import org.slf4j.LoggerFactory;
 import javax.faces.context.FacesContext;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
-import javax.faces.component.UIInput;
 import javax.faces.validator.ValidatorException;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 /**
  * Responsible for registering and validating a client creates them and stores them in the database logs them in automatically
  * @author Alessandro Dare

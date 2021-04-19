@@ -24,6 +24,15 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(value = "albumConverter")
 public class AlbumConverter implements Converter {
 
+    /**
+     * Returns the Album object given its albumId. Used in the selectOneMenu for
+     * an admin to select a track's album.
+     *
+     * @param ctx
+     * @param uiComponent
+     * @param albumId
+     * @return
+     */
     @Override
     public Object getAsObject(FacesContext ctx, UIComponent uiComponent, String albumId) {
         ValueExpression vex
@@ -40,6 +49,12 @@ public class AlbumConverter implements Converter {
         return null;
     }
 
+    /**
+     * @param facesContext
+     * @param uiComponent
+     * @param album
+     * @return the string value of the object's albumid
+     */
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object album) {
         return ((Album) album).getAlbumid().toString();

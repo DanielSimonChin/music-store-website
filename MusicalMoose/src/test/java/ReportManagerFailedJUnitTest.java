@@ -59,7 +59,6 @@ import org.junit.Ignore;
  * @version 1.0
  */
 
-@Ignore
 @RunWith(Arquillian.class)
 public class ReportManagerFailedJUnitTest {
 
