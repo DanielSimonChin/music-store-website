@@ -59,7 +59,6 @@ import org.junit.Ignore;
  * @version 1.0
  */
 
-@Ignore
 @RunWith(Arquillian.class)
 public class ReportManagerFailedJUnitTest {
 
@@ -99,7 +98,6 @@ public class ReportManagerFailedJUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ClientJpaController.class.getPackage())
@@ -111,7 +109,7 @@ public class ReportManagerFailedJUnitTest {
                 .addPackage(Album.class.getPackage())
                 .addPackage(Email.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
-                .addPackage(Email.class.getPackage()) 
+                .addPackage(Email.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")

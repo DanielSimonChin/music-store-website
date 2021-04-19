@@ -323,7 +323,7 @@ public class MusicTrack implements Serializable {
     /**
      * If the saleprice is 0, then we display the list price. Otherwise, we
      * return the sale price.
-     * 
+     *
      * @author Daniel
      *
      * @return the saleprice if it is not equal to 0

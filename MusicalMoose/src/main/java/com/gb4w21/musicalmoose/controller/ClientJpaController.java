@@ -33,7 +33,6 @@ import javax.transaction.UserTransaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 @Named
 @SessionScoped
 public class ClientJpaController implements Serializable {
@@ -53,7 +52,7 @@ public class ClientJpaController implements Serializable {
         if (client.getReviewList() == null) {
             client.setReviewList(new ArrayList<Review>());
         }
-      
+
         try {
             utx.begin();
 
@@ -103,7 +102,7 @@ public class ClientJpaController implements Serializable {
     }
 
     public void edit(Client client) throws NonexistentEntityException, Exception {
-        
+
         try {
             utx.begin();
             Client persistentClient = em.find(Client.class, client.getClientid());
@@ -160,7 +159,7 @@ public class ClientJpaController implements Serializable {
                     }
                 }
             }
-              utx.commit();
+            utx.commit();
         } catch (IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
                 utx.rollback();
@@ -180,7 +179,7 @@ public class ClientJpaController implements Serializable {
     }
 
     public void destroy(Integer id) throws NonexistentEntityException, RollbackFailureException, Exception {
-        
+
         try {
             utx.begin();
             Client client;
@@ -200,7 +199,7 @@ public class ClientJpaController implements Serializable {
                 reviewListReview.setClientid(null);
                 reviewListReview = em.merge(reviewListReview);
             }
-             em.remove(client);
+            em.remove(client);
             utx.commit();
         } catch (NonexistentEntityException | IllegalStateException | SecurityException | HeuristicMixedException | HeuristicRollbackException | NotSupportedException | RollbackException | SystemException ex) {
             try {
@@ -243,24 +242,27 @@ public class ClientJpaController implements Serializable {
         Query q = em.createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
     }
+
     /**
      * find user with matching username and password
+     *
      * @author Alessandro Dare
      * @param userName String
      * @param password String
-     * @return 
+     * @return
      */
-    public Client findUser(String userName, String password){
+    public Client findUser(String userName, String password) {
+        LOG.info("User Name:" + userName);
+        LOG.info("Password:" + password);
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery cq = cb.createQuery();
         Root<Client> client = cq.from(Client.class);
         cq.select(client);
         cq.where(cb.equal(client.get("username"), userName), cb.equal(client.get("password"), password));
         TypedQuery<Client> query = em.createQuery(cq);
-        try{
+        try {
             return query.getSingleResult();
-        }
-        catch(javax.persistence.NoResultException NoResultException) {
+        } catch (javax.persistence.NoResultException NoResultException) {
             return null;
         }
     }

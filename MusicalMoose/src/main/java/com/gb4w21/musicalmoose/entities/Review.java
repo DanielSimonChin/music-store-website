@@ -91,7 +91,6 @@ public class Review implements Serializable {
         this.reviewdate = reviewdate;
     }
 
-
     public Integer getRating() {
         return rating;
     }
@@ -99,7 +98,6 @@ public class Review implements Serializable {
     public void setRating(Integer rating) {
         this.rating = rating;
     }
-
 
     public Boolean getAprovalstatus() {
         return aprovalstatus;
@@ -142,7 +140,6 @@ public class Review implements Serializable {
         return "com.gb4w21.musicalmoose.Review[ reviewid=" + reviewid + " ]";
     }
 
-
     public MusicTrack getInventoryid() {
         return inventoryid;
     }
@@ -166,5 +163,5 @@ public class Review implements Serializable {
     public void setReviewtext(String reviewtext) {
         this.reviewtext = reviewtext;
     }
-    
+
 }

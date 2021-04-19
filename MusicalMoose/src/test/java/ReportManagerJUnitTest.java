@@ -99,7 +99,6 @@ public class ReportManagerJUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-               
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ClientJpaController.class.getPackage())
@@ -111,7 +110,6 @@ public class ReportManagerJUnitTest {
                 .addPackage(Album.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
                 .addPackage(Email.class.getPackage())
-
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -131,7 +129,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testTotalSalesAllSales() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -154,7 +151,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testTotalSaleParcial() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -243,7 +239,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testTotalSalesFromAllSales() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -268,7 +263,7 @@ public class ReportManagerJUnitTest {
     private boolean checkForTotalSale(List<Invoicedetail> invoicedetails, Date toDate, Date fromDate) {
         for (Invoicedetail invoicedetail : invoicedetails) {
             if (toDate.compareTo(invoicedetail.getSaledate()) <= 0 && fromDate.compareTo(invoicedetail.getSaledate()) >= 0) {
-                LOG.info("Different Sale Date:"+invoicedetail.getSaledate());
+                LOG.info("Different Sale Date:" + invoicedetail.getSaledate());
                 return false;
             }
         }
@@ -285,7 +280,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testSaleByClientAll() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -388,7 +382,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
- 
     @Test
     public void testSaleByClientAllFromClient() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -415,7 +408,7 @@ public class ReportManagerJUnitTest {
     private boolean checkForClient(List<Invoicedetail> invoiceList, Client client) {
         for (Invoicedetail invoicedetail : invoiceList) {
             if (!invoicedetail.getSaleid().getClientid().equals(client)) {
-                 LOG.info("Different Client id:"+invoicedetail.getSaleid().getClientid());
+                LOG.info("Different Client id:" + invoicedetail.getSaleid().getClientid());
                 return false;
             }
         }
@@ -432,7 +425,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testSaleByClientDifferentDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -457,7 +449,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testSaleByClientDifferentClient() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -482,7 +473,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testSaleByArtistAll() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -585,7 +575,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testSaleByArtistAllFromArtist() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -597,7 +586,7 @@ public class ReportManagerJUnitTest {
         reportController.setReportCategory("SalesByArtist");
         reportController.setSpecifiedSearch(artist);
         reportController.reportSearch();
-        assertEquals( true,checkForArtist(reportController.getInvoicedetails(), artist));
+        assertEquals(true, checkForArtist(reportController.getInvoicedetails(), artist));
 
     }
 
@@ -613,13 +602,13 @@ public class ReportManagerJUnitTest {
         for (Invoicedetail invoicedetail : invoiceList) {
             if (invoicedetail.getInventoryid() != null) {
                 if (!invoicedetail.getInventoryid().getArtist().equals(artist)) {
-                    LOG.info("Artist:"+invoicedetail.getInventoryid().getArtist());
+                    LOG.info("Artist:" + invoicedetail.getInventoryid().getArtist());
                     return false;
                 }
             }
             if (invoicedetail.getAlbumid() != null) {
                 if (!invoicedetail.getAlbumid().getArtist().equals(artist)) {
-                    LOG.info("Different Artist:"+invoicedetail.getAlbumid().getArtist());
+                    LOG.info("Different Artist:" + invoicedetail.getAlbumid().getArtist());
                     return false;
                 }
             }
@@ -638,7 +627,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-
     @Test
     public void testSaleByArtistDifferentDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -650,7 +638,7 @@ public class ReportManagerJUnitTest {
         reportController.setReportCategory("SalesByArtist");
         reportController.setSpecifiedSearch(artist);
         reportController.reportSearch();
-        assertEquals(3,reportController.getInvoicedetails().size());
+        assertEquals(3, reportController.getInvoicedetails().size());
 
     }
 
@@ -663,7 +651,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testSaleByArtistDifferentArtist() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -675,7 +662,7 @@ public class ReportManagerJUnitTest {
         reportController.setReportCategory("SalesByArtist");
         reportController.setSpecifiedSearch(artist);
         reportController.reportSearch();
-        assertEquals( 3,reportController.getInvoicedetails().size());
+        assertEquals(3, reportController.getInvoicedetails().size());
 
     }
 
@@ -688,7 +675,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testSaleByTrackAll() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -700,7 +686,7 @@ public class ReportManagerJUnitTest {
         MusicTrack track = this.musicTrackJpaController.findMusicTrack(71);
         reportController.setSpecifiedSearch(track.getTracktitle());
         reportController.reportSearch();
-        assertEquals( 6,reportController.getInvoicedetails().size());
+        assertEquals(6, reportController.getInvoicedetails().size());
 
     }
 
@@ -713,7 +699,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testSaleByTrackAllDownloads() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -725,7 +710,7 @@ public class ReportManagerJUnitTest {
         MusicTrack track = this.musicTrackJpaController.findMusicTrack(71);
         reportController.setSpecifiedSearch(track.getTracktitle());
         reportController.reportSearch();
-        assertEquals(10,reportController.getTotalNumberOfDownloads());
+        assertEquals(10, reportController.getTotalNumberOfDownloads());
 
     }
 
@@ -751,7 +736,7 @@ public class ReportManagerJUnitTest {
         reportController.reportSearch();
         float answer = (float) 38.57;
         LOG.info("testSaleByTrackAllProfit TOTAL PROFIT:" + reportController.getTotalProfit());
-        assertEquals(0,Float.compare(answer, reportController.getTotalProfit()));
+        assertEquals(0, Float.compare(answer, reportController.getTotalProfit()));
 
     }
 
@@ -777,7 +762,7 @@ public class ReportManagerJUnitTest {
         reportController.reportSearch();
         float answer = (float) 65.84999;
         LOG.info("testSaleByTrackAllCurrentCost TOTAL CURRENT COST:" + reportController.getTotalSales());
-        assertEquals( 0,Float.compare(answer, reportController.getTotalSales()));
+        assertEquals(0, Float.compare(answer, reportController.getTotalSales()));
 
     }
 
@@ -803,7 +788,7 @@ public class ReportManagerJUnitTest {
         reportController.reportSearch();
         float answer = (float) 8.7;
         LOG.info("testSaleByTrackAllCost TOTAL COST:" + reportController.getTotalCost());
-        assertEquals(0,Float.compare(answer, reportController.getTotalCost()));
+        assertEquals(0, Float.compare(answer, reportController.getTotalCost()));
 
     }
 
@@ -816,7 +801,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testSaleByTrackDifferentDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -828,7 +812,7 @@ public class ReportManagerJUnitTest {
         MusicTrack track = this.musicTrackJpaController.findMusicTrack(71);
         reportController.setSpecifiedSearch(track.getTracktitle());
         reportController.reportSearch();
-        assertEquals( 3,reportController.getInvoicedetails().size());
+        assertEquals(3, reportController.getInvoicedetails().size());
 
     }
 
@@ -841,7 +825,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testSaleByTrackDifferentTrack() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -853,7 +836,7 @@ public class ReportManagerJUnitTest {
         MusicTrack track = this.musicTrackJpaController.findMusicTrack(43);
         reportController.setSpecifiedSearch(track.getTracktitle());
         reportController.reportSearch();
-        assertEquals(2,reportController.getInvoicedetails().size());
+        assertEquals(2, reportController.getInvoicedetails().size());
 
     }
 
@@ -866,7 +849,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
     @Test
     public void testSaleByTrackAllFromTrack() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -878,7 +860,7 @@ public class ReportManagerJUnitTest {
         MusicTrack track = this.musicTrackJpaController.findMusicTrack(71);
         reportController.setSpecifiedSearch(track.getTracktitle());
         reportController.reportSearch();
-        assertEquals(true,checkForTrack(reportController.getInvoicedetails(), track));
+        assertEquals(true, checkForTrack(reportController.getInvoicedetails(), track));
     }
 
     /**
@@ -897,7 +879,7 @@ public class ReportManagerJUnitTest {
             }
 
             if (!invoicedetail.getInventoryid().getInventoryid().equals(track.getInventoryid())) {
-                LOG.info("Different track:"+invoicedetail.getInventoryid().getInventoryid());
+                LOG.info("Different track:" + invoicedetail.getInventoryid().getInventoryid());
                 return false;
             }
 
@@ -915,7 +897,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testSaleByAlbumAll() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -927,7 +908,7 @@ public class ReportManagerJUnitTest {
         Album album = this.albumJpaController.findAlbum(1);
         reportController.setSpecifiedSearch(album.getAlbumtitle());
         reportController.reportSearch();
-        assertEquals(5,reportController.getInvoicedetails().size());
+        assertEquals(5, reportController.getInvoicedetails().size());
 
     }
 
@@ -953,7 +934,7 @@ public class ReportManagerJUnitTest {
         reportController.reportSearch();
         float answer = (float) 86.28;
         LOG.info("testSaleByAlbumAllProfit TOTAL PROFIT:" + reportController.getTotalProfit());
-        assertEquals(0,Float.compare(answer, reportController.getTotalProfit()));
+        assertEquals(0, Float.compare(answer, reportController.getTotalProfit()));
 
     }
 
@@ -979,7 +960,7 @@ public class ReportManagerJUnitTest {
         reportController.reportSearch();
         float answer = (float) 109.53999;
         LOG.info("testSaleByAlbumAllCurrentCost TOTAL CURRENT COST:" + reportController.getTotalSales());
-        assertEquals(0,Float.compare(answer, reportController.getTotalSales()));
+        assertEquals(0, Float.compare(answer, reportController.getTotalSales()));
 
     }
 
@@ -1005,7 +986,7 @@ public class ReportManagerJUnitTest {
         reportController.reportSearch();
         float answer = (float) 39.949997;
         LOG.info("testSaleByAlbumAllCost TOTAL COST:" + reportController.getTotalCost());
-        assertEquals(0,Float.compare(answer, reportController.getTotalCost()));
+        assertEquals(0, Float.compare(answer, reportController.getTotalCost()));
 
     }
 
@@ -1018,7 +999,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
     @Test
     public void testSaleByAlbumAllDownloads() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1030,8 +1010,8 @@ public class ReportManagerJUnitTest {
         Album album = this.albumJpaController.findAlbum(1);
         reportController.setSpecifiedSearch(album.getAlbumtitle());
         reportController.reportSearch();
-       
-        assertEquals(6,reportController.getTotalNumberOfDownloads());
+
+        assertEquals(6, reportController.getTotalNumberOfDownloads());
 
     }
 
@@ -1044,7 +1024,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testSaleByAlbumAllFromAlbum() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1056,7 +1035,7 @@ public class ReportManagerJUnitTest {
         Album album = this.albumJpaController.findAlbum(1);
         reportController.setSpecifiedSearch(album.getAlbumtitle());
         reportController.reportSearch();
-        assertEquals( true,checkForAlbum(reportController.getInvoicedetails(), album));
+        assertEquals(true, checkForAlbum(reportController.getInvoicedetails(), album));
 
     }
 
@@ -1076,7 +1055,7 @@ public class ReportManagerJUnitTest {
             }
 
             if (!invoicedetail.getAlbumid().getAlbumid().equals(album.getAlbumid())) {
-                LOG.info("Different album id:"+invoicedetail.getAlbumid().getAlbumid());
+                LOG.info("Different album id:" + invoicedetail.getAlbumid().getAlbumid());
                 return false;
             }
 
@@ -1094,7 +1073,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testSaleByAlbumDifferentDate() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1106,7 +1084,7 @@ public class ReportManagerJUnitTest {
         Album album = this.albumJpaController.findAlbum(1);
         reportController.setSpecifiedSearch(album.getAlbumtitle());
         reportController.reportSearch();
-        assertEquals(2,reportController.getInvoicedetails().size());
+        assertEquals(2, reportController.getInvoicedetails().size());
 
     }
 
@@ -1119,7 +1097,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
     @Test
     public void testSaleByAlbumDifferentAlbum() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1131,7 +1108,7 @@ public class ReportManagerJUnitTest {
         Album album = this.albumJpaController.findAlbum(21);
         reportController.setSpecifiedSearch(album.getAlbumtitle());
         reportController.reportSearch();
-        assertEquals(2,reportController.getInvoicedetails().size());
+        assertEquals(2, reportController.getInvoicedetails().size());
 
     }
 
@@ -1144,7 +1121,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testZeroCleintsAllDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1154,7 +1130,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroClients");
         reportController.reportSearch();
-        assertEquals(3,reportController.getClients().size());
+        assertEquals(3, reportController.getClients().size());
     }
 
     /**
@@ -1166,7 +1142,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
     @Test
     public void testZeroCleintsAllDatesFromZeroClients() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1176,7 +1151,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroClients");
         reportController.reportSearch();
-        assertEquals(true,checkForeroClients(reportController.getClients(), toDate, fromDate));
+        assertEquals(true, checkForeroClients(reportController.getClients(), toDate, fromDate));
     }
 
     /**
@@ -1195,7 +1170,7 @@ public class ReportManagerJUnitTest {
                 for (Sale sale : client.getSaleList()) {
                     for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
                         if (toDate.compareTo(invoicedetail.getSaledate()) >= 0 && fromDate.compareTo(invoicedetail.getSaledate()) <= 0) {
-                            LOG.info("client has made purcahse:"+client.getUsername());
+                            LOG.info("client has made purcahse:" + client.getUsername());
                             return false;
                         }
                     }
@@ -1215,7 +1190,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testZeroCleintsPracialDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1225,7 +1199,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroClients");
         reportController.reportSearch();
-        assertEquals(6,reportController.getClients().size());
+        assertEquals(6, reportController.getClients().size());
     }
 
     /**
@@ -1237,7 +1211,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testZeroTracksAllDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1247,7 +1220,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroTracks");
         reportController.reportSearch();
-        assertEquals( 87,reportController.getTracks().size());
+        assertEquals(87, reportController.getTracks().size());
     }
 
     /**
@@ -1259,7 +1232,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testZeroTracksAllDatesFromZeroTracks() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1269,7 +1241,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroTracks");
         reportController.reportSearch();
-        assertEquals( true,checkForZeroTracks(reportController.getTracks(), toDate, fromDate));
+        assertEquals(true, checkForZeroTracks(reportController.getTracks(), toDate, fromDate));
     }
 
     /**
@@ -1287,7 +1259,7 @@ public class ReportManagerJUnitTest {
             if (musicTrack.getInvoicedetailList() != null) {
                 for (Invoicedetail invoicedetail : musicTrack.getInvoicedetailList()) {
                     if (toDate.compareTo(invoicedetail.getSaledate()) >= 0 && fromDate.compareTo(invoicedetail.getSaledate()) <= 0) {
-                       LOG.info("Track has sold:"+musicTrack.getTracktitle());
+                        LOG.info("Track has sold:" + musicTrack.getTracktitle());
                         return false;
                     }
                 }
@@ -1296,7 +1268,7 @@ public class ReportManagerJUnitTest {
 
         return true;
     }
-    
+
     /**
      * tests that all tracks generated by zero tracks have not sold in the
      * specified date range
@@ -1306,7 +1278,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testZeroTracksPracialDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1316,7 +1287,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("ZeroTracks");
         reportController.reportSearch();
-        assertEquals(90,reportController.getTracks().size());
+        assertEquals(90, reportController.getTracks().size());
     }
 
     /**
@@ -1328,7 +1299,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
     @Test
     public void testTopClientsAllDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1338,7 +1308,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("TopClients");
         reportController.reportSearch();
-        assertEquals(19,reportController.getClients().size());
+        assertEquals(19, reportController.getClients().size());
     }
 
     /**
@@ -1350,7 +1320,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-   
     @Test
     public void testTopClientsAllDatesFromTopClients() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1360,7 +1329,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("TopClients");
         reportController.reportSearch();
-        assertEquals(true,checkForTopClients(reportController.getClients(), toDate, fromDate));
+        assertEquals(true, checkForTopClients(reportController.getClients(), toDate, fromDate));
     }
 
     /**
@@ -1376,33 +1345,36 @@ public class ReportManagerJUnitTest {
     private boolean checkForTopClients(List<Client> clients, Date toDate, Date fromDate) {
 
         for (Client client : clients) {
-           if(!checkClientHasBought(client, toDate,fromDate)){
-               return false;
-           }
+            if (!checkClientHasBought(client, toDate, fromDate)) {
+                return false;
+            }
         }
 
         return true;
     }
-     /**
-     * Goes through a specific MusicTrack to check if it was sold it a given date range 
+
+    /**
+     * Goes through a specific MusicTrack to check if it was sold it a given
+     * date range
+     *
      * @param client Client
      * @param toDate Date
      * @param fromDate Date
      * @return boolean true it it has been sold false if not
      * @author Alessandro Dare
      */
-    private boolean checkClientHasBought(Client client,Date toDate, Date fromDate){
-       if (client.getSaleList() != null) {
-                for (Sale sale : client.getSaleList()) {
-                    for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
-             
+    private boolean checkClientHasBought(Client client, Date toDate, Date fromDate) {
+        if (client.getSaleList() != null) {
+            for (Sale sale : client.getSaleList()) {
+                for (Invoicedetail invoicedetail : sale.getInvoicedetailList()) {
+
                     if (toDate.compareTo(invoicedetail.getSaledate()) >= 0 && fromDate.compareTo(invoicedetail.getSaledate()) <= 0) {
                         return true;
                     }
                 }
             }
-       }
-       LOG.info("Client hasn't bought:"+client.getUsername());
+        }
+        LOG.info("Client hasn't bought:" + client.getUsername());
         return false;
     }
 
@@ -1415,7 +1387,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
     @Test
     public void testTopClientsParcialDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1425,7 +1396,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("TopClients");
         reportController.reportSearch();
-        assertEquals(16,reportController.getClients().size());
+        assertEquals(16, reportController.getClients().size());
     }
 
     /**
@@ -1437,7 +1408,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-    
     @Test
     public void testTopSellersAllDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1447,7 +1417,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("TopSellers");
         reportController.reportSearch();
-        assertEquals(25,(reportController.getTracks().size() + reportController.getAlbums().size()));
+        assertEquals(25, (reportController.getTracks().size() + reportController.getAlbums().size()));
     }
 
     /**
@@ -1459,7 +1429,6 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
     @Test
     public void testTopSellersAllDatesFromTopSellers() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1469,7 +1438,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("TopSellers");
         reportController.reportSearch();
-        assertEquals( true,(checkForTopTracks(reportController.getTracks(), toDate, fromDate) && checkForTopAlbums(reportController.getAlbums(), toDate, fromDate)));
+        assertEquals(true, (checkForTopTracks(reportController.getTracks(), toDate, fromDate) && checkForTopAlbums(reportController.getAlbums(), toDate, fromDate)));
     }
 
     /**
@@ -1484,32 +1453,36 @@ public class ReportManagerJUnitTest {
      */
     private boolean checkForTopTracks(List<MusicTrack> tracks, Date toDate, Date fromDate) {
         for (MusicTrack musicTrack : tracks) {
-            if(!checkTrackHasSold(musicTrack,toDate,fromDate)){
+            if (!checkTrackHasSold(musicTrack, toDate, fromDate)) {
                 return false;
             }
         }
 
         return true;
     }
+
     /**
-     * Goes through a specific MusicTrack to check if it was sold it a given date range 
+     * Goes through a specific MusicTrack to check if it was sold it a given
+     * date range
+     *
      * @param track MusicTrack
      * @param toDate Date
      * @param fromDate Date
      * @return boolean true it it has been sold false if not
      * @author Alessandro Dare
      */
-    private boolean checkTrackHasSold(MusicTrack track,Date toDate, Date fromDate){
+    private boolean checkTrackHasSold(MusicTrack track, Date toDate, Date fromDate) {
         if (track.getInvoicedetailList() != null) {
-                for (Invoicedetail invoicedetail : track.getInvoicedetailList()) {
-                    if (toDate.compareTo(invoicedetail.getSaledate()) >= 0 && fromDate.compareTo(invoicedetail.getSaledate()) <= 0) {
-                        return true;
-                    }
+            for (Invoicedetail invoicedetail : track.getInvoicedetailList()) {
+                if (toDate.compareTo(invoicedetail.getSaledate()) >= 0 && fromDate.compareTo(invoicedetail.getSaledate()) <= 0) {
+                    return true;
                 }
             }
-        LOG.info("Track has sold:"+track.getTracktitle());
+        }
+        LOG.info("Track has sold:" + track.getTracktitle());
         return false;
     }
+
     /**
      * check's for all albums in a list have actually been purchased in the
      * specified date range
@@ -1522,32 +1495,36 @@ public class ReportManagerJUnitTest {
      */
     private boolean checkForTopAlbums(List<Album> albums, Date toDate, Date fromDate) {
         for (Album album : albums) {
-            if(!checkAlbumHasSold(album,toDate,fromDate)){
+            if (!checkAlbumHasSold(album, toDate, fromDate)) {
                 return false;
             }
         }
 
         return true;
     }
+
     /**
-     * Goes through a specific album to check if it was sold it a given date range 
+     * Goes through a specific album to check if it was sold it a given date
+     * range
+     *
      * @param album Album
      * @param toDate Date
      * @param fromDate Date
      * @return boolean true it it has been sold false if not
      * @author Alessandro Dare
      */
-    private boolean checkAlbumHasSold(Album album,Date toDate, Date fromDate){
+    private boolean checkAlbumHasSold(Album album, Date toDate, Date fromDate) {
         if (album.getInvoicedetailList() != null) {
-                for (Invoicedetail invoicedetail : album.getInvoicedetailList()) {
-                    if (toDate.compareTo(invoicedetail.getSaledate()) >= 0 && fromDate.compareTo(invoicedetail.getSaledate()) <= 0) {
-                        return true;
-                    }
+            for (Invoicedetail invoicedetail : album.getInvoicedetailList()) {
+                if (toDate.compareTo(invoicedetail.getSaledate()) >= 0 && fromDate.compareTo(invoicedetail.getSaledate()) <= 0) {
+                    return true;
                 }
             }
-        LOG.info("Get album title:"+album.getAlbumtitle());
+        }
+        LOG.info("Get album title:" + album.getAlbumtitle());
         return false;
     }
+
     /**
      * tests that all tracks and albums generated by top sellers that have been
      * purchased in the specified date range
@@ -1557,7 +1534,7 @@ public class ReportManagerJUnitTest {
      * @throws NullCategoryException
      * @author Alessandro Dare
      */
-  
+
     @Test
     public void testTopSellersPracialDates() throws ParseException, NullSearchValueException, NullCategoryException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -1567,7 +1544,7 @@ public class ReportManagerJUnitTest {
         reportController.setToDate(toDate);
         reportController.setReportCategory("TopSellers");
         reportController.reportSearch();
-        assertEquals(20,(reportController.getTracks().size() + reportController.getAlbums().size()));
+        assertEquals(20, (reportController.getTracks().size() + reportController.getAlbums().size()));
     }
 
     /**

@@ -56,9 +56,9 @@ import org.junit.Ignore;
  *
  * @author Daniel
  */
-
 @RunWith(Arquillian.class)
 public class AlbumControllerUnitTests {
+
     @Inject
     private AlbumJpaController albumController;
     @Inject
@@ -88,7 +88,6 @@ public class AlbumControllerUnitTests {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ClientJpaController.class.getPackage())
@@ -100,7 +99,7 @@ public class AlbumControllerUnitTests {
                 .addPackage(Album.class.getPackage())
                 .addPackage(Email.class.getPackage())
                 .addPackage(MusicTrack.class.getPackage())
-                .addPackage(Email.class.getPackage()) 
+                .addPackage(Email.class.getPackage())
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -193,21 +192,21 @@ public class AlbumControllerUnitTests {
     @Test
     public void testGetAlbumsTracks() {
         Album album = this.albumController.findAlbum(1);
-        
+
         List<MusicTrack> albumTracks = this.albumController.getAlbumTracks(album.getAlbumid());
-        
+
         boolean checkConditions = true;
-        for(MusicTrack track : albumTracks){
+        for (MusicTrack track : albumTracks) {
             //the track's album's id must be the same as the input album
-            if(track.getAlbumid().getAlbumid() != album.getAlbumid()){
+            if (track.getAlbumid().getAlbumid() != album.getAlbumid()) {
                 checkConditions = false;
             }
         }
-        
+
         assertTrue(checkConditions);
     }
 
-      /**
+    /**
      * Restore the database to a known state before testing. This is important
      * if the test is destructive. This routine is courtesy of Bartosz Majsak
      * who also solved my Arquillian remote server problem

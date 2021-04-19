@@ -95,6 +95,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * Constructor that resets all page values
+     *
      * @author Alessandro Dare
      */
     @PostConstruct
@@ -236,6 +237,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * If the date field is null change it to and invalid date
+     *
      * @author Alessandro Dare
      */
     private void changeDate() {
@@ -256,13 +258,11 @@ public class ReportManagementController implements Serializable {
     }
 
     /**
-     * searches and displays the list of chosen sales, tracks, albums etc that
-     * is requested for the report
+     * clears all previous report values
+     *
      * @author Alessandro Dare
-     * @return String report page
      */
-    public String reportSearch() throws NullSearchValueException, NullCategoryException {
-
+    private void clearAllValues() {
         gettingSales = false;
         invoicedetails = new ArrayList<>();
         clients = new ArrayList<>();
@@ -274,15 +274,44 @@ public class ReportManagementController implements Serializable {
         toalNumberOfSales = 0;
         totalNumberOfDownloads = 0;
         selectedInvoicedetails = new ArrayList<>();
+    }
+
+    /**
+     * checks if category or specific search or null if so throw and exception
+     *
+     * @author Alessandro Dare
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
+    private void checkNullValues() throws NullCategoryException, NullSearchValueException {
         if (this.reportCategory == null) {
             throw new NullCategoryException("Must always have a category to perform a search");
+
         }
+        //checks if search is in a specific sale
         if ((this.reportCategory.equals(ReportCategory.SalesByAlbum.toString()) || this.reportCategory.equals(ReportCategory.SalesByArtist.toString())
                 || this.reportCategory.equals(ReportCategory.SalesByClient.toString()) || this.reportCategory.equals(ReportCategory.SalesByTrack.toString()))
                 && this.specifiedSearch == null) {
 
             throw new NullSearchValueException("This category requires a specified search field");
         }
+    }
+
+    /**
+     * searches and displays the list of chosen sales, tracks, albums etc that
+     * is requested for the report
+     *
+     * @author Alessandro Dare
+     * @return String report page
+     * @throws NullSearchValueException
+     * @throws NullCategoryException
+     */
+    public String reportSearch() throws NullSearchValueException, NullCategoryException {
+
+        clearAllValues();
+        checkNullValues();
+        LOG.info("Category Search:" + this.reportCategory);
+        //different searches for different categories
         if (this.reportCategory.equals(ReportCategory.TotalSales.toString())) {
 
             gettingSales = true;
@@ -330,26 +359,9 @@ public class ReportManagementController implements Serializable {
     }
 
     /**
-     * Takes user to report page constructor that resets all page values
-     * @author Alessandro Dare
-     * @return String report page
-     */
-    public String toReportPage() {
-
-        gettingSales = false;
-
-        invoicedetails = new ArrayList<>();
-        this.reportCategory = ReportCategory.TotalSales.toString();
-        clients = new ArrayList<>();
-        tracks = new ArrayList<>();
-        albums = new ArrayList<>();
-        selectedInvoicedetails = new ArrayList<>();
-        return "adminreport";
-    }
-
-    /**
      * Returns a list of clients who hadn't made a purchase in a specified date
      * range
+     *
      * @author Alessandro Dare
      * @return List<Client> list of clients
      */
@@ -369,12 +381,14 @@ public class ReportManagementController implements Serializable {
                 clients.remove(selectedClient);
             }
         }
+        LOG.info("Number of zero clients:" + clients.size());
         return clients;
     }
 
     /**
      * Returns a list of music tracks that haven't sold in the specified date
      * range
+     *
      * @author Alessandro Dare
      * @return List<MusicTrack> list of music tracks
      */
@@ -396,12 +410,14 @@ public class ReportManagementController implements Serializable {
                 tracks.remove(selectedTrack);
             }
         }
+        LOG.info("Number of zero tracks" + tracks.size());
         return tracks;
     }
 
     /**
      * Returns a list of clients ordered by total sale that have made a purchase
      * in the specified date range
+     *
      * @author Alessandro Dare
      * @return List<Client> client list
      */
@@ -418,16 +434,20 @@ public class ReportManagementController implements Serializable {
 
         List<Client> clients = query.getResultList();
         for (Client selectedClient : clients) {
+            LOG.info("track:" + selectedClient.getUsername());
+            LOG.info("number of client sales" + selectedClient.getSaleList().size());
             if (selectedClient.getSaleList() == null || selectedClient.getSaleList().isEmpty()) {
                 clients.remove(selectedClient);
             }
         }
+        LOG.info("number of top clients:" + query.getResultList().size());
         return clients;
     }
 
     /**
      * Returns a list of tracks ordered by total sale that have been purchased
      * in the specified date range
+     *
      * @author Alessandro Dare
      * @return List<MusicTrack> track list
      */
@@ -444,17 +464,22 @@ public class ReportManagementController implements Serializable {
 
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
         List<MusicTrack> musicTracks = query.getResultList();
+
         for (MusicTrack selectedmusicTrack : musicTracks) {
+            LOG.info("track:" + selectedmusicTrack.getTracktitle());
+            LOG.info("number of track sales" + selectedmusicTrack.getInvoicedetailList().size());
             if (selectedmusicTrack.getInvoicedetailList() == null || selectedmusicTrack.getInvoicedetailList().isEmpty()) {
                 musicTracks.remove(selectedmusicTrack);
             }
         }
+        LOG.info("number of top tracks:" + musicTracks.size());
         return musicTracks;
     }
 
     /**
      * Returns a list of albums ordered by total sale that have been purchased
      * in the specified date range
+     *
      * @author Alessandro Dare
      * @return List<Album> album list
      */
@@ -470,21 +495,27 @@ public class ReportManagementController implements Serializable {
         cq.select(album);
         TypedQuery<Album> query = entityManager.createQuery(cq);
         List<Album> albums = query.getResultList();
+
         for (Album selectedAlbum : albums) {
+            LOG.info("album:" + selectedAlbum.getAlbumtitle());
+            LOG.info("number of album sales" + selectedAlbum.getInvoicedetailList().size());
             if (selectedAlbum.getInvoicedetailList() == null || selectedAlbum.getInvoicedetailList().isEmpty()) {
                 albums.remove(selectedAlbum);
             }
         }
+        LOG.info("number of top albums:" + albums.size());
         return albums;
     }
 
     /**
      * Gets all sales of the given track made in the specified date range
+     *
      * @author Alessandro Dare
      * @param trackid int
      * @return List<Invoicedetail> sale list
      */
     private List<Invoicedetail> getSaleByTrack(int trackid) {
+        LOG.info("track id:" + trackid);
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
@@ -496,18 +527,20 @@ public class ReportManagementController implements Serializable {
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-
+        LOG.info("number of sales associated with track:" + invoicedetails.size());
         setTotals(invoicedetails);
         return invoicedetails;
     }
 
     /**
      * Gets all sales of the given album made in the specified date range
+     *
      * @author Alessandro Dare
      * @param albumid int
      * @return List<Invoicedetail> sale list
      */
     private List<Invoicedetail> getSaleByAlbum(int albumid) {
+        LOG.info("Album id:" + albumid);
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Album> album = cq.from(Album.class);
@@ -519,7 +552,7 @@ public class ReportManagementController implements Serializable {
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-
+        LOG.info("number of sales associated with album:" + invoicedetails.size());
         setTotals(invoicedetails);
         return invoicedetails;
     }
@@ -527,11 +560,14 @@ public class ReportManagementController implements Serializable {
     /**
      * Gets a sale list of all sale form a certain artist in the specified date
      * range
+     *
      * @author Alessandro Dare
      * @param artist String
      * @return List<Invoicedetail> sale list
      */
     private List<Invoicedetail> getSaleByArtist(String artist) {
+        LOG.info("Artist:" + artist);
+        //getting albums for artist
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
@@ -543,7 +579,8 @@ public class ReportManagementController implements Serializable {
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoicedetails = query.getResultList();
-
+        LOG.info("ablums associted with artist:" + invoicedetails.size());
+        //getting tracks from artist
         cb = entityManager.getCriteriaBuilder();
         cq = cb.createQuery(Invoicedetail.class);
         Root<Album> album = cq.from(Album.class);
@@ -554,6 +591,7 @@ public class ReportManagementController implements Serializable {
         cq.distinct(true);
         cq.select(invoicedetail);
         query = entityManager.createQuery(cq);
+        LOG.info("tracks associted with artist:" + query.getResultList().size());
         invoicedetails.addAll(query.getResultList());
 
         setTotals(invoicedetails);
@@ -562,6 +600,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * get a list of all sale made in a certain date range
+     *
      * @author Alessandro Dare
      * @return List<Invoicedetail> sale list
      */
@@ -575,21 +614,23 @@ public class ReportManagementController implements Serializable {
         cq.distinct(true);
         cq.select(invoicedetail);
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
-        List<Invoicedetail> invoicedetails = query.getResultList();
+        List<Invoicedetail> invoiceDetails = query.getResultList();
 
-        setTotals(invoicedetails);
-        return invoicedetails;
+        setTotals(invoiceDetails);
+        LOG.info("List of Sales:" + invoiceDetails.size());
+        return invoiceDetails;
     }
 
     /**
      * get all sales that where made by a chosen client in the specified date
      * range
+     *
      * @author Alessandro Dare
      * @param chosenClient
      * @return List<Invoicedetail> the list of sale
      */
     private List<Invoicedetail> getSalesByClient(Client chosenClient) {
-
+        LOG.info("Client:" + chosenClient.getUsername());
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Invoicedetail> cq = cb.createQuery(Invoicedetail.class);
         Root<Client> client = cq.from(Client.class);
@@ -602,11 +643,13 @@ public class ReportManagementController implements Serializable {
         TypedQuery<Invoicedetail> query = entityManager.createQuery(cq);
         List<Invoicedetail> invoiceDetails = query.getResultList();
         setTotals(invoiceDetails);
+        LOG.info("Sales in reference to client:" + invoiceDetails.size());
         return invoiceDetails;
     }
 
     /**
      * Calculates all the totals when the user requests a sales report
+     *
      * @author Alessandro Dare
      * @param invoiceDetails List<Invoicedetail>
      */
@@ -618,6 +661,7 @@ public class ReportManagementController implements Serializable {
             if (this.reportCategory.equals(ReportCategory.SalesByTrack.toString()) || this.reportCategory.equals(ReportCategory.SalesByAlbum.toString())) {
                 this.totalNumberOfDownloads += selectedInvoicedetail.getProductdownloaded();
             }
+            //adds cost of the track/ablum for each sale
             if (selectedInvoicedetail.getInventoryid() != null) {
                 this.totalCost += selectedInvoicedetail.getInventoryid().getCostprice();
             }
@@ -625,11 +669,17 @@ public class ReportManagementController implements Serializable {
                 this.totalCost += selectedInvoicedetail.getAlbumid().getCostprice();
             }
         }
+        LOG.info("totalCost:" + totalCost);
+        LOG.info("totalProfit:" + totalProfit);
+        LOG.info("totalSales:" + totalSales);
+        LOG.info("toalNumberOfSales:" + toalNumberOfSales);
+        LOG.info("totalNumberOfDownloads:" + totalNumberOfDownloads);
     }
 
     /**
      * Checks to see if the track, album, artists , or client exists before
      * doing a specified search if it does it throws an error
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
@@ -638,11 +688,12 @@ public class ReportManagementController implements Serializable {
     public void validateSpecificSearch(FacesContext context, UIComponent component,
             Object value) {
         UIInput selectInput = (UIInput) component.findComponent("criteria");
-
+        //checks if search is in a specific category
         if (selectInput.getValue().equals(ReportCategory.SalesByAlbum.toString())
                 || selectInput.getValue().equals(ReportCategory.SalesByArtist.toString())
                 || selectInput.getValue().equals(ReportCategory.SalesByClient.toString())
                 || selectInput.getValue().equals(ReportCategory.SalesByTrack.toString())) {
+            LOG.info("Category:" + selectInput.getValue());
 
             if (value == null || value.toString().isEmpty() || value.toString().isBlank()) {
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -651,6 +702,8 @@ public class ReportManagementController implements Serializable {
 
                 throw new ValidatorException(message);
             }
+            LOG.info("Specific Search:" + value.toString());
+            //different validation and message for each category
             if (selectInput.getLocalValue().equals(ReportCategory.SalesByAlbum.toString()) && (!checkAlbum(value.toString()))) {
 
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -688,6 +741,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if track or album with specified artist exists
+     *
      * @author Alessandro Dare
      * @param artist String
      * @return true if it exists false if not
@@ -700,6 +754,7 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(musicTrack.get("artist"), artist));
         TypedQuery<MusicTrack> queryTrack = entityManager.createQuery(cq);
         List<MusicTrack> musicTracks = queryTrack.getResultList();
+        LOG.info("music tracks related to artist" + musicTracks.size());
         if (musicTracks != null && musicTracks.size() > 0) {
             return true;
         }
@@ -710,6 +765,8 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(album.get("artist"), artist));
         TypedQuery<Album> queryAlbum = entityManager.createQuery(cq);
         List<Album> albums = queryAlbum.getResultList();
+        LOG.info("albums related to artist" + albums.size());
+        LOG.info("");
         if (albums != null && albums.size() > 0) {
             return true;
         }
@@ -719,6 +776,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if album with specified name exists
+     *
      * @author Alessandro Dare
      * @param albumTitle String
      * @return true if it exists false if not
@@ -732,6 +790,7 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(album.get("albumtitle"), albumTitle));
         TypedQuery<Album> query = entityManager.createQuery(cq);
         List<Album> albums = query.getResultList();
+        LOG.info("albums related to title" + albumTitle + albums.size());
         if (albums == null || albums.isEmpty()) {
 
             return false;
@@ -742,6 +801,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if client with specified name exists
+     *
      * @author Alessandro Dare
      * @param userName String
      * @return true if it exists false if not
@@ -753,7 +813,9 @@ public class ReportManagementController implements Serializable {
         cq.select(client);
         cq.where(cb.equal(client.get("username"), userName));
         TypedQuery<Client> query = entityManager.createQuery(cq);
+
         try {
+            LOG.info("clients related to username" + userName + " valid");
             query.getSingleResult();
             return true;
         } catch (javax.persistence.NoResultException NoResultException) {
@@ -763,6 +825,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * checks if track with specified name exists
+     *
      * @author Alessandro Dare
      * @param trackname String
      * @return true if it exists false if not
@@ -775,6 +838,7 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(musicTrack.get("tracktitle"), trackname));
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
         List<MusicTrack> tracks = query.getResultList();
+        LOG.info("tracks related to title" + trackname + tracks.size());
         if (tracks == null || tracks.isEmpty()) {
             return false;
         }
@@ -783,6 +847,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * gets track with specified track name
+     *
      * @author Alessandro Dare
      * @param trackname String
      * @return MusicTrack specified track
@@ -795,6 +860,7 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(musicTrack.get("tracktitle"), trackname));
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
         try {
+            LOG.info("get track unsucessful:" + trackname);
             return query.getSingleResult();
 
         } catch (javax.persistence.NoResultException NoResultException) {
@@ -804,6 +870,7 @@ public class ReportManagementController implements Serializable {
 
     /**
      * gets album with specified album title
+     *
      * @author Alessandro Dare
      * @param albumName String
      * @return Album album with specified title
@@ -820,12 +887,14 @@ public class ReportManagementController implements Serializable {
             return query.getSingleResult();
 
         } catch (javax.persistence.NoResultException NoResultException) {
+            LOG.info("get album unsucessful:" + albumName);
             return null;
         }
     }
 
     /**
      * get client with specified username
+     *
      * @author Alessandro Dare
      * @param userName String
      * @return Client client with username
@@ -838,9 +907,11 @@ public class ReportManagementController implements Serializable {
         cq.where(cb.equal(client.get("username"), userName));
         TypedQuery<Client> query = entityManager.createQuery(cq);
         try {
+
             return query.getSingleResult();
 
         } catch (javax.persistence.NoResultException NoResultException) {
+            LOG.info("get user unsucessful:" + userName);
             return null;
         }
     }

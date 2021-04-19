@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is the controller used for the admin management of the banner ads
- * 
+ *
  * @author Victor Ouy
  */
 @Named
@@ -25,85 +25,84 @@ import org.slf4j.LoggerFactory;
 public class BannerAdManagerController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(BannerAdManagerController.class);
-    
+
     @Inject
     private BanneradJpaController bannerAdJpaController;
-    
+
     private List<Bannerad> bannerAds;
     private List<Bannerad> selectedBannerAds;
     private Bannerad selectedBannerAd;
-    
-    
+
     /**
-     * The data table should be filled with all the ad entity objects from
-     * the database.
+     * The data table should be filled with all the ad entity objects from the
+     * database.
      */
     @PostConstruct
     public void init() {
         this.bannerAds = bannerAdJpaController.findBanneradEntities();
     }
-    
+
     /**
      * Getter for bannerAds
-     * 
+     *
      * @return this.bannerAds
      */
     public List<Bannerad> getBannerAds() {
         return this.bannerAds;
     }
-    
+
     /**
      * Setter for bannerAds
-     * 
-     * @param bannerAds 
+     *
+     * @param bannerAds
      */
     public void setBannerAds(List<Bannerad> bannerAds) {
         this.bannerAds = bannerAds;
     }
-    
+
     /**
      * Getter for selectedBannerAds
-     * 
+     *
      * @return this.selectedBannerAds
      */
     public List<Bannerad> getSelectedBannerAds() {
         return this.selectedBannerAds;
     }
-    
+
     /**
      * Setter for bannerAds
-     * 
-     * @param bannerAds 
+     *
+     * @param bannerAds
      */
     public void setSelectedBannerAds(List<Bannerad> selectedBannerAds) {
         this.selectedBannerAds = selectedBannerAds;
     }
-    
+
     /**
      * Getter for selectedBannerAd
-     * 
+     *
      * @return this.selectedBannerAd
      */
     public Bannerad getSelectedBannerAd() {
         return this.selectedBannerAd;
     }
-    
+
     /**
      * Setter for selectedBannerAd
-     * 
-     * @param selectedBannerAd 
+     *
+     * @param selectedBannerAd
      */
     public void setSelectedBannerAd(Bannerad selectedBannerAd) {
         this.selectedBannerAd = selectedBannerAd;
     }
-    
+
     /**
-     * Re-instantiates the selected banner ad 
+     * Re-instantiates the selected banner ad
      */
     public void openNew() {
         this.selectedBannerAd = new Bannerad();
     }
-    
+
     /**
      * Check if the selected bannerAds is empty
      *
@@ -112,10 +111,11 @@ public class BannerAdManagerController implements Serializable {
     public boolean hasSelectedBannerAds() {
         return this.selectedBannerAds != null && !this.selectedBannerAds.isEmpty();
     }
-    
+
     /**
-     * Creates a proper message that notifies the user whenever they edit, create or delete a banner ad
-     * 
+     * Creates a proper message that notifies the user whenever they edit,
+     * create or delete a banner ad
+     *
      * @param summary
      * @param detail
      * @return FaceMessage
@@ -178,8 +178,7 @@ public class BannerAdManagerController implements Serializable {
                 this.bannerAdJpaController.edit(this.selectedBannerAd);
                 FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "adUpdated"));
             }
-        }
-        else {
+        } else {
             selectedBannerAd.setDisplayed(Boolean.FALSE);
             FacesMessage facesMsg = createMsg("invalid", "adInvalid");
             facesMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -188,14 +187,14 @@ public class BannerAdManagerController implements Serializable {
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
-    
+
     /**
      * Checks if the ad created/update is valid with the other ads
-     * 
+     *
      * @return boolean
      */
     private boolean checkValidAd() {
-        if (selectedBannerAd.getDisplayed())
+        if (selectedBannerAd.getDisplayed()) {
             for (int i = 0; i < bannerAds.size(); i++) {
                 if (bannerAds.get(i).getBanneraddid() != selectedBannerAd.getBanneraddid()) {
                     if (bannerAds.get(i).getDisplayed() && bannerAds.get(i).getPageposition() == selectedBannerAd.getPageposition()) {
@@ -203,6 +202,7 @@ public class BannerAdManagerController implements Serializable {
                     }
                 }
             }
+        }
         return true;
     }
 

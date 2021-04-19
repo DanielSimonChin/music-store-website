@@ -46,8 +46,10 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * Tests public methods for review controller
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -89,14 +91,12 @@ public class ReviewUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(ReviewJpaController.class.getPackage())
                 .addPackage(RollbackFailureException.class.getPackage())
                 .addPackage(Review.class.getPackage())
                 .addPackage(Email.class.getPackage())
-
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
                 .addAsWebInfResource(new File("src/main/webapp/WEB-INF/payara-resources.xml"), "payara-resources.xml")
                 .addAsResource(new File("src/main/resources/META-INF/persistence.xml"), "META-INF/persistence.xml")
@@ -106,8 +106,10 @@ public class ReviewUnitTest {
 
         return webArchive;
     }
+
     /**
      * Tests that all reviews given are for selected track
+     *
      * @author Alessandro Dare
      */
     @Test
@@ -116,8 +118,10 @@ public class ReviewUnitTest {
         List<Review> reviews = this.controller.getTrackReviews(musicTrack);
         assertEquals(checkRealtedTracks(musicTrack, reviews), true);
     }
+
     /**
      * checks that all reviews are related to the selected tracks
+     *
      * @author Alessandro Dare
      * @param musicTrack MusicTrack
      * @param reviews List<Review>
@@ -131,8 +135,10 @@ public class ReviewUnitTest {
         }
         return true;
     }
+
     /**
      * Tests that no reviews a given to a new track
+     *
      * @author Alessandro Dare
      */
     @Test
@@ -141,8 +147,10 @@ public class ReviewUnitTest {
         List<Review> reviews = this.controller.getTrackReviews(musicTrack);
         assertEquals(reviews.size(), 0);
     }
+
     /**
      * tests all reviews generated a from the selected album
+     *
      * @author Alessandro Dare
      */
     @Test
@@ -151,8 +159,10 @@ public class ReviewUnitTest {
         List<Review> reviews = this.controller.getAlbumTrackReviews(album);
         assertEquals(checkRealtedAlbums(album, reviews), true);
     }
+
     /**
      * checks all reviews are given to related album
+     *
      * @author Alessandro Dare
      * @param album Album
      * @param reviews List<Review>
@@ -166,8 +176,10 @@ public class ReviewUnitTest {
         }
         return true;
     }
+
     /**
-     * tests that a new receive will  no reviews
+     * tests that a new receive will no reviews
+     *
      * @author Alessandro Dare
      */
     @Test

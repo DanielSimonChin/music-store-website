@@ -39,8 +39,10 @@ import static org.junit.Assert.*;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * Tests public methods for survey controller
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -79,7 +81,6 @@ public class SurveyUnitTest {
                 .setWebXML(new File("src/main/webapp/WEB-INF/web.xml"))
                 .addPackage(LoginBean.class.getPackage())
                 .addPackage(PreRenderViewBean.class.getPackage())
-                
                 .addPackage(JavaEE8Resource.class.getPackage())
                 .addPackage(LocaleChanger.class.getPackage())
                 .addPackage(SurveyJpaController.class.getPackage())
@@ -131,8 +132,10 @@ public class SurveyUnitTest {
             throw new RuntimeException("Failed parsing sql", e);
         }
     }
+
     /**
      * Test that the survey given is the one on the website
+     *
      * @author Alessandro Dare
      */
     @Test

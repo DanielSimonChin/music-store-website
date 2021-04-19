@@ -23,8 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 
- * Genre controller that displays a list of results to the search page based on the genre
+ *
+ * Genre controller that displays a list of results to the search page based on
+ * the genre
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -42,80 +44,94 @@ public class GenreController implements Serializable {
     private EntityManager entityManager;
     @Inject
     SearchController searchController;
+
     /**
      * Default controller
      */
     public GenreController() {
 
     }
-      /**
+
+    /**
      * searches all tracks and albums associated with pop genre
+     *
      * @author Alessandro Dare
      * @return Search Page
-     * @throws Exception 
+     * @throws Exception
      */
     public String searchPop() throws Exception {
-      
+
         searchGenre(Pop);
-   
+
         return "searchPage";
     }
-      /**
+
+    /**
      * searches all tracks and albums associated with R7B genre
+     *
      * @author Alessandro Dare
      * @return Search Page
-     * @throws Exception 
+     * @throws Exception
      */
     public String searchRB() throws Exception {
-    
+
         searchGenre(RB);
-      
+
         return "searchPage";
     }
-      /**
+
+    /**
      * searches all tracks and albums associated with Rock genre
+     *
      * @author Alessandro Dare
      * @return Search Page
-     * @throws Exception 
+     * @throws Exception
      */
     public String searchRock() throws Exception {
-      
+
         searchGenre(Rock);
-   
+
         return "searchPage";
     }
-      /**
+
+    /**
      * searches all tracks and albums associated with Hip Hop genre
+     *
      * @author Alessandro Dare
      * @return Search Page
-     * @throws Exception 
+     * @throws Exception
      */
     public String searchHipHop() throws Exception {
-  
+
         searchGenre(Hip_hop);
-       
+
         return "searchPage";
     }
-     /**
+
+    /**
      * searches all tracks and albums associated with anime genre
+     *
      * @author Alessandro Dare
      * @return Search Page
-     * @throws Exception 
+     * @throws Exception
      */
     public String searchAnime() throws Exception {
-        
+
         searchGenre(Anime);
-     
+
         return "searchPage";
     }
+
     /**
-     * Searches for tracks/albums for specific genre and displays them on the search page
+     * Searches for tracks/albums for specific genre and displays them on the
+     * search page
+     *
      * @author Alessandro Dare
      * @param genre String
-     * @throws Exception 
+     * @throws Exception
      */
     private void searchGenre(String genre) throws Exception {
-        LOG.info("Search Genre:"+genre);
+        LOG.info("Search Genre:" + genre);
         searchController.setSearchResultsAlbum(new ArrayList<SearchResult>());
         searchController.setSearchResultsTrack(new ArrayList<SearchResult>());
         searchResultsGenre(genre);
@@ -123,8 +139,10 @@ public class GenreController implements Serializable {
         searchController.setSearchError(false);
 
     }
+
     /**
      * Searches all albums and tracks associated with selected genre
+     *
      * @author Alessandro Dare
      * @param musicGenre String
      */
@@ -135,11 +153,11 @@ public class GenreController implements Serializable {
         //searches ablums in the genre
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(musicTrack.get("musiccategory"), musicGenre),cb.equal(album.get("available"), 1));
-        cq.select(cb.construct(SearchResult.class, album.get("albumtitle"),  album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
+        cq.where(cb.like(musicTrack.get("musiccategory"), musicGenre), cb.equal(album.get("available"), 1));
+        cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchController.setSearchResultsAlbum(query.getResultList());
-        LOG.info("Albums number:"+searchController.getSearchResultsAlbum().size());
+        LOG.info("Albums number:" + searchController.getSearchResultsAlbum().size());
         //searches tracks in the genre
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
@@ -147,6 +165,6 @@ public class GenreController implements Serializable {
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchController.setSearchResultsTrack(query.getResultList());
-        LOG.info("Tracks number:"+searchController.getSearchResultsTrack().size());
+        LOG.info("Tracks number:" + searchController.getSearchResultsTrack().size());
     }
 }

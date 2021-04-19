@@ -33,8 +33,9 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
 /**
- * Controller for client manager allows the editing of client registration 
+ * Controller for client manager allows the editing of client registration
  * information can also deactivate an account or promote a client to manager
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -96,6 +97,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * creates a new client
+     *
      * @author Alessandro Dare
      */
     public void createNewClient() {
@@ -105,6 +107,7 @@ public class ClientManagerController implements Serializable {
 
     /**
      * takes use to the search page and resets all values
+     *
      * @author Alessandro Dare
      * @return String the search page
      */
@@ -115,22 +118,9 @@ public class ClientManagerController implements Serializable {
         this.selectedClient = null;
     }
 
-
-    /**
-     * gives a list of all clients in the database
-     * @author Alessandro Dare
-     * @return String the search page
-     */
-    public String searchAllClients() {
-        selectedClient = null;
-        selectedClients = new ArrayList<>();
-        clients = clientJpaController.findClientEntities();
-
-        return "adminclient";
-    }
-
     /**
      * searches the database for specified clients
+     *
      * @author Alessandro Dare
      * @return String the search page
      */
@@ -139,16 +129,18 @@ public class ClientManagerController implements Serializable {
         selectedClients = new ArrayList<>();
         clients = getClientFromDatabase(clientSearch);
 
-        return "adminclient";
+        return null;
     }
 
     /**
      * gets all clients that have the specified username
+     *
      * @author Alessandro Dare
      * @param clientSearch String
      * @return List<Client>
      */
     private List<Client> getClientFromDatabase(String clientSearch) {
+        LOG.info("Search criteria:" + clientSearch);
         String clientSearchText = "%" + clientSearch + "%";
 
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
@@ -158,16 +150,18 @@ public class ClientManagerController implements Serializable {
         cq.where(cb.like(client.get("username"), clientSearchText));
         TypedQuery<Client> query = entityManager.createQuery(cq);
         List<Client> clients = query.getResultList();
-
+        LOG.info("Search Client List Size:" + clients.size());
         return clients;
     }
 
     /**
      * saves changes to client information
+     *
      * @author Alessandro Dare
      */
     public void saveClient() {
         try {
+            //checks client exists
             if (this.selectedClient.getUsername() == null) {
                 LOG.info("Soemone tried editing a nonexsitence client");
             } else {
@@ -188,6 +182,7 @@ public class ClientManagerController implements Serializable {
     /**
      * Validates the cellphone number to see if it matches the correct format
      * and doesn't match the home phone if either it throws an error
+     *
      * @author Alessandro Dare
      * @param context
      * @param component
@@ -197,6 +192,8 @@ public class ClientManagerController implements Serializable {
             Object value) {
         String cellPhoneNumber = value.toString();
         String homePhoneNumber = "" + selectedClient.getHometelephone();
+        LOG.info("home phone" + homePhoneNumber);
+        LOG.info("cell phone" + cellPhoneNumber);
         Matcher matcher = VALID_PHONE_NUMBER_PATTERN.matcher(cellPhoneNumber);
         if (!matcher.find()) {
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
@@ -217,6 +214,7 @@ public class ClientManagerController implements Serializable {
     /**
      * Validates the search to see if it returns no results if not it throws and
      * error
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
@@ -226,7 +224,7 @@ public class ClientManagerController implements Serializable {
             Object value) {
 
         if (value == null || value.toString().equals("") || getClientFromDatabase(value.toString()).isEmpty()) {
-
+            LOG.info("search field:" + value);
             FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
                     "com.gb4w21.musicalmoose.bundles.messages", "noResults", null);
             message.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -239,31 +237,35 @@ public class ClientManagerController implements Serializable {
     /**
      * calculates the total profit a given client has spent in the current date
      * range
+     *
      * @author Alessandro Dare
      * @param chosenClient Client
      * @return double total profit form client
      */
     public double getTotalSales(Client chosenClient) {
+        LOG.info("Selected client:" + chosenClient.getUsername());
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Object[]> cq = cb.createQuery(Object[].class);
         Root<Client> client = cq.from(Client.class);
         Join sale = client.join("saleList");
         Join invoicedetail = sale.join("invoicedetailList");
-        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0),cb.equal(client.get("clientid"), chosenClient.getClientid()));
+        cq.where(cb.equal(invoicedetail.get("invoicedetailremoved"), 0), cb.equal(sale.get("saleremoved"), 0), cb.equal(client.get("clientid"), chosenClient.getClientid()));
         cq.multiselect(invoicedetail.get("currentcost"));
         TypedQuery<Object[]> query = entityManager.createQuery(cq);
         List<Object[]> prices = query.getResultList();
         Float totalValue = 0.f;
         for (Object price : prices) {
             totalValue += (Float) price;
-            LOG.info("" + price.toString());
+
         }
+        LOG.info("Total price:" + totalValue);
         return totalValue;
     }
 
     /**
      * Checks to make sure the username given is unique and not used by another
      * users if not it returns false
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
@@ -285,11 +287,13 @@ public class ClientManagerController implements Serializable {
 
     /**
      * Check in the database if specified user name was chosen
+     *
      * @author Alessandro Dare
      * @param username String
      * @return boolean true if the doesn't match false if not
      */
     private boolean checkUserName(String username) {
+        LOG.info("Username:" + username);
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Client> cq = cb.createQuery(Client.class);
         Root<Client> client = cq.from(Client.class);
@@ -311,6 +315,7 @@ public class ClientManagerController implements Serializable {
     /**
      * Validates the address to make sure the second address doesn't match the
      * first
+     *
      * @author Alessandro Dare
      * @param context FacesContext
      * @param component UIComponent
@@ -320,6 +325,8 @@ public class ClientManagerController implements Serializable {
             Object value) {
         String address1 = selectedClient.getAddress1();
         String address2 = value.toString();
+        LOG.info("address1:" + address1);
+        LOG.info("address2:" + address2);
         if (address2 != null && (!address2.equals(""))) {
             if (address1.equals(address2)) {
                 FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(

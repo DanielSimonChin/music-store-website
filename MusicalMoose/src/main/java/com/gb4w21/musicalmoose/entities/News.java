@@ -78,7 +78,6 @@ public class News implements Serializable {
         this.newsid = newsid;
     }
 
-
     public Date getCreateddate() {
         return createddate;
     }
@@ -120,12 +119,11 @@ public class News implements Serializable {
         return "com.gb4w21.musicalmoose.News[ newsid=" + newsid + " ]";
     }
 
-    
     /**
      * @return the shortened version of the news text for the front page.
      */
-    public String getTruncatedNewsText(){
-        return newstext.substring(0,Math.min(newstext.length(), 180)) + "...";
+    public String getTruncatedNewsText() {
+        return newstext.substring(0, Math.min(newstext.length(), 180)) + "...";
     }
 
     public Boolean getDisplayed() {
