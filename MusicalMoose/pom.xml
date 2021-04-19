@@ -11,7 +11,9 @@
     by placing the tag name in ${...} -->
     <properties>
 
-        <!--<skipTests>true</skipTests> --> 
+
+      <skipTests>false</skipTests>  
+
 
     </properties>
 

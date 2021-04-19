@@ -405,6 +405,10 @@ public class MusicTrackJpaController implements Serializable {
         return this.searchedTrack;
     }
 
+    /**
+     * Set the searched/selected track
+     * @param musicTrack 
+     */
     public void setMusicTrack(MusicTrack musicTrack) {
         this.searchedTrack = musicTrack;
     }

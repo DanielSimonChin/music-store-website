@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.controller.exceptions.RollbackFailureException;
@@ -225,7 +220,8 @@ public class SaleJpaController implements Serializable {
     }
 
     /**
-     * Retrieve the total value of a track's sales
+     * Retrieve the total value of a track's sales using the currentcost which
+     * is the price at which it was sold.
      *
      * @author Daniel
      *
@@ -254,7 +250,8 @@ public class SaleJpaController implements Serializable {
     }
 
     /**
-     * Retrieve the total value of an album's sales
+     * Retrieve the total value of an album's sales using the currentcost which
+     * is the price at which it was sold.
      *
      * @author Daniel
      *
