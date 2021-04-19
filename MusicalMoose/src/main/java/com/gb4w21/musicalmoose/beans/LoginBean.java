@@ -11,43 +11,54 @@ import javax.inject.Named;
 @Named(value = "loginBean")
 @Dependent
 public class LoginBean {
+
     private String password;
     private String username;
     private int id;
     private boolean loggedIn;
     private String emailAddress;
-    
-    public LoginBean(){
-        
+
+    public LoginBean() {
+
     }
-    public String getPassword(){
+
+    public String getPassword() {
         return password;
     }
-     public int getId(){
+
+    public int getId() {
         return id;
     }
-      public String getUsername(){
+
+    public String getUsername() {
         return username;
     }
-       public boolean isLoggedIn(){
+
+    public boolean isLoggedIn() {
         return loggedIn;
     }
-       public String getEmailAddress() {
+
+    public String getEmailAddress() {
         return this.emailAddress;
     }
-       public void setPassword(String password){
-         this.password=password;
+
+    public void setPassword(String password) {
+        this.password = password;
     }
-     public void setId(int id){
-         this.id=id;
+
+    public void setId(int id) {
+        this.id = id;
     }
-      public void setUsername(String username){
-         this.username=username;
+
+    public void setUsername(String username) {
+        this.username = username;
     }
-       public void setLoggedIn(boolean loggedIn){
-         this.loggedIn=loggedIn;
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
-       public void setEmailAddress(String emailAddress) {
+
+    public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 }

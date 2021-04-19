@@ -69,7 +69,7 @@ public class InvoicedetailJpaController implements Serializable {
     }
 
     public void edit(Invoicedetail invoicedetail) throws NonexistentEntityException, Exception {
-        
+
         try {
             utx.begin();
             Invoicedetail persistentInvoicedetail = em.find(Invoicedetail.class, invoicedetail.getInvoiceid());
@@ -80,7 +80,7 @@ public class InvoicedetailJpaController implements Serializable {
                 invoicedetail.setSaleid(saleidNew);
             }
             invoicedetail = em.merge(invoicedetail);
-            
+
             if (saleidOld != null && !saleidOld.equals(saleidNew)) {
                 saleidOld.getInvoicedetailList().remove(invoicedetail);
                 saleidOld = em.merge(saleidOld);
@@ -173,12 +173,12 @@ public class InvoicedetailJpaController implements Serializable {
 
     /**
      * Finds the InvoiceDetails of the foreign key saleId
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @param saleId
      * @return InvoiceDetails of the foreign key saleId
-     * @throws NonexistentEntityException 
+     * @throws NonexistentEntityException
      */
     public List<Invoicedetail> findInvoiceDetailsBySaleId(int saleId) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();

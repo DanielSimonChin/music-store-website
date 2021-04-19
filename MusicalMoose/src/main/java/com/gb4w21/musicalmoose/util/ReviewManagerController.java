@@ -30,8 +30,11 @@ import javax.faces.validator.ValidatorException;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+
 /**
- * Controller for review manager allows the editing of existing reviews which determines if there permitted or not
+ * Controller for review manager allows the editing of existing reviews which
+ * determines if there permitted or not
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -51,95 +54,92 @@ public class ReviewManagerController implements Serializable {
     private Review selectedReview;
 
     private List<Review> selectedReviews;
+
     /**
      * Default constructor
      */
     public ReviewManagerController() {
 
     }
-    public List<Review> getReviews(){
-    
+
+    public List<Review> getReviews() {
+
         return reviews;
     }
-    public void setReviews(List<Review> reviews){
-        
-         this.reviews=reviews;
+
+    public void setReviews(List<Review> reviews) {
+
+        this.reviews = reviews;
     }
-    public List<Review> getSelectedReviews(){
-       
+
+    public List<Review> getSelectedReviews() {
+
         return selectedReviews;
     }
-    public void setSelectedReviews(List<Review> selectedReviews){
-      
-         this.selectedReviews=selectedReviews;
+
+    public void setSelectedReviews(List<Review> selectedReviews) {
+
+        this.selectedReviews = selectedReviews;
     }
-    public Review getSelectedReview(){
-       
+
+    public Review getSelectedReview() {
+
         return selectedReview;
     }
-    public void setSelectedReview(Review selectedReview){
-      
-        this.selectedReview=selectedReview;
+
+    public void setSelectedReview(Review selectedReview) {
+
+        this.selectedReview = selectedReview;
     }
+
     /**
      * Takes the user to the review page and resets page values
      */
-     @PostConstruct
+    @PostConstruct
     public void init() {
-   
-        reviews=reviewJpaController.findReviewEntities();
+
+        reviews = reviewJpaController.findReviewEntities();
 
         selectedReviews = new ArrayList<>();
-     
+
         this.selectedReview = null;
-    
+
     }
+
     /**
-     * Takes the user to the review page and resets page values
-     * @author Alessandro Dare
-     * @return String admin review page
-     */
-    public String toReviewPage(){
-       
-        reviews = new ArrayList<>();
-      
-        selectedReviews = new ArrayList<>();
-       
-        this.selectedReview = null;
-        
-        return "adminreview";
-    }
-    /**
-     * save changes to a review if a review is changed to approved it will be displayed
+     * save changes to a review if a review is changed to approved it will be
+     * displayed
+     *
      * @author Alessandro Dare
      */
-     public void saveReview() {
-         
-       try{
-        if (this.selectedReview.getClientid()== null) {
-          
-               LOG.info("Some one tried to edit a non exsitent review");
-               
-        } else {
-           
-            reviewJpaController.edit(selectedReview);
-         
-            FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
-                    "com.gb4w21.musicalmoose.bundles.messages", "reviewUpdated", null);
-           
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            
+    public void saveReview() {
+
+        try {
+            //checking to see if review exists
+            if (this.selectedReview.getClientid() == null) {
+
+                LOG.info("Some one tried to edit a non exsitent review");
+
+            } else {
+                LOG.info("review edited for approval status=" + selectedReview.getAprovalstatus());
+                reviewJpaController.edit(selectedReview);
+
+                FacesMessage message = com.gb4w21.musicalmoose.util.Messages.getMessage(
+                        "com.gb4w21.musicalmoose.bundles.messages", "reviewUpdated", null);
+
+                FacesContext.getCurrentInstance().addMessage(null, message);
+
+            }
+        } catch (Exception ex) {
+
+            LOG.info("Error with editing:" + ex.getLocalizedMessage());
+
         }
-       } catch (Exception ex) {
-           
-            LOG.info("Error with editing:"+ex.getLocalizedMessage());
-          
-        }
-       
+
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
-        
+
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
-        
+
     }
-    
+
 }

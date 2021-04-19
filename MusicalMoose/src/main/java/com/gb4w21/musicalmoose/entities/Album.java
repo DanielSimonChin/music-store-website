@@ -268,7 +268,7 @@ public class Album implements Serializable {
 
     /**
      * @author Daniel
-     * 
+     *
      * @return a specific string message depending on if the sale price is 0.
      */
     public String isOnSale() {

@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This is the controller used for the admin management of the news
- * 
+ *
  * @author Victor Ouy
  */
 @Named
@@ -30,52 +30,51 @@ import org.slf4j.LoggerFactory;
 public class NewsManagerController implements Serializable {
 
     private final static Logger LOG = LoggerFactory.getLogger(NewsManagerController.class);
-    
+
     @Inject
     private NewsJpaController newsJpaController;
-    
+
     private List<News> newsList;
     private List<News> selectedNewsList;
     private News selectedNews;
-    
-    
+
     /**
-     * The data table should be filled with all the ad entity objects from
-     * the database.
+     * The data table should be filled with all the ad entity objects from the
+     * database.
      */
     @PostConstruct
     public void init() {
         this.newsList = newsJpaController.findNewsEntities();
     }
-    
+
     public List<News> getNewsList() {
         return this.newsList;
     }
-    
+
     public void setNewsList(List<News> newsList) {
         this.newsList = newsList;
     }
-    
+
     public List<News> getSelectedNewsList() {
         return this.selectedNewsList;
     }
-    
+
     public void setSelectedNewsList(List<News> selectedNewsList) {
         this.selectedNewsList = selectedNewsList;
     }
-    
+
     public News getSelectedNews() {
         return this.selectedNews;
     }
-    
+
     public void setSelectedNews(News selectedNews) {
         this.selectedNews = selectedNews;
     }
-    
+
     public void openNew() {
         this.selectedNews = new News();
     }
-    
+
     /**
      * Check if the selected news is empty
      *
@@ -86,8 +85,9 @@ public class NewsManagerController implements Serializable {
     }
 
     /**
-     * Creates a proper message that notifies the user whenever they edit, create or delete a news
-     * 
+     * Creates a proper message that notifies the user whenever they edit,
+     * create or delete a news
+     *
      * @param summary
      * @param detail
      * @return FaceMessage
@@ -100,7 +100,7 @@ public class NewsManagerController implements Serializable {
         facesMsgDets.setDetail(facesMsgSummary.getSummary());
         return facesMsgDets;
     }
-    
+
     /**
      * Set the available table field for each selected bannerAd to false.
      *
@@ -117,7 +117,7 @@ public class NewsManagerController implements Serializable {
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
         PrimeFaces.current().executeScript("PF('dtProducts').clearFilters()");
     }
-    
+
     /**
      * Set the selected ad's available field to false.
      *
@@ -139,7 +139,7 @@ public class NewsManagerController implements Serializable {
     public void saveNews() throws Exception {
         if (checkValidNews()) {
             // If this is a new track
-            if (this.selectedNews.getNewsid()== null) {
+            if (this.selectedNews.getNewsid() == null) {
                 LOG.info("CREATING A NEW NEWS ENTITY");
                 this.newsJpaController.create(this.selectedNews);
                 this.newsList.add(this.selectedNews);
@@ -150,8 +150,7 @@ public class NewsManagerController implements Serializable {
                 this.newsJpaController.edit(this.selectedNews);
                 FacesContext.getCurrentInstance().addMessage(null, createMsg("confirmation", "newsUpdated"));
             }
-        }
-        else {
+        } else {
             this.selectedNews.setDisplayed(Boolean.FALSE);
             FacesMessage facesMsg = createMsg("invalid", "newsInvalid");
             facesMsg.setSeverity(FacesMessage.SEVERITY_ERROR);
@@ -160,10 +159,10 @@ public class NewsManagerController implements Serializable {
         PrimeFaces.current().executeScript("PF('manageProductDialog').hide()");
         PrimeFaces.current().ajax().update("form:messages", "form:dt-products");
     }
-    
+
     /**
      * Checks if the ad created/update is valid with the other ads
-     * 
+     *
      * @return boolean
      */
     private boolean checkValidNews() {

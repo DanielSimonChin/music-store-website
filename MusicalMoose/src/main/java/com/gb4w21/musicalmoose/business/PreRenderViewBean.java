@@ -71,7 +71,7 @@ public class PreRenderViewBean implements Serializable {
      * This cookies checks if has cookie named GenreTracking
      *
      * @author Victor
-     * 
+     *
      * @return true if has cookie named GenreTracking, false otherwise
      */
     public boolean hasGenreCookie() {
@@ -89,7 +89,7 @@ public class PreRenderViewBean implements Serializable {
      * This writes a cookie for the most recently search track/album's genre
      *
      * @author Victor
-     * 
+     *
      * @return genre String value
      */
     public String findRecentGenreCookie() {
@@ -104,7 +104,8 @@ public class PreRenderViewBean implements Serializable {
     }
 
     /**
-     * Splits the cart_album cookie value into the associative album IDs and stores it in the shoppingCart list
+     * Splits the cart_album cookie value into the associative album IDs and
+     * stores it in the shoppingCart list
      *
      * @author Victor
      */
@@ -122,7 +123,8 @@ public class PreRenderViewBean implements Serializable {
     }
 
     /**
-     * Splits the cart_track cookie value into the associative music track IDs and stores it in the shoppingCart list
+     * Splits the cart_track cookie value into the associative music track IDs
+     * and stores it in the shoppingCart list
      *
      * @author Victor
      */
@@ -143,9 +145,9 @@ public class PreRenderViewBean implements Serializable {
      * Writes a cookie to cart whenever you add an item to cart
      *
      * @author Victor
-     * 
+     *
      * @param id
-     * @param cookieName 
+     * @param cookieName
      */
     public void writeCartCookie(int id, String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -166,9 +168,9 @@ public class PreRenderViewBean implements Serializable {
      * Removes the associated cookie you removed from cart
      *
      * @author Victor
-     * 
+     *
      * @param id
-     * @param cookieName 
+     * @param cookieName
      */
     public void removeCartCookie(int id, String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -191,11 +193,11 @@ public class PreRenderViewBean implements Serializable {
     }
 
     /**
-     * Removes a cookie from cart given the cookie name 
+     * Removes a cookie from cart given the cookie name
      *
      * @author Victor
-     * 
-     * @param cookieName 
+     *
+     * @param cookieName
      */
     public void removeCookie(String cookieName) {
         FacesContext context = FacesContext.getCurrentInstance();

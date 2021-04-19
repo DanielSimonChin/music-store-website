@@ -52,8 +52,8 @@ public class TrackSetSalesManagerController implements Serializable {
     public void init() {
         this.tracks = this.trackController.findMusicTrackEntities();
     }
-    
-    public void reloadData(){
+
+    public void reloadData() {
         this.tracks = this.trackController.findMusicTrackEntities();
     }
 

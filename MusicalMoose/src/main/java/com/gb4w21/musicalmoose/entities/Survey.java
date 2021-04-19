@@ -229,5 +229,5 @@ public class Survey implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Survey[ surveyid=" + surveyid + " ]";
     }
-    
+
 }

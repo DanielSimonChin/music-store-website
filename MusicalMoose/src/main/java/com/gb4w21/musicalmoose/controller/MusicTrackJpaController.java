@@ -45,8 +45,6 @@ public class MusicTrackJpaController implements Serializable {
 
     private MusicTrack searchedTrack;
 
-    
-
     private PreRenderViewBean preRenderViewBean = new PreRenderViewBean();
 
     public void create(MusicTrack musicTrack) throws RollbackFailureException {
@@ -175,7 +173,7 @@ public class MusicTrackJpaController implements Serializable {
 
     /**
      * Returns a list of the three most recently added MusicTrack objects
-     * 
+     *
      * @author Daniel
      *
      * @return List of MusicTrack objects
@@ -211,7 +209,7 @@ public class MusicTrackJpaController implements Serializable {
 
     /**
      * Finds all tracks that belong to a track's album
-     * 
+     *
      * @author Daniel
      *
      * @param track
@@ -247,7 +245,7 @@ public class MusicTrackJpaController implements Serializable {
      */
     public String searchTrack(MusicTrack track) {
         this.searchedTrack = track;
-        
+
         if (searchedTrack != null) {
             this.preRenderViewBean.writeGenreTrackingCookie(searchedTrack.getMusiccategory());
         }
@@ -260,15 +258,14 @@ public class MusicTrackJpaController implements Serializable {
         return "detailTrackFromAlbum";
     }
 
-
     /**
      * Store given track by id to selectedAlbum
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @param id
      * @return string to navigate to track page
-
+     *
      */
     public String searchSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
@@ -277,14 +274,17 @@ public class MusicTrackJpaController implements Serializable {
         }
         return "searchTrack";
     }
+
     /**
-     * Takes the id of a track a takes the user to that track page from the index page
+     * Takes the id of a track a takes the user to that track page from the
+     * index page
+     *
      * @param id int
-     * @return track page 
+     * @return track page
      */
     public String selectSingleTrack(int id) {
         this.searchedTrack = findMusicTrack(id);
-        
+
         if (searchedTrack != null) {
             this.preRenderViewBean.writeGenreTrackingCookie(searchedTrack.getMusiccategory());
         }
@@ -293,12 +293,12 @@ public class MusicTrackJpaController implements Serializable {
 
     /**
      * Finds an track given the id
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @param id
      * @return track
-     * @throws NonexistentEntityException 
+     * @throws NonexistentEntityException
      */
     public MusicTrack findTrackById(int id) throws NonexistentEntityException {
         CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -318,8 +318,10 @@ public class MusicTrackJpaController implements Serializable {
 
         return (MusicTrack) q.getResultList().get(0);
     }
+
     /**
      * takes a user back to the track page after writing a review
+     *
      * @param musicTrack MusicTrack
      * @return track page
      */
@@ -327,8 +329,10 @@ public class MusicTrackJpaController implements Serializable {
         this.searchedTrack = musicTrack;
         return "reviewTrack";
     }
+
     /**
      * get a list of tracks that have the biggest sale
+     *
      * @author Alessandro Dare
      * @return List<MusicTrack> a list of special tracks
      */
@@ -338,7 +342,7 @@ public class MusicTrackJpaController implements Serializable {
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         cq.select(musicTrack);
 
-        cq.where(cb.notEqual(musicTrack.get("saleprice"), 0),cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")), cb.equal(musicTrack.get("available"), 1));
+        cq.where(cb.notEqual(musicTrack.get("saleprice"), 0), cb.lessThan(musicTrack.get("saleprice"), musicTrack.get("listprice")), cb.equal(musicTrack.get("available"), 1));
         cq.orderBy(cb.asc(musicTrack.get("saleprice")));
         TypedQuery<MusicTrack> query = em.createQuery(cq);
         List<MusicTrack> tracks = query.getResultList();
@@ -347,7 +351,8 @@ public class MusicTrackJpaController implements Serializable {
         //Adds to three tracks to special list
         if (tracks.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
-                LOG.info("Special ablum:"+tracks.get(i).getTracktitle());
+                LOG.info("Special ablum:" + tracks.get(i).getTracktitle());
+                LOG.info("Special cost" + tracks.get(i).getSaleprice());
                 specialList.add(tracks.get(i));
             }
 
@@ -359,9 +364,9 @@ public class MusicTrackJpaController implements Serializable {
 
     /**
      * Gets the list of tracks of the most recently searched genre
-     * 
+     *
      * @author Victor
-     * 
+     *
      * @return list of tracks of specific genre
      */
     public List<MusicTrack> getRecentGenreTracks() {
@@ -372,19 +377,18 @@ public class MusicTrackJpaController implements Serializable {
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
 
         Root<MusicTrack> musicTracks = cq.from(MusicTrack.class);
-        
+
         cq.where(cb.equal(musicTracks.get("musiccategory"), recentGenre));
 
         Query q = em.createQuery(cq);
-        
+
         List<MusicTrack> results = q.getResultList();
         List<MusicTrack> genreRelatedResults = new ArrayList<MusicTrack>();
-        
+
         for (int i = 0; i < results.size(); i++) {
             if (i == 0) {
                 genreRelatedResults.add(results.get(i));
-            }
-            else if (!results.get(i).getArtist().equals(genreRelatedResults.get(0).getArtist())) {
+            } else if (!results.get(i).getArtist().equals(genreRelatedResults.get(0).getArtist())) {
                 genreRelatedResults.add(results.get(i));
                 break;
             }
@@ -412,6 +416,7 @@ public class MusicTrackJpaController implements Serializable {
     /**
      * When a user clicks on a related track, set the selected track and show
      * the track page once again.
+     *
      * @author Alessandro Dare
      * @param track
      * @return display the trackpage.xhtml

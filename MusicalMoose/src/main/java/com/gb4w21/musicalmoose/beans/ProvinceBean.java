@@ -18,12 +18,12 @@ import javax.inject.Named;
 @Named(value = "provinceBean")
 @Dependent
 public class ProvinceBean {
+
     private String selectedProvince;
-    
+
 //    public ProvinceBean(String selectedProvince) {
 //        this.selectedProvince = selectedProvince;
 //    }
-  
     public String getSelectedItem() {
         if (selectedProvince == null) {
             selectedProvince = "valueAlberta"; // This will be the default selected item.

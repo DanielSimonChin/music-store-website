@@ -29,9 +29,9 @@ import org.slf4j.LoggerFactory;
 @Named
 @SessionScoped
 public class DownloadController implements Serializable {
-    
+
     private final static Logger LOG = LoggerFactory.getLogger(DownloadController.class);
-    
+
     @Inject
     private InvoicedetailJpaController invoiceDetailJpaController;
     @Inject
@@ -44,22 +44,23 @@ public class DownloadController implements Serializable {
     private ShoppingCartController shoppingCartController;
     @Inject
     private SaleJpaController saleJpaController;
-    
+
     private List<MusicItem> downloadMusicItems;
-    
+
     public List<MusicItem> getDownloadMusicItems() {
         return this.downloadMusicItems;
     }
-    
+
     public void setDownloadMusicItems(List<MusicItem> downloadMusicItems) {
         this.downloadMusicItems = downloadMusicItems;
     }
-    
+
     /**
-     * Finds all the items the logged in client purchased and returns a list of MusicItem to download
-     * 
+     * Finds all the items the logged in client purchased and returns a list of
+     * MusicItem to download
+     *
      * @return List of purchased MusicItems
-     * @throws NonexistentEntityException 
+     * @throws NonexistentEntityException
      */
     public List<MusicItem> findDownloads() throws NonexistentEntityException {
         try {
@@ -72,37 +73,36 @@ public class DownloadController implements Serializable {
             }
 
             for (int i = 0; i < invoiceDetails.size(); i++) {
-                MusicItem musicItem=new MusicItem();
+                MusicItem musicItem = new MusicItem();
                 if (invoiceDetails.get(i).getInventoryid() != null) {
-                    musicItem=shoppingCartController.convertMusicTrackToMusicItem(musicTrackJpaController.findMusicTrack(invoiceDetails.get(i).getInventoryid().getInventoryid()));
-                }
-                else if (invoiceDetails.get(i).getAlbumid() != null) {
-                    musicItem=shoppingCartController.convertAlbumToMusicItem(albumJpaController.findAlbum(invoiceDetails.get(i).getAlbumid().getAlbumid()));
+                    musicItem = shoppingCartController.convertMusicTrackToMusicItem(musicTrackJpaController.findMusicTrack(invoiceDetails.get(i).getInventoryid().getInventoryid()));
+                } else if (invoiceDetails.get(i).getAlbumid() != null) {
+                    musicItem = shoppingCartController.convertAlbumToMusicItem(albumJpaController.findAlbum(invoiceDetails.get(i).getAlbumid().getAlbumid()));
                 }
                 musicItem.setInvoiceId(invoiceDetails.get(i).getInvoiceid());
                 downloadMusicItems.add(musicItem);
             }
             return downloadMusicItems;
-        }
-        catch (NonexistentEntityException e) {
+        } catch (NonexistentEntityException e) {
             // return nothing if Client does not have any downloadable tracks/albums
             return null;
         }
     }
-    public String addDownload(MusicItem musicItem){
-        Invoicedetail invoicedetail=invoiceDetailJpaController.findInvoicedetail(musicItem.getInvoiceId());
-        LOG.debug("NUMBER OF DOWNLOADS:"+invoicedetail.getProductdownloaded());
-        LOG.debug("NUMBER OF DOWNLOADS:"+(invoicedetail.getProductdownloaded()+1));
-        invoicedetail.setProductdownloaded(invoicedetail.getProductdownloaded()+1);
-        LOG.debug("NUMBER OF DOWNLOADS:"+invoicedetail.getProductdownloaded());
+
+    public String addDownload(MusicItem musicItem) {
+        Invoicedetail invoicedetail = invoiceDetailJpaController.findInvoicedetail(musicItem.getInvoiceId());
+        LOG.debug("NUMBER OF DOWNLOADS:" + invoicedetail.getProductdownloaded());
+        LOG.debug("NUMBER OF DOWNLOADS:" + (invoicedetail.getProductdownloaded() + 1));
+        invoicedetail.setProductdownloaded(invoicedetail.getProductdownloaded() + 1);
+        LOG.debug("NUMBER OF DOWNLOADS:" + invoicedetail.getProductdownloaded());
         try {
             invoiceDetailJpaController.edit(invoicedetail);
         } catch (Exception ex) {
-            LOG.error("Error failed to add download:"+ex.getLocalizedMessage());
+            LOG.error("Error failed to add download:" + ex.getLocalizedMessage());
         }
-        invoicedetail=invoiceDetailJpaController.findInvoicedetail(musicItem.getInvoiceId());
-        LOG.debug("NUMBER OF DOWNLOADS:"+invoicedetail.getProductdownloaded());
+        invoicedetail = invoiceDetailJpaController.findInvoicedetail(musicItem.getInvoiceId());
+        LOG.debug("NUMBER OF DOWNLOADS:" + invoicedetail.getProductdownloaded());
 
-     return null;
+        return null;
     }
 }

@@ -170,7 +170,7 @@ public class BanneradJpaController implements Serializable {
 
     /**
      * Redirect the user to a new window representing the ad's url field
-     * 
+     *
      * @Daniel
      *
      * @param ad

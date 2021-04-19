@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.gb4w21.musicalmoose.controller;
 
 import com.gb4w21.musicalmoose.business.PreRenderViewBean;
@@ -479,7 +474,7 @@ public class AlbumJpaController implements Serializable {
         if (albums.size() > specialsLimt) {
             for (int i = 0; i < specialsLimt; i++) {
                 LOG.info("Special ablum:" + albums.get(i).getAlbumtitle());
-                specialList.add(albums.get(i));
+                LOG.info("Special cost" + albums.get(i).getSaleprice());
             }
             return specialList;
         } else {

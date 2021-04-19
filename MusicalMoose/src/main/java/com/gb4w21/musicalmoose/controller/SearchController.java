@@ -28,8 +28,10 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * Individual search categories
+ *
  * @author Alessandro Dare
  */
 enum SearchCategory {
@@ -40,8 +42,10 @@ enum SearchCategory {
 }
 
 /**
- * Controller responsible for handling the search bar feature on the client side that
- * finds and displays the list of search results based on the search field and category
+ * Controller responsible for handling the search bar feature on the client side
+ * that finds and displays the list of search results based on the search field
+ * and category
+ *
  * @author Alessandro Dare
  * @version 1.0
  */
@@ -63,6 +67,7 @@ public class SearchController implements Serializable {
     private boolean searchError;
     @PersistenceContext
     private EntityManager entityManager;
+
     /**
      * Default Constructor
      */
@@ -130,25 +135,30 @@ public class SearchController implements Serializable {
         this.searchResultsAlbum = searchResultsAlbum;
 
     }
+
     /**
      * clears all search results
+     *
      * @author Alessandro Dare
      */
     private void clearSearchResult() {
         searchResultsTrack = new ArrayList<SearchResult>();
         searchResultsAlbum = new ArrayList<SearchResult>();
     }
+
     /**
-     * Generates search results base on selected categories and takes a user to a search page unless 
-     * it gets a single results in which case it takes you directly tot eh track/album page
+     * Generates search results base on selected categories and takes a user to
+     * a search page unless it gets a single results in which case it takes you
+     * directly tot eh track/album page
+     *
      * @author Alessandro Dare
      * @return String Search page or track/album page if there's a single result
-     * @throws Exception 
+     * @throws Exception
      */
     public String searchForPage() throws Exception {
         clearSearchResult();
         LOG.info("category" + category);
-        LOG.info("search text:"+this.searchText);
+        LOG.info("search text:" + this.searchText);
         //different searches based ont eh category
         if (category.equals(SearchCategory.AlbumTitle.toString())) {
             searchResultsAlbums();
@@ -176,7 +186,7 @@ public class SearchController implements Serializable {
         if (searchResultsTrack.size() == 0 && searchResultsAlbum.size() == 1) {
             setSingleAlbum();
             return "albumpage";
-        //if there's a single track take the user to the track page 
+            //if there's a single track take the user to the track page 
         } else if (searchResultsTrack.size() == 1 && searchResultsAlbum.size() == 0) {
             setSingleTrack();
 
@@ -185,8 +195,11 @@ public class SearchController implements Serializable {
         return "searchPage";
 
     }
+
     /**
-     * If the search list has just one result and it's a track take the user to the selected track page
+     * If the search list has just one result and it's a track take the user to
+     * the selected track page
+     *
      * @author Alessandro Dare
      */
     private void setSingleTrack() {
@@ -194,11 +207,11 @@ public class SearchController implements Serializable {
         CriteriaQuery<MusicTrack> cq = cb.createQuery(MusicTrack.class);
         Root<MusicTrack> musicTrack = cq.from(MusicTrack.class);
         cq.select(musicTrack);
-        LOG.info("Single track title:"+searchResultsAlbum.get(0).getTracktitle());
+        LOG.info("Single track title:" + searchResultsAlbum.get(0).getTracktitle());
         // Use single search reuslt to find track
         cq.where(cb.equal(musicTrack.get("tracktitle"), searchResultsTrack.get(0).getTracktitle()),
                 cb.equal(musicTrack.get("artist"), searchResultsTrack.get(0).getArtist()),
-                cb.equal(musicTrack.get("musiccategory"), searchResultsTrack.get(0).getMusiccategory()), 
+                cb.equal(musicTrack.get("musiccategory"), searchResultsTrack.get(0).getMusiccategory()),
                 cb.equal(musicTrack.get("available"), 1));
 
         TypedQuery<MusicTrack> query = entityManager.createQuery(cq);
@@ -206,8 +219,11 @@ public class SearchController implements Serializable {
         musicTrackJpaController.setMusicTrack(query.getSingleResult());
 
     }
+
     /**
-     * If the search list has just one result and it's n album take the user to the selected album page
+     * If the search list has just one result and it's n album take the user to
+     * the selected album page
+     *
      * @author Alessandro Dare
      */
     private void setSingleAlbum() {
@@ -215,7 +231,7 @@ public class SearchController implements Serializable {
         CriteriaQuery<Album> cq = cb.createQuery(Album.class);
         Root<Album> album = cq.from(Album.class);
         cq.select(album);
-        LOG.info("Single ablum title:"+searchResultsAlbum.get(0).getAlbumtitle());
+        LOG.info("Single ablum title:" + searchResultsAlbum.get(0).getAlbumtitle());
         // Use single search reuslt to find album
         cq.where(cb.equal(album.get("albumtitle"), searchResultsAlbum.get(0).getAlbumtitle()),
                 cb.equal(album.get("artist"), searchResultsAlbum.get(0).getArtist()),
@@ -226,8 +242,11 @@ public class SearchController implements Serializable {
         albumJpaController.setSelectedAlbum(query.getSingleResult());
 
     }
-   /**
-     * Generates a list of tracks  that have the same title or the title name is similar  to the search string
+
+    /**
+     * Generates a list of tracks that have the same title or the title name is
+     * similar to the search string
+     *
      * @author Alessandro Dare
      */
     private void searchResultsMusicTrack() {
@@ -241,10 +260,13 @@ public class SearchController implements Serializable {
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsTrack = query.getResultList();
-        LOG.info("all tracks:"+searchResultsAlbum.size());
+        LOG.info("all tracks:" + searchResultsAlbum.size());
     }
+
     /**
-     * Generates a list of albums  that have the same title or the title name is similar  to the search string
+     * Generates a list of albums that have the same title or the title name is
+     * similar to the search string
+     *
      * @author Alessandro Dare
      */
     private void searchResultsAlbums() {
@@ -253,16 +275,19 @@ public class SearchController implements Serializable {
         CriteriaQuery<SearchResult> cq = cb.createQuery(SearchResult.class);
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(album.get("albumtitle"), searchText),cb.equal(album.get("available"), 1));
+        cq.where(cb.like(album.get("albumtitle"), searchText), cb.equal(album.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsAlbum = query.getResultList();
-        LOG.info("all albums:"+searchResultsAlbum.size());
+        LOG.info("all albums:" + searchResultsAlbum.size());
     }
+
     /**
-     * Generates a list of albums and tracks who's creation date is in between the specified field
+     * Generates a list of albums and tracks who's creation date is in between
+     * the specified field
+     *
      * @author Alessandro Dare
-     * @throws ParseException 
+     * @throws ParseException
      */
     private void searchResultsDate() throws ParseException {
 
@@ -275,7 +300,7 @@ public class SearchController implements Serializable {
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsAlbum = query.getResultList();
-        LOG.info("datess all albums:"+searchResultsAlbum.size());
+        LOG.info("datess all albums:" + searchResultsAlbum.size());
         //searching for tracks within date range
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
@@ -283,10 +308,13 @@ public class SearchController implements Serializable {
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchResultsTrack.addAll(query.getResultList());
-        LOG.info("datess all tracks:"+query.getResultList().size());
+        LOG.info("datess all tracks:" + query.getResultList().size());
     }
+
     /**
-     * Generates a list of albums and tracks that have the same artist or the artists name is similar  to the search string
+     * Generates a list of albums and tracks that have the same artist or the
+     * artists name is similar to the search string
+     *
      * @author Alessandro Dare
      */
     private void searchResultsArtist() {
@@ -296,11 +324,11 @@ public class SearchController implements Serializable {
         //searching for albums with artist
         Root<Album> album = cq.from(Album.class);
         Join musicTrack = album.join("musicTrackList");
-        cq.where(cb.like(album.get("artist"), searchText),cb.equal(album.get("available"), 1));
+        cq.where(cb.like(album.get("artist"), searchText), cb.equal(album.get("available"), 1));
         cq.select(cb.construct(SearchResult.class, album.get("albumtitle"), album.get("releasedate"), album.get("artist"), musicTrack.get("musiccategory"), album.get("albumimagefilenamesmall"), album.get("albumid"))).distinct(true);
         TypedQuery<SearchResult> query = entityManager.createQuery(cq);
         searchResultsAlbum = query.getResultList();
-        LOG.info("Arists all albums:"+searchResultsAlbum.size());
+        LOG.info("Arists all albums:" + searchResultsAlbum.size());
         //search for tracks with artist
         album = cq.from(Album.class);
         musicTrack = album.join("musicTrackList");
@@ -308,7 +336,7 @@ public class SearchController implements Serializable {
         cq.select(cb.construct(SearchResult.class, musicTrack.get("tracktitle"), musicTrack.get("musiccategory"), musicTrack.get("artist"), album.get("releasedate"), album.get("albumimagefilenamesmall"), musicTrack.get("inventoryid"))).distinct(true);
         query = entityManager.createQuery(cq);
         searchResultsTrack.addAll(query.getResultList());
-        LOG.info("Arists all tracks:"+query.getResultList().size());
+        LOG.info("Arists all tracks:" + query.getResultList().size());
     }
 
 }

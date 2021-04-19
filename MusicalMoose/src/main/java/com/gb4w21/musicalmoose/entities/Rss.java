@@ -98,5 +98,5 @@ public class Rss implements Serializable {
     public String toString() {
         return "com.gb4w21.musicalmoose.entities.Rss[ id=" + id + " ]";
     }
-    
+
 }
